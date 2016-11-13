@@ -16,7 +16,7 @@ CREATE TABLE user_type
 CREATE TABLE user_dladle
 (
   id           INT PRIMARY KEY  NOT NULL,
-  email        VARCHAR(100)     NOT NULL,
+  emailId        VARCHAR(100)     NOT NULL,
   password     VARCHAR(100)     NOT NULL,
   user_type_id INT,
   verified     BOOLEAN

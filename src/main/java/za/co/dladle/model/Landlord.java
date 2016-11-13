@@ -18,8 +18,8 @@ public class Landlord {
 
     private String identityNumber;
 
-    @ManyToOne
-    private User user;
+//    @ManyToOne
+//    private User user;
 
 
     public Landlord() {
@@ -57,11 +57,4 @@ public class Landlord {
         this.identityNumber = identityNumber;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

@@ -15,8 +15,8 @@ public class Vendor {
 
     private String businessAddress;
 
-    @ManyToOne
-    private User user;
+//    @ManyToOne
+//    private User user;
 
     public Vendor() {
     }
@@ -45,11 +45,4 @@ public class Vendor {
         this.businessAddress = businessAddress;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

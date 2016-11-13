@@ -1,22 +1,17 @@
-package za.co.dladle.model;
+package za.co.dladle.entity;
 
 /**
- * Created by prady on 9/3/2016.
+ * Created by prady on 11/13/2016.
  */
-public class User {
-
+public class LoginRequest {
     private String emailId;
 
     private String password;
 
-    public User() {
+    public LoginRequest() {
     }
 
-    public User(String emailId) {
-        this.emailId = emailId;
-    }
-
-    public User(String emailId, String password) {
+    public LoginRequest(String emailId, String password) {
         this.emailId = emailId;
         this.password = password;
     }
