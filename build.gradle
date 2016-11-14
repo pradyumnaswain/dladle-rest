@@ -10,7 +10,7 @@ allprojects {
     apply plugin: 'java'
     apply plugin: 'eclipse'
     apply plugin: 'idea'
-    apply plugin: 'spring-boot'
+//    apply plugin: 'spring-boot'
 }
 buildscript {
     ext {
