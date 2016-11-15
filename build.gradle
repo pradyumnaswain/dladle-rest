@@ -1,36 +1,31 @@
-allprojects {
-    group = 'za.co.dladle'
-    version = '1.0'
-
-    repositories {
-        mavenCentral()
-        jcenter()
-    }
-
-    apply plugin: 'java'
-    apply plugin: 'eclipse'
-    apply plugin: 'idea'
-    apply plugin: 'spring-boot'
-}
 buildscript {
     ext {
-        springBootVersion = '1.3.6.RELEASE'
-        swaggerVersion = '2.4.0'
+        springBootVersion = '1.4.1.RELEASE'
     }
     repositories {
         mavenCentral()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath('org.springframework:springloaded:1.2.6.RELEASE')
     }
 }
+
+apply plugin: 'spring-boot'
+
+springBoot {
+    mainClass = "za.co.dladle.Sandbox"
+}
+
 jar {
-    manifest {
-        baseName = 'dladle-rest'
-        attributes 'Main-Class': 'za.co.dladle.Sandbox'
-    }
+    baseName = 'dladle-rest'
+    manifest.attributes 'Main-Class': 'za.co.dladle.Sandbox'
 }
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
 dependencies {
     compile("org.postgresql:postgresql:9.4.1211")
     compile("org.apache.commons:commons-lang3:3.2")
@@ -43,7 +38,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-rest:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-devtools:${springBootVersion}")
     compile("com.google.guava:guava:19.0")
-    compile("io.springfox:springfox-swagger2:${swaggerVersion}")
-    compile("io.springfox:springfox-swagger-ui:${swaggerVersion}")
+    compile("io.springfox:springfox-swagger2:2.6.1")
+    compile("io.springfox:springfox-swagger-ui:2.6.1")
 }
 
