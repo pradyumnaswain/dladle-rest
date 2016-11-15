@@ -63,6 +63,6 @@ public class AuthenticationFilter extends GenericFilterBean {
                 || httpRequest.getRequestURI().contains("/swagger-resources")
                 || httpRequest.getRequestURI().contains("/configuration/ui")
                 || httpRequest.getRequestURI().contains("/configuration/security")
-                || httpRequest.getRequestURI().matches("/kyck-rest/webjars/(.*)");
+                || httpRequest.getRequestURI().matches("/webjars/(.*)");
     }
 }
