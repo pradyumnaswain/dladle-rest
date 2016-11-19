@@ -9,14 +9,14 @@ GRANT ALL PRIVILEGES ON DATABASE dladle TO sysadmin;
 /*user_type*/
 CREATE TABLE user_type
 (
-  id   INT PRIMARY KEY NOT NULL,
+  id   INT PRIMARY KEY  NOT NULL ,
   name VARCHAR(128)    NOT NULL
 );
 /*user_dladle*/
 CREATE TABLE user_dladle
 (
-  id           INT PRIMARY KEY  NOT NULL,
-  emailId        VARCHAR(100)     NOT NULL,
+  id           INT  PRIMARY KEY  NOT NULL,
+  emailId        VARCHAR(500)     NOT NULL,
   password     VARCHAR(100)     NOT NULL,
   user_type_id INT,
   verified     BOOLEAN
@@ -120,7 +120,7 @@ CREATE TABLE rating_comments
   user_id     INT,
   description VARCHAR(100)
 );
-
+CREATE UNIQUE INDEX user_dladle_email_uindex ON user_dladle (emailid);
 ALTER TABLE user_dladle
   ADD CONSTRAINT user_type_id FOREIGN KEY (user_type_id) REFERENCES user_type (id);
 ALTER TABLE landlord
