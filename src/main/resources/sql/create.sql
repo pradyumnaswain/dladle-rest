@@ -7,24 +7,27 @@ CREATE DATABASE dladle WITH OWNER = sysadmin;
 /* Grant privileges*/
 GRANT ALL PRIVILEGES ON DATABASE dladle TO sysadmin;
 /*user_type*/
+
+DROP OWNED BY sysadmin;
+
 CREATE TABLE user_type
 (
-  id   INT PRIMARY KEY  NOT NULL ,
+  id   SERIAL PRIMARY KEY  NOT NULL ,
   name VARCHAR(128)    NOT NULL
 );
 /*user_dladle*/
 CREATE TABLE user_dladle
 (
-  id           INT  PRIMARY KEY  NOT NULL,
-  emailId        VARCHAR(500)     NOT NULL,
-  password     VARCHAR(100)     NOT NULL,
+  id           SERIAL  PRIMARY KEY  NOT NULL ,
+  emailId        VARCHAR(100)     NOT NULL,
+  password     VARCHAR(500)     NOT NULL,
   user_type_id INT,
   verified     BOOLEAN
 );
 /*landlord*/
 CREATE TABLE landlord
 (
-  id              INT PRIMARY KEY NOT NULL,
+  id              SERIAL PRIMARY KEY NOT NULL,
   first_name      VARCHAR(20),
   last_name       VARCHAR(20),
   identity_number VARCHAR(45),
@@ -33,7 +36,7 @@ CREATE TABLE landlord
 /*tenant*/
 CREATE TABLE tenant
 (
-  id              INT PRIMARY KEY NOT NULL,
+  id              SERIAL PRIMARY KEY NOT NULL,
   first_name      VARCHAR(20),
   last_name       VARCHAR(20),
   identity_number VARCHAR(45),
@@ -44,7 +47,7 @@ CREATE TABLE tenant
 /*tenant*/
 CREATE TABLE vendor
 (
-  id               INT PRIMARY KEY NOT NULL,
+  id               SERIAL PRIMARY KEY NOT NULL,
   first_name       VARCHAR(20),
   last_name        VARCHAR(20),
   identity_number  VARCHAR(45),
@@ -55,26 +58,26 @@ CREATE TABLE vendor
 /*service_type*/
 CREATE TABLE service_type
 (
-  id   INT PRIMARY KEY NOT NULL,
+  id   SERIAL PRIMARY KEY NOT NULL,
   name VARCHAR(128)    NOT NULL
 );
 /*service*/
 CREATE TABLE service
 (
-  id              INT PRIMARY KEY NOT NULL,
+  id              SERIAL PRIMARY KEY NOT NULL,
   service_type_id INT,
   vendor_id       INT
 );
 /*amenities_type*/
 CREATE TABLE amenities_type
 (
-  id   INT PRIMARY KEY NOT NULL,
+  id   SERIAL PRIMARY KEY NOT NULL,
   name VARCHAR(128)    NOT NULL
 );
 /*amenities*/
 CREATE TABLE amenities
 (
-  id                INT PRIMARY KEY NOT NULL,
+  id                SERIAL PRIMARY KEY NOT NULL,
   amenities_type_id INT,
   count             INT,
   house_id          INT
@@ -82,14 +85,14 @@ CREATE TABLE amenities
 /*house*/
 CREATE TABLE house
 (
-  id           INT PRIMARY KEY NOT NULL,
+  id           SERIAL PRIMARY KEY NOT NULL,
   house_number INT UNIQUE      NOT NULL,
   property_id  INT
 );
 /*property*/
 CREATE TABLE property
 (
-  id          INT PRIMARY KEY NOT NULL,
+  id          SERIAL PRIMARY KEY NOT NULL,
   landlord_id INT,
   location    VARCHAR(100),
   address     VARCHAR(100)
@@ -97,7 +100,7 @@ CREATE TABLE property
 /*lease*/
 CREATE TABLE lease
 (
-  id           INT PRIMARY KEY NOT NULL,
+  id           SERIAL PRIMARY KEY NOT NULL,
   landlord_id  INT,
   tenant_id    INT,
   lease_date   DATE,
@@ -107,7 +110,7 @@ CREATE TABLE lease
 /*rating*/
 CREATE TABLE rating
 (
-  id      INT PRIMARY KEY NOT NULL,
+  id      SERIAL PRIMARY KEY NOT NULL,
   user_id INT,
   value   DECIMAL
 );
@@ -115,7 +118,7 @@ CREATE TABLE rating
 /*comments*/
 CREATE TABLE rating_comments
 (
-  id          INT PRIMARY KEY NOT NULL,
+  id          SERIAL PRIMARY KEY NOT NULL,
   rating_id   INT,
   user_id     INT,
   description VARCHAR(100)
