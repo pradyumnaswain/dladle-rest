@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.model.User;
+import za.co.dladle.model.UserRegisterRequest;
 import za.co.dladle.service.UserService;
 import za.co.dladle.util.ResponseUtil;
 
@@ -56,6 +57,12 @@ public class UserController {
     @RequestMapping(value = "api/user/change-password", method = RequestMethod.POST)
     public Map<String, Object> changePassword(@RequestParam String newPassword) {
         userService.changePassword(newPassword);
+        return ResponseUtil.response("Success", "{}", "Password Changed Successfully");
+    }
+
+    @RequestMapping(value = "api/user/register", method = RequestMethod.POST)
+    public Map<String, Object> register(@RequestBody UserRegisterRequest registerRequest) {
+//        userService.changePassword(newPassword);
         return ResponseUtil.response("Success", "{}", "Password Changed Successfully");
     }
 }
