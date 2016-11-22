@@ -3,8 +3,10 @@ package za.co.dladle.service;
 import org.hibernate.validator.internal.constraintvalidators.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import za.co.dladle.exception.UseAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.model.User;
 import za.co.dladle.model.UserRegisterRequest;
@@ -47,14 +49,16 @@ public class UserServiceUtility {
     }
 
 
-    public void userRegistration(String emailId, String password, Integer user_type, boolean verified){
+    public void userRegistration(String emailId, String password, Integer user_type, boolean verified) throws UseAlreadyExistsException {
 
-            String countSql = "SELECT COUNT(emailid) FROM user_dladle where emailid=?";
-            int countEmail = this.jdbcTemplate.update(countSql, new Object[] { emailId });
-            if (countEmail == 0) {
-                String UserSql = "INSERT INTO user_dladle " + "(emailid, password, user_type_id, verified) VALUES (?, ?, ?, ?)";
-                this.jdbcTemplate.update(UserSql, new Object[] { emailId,password, user_type,verified});
-            }
+        Integer countEmail;
+        String countSql = "SELECT COUNT(emailid) FROM user_dladle WHERE emailid=?";
+        countEmail = this.jdbcTemplate.queryForObject(countSql, new Object[]{emailId}, Integer.class);
+        if (countEmail == 0) {
+            String UserSql = "INSERT INTO user_dladle " + "(emailid, password, user_type_id, verified) VALUES (?, ?, ?, ?)";
+            this.jdbcTemplate.update(UserSql, emailId, password, user_type, verified);
+        } else {
+            throw new UseAlreadyExistsException("User already Exists");
+        }
     }
-
 }

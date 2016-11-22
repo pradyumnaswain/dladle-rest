@@ -8,6 +8,7 @@ import org.springframework.jca.context.SpringContextResourceAdapter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import za.co.dladle.exception.UseAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.model.User;
 import za.co.dladle.model.UserRegisterRequest;
@@ -71,7 +72,7 @@ public class UserService {
         userServiceUtility.updateUserPassword(emailId, hashedPassword);
     }
 
-    public void registraion(UserRegisterRequest user) {
+    public void register(UserRegisterRequest user) throws UseAlreadyExistsException {
         String emailId = user.getEmailId();
         String password = user.getPassword();
         Integer user_type = user.getUser_type();

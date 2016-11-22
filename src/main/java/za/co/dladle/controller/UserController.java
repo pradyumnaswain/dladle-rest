@@ -2,6 +2,7 @@ package za.co.dladle.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import za.co.dladle.exception.UseAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.model.User;
 import za.co.dladle.model.UserRegisterRequest;
@@ -62,7 +63,11 @@ public class UserController {
 
     @RequestMapping(value = "api/user/register", method = RequestMethod.POST)
     public Map<String, Object> register(@RequestBody UserRegisterRequest registerRequest) {
-//        userService.changePassword(newPassword);
-        return ResponseUtil.response("Success", "{}", "Password Changed Successfully");
+        try {
+            userService.register(registerRequest);
+            return ResponseUtil.response("Success", "{}", "User Registered Successfully");
+        } catch (UseAlreadyExistsException e) {
+            return ResponseUtil.response("Fail", "{}", e.getMessage());
+        }
     }
 }
