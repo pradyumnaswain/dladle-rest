@@ -6,8 +6,6 @@ package za.co.dladle.model;
 public class UserRegisterRequest {
     private String emailId;
 
-    private String name;
-
     private String password;
 
     private Integer user_type;
@@ -19,7 +17,6 @@ public class UserRegisterRequest {
 
     public UserRegisterRequest(String emailId, String name, String password, Integer user_type, boolean verified) {
         this.emailId = emailId;
-        this.name = name;
         this.password = password;
         this.user_type = user_type;
         this.verified = verified;
@@ -32,12 +29,6 @@ public class UserRegisterRequest {
     public void setEmailId(String emailId) {
         this.emailId = emailId;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) { this.name = name; }
 
     public String getPassword() {
         return password;

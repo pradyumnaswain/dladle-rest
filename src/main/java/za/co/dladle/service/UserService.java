@@ -73,11 +73,10 @@ public class UserService {
 
     public void registraion(UserRegisterRequest user) {
         String emailId = user.getEmailId();
-        String name = user.getName();
         String password = user.getPassword();
         Integer user_type = user.getUser_type();
         Boolean verified = user.isVerified();
         String hashedPassword = Hashing.sha512().hashString(password, Charset.defaultCharset()).toString();
-        userServiceUtility.userRegistration(emailId, name, hashedPassword, user_type, verified);
+        userServiceUtility.userRegistration(emailId, hashedPassword, user_type, verified);
     }
 }
