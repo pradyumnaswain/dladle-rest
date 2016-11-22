@@ -1,11 +1,13 @@
 package za.co.dladle.service;
 
+import org.hibernate.validator.internal.constraintvalidators.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.model.User;
+import za.co.dladle.model.UserRegisterRequest;
 
 /**
  * Created by prady on 11/13/2016.
@@ -43,4 +45,18 @@ public class UserServiceUtility {
         String sql = " UPDATE user_dladle SET password=? WHERE emailid=?";
         this.jdbcTemplate.update(sql, password, emailId);
     }
+
+
+    public void userRegistration(String emailId, String name, String password, Integer user_type, boolean verified){
+
+            String countSql = "SELECT COUNT(emailid) FROM user_dladle where emailid=?";
+            int countEmail = this.jdbcTemplate.update(countSql, new Object[] { emailId });
+            if (countEmail == 0) {
+                String UserSql = "INSERT INTO user_dladle " + "(emailid, password, user_type_id, verified) VALUES (?, ?, ?, ?)";
+                this.jdbcTemplate.update(UserSql, new Object[] { emailId,password, user_type,verified});
+                String userTypeSql = "INSERT INTO user_type " + "(name) VALUES (?)";
+                this.jdbcTemplate.update(userTypeSql, new Object[] { name});
+            }
+    }
+
 }
