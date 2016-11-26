@@ -36,7 +36,7 @@ public class UserServiceUtility {
         try {
             String sql = "SELECT * FROM user_dladle WHERE emailid=?";
             return this.jdbcTemplate.queryForObject(sql, new Object[]{emailId}, (rs, rowNum) ->
-                    new User(rs.getString("emailid")));
+                    new User(rs.getString("emailId")));
         } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException("User Doesn't exist");
         }
@@ -48,15 +48,21 @@ public class UserServiceUtility {
         try {
             String sql = "SELECT * FROM user_dladle WHERE emailid=? AND password=?";
             return this.jdbcTemplate.queryForObject(sql, new Object[]{emailId, password}, (rs, rowNum) ->
-                    new User(rs.getString("emailid"), rs.getString("password")));
+                    new User(rs.getString("emailId"), rs.getString("password")));
         } catch (EmptyResultDataAccessException e) {
-            throw new UserNotFoundException("User Doesn't exist");
+            throw new UserNotFoundException("Username or password is wrong. Please check and login again");
         }
     }
 
     public void updateUserPassword(String emailId, String password) {
-        String sql = " UPDATE user_dladle SET password=? WHERE emailid=?";
-        this.jdbcTemplate.update(sql, password, emailId);
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("password", password);
+        map.put("emailId", emailId);
+
+        String sql = " UPDATE user_dladle SET password=:password WHERE emailid=:emailId";
+        this.parameterJdbcTemplate.update(sql, map);
     }
 
 
