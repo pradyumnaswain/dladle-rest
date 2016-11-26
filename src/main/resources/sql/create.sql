@@ -12,15 +12,15 @@ DROP OWNED BY sysadmin;
 
 CREATE TABLE user_type
 (
-  id   SERIAL PRIMARY KEY  NOT NULL ,
-  name VARCHAR(128)    NOT NULL
+  id   SERIAL PRIMARY KEY  NOT NULL,
+  name VARCHAR(128)        NOT NULL
 );
 /*user_dladle*/
 CREATE TABLE user_dladle
 (
-  id           SERIAL  PRIMARY KEY  NOT NULL ,
-  emailId        VARCHAR(100)     NOT NULL,
-  password     VARCHAR(500)     NOT NULL,
+  id           SERIAL PRIMARY KEY  NOT NULL,
+  emailId      VARCHAR(100)        NOT NULL,
+  password     VARCHAR(500)        NOT NULL,
   user_type_id INT,
   verified     BOOLEAN
 );
@@ -48,18 +48,16 @@ CREATE TABLE tenant
 CREATE TABLE vendor
 (
   id               SERIAL PRIMARY KEY NOT NULL,
-  first_name       VARCHAR(20),
-  last_name        VARCHAR(20),
-  identity_number  VARCHAR(45),
+  business_name    VARCHAR(20),
   user_id          INT,
   business_address VARCHAR(50),
-  location         VARCHAR(50)
+  service_type_id  INT
 );
 /*service_type*/
 CREATE TABLE service_type
 (
   id   SERIAL PRIMARY KEY NOT NULL,
-  name VARCHAR(128)    NOT NULL
+  name VARCHAR(128)       NOT NULL
 );
 /*service*/
 CREATE TABLE service
@@ -72,7 +70,7 @@ CREATE TABLE service
 CREATE TABLE amenities_type
 (
   id   SERIAL PRIMARY KEY NOT NULL,
-  name VARCHAR(128)    NOT NULL
+  name VARCHAR(128)       NOT NULL
 );
 /*amenities*/
 CREATE TABLE amenities
@@ -86,7 +84,7 @@ CREATE TABLE amenities
 CREATE TABLE house
 (
   id           SERIAL PRIMARY KEY NOT NULL,
-  house_number INT UNIQUE      NOT NULL,
+  house_number INT UNIQUE         NOT NULL,
   property_id  INT
 );
 /*property*/
@@ -123,7 +121,8 @@ CREATE TABLE rating_comments
   user_id     INT,
   description VARCHAR(100)
 );
-CREATE UNIQUE INDEX user_dladle_email_uindex ON user_dladle (emailid);
+CREATE UNIQUE INDEX user_dladle_email_uindex
+  ON user_dladle (emailid);
 ALTER TABLE user_dladle
   ADD CONSTRAINT user_type_id FOREIGN KEY (user_type_id) REFERENCES user_type (id);
 ALTER TABLE landlord
@@ -154,5 +153,6 @@ ALTER TABLE amenities
   ADD CONSTRAINT amenities_type_id FOREIGN KEY (amenities_type_id) REFERENCES amenities_type (id);
 ALTER TABLE amenities
   ADD CONSTRAINT house_id FOREIGN KEY (house_id) REFERENCES amenities_type (id)
-
+ALTER TABLE vendor
+  ADD FOREIGN KEY (service_type_id) REFERENCES service_type (id);
 

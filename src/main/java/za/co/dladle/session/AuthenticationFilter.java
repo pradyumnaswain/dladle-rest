@@ -29,6 +29,7 @@ public class AuthenticationFilter extends GenericFilterBean {
 
         if (user == null) {
             if (isLoginEndpoint(httpServletRequest) ||
+                    isRegisterEndpoint(httpServletRequest) ||
                     isForgotPasswordEndpoint(httpServletRequest) ||
                     isResestPasswordEndpoint(httpServletRequest) ||
                     isSwaggerEndpoint(httpServletRequest)) {
@@ -47,6 +48,10 @@ public class AuthenticationFilter extends GenericFilterBean {
 
     private boolean isLoginEndpoint(HttpServletRequest httpServletRequest) {
         return httpServletRequest.getRequestURI().contains("/api/user/login");
+    }
+
+    private boolean isRegisterEndpoint(HttpServletRequest httpServletRequest) {
+        return httpServletRequest.getRequestURI().contains("/api/user/register");
     }
 
     private boolean isForgotPasswordEndpoint(HttpServletRequest httpServletRequest) {
