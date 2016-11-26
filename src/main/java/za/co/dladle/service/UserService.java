@@ -73,11 +73,16 @@ public class UserService {
     }
 
     public void register(UserRegisterRequest user) throws UseAlreadyExistsException {
+        String firstName = user.getFirst_name();
+        String lastName = user.getLast_name();
         String emailId = user.getEmailId();
         String password = user.getPassword();
         Integer user_type = user.getUser_type();
+        String identityNumber = user.getIdentity_number();
         Boolean verified = user.isVerified();
+        String address = user.getAddress();
+        String business_type = user.getBusiness_type();
         String hashedPassword = Hashing.sha512().hashString(password, Charset.defaultCharset()).toString();
-        userServiceUtility.userRegistration(emailId, hashedPassword, user_type, verified);
+        userServiceUtility.userRegistration(firstName, lastName, emailId, hashedPassword, user_type, identityNumber, verified, address, business_type);
     }
 }
