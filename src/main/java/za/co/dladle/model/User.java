@@ -9,6 +9,8 @@ public class User {
 
     private String password;
 
+    private boolean verified;
+
     public User() {
     }
 
@@ -16,9 +18,10 @@ public class User {
         this.emailId = emailId;
     }
 
-    public User(String emailId, String password) {
+    public User(String emailId, String password, boolean verified) {
         this.emailId = emailId;
         this.password = password;
+        this.verified = verified;
     }
 
     public String getEmailId() {
@@ -35,5 +38,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 }

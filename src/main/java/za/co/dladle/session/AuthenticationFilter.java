@@ -32,6 +32,7 @@ public class AuthenticationFilter extends GenericFilterBean {
                     isRegisterEndpoint(httpServletRequest) ||
                     isForgotPasswordEndpoint(httpServletRequest) ||
                     isResestPasswordEndpoint(httpServletRequest) ||
+                    isVerifyEndPoint(httpServletRequest) ||
                     isSwaggerEndpoint(httpServletRequest)) {
                 chain.doFilter(httpServletRequest, httpServletResponse);
             } else try {
@@ -60,6 +61,10 @@ public class AuthenticationFilter extends GenericFilterBean {
 
     private boolean isResestPasswordEndpoint(HttpServletRequest httpServletRequest) {
         return httpServletRequest.getRequestURI().contains("/api/user/reset-password");
+    }
+
+    private boolean isVerifyEndPoint(HttpServletRequest httpServletRequest) {
+        return httpServletRequest.getRequestURI().contains("/verify");
     }
 
     private static boolean isSwaggerEndpoint(HttpServletRequest httpRequest) {

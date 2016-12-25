@@ -1,15 +1,18 @@
 package za.co.dladle.controller;
 
+import com.sendgrid.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.co.dladle.exception.UseAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
+import za.co.dladle.exception.UserVerificationCodeNotMatchException;
 import za.co.dladle.model.User;
 import za.co.dladle.model.UserRegisterRequest;
 import za.co.dladle.service.UserService;
 import za.co.dladle.util.ResponseUtil;
 
 import javax.naming.AuthenticationException;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -26,8 +29,14 @@ public class UserController {
         User returnedUser;
         try {
             returnedUser = userService.login(user);
-            userService.setSessionService(returnedUser);
-            return ResponseUtil.response("Success", returnedUser, "Login Success");
+
+            if (returnedUser.isVerified()) {
+
+                userService.setSessionService(returnedUser);
+                return ResponseUtil.response("Success", returnedUser, "Login Success");
+            } else {
+                return ResponseUtil.response("Success", null, "Please verify to continue. Please check your email");
+            }
         } catch (UserNotFoundException e) {
             return ResponseUtil.response("Fail", e.getMessage(), "Login Failed");
         }
@@ -62,12 +71,27 @@ public class UserController {
     }
 
     @RequestMapping(value = "api/user/register", method = RequestMethod.POST)
-    public Map<String, Object> register(@RequestBody UserRegisterRequest registerRequest) {
+    public Map<String, Object> register(@RequestBody(required = false) UserRegisterRequest registerRequest) {
         try {
             userService.register(registerRequest);
             return ResponseUtil.response("Success", "{}", "User Registered Successfully");
         } catch (UseAlreadyExistsException e) {
             return ResponseUtil.response("Fail", "{}", e.getMessage());
+        } catch (IOException e) {
+            return ResponseUtil.response("Fail", "{}", e.getMessage());
         }
+    }
+
+    @RequestMapping(value = "/verify/{emailId}/{hashedCode}", method = RequestMethod.GET)
+    public String verifyUser(@PathVariable String emailId, @PathVariable String hashedCode) throws IOException {
+        System.out.println(emailId);
+        System.out.println(hashedCode);
+        try {
+            userService.verify(emailId, hashedCode);
+            return "Verified";
+        } catch (UserVerificationCodeNotMatchException e) {
+            return "Verification Failed";
+        }
+
     }
 }
