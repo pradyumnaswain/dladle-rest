@@ -90,7 +90,7 @@ public class UserService {
 
         if (rows == 1) {
             //send mail
-            notificationService.sendMail(user.getEmailId(), verificationLink);
+            notificationService.sendMail(user.getEmailId(), verification);
         }
     }
 
