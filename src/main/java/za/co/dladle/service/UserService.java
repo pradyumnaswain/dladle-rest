@@ -80,6 +80,7 @@ public class UserService {
         userServiceUtility.updateUserPassword(emailId, hashedPassword);
     }
 
+    @Transactional
     public void register(UserRegisterRequest user) throws UseAlreadyExistsException, IOException {
 
         String hashedCode = Hashing.sha1().hashString(user.getPassword(), Charset.defaultCharset()).toString();

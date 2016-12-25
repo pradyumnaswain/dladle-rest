@@ -84,8 +84,6 @@ public class UserController {
 
     @RequestMapping(value = "/verify/{emailId}/{hashedCode}", method = RequestMethod.GET)
     public String verifyUser(@PathVariable String emailId, @PathVariable String hashedCode) throws IOException {
-        System.out.println(emailId);
-        System.out.println(hashedCode);
         try {
             userService.verify(emailId, hashedCode);
             return "Verified";
