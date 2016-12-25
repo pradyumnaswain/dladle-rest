@@ -64,7 +64,7 @@ public class AuthenticationFilter extends GenericFilterBean {
     }
 
     private boolean isVerifyEndPoint(HttpServletRequest httpServletRequest) {
-        return httpServletRequest.getRequestURI().contains("/verify/{emailId}/{hashedCode}");
+        return httpServletRequest.getRequestURI().matches("/verify/(.*)");
     }
 
     private static boolean isSwaggerEndpoint(HttpServletRequest httpRequest) {
