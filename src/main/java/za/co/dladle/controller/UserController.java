@@ -35,7 +35,7 @@ public class UserController {
                 userService.setSessionService(returnedUser);
                 return ResponseUtil.response("Success", returnedUser, "Login Success");
             } else {
-                return ResponseUtil.response("Success", null, "Please verify to continue. Please check your email");
+                return ResponseUtil.response("Not Verified", null, "Please verify your Email to continue");
             }
         } catch (UserNotFoundException e) {
             return ResponseUtil.response("Fail", e.getMessage(), "Login Failed");
