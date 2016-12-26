@@ -84,6 +84,7 @@ public class UserService {
     public void register(UserRegisterRequest user) throws UseAlreadyExistsException, IOException {
 
         String verification = "https://dladle-webservice.herokuapp.com/verify/";
+//        String verification = "http://localhost:9098/verify/";
         String hashedCode = Hashing.sha1().hashString(user.getPassword(), Charset.defaultCharset()).toString();
         verification = verification + user.getEmailId() + "/" + hashedCode;
         int rows = userServiceUtility.userRegistration(user, hashedCode);

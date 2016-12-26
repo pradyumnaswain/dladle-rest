@@ -22,7 +22,9 @@ CREATE TABLE user_dladle
   emailId      VARCHAR(100)        NOT NULL,
   password     VARCHAR(500)        NOT NULL,
   user_type_id INT,
-  verified     BOOLEAN
+  verified     BOOLEAN,
+  verification_code VARCHAR(100),
+  otp VARCHAR(10)
 );
 /*landlord*/
 CREATE TABLE landlord

@@ -88,8 +88,7 @@ public class UserController {
             userService.verify(emailId, hashedCode);
             return "Verified";
         } catch (UserVerificationCodeNotMatchException e) {
-            return "Verification Failed";
+            return e.getMessage();
         }
-
     }
 }

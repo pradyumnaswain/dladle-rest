@@ -16,3 +16,6 @@ ALTER TABLE vendor
 
 ALTER TABLE vendor
   ADD FOREIGN KEY (service_type_id) REFERENCES service_type (id);
+
+ALTER TABLE user_dladle add COLUMN verification_code VARCHAR(100);
+ALTER TABLE user_dladle ADD COLUMN otp VARCHAR(10);
