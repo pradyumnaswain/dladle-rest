@@ -11,6 +11,8 @@ public class User {
 
     private boolean verified;
 
+    private UserType userType;
+
     public User() {
     }
 
@@ -22,6 +24,13 @@ public class User {
         this.emailId = emailId;
         this.password = password;
         this.verified = verified;
+    }
+
+    public User(String emailId, String password, boolean verified, UserType userType) {
+        this.emailId = emailId;
+        this.password = password;
+        this.verified = verified;
+        this.userType = userType;
     }
 
     public String getEmailId() {
@@ -46,5 +55,13 @@ public class User {
 
     public void setVerified(boolean verified) {
         this.verified = verified;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 }

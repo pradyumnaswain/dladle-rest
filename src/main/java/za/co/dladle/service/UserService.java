@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import za.co.dladle.entity.UserRequest;
 import za.co.dladle.exception.UseAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.exception.UserVerificationCodeNotMatchException;
@@ -51,7 +52,7 @@ public class UserService {
         return user;
     }
 
-    public User login(User user) throws UserNotFoundException {
+    public User login(UserRequest user) throws UserNotFoundException {
         String hashedPassword = Hashing.sha512().hashString(user.getPassword(), Charset.defaultCharset()).toString();
 
         user.setPassword(hashedPassword);

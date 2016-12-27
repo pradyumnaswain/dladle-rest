@@ -47,9 +47,9 @@ public class UserServiceUtility {
     public User findUserByEmailAndPassword(String emailId, String password) throws UserNotFoundException {
 
         try {
-            String sql = "SELECT * FROM user_dladle WHERE emailid=? AND password=?";
+            String sql = "SELECT * FROM user_dladle INNER JOIN user_type ON user_dladle.user_type_id = user_type.id WHERE emailid=? AND password=?";
             return this.jdbcTemplate.queryForObject(sql, new Object[]{emailId, password}, (rs, rowNum) ->
-                    new User(rs.getString("emailId"), rs.getString("password"), rs.getBoolean("verified")));
+                    new User(rs.getString("emailId"), rs.getString("password"), rs.getBoolean("verified"), UserType.valueOf(rs.getString("name").toUpperCase())));
         } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException("Username or password is wrong. Please check and login again");
         }

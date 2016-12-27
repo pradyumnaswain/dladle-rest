@@ -2,3 +2,4 @@
 .idea
 build
 .nb-gradle
+out

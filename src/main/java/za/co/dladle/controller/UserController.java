@@ -3,6 +3,7 @@ package za.co.dladle.controller;
 import com.sendgrid.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import za.co.dladle.entity.UserRequest;
 import za.co.dladle.exception.UseAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.exception.UserVerificationCodeNotMatchException;
@@ -25,7 +26,7 @@ public class UserController {
     UserService userService;
 
     @RequestMapping(value = "api/user/login", method = RequestMethod.POST)
-    public Map<String, Object> login(@RequestBody User user) {
+    public Map<String, Object> login(@RequestBody UserRequest user) {
         User returnedUser;
         try {
             returnedUser = userService.login(user);
