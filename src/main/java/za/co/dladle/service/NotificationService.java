@@ -40,6 +40,9 @@ public class NotificationService {
         javaMailSender.send(simpleMailMessage);
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Send Email
+    //------------------------------------------------------------------------------------------------------------------
     public Response sendMail(String toEmailId, String verifyLink) throws IOException {
         Email from = new Email(FROM_EMAIL);
         String subject = SUBJECT;

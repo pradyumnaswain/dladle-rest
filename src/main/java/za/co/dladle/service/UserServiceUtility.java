@@ -32,6 +32,9 @@ public class UserServiceUtility {
     @Autowired
     NamedParameterJdbcTemplate parameterJdbcTemplate;
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Find User By Email Id
+    //------------------------------------------------------------------------------------------------------------------
     public User findUserByEmail(String emailId) throws UserNotFoundException {
 
         try {
@@ -43,7 +46,9 @@ public class UserServiceUtility {
         }
     }
 
-
+    //------------------------------------------------------------------------------------------------------------------
+    //Find User By Email Id and Password
+    //------------------------------------------------------------------------------------------------------------------
     public User findUserByEmailAndPassword(String emailId, String password) throws UserNotFoundException {
 
         try {
@@ -55,6 +60,9 @@ public class UserServiceUtility {
         }
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Update User Password
+    //------------------------------------------------------------------------------------------------------------------
     public void updateUserPassword(String emailId, String password) {
 
         Map<String, Object> map = new HashMap<>();
@@ -66,9 +74,10 @@ public class UserServiceUtility {
         this.parameterJdbcTemplate.update(sql, map);
     }
 
-
+    //------------------------------------------------------------------------------------------------------------------
+    //Register
+    //------------------------------------------------------------------------------------------------------------------
     public int userRegistration(UserRegisterRequest user, String hashedCode) throws UseAlreadyExistsException {
-
 
         String hashedPassword = Hashing.sha512().hashString(user.getPassword(), Charset.defaultCharset()).toString();
 
@@ -127,6 +136,9 @@ public class UserServiceUtility {
         }
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Update User Status based on Verification
+    //------------------------------------------------------------------------------------------------------------------
     public void updateUserVerification(String emailId, String verificationCode) throws UserVerificationCodeNotMatchException {
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()

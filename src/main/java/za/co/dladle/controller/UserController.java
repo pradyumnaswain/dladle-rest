@@ -25,6 +25,9 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Login
+    //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "api/user/login", method = RequestMethod.POST)
     public Map<String, Object> login(@RequestBody UserRequest user) {
         User returnedUser;
@@ -43,12 +46,18 @@ public class UserController {
         }
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Logout
+    //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "api/user/logout", method = RequestMethod.GET)
     public Map<String, Object> logout() {
         userService.logout();
         return ResponseUtil.response("Success", "{}", "Logged Out Successfully");
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Forgot Password
+    //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "api/user/forgot-password", method = RequestMethod.POST)
     public Map<String, Object> forgotPassword(@RequestParam String emailId) {
         try {
@@ -59,18 +68,27 @@ public class UserController {
         }
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Reset Password
+    //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "api/user/reset-password", method = RequestMethod.POST)
     public Map<String, Object> resetPassword(@RequestBody User user) {
         userService.resetPassword(user);
         return ResponseUtil.response("Success", "{}", "Password Updated Successfully");
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Change Password
+    //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "api/user/change-password", method = RequestMethod.POST)
     public Map<String, Object> changePassword(@RequestParam String newPassword) {
         userService.changePassword(newPassword);
         return ResponseUtil.response("Success", "{}", "Password Changed Successfully");
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Register
+    //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "api/user/register", method = RequestMethod.POST)
     public Map<String, Object> register(@RequestBody(required = false) UserRegisterRequest registerRequest) {
         try {
@@ -83,6 +101,9 @@ public class UserController {
         }
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Verify User
+    //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "/verify/{emailId}/{hashedCode}", method = RequestMethod.GET)
     public String verifyUser(@PathVariable String emailId, @PathVariable String hashedCode) throws IOException {
         try {

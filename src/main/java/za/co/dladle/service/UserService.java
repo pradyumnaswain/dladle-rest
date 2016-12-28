@@ -41,6 +41,9 @@ public class UserService {
     private String verificationLink;
 
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Set Session
+    //------------------------------------------------------------------------------------------------------------------
     @Transactional
     public User setSessionService(User user) {
         session.setAttribute("user", user);
@@ -52,6 +55,9 @@ public class UserService {
         return user;
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Login
+    //------------------------------------------------------------------------------------------------------------------
     public User login(UserRequest user) throws UserNotFoundException {
         String hashedPassword = Hashing.sha512().hashString(user.getPassword(), Charset.defaultCharset()).toString();
 
@@ -60,20 +66,32 @@ public class UserService {
         return userServiceUtility.findUserByEmailAndPassword(user.getEmailId(), hashedPassword);
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Logout
+    //------------------------------------------------------------------------------------------------------------------
     public void logout() {
         session.invalidate();
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Forgot Password
+    //------------------------------------------------------------------------------------------------------------------
     public User forgotPassword(String emailId) throws UserNotFoundException {
         return userServiceUtility.findUserByEmail(emailId);
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Reset Password
+    //------------------------------------------------------------------------------------------------------------------
     public void resetPassword(User user) {
         String emailId = user.getEmailId();
         String hashedPassword = Hashing.sha512().hashString(user.getPassword(), Charset.defaultCharset()).toString();
         userServiceUtility.updateUserPassword(emailId, hashedPassword);
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Change Password
+    //------------------------------------------------------------------------------------------------------------------
     public void changePassword(String newPassword) {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
         String emailId = userSession.getUser().getEmailId();
@@ -81,6 +99,9 @@ public class UserService {
         userServiceUtility.updateUserPassword(emailId, hashedPassword);
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Register
+    //------------------------------------------------------------------------------------------------------------------
     @Transactional
     public void register(UserRegisterRequest user) throws UseAlreadyExistsException, IOException {
 
@@ -96,6 +117,9 @@ public class UserService {
         }
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    //Verify User
+    //------------------------------------------------------------------------------------------------------------------
     public void verify(String emailId, String verificationCode) throws IOException, UserVerificationCodeNotMatchException {
 
         userServiceUtility.updateUserVerification(emailId, verificationCode);
