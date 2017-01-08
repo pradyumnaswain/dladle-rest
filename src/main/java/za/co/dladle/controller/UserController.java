@@ -1,18 +1,18 @@
 package za.co.dladle.controller;
 
-import com.sendgrid.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.co.dladle.entity.UserRequest;
+import za.co.dladle.entity.UserRequestForResetPassword;
+import za.co.dladle.exception.OtpMismatchException;
 import za.co.dladle.exception.UseAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.exception.UserVerificationCodeNotMatchException;
 import za.co.dladle.model.User;
-import za.co.dladle.model.UserRegisterRequest;
+import za.co.dladle.entity.UserRegisterRequest;
 import za.co.dladle.service.UserService;
 import za.co.dladle.util.ResponseUtil;
 
-import javax.naming.AuthenticationException;
 import java.io.IOException;
 import java.util.Map;
 
@@ -42,6 +42,7 @@ public class UserController {
                 return ResponseUtil.response("Not Verified", null, "Please verify your Email to continue");
             }
         } catch (UserNotFoundException e) {
+            // TODO: 1/8/2017 Chnage Message to wrong username or password
             return ResponseUtil.response("Fail", e.getMessage(), "Login Failed");
         }
     }
@@ -62,9 +63,10 @@ public class UserController {
     public Map<String, Object> forgotPassword(@RequestParam String emailId) {
         try {
             User user = userService.forgotPassword(emailId);
+            userService.sendOtp(user.getEmailId());
             return ResponseUtil.response("Success", user.getEmailId(), "User Exists");
-        } catch (UserNotFoundException e) {
-            return ResponseUtil.response("Fail", e.getMessage(), "Failed");
+        } catch (UserNotFoundException | IOException e) {
+            return ResponseUtil.response("Fail", null, e.getMessage());
         }
     }
 
@@ -72,9 +74,14 @@ public class UserController {
     //Reset Password
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "api/user/reset-password", method = RequestMethod.POST)
-    public Map<String, Object> resetPassword(@RequestBody User user) {
-        userService.resetPassword(user);
-        return ResponseUtil.response("Success", "{}", "Password Updated Successfully");
+    public Map<String, Object> resetPassword(@RequestBody UserRequestForResetPassword user) {
+        try {
+            userService.resetPassword(user);
+            return ResponseUtil.response("Success", "{}", "Password Updated Successfully");
+        } catch (OtpMismatchException e) {
+            e.printStackTrace();
+            return ResponseUtil.response("Fail", null, e.getMessage());
+        }
     }
 
     //------------------------------------------------------------------------------------------------------------------

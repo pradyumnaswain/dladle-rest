@@ -9,13 +9,15 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
+import za.co.dladle.exception.OtpMismatchException;
 import za.co.dladle.exception.UseAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.exception.UserVerificationCodeNotMatchException;
 import za.co.dladle.model.User;
-import za.co.dladle.model.UserRegisterRequest;
+import za.co.dladle.entity.UserRegisterRequest;
 import za.co.dladle.model.UserType;
 
+import javax.transaction.Transactional;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +44,7 @@ public class UserServiceUtility {
             return this.jdbcTemplate.queryForObject(sql, new Object[]{emailId}, (rs, rowNum) ->
                     new User(rs.getString("emailId")));
         } catch (EmptyResultDataAccessException e) {
-            throw new UserNotFoundException("User Doesn't exist");
+            throw new UserNotFoundException("User doesn't exist");
         }
     }
 
@@ -75,8 +77,44 @@ public class UserServiceUtility {
     }
 
     //------------------------------------------------------------------------------------------------------------------
+    //Update User OTP
+    //------------------------------------------------------------------------------------------------------------------
+    public void updateUserOtp(String emailId, int otp) {
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("otp", otp);
+        map.put("emailId", emailId);
+
+        String sql = " UPDATE user_dladle SET otp=:otp WHERE emailid=:emailId";
+        this.parameterJdbcTemplate.update(sql, map);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Update User password if it matches OTP
+    //------------------------------------------------------------------------------------------------------------------
+    public void updateUserPasswordWithOtp(String emailId, String password, int otp) throws OtpMismatchException {
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("otp", otp);
+        map.put("emailId", emailId);
+        map.put("password", password);
+
+        String sql = " UPDATE user_dladle SET password=:password WHERE emailid=:emailId AND otp=:otp";
+        int rows = this.parameterJdbcTemplate.update(sql, map);
+        if (rows == 1) {
+            String sqlUpdate = " UPDATE user_dladle SET otp=NULL WHERE emailid=:emailId AND otp=:otp AND password=:password";
+            this.parameterJdbcTemplate.update(sqlUpdate, map);
+        } else {
+            throw new OtpMismatchException("OTP doesn't match");
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
     //Register
     //------------------------------------------------------------------------------------------------------------------
+    @Transactional
     public int userRegistration(UserRegisterRequest user, String hashedCode) throws UseAlreadyExistsException {
 
         String hashedPassword = Hashing.sha512().hashString(user.getPassword(), Charset.defaultCharset()).toString();
@@ -89,7 +127,11 @@ public class UserServiceUtility {
                 .addValue("password", hashedPassword)
                 .addValue("userType", user.getUserType().getId())
                 .addValue("verified", false)
-                .addValue("verifyCode", hashedCode);
+                .addValue("verifyCode", hashedCode)
+                .addValue("firstName", user.getFirstName())
+                .addValue("lastName", user.getLastName())
+                .addValue("idNumber", user.getIdentityNumber());
+
 
         String countSql = "SELECT COUNT(emailid) FROM user_dladle WHERE emailid=:emailId";
 
@@ -101,7 +143,7 @@ public class UserServiceUtility {
 
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
-            String UserSql = "INSERT INTO user_dladle (emailid, password, user_type_id, verified,verification_code) VALUES (:emailId,:password,:userType,:verified,:verifyCode)";
+            String UserSql = "INSERT INTO user_dladle (emailid, password, user_type_id, verified,verification_code,first_name,last_name,id_number) VALUES (:emailId,:password,:userType,:verified,:verifyCode,:firstName,:lastName,:idNumber)";
 
             this.parameterJdbcTemplate.update(UserSql, mapSqlParameterSource, keyHolder, new String[]{"id"});
 
@@ -109,25 +151,15 @@ public class UserServiceUtility {
             map.put("userId", keyHolder.getKey());
 
             if (user.getUserType().equals(UserType.LANDLORD)) {
-                map.put("firstName", user.getFirstName());
-                map.put("lastName", user.getLastName());
-                map.put("idNumber", user.getIdentityNumber());
-                String LandlordSql = "INSERT INTO landlord(first_name, last_name, identity_number,user_id) VALUES (:firstName,:lastName,:idNumber,:userId)";
+                String LandlordSql = "INSERT INTO landlord(user_id) VALUES (:userId)";
                 rowsUpdated = this.parameterJdbcTemplate.update(LandlordSql, map);
             }
             if (user.getUserType().equals(UserType.TENANT)) {
-                map.put("firstName", user.getFirstName());
-                map.put("lastName", user.getLastName());
-                map.put("idNumber", user.getIdentityNumber());
-                String TenantSql = "INSERT INTO tenant (first_name, last_name, identity_number,user_id) VALUES (:firstName,:lastName,:idNumber,:userId)";
+                String TenantSql = "INSERT INTO tenant (user_id) VALUES (:userId)";
                 rowsUpdated = this.parameterJdbcTemplate.update(TenantSql, map);
             }
             if (user.getUserType().equals(UserType.VENDOR)) {
-                map.put("address", user.getAddress());
-                map.put("serviceId", user.getBusinessType().getId());
-                map.put("businessName", user.getBusinessName());
-
-                String VendorSql = "INSERT INTO vendor (business_name, business_address, user_id,service_type_id) VALUES (:businessName,:address,:userId,:serviceId)";
+                String VendorSql = "INSERT INTO vendor (user_id) VALUES (:userId)";
                 rowsUpdated = this.parameterJdbcTemplate.update(VendorSql, map);
             }
             return rowsUpdated;

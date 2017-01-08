@@ -7,14 +7,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import za.co.dladle.entity.UserRequest;
+import za.co.dladle.entity.UserRequestForResetPassword;
+import za.co.dladle.exception.OtpMismatchException;
 import za.co.dladle.exception.UseAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.exception.UserVerificationCodeNotMatchException;
-import za.co.dladle.model.BusinessType;
 import za.co.dladle.model.User;
-import za.co.dladle.model.UserRegisterRequest;
-import za.co.dladle.model.UserType;
+import za.co.dladle.entity.UserRegisterRequest;
 import za.co.dladle.session.UserSession;
+import za.co.dladle.util.RandomUtil;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -83,10 +84,10 @@ public class UserService {
     //------------------------------------------------------------------------------------------------------------------
     //Reset Password
     //------------------------------------------------------------------------------------------------------------------
-    public void resetPassword(User user) {
+    public void resetPassword(UserRequestForResetPassword user) throws OtpMismatchException {
         String emailId = user.getEmailId();
-        String hashedPassword = Hashing.sha512().hashString(user.getPassword(), Charset.defaultCharset()).toString();
-        userServiceUtility.updateUserPassword(emailId, hashedPassword);
+        String hashedPassword = Hashing.sha512().hashString(user.getNewPassword(), Charset.defaultCharset()).toString();
+        userServiceUtility.updateUserPasswordWithOtp(emailId, hashedPassword,user.getOtp());
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -123,5 +124,14 @@ public class UserService {
     public void verify(String emailId, String verificationCode) throws IOException, UserVerificationCodeNotMatchException {
 
         userServiceUtility.updateUserVerification(emailId, verificationCode);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Send OTP for Forgot Password
+    //------------------------------------------------------------------------------------------------------------------
+    public void sendOtp(String emailId) throws IOException {
+        Integer otp = RandomUtil.generateRandom();
+        userServiceUtility.updateUserOtp(emailId, otp);
+        notificationService.sendMail(emailId, otp);
     }
 }

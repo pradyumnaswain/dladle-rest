@@ -1,15 +1,11 @@
-package za.co.dladle.model;
+package za.co.dladle.entity;
+
+import za.co.dladle.model.UserType;
 
 /**
  * Created by prady on 11/20/2016.
  */
 public class UserRegisterRequest {
-
-    private String address;
-
-    private BusinessType businessType;
-
-    private String businessName;
 
     private String emailId;
 
@@ -24,42 +20,6 @@ public class UserRegisterRequest {
     private UserType userType;
 
     public UserRegisterRequest() {
-    }
-
-    public UserRegisterRequest(String address, BusinessType businessType, String businessName, String emailId, String firstName, String identityNumber, String lastName, String password, UserType userType) {
-        this.address = address;
-        this.businessType = businessType;
-        this.businessName = businessName;
-        this.emailId = emailId;
-        this.firstName = firstName;
-        this.identityNumber = identityNumber;
-        this.lastName = lastName;
-        this.password = password;
-        this.userType = userType;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public BusinessType getBusinessType() {
-        return businessType;
-    }
-
-    public void setBusinessType(BusinessType businessType) {
-        this.businessType = businessType;
-    }
-
-    public String getBusinessName() {
-        return businessName;
-    }
-
-    public void setBusinessName(String businessName) {
-        this.businessName = businessName;
     }
 
     public String getEmailId() {
