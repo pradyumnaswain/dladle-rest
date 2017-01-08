@@ -2,6 +2,7 @@ package za.co.dladle.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import za.co.dladle.entity.ForgotPasswordRequest;
 import za.co.dladle.entity.UserRequest;
 import za.co.dladle.entity.UserRequestForResetPassword;
 import za.co.dladle.exception.OtpMismatchException;
@@ -60,9 +61,9 @@ public class UserController {
     //Forgot Password
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "api/user/forgot-password", method = RequestMethod.POST)
-    public Map<String, Object> forgotPassword(@RequestParam String emailId) {
+    public Map<String, Object> forgotPassword(@RequestBody ForgotPasswordRequest passwordRequest) {
         try {
-            User user = userService.forgotPassword(emailId);
+            User user = userService.forgotPassword(passwordRequest.getEmailId());
             userService.sendOtp(user.getEmailId());
             return ResponseUtil.response("Success", user.getEmailId(), "User Exists");
         } catch (UserNotFoundException | IOException e) {
