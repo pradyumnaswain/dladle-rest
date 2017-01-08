@@ -18,4 +18,16 @@ ALTER TABLE vendor
   ADD FOREIGN KEY (service_type_id) REFERENCES service_type (id);
 
 ALTER TABLE user_dladle add COLUMN verification_code VARCHAR(100);
-ALTER TABLE user_dladle ADD COLUMN otp VARCHAR(10);
+
+ALTER TABLE user_dladle DROP COLUMN otp;
+ALTER TABLE user_dladle ADD COLUMN otp INT;
+ALTER TABLE user_dladle ADD COLUMN first_name VARCHAR(20);
+ALTER TABLE user_dladle ADD COLUMN last_name VARCHAR(20);
+ALTER TABLE user_dladle ADD COLUMN id_number VARCHAR(45);
+
+ALTER TABLE landlord DROP COLUMN first_name;
+ALTER TABLE landlord DROP COLUMN last_name;
+ALTER TABLE landlord DROP COLUMN identity_number;
+ALTER TABLE tenant DROP COLUMN first_name;
+ALTER TABLE tenant DROP COLUMN last_name;
+ALTER TABLE tenant DROP COLUMN identity_number;

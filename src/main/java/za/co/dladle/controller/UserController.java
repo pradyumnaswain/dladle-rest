@@ -43,7 +43,7 @@ public class UserController {
             }
         } catch (UserNotFoundException e) {
             // TODO: 1/8/2017 Chnage Message to wrong username or password
-            return ResponseUtil.response("Fail", e.getMessage(), "Login Failed");
+            return ResponseUtil.response("Fail", null, e.getMessage());
         }
     }
 
