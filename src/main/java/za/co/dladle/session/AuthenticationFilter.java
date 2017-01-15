@@ -29,6 +29,8 @@ public class AuthenticationFilter extends GenericFilterBean {
 
         if (user == null) {
             if (isLoginEndpoint(httpServletRequest) ||
+                    isTestEndpoint(httpServletRequest) ||
+                    isTermsEndpoint(httpServletRequest) ||
                     isRegisterEndpoint(httpServletRequest) ||
                     isForgotPasswordEndpoint(httpServletRequest) ||
                     isResestPasswordEndpoint(httpServletRequest) ||
@@ -47,6 +49,12 @@ public class AuthenticationFilter extends GenericFilterBean {
         httpServletResponse.addHeader("Access-Control-Allow-Origin", "true");
     }
 
+    private boolean isTestEndpoint(HttpServletRequest httpServletRequest) {
+        return httpServletRequest.getRequestURI().contains("/welcome");
+    }
+    private boolean isTermsEndpoint(HttpServletRequest httpServletRequest) {
+        return httpServletRequest.getRequestURI().contains("/DlaDle_TC.html");
+    }
     private boolean isLoginEndpoint(HttpServletRequest httpServletRequest) {
         return httpServletRequest.getRequestURI().contains("/api/user/login");
     }
