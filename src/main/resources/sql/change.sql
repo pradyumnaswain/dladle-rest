@@ -31,3 +31,21 @@ ALTER TABLE landlord DROP COLUMN identity_number;
 ALTER TABLE tenant DROP COLUMN first_name;
 ALTER TABLE tenant DROP COLUMN last_name;
 ALTER TABLE tenant DROP COLUMN identity_number;
+
+
+ALTER TABLE property
+  ADD COLUMN place_name VARCHAR(45);
+ALTER TABLE property
+  ADD COLUMN complex_name VARCHAR(45);
+ALTER TABLE property
+  ADD COLUMN unit_number VARCHAR(20);
+ALTER TABLE property
+  ADD COLUMN place_type_id INT;
+ALTER TABLE property
+  ADD COLUMN bedroom_type_id INT;
+ALTER TABLE property
+  ADD COLUMN image_url VARCHAR(100);
+ALTER TABLE property
+  ADD FOREIGN KEY (place_type_id) REFERENCES place_type (id);
+ALTER TABLE property
+  ADD FOREIGN KEY (bedroom_type_id) REFERENCES bedroom_type (id);

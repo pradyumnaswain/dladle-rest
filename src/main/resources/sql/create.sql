@@ -123,6 +123,18 @@ CREATE TABLE rating_comments
   user_id     INT,
   description VARCHAR(100)
 );
+
+CREATE TABLE place_type
+(
+  id   SERIAL PRIMARY KEY,
+  name VARCHAR(20)
+);
+CREATE TABLE bedroom_type
+(
+  id   SERIAL PRIMARY KEY,
+  name VARCHAR(20)
+);
+
 CREATE UNIQUE INDEX user_dladle_email_uindex
   ON user_dladle (emailid);
 ALTER TABLE user_dladle
