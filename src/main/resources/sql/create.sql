@@ -135,6 +135,12 @@ CREATE TABLE bedroom_type
   name VARCHAR(20)
 );
 
+CREATE TABLE homeview_type
+(
+  id SERIAL PRIMARY KEY,
+  name VARCHAR (20)
+);
+
 CREATE UNIQUE INDEX user_dladle_email_uindex
   ON user_dladle (emailid);
 ALTER TABLE user_dladle

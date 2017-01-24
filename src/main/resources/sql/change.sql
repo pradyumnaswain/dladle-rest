@@ -49,3 +49,14 @@ ALTER TABLE property
   ADD FOREIGN KEY (place_type_id) REFERENCES place_type (id);
 ALTER TABLE property
   ADD FOREIGN KEY (bedroom_type_id) REFERENCES bedroom_type (id);
+
+ALTER TABLE landlord
+  ADD COLUMN cell_number INT;
+
+ALTER TABLE vendor
+  ADD COLUMN cell_number INT;
+
+ALTER TABLE vendor ADD COLUMN transport BOOLEAN;
+ALTER TABLE vendor ADD COLUMN tools BOOLEAN;
+ALTER TABLE vendor ADD COLUMN experience INTEGER[11];
+
