@@ -6,14 +6,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import za.co.dladle.entity.UserRequest;
-import za.co.dladle.entity.UserRequestForResetPassword;
+import za.co.dladle.entity.*;
 import za.co.dladle.exception.OtpMismatchException;
 import za.co.dladle.exception.UseAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.exception.UserVerificationCodeNotMatchException;
 import za.co.dladle.model.User;
-import za.co.dladle.entity.UserRegisterRequest;
 import za.co.dladle.session.UserSession;
 import za.co.dladle.util.RandomUtil;
 
@@ -133,5 +131,13 @@ public class UserService {
         Integer otp = RandomUtil.generateRandom();
         userServiceUtility.updateUserOtp(emailId, otp);
         notificationService.sendMail(emailId, otp);
+    }
+
+    public int update(UserUpdateRequest userUpdateRequest) {
+        return 0;
+    }
+
+    public int update(VendorUpdateRequest vendorUpdateRequest) {
+        return 0;
     }
 }

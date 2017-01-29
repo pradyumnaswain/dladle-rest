@@ -2,15 +2,12 @@ package za.co.dladle.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import za.co.dladle.entity.ForgotPasswordRequest;
-import za.co.dladle.entity.UserRequest;
-import za.co.dladle.entity.UserRequestForResetPassword;
+import za.co.dladle.entity.*;
 import za.co.dladle.exception.OtpMismatchException;
 import za.co.dladle.exception.UseAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.exception.UserVerificationCodeNotMatchException;
 import za.co.dladle.model.User;
-import za.co.dladle.entity.UserRegisterRequest;
 import za.co.dladle.service.UserService;
 import za.co.dladle.util.ResponseUtil;
 
@@ -119,6 +116,40 @@ public class UserController {
             return "Verified";
         } catch (UserVerificationCodeNotMatchException e) {
             return e.getMessage();
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Update User Profile
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = "/api/user/update", method = RequestMethod.POST)
+    public Map<String, Object> updateUser(@RequestBody(required = false) UserUpdateRequest userUpdateRequest) throws IOException {
+        try {
+            int rows = userService.update(userUpdateRequest);
+            if (rows == 1) {
+                return ResponseUtil.response("Success", "{}", "User Registered Successfully");
+            } else {
+                return ResponseUtil.response("Success", "{}", "Unable to update User");
+            }
+        } catch (Exception e) {
+            return ResponseUtil.response("Fail", "{}", e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Update Vendor Profile
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = "/api/user/vendor/update", method = RequestMethod.POST)
+    public Map<String, Object> updateVendor(@RequestBody(required = false) VendorUpdateRequest vendorUpdateRequest) throws IOException {
+        try {
+            int rows = userService.update(vendorUpdateRequest);
+            if (rows == 1) {
+                return ResponseUtil.response("Success", "{}", "User Registered Successfully");
+            } else {
+                return ResponseUtil.response("Success", "{}", "Unable to update User");
+            }
+        } catch (Exception e) {
+            return ResponseUtil.response("Fail", "{}", e.getMessage());
         }
     }
 }

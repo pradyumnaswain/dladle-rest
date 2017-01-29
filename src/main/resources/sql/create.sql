@@ -72,6 +72,7 @@ CREATE TABLE user_dladle
   first_name        VARCHAR(20),
   last_name         VARCHAR(20),
   id_number         VARCHAR(45),
+  cell_number       INT,
   FOREIGN KEY (user_type_id) REFERENCES user_type (id)
 );
 CREATE UNIQUE INDEX user_dladle_email_uindex
@@ -79,9 +80,8 @@ CREATE UNIQUE INDEX user_dladle_email_uindex
 /*landlord*/
 CREATE TABLE landlord
 (
-  id      SERIAL PRIMARY KEY NOT NULL,
-  user_id INT,
-  cell_number INT,
+  id          SERIAL PRIMARY KEY NOT NULL,
+  user_id     INT,
   FOREIGN KEY (user_id) REFERENCES user_dladle (id)
 );
 
@@ -165,7 +165,6 @@ CREATE TABLE vendor
   transport        BOOLEAN,
   tools            BOOLEAN,
   experience_id    INT,
-  cell_number INT,
   FOREIGN KEY (service_type_id) REFERENCES service_type (id),
   FOREIGN KEY (experience_id) REFERENCES years_exp (id),
   FOREIGN KEY (user_id) REFERENCES user_dladle (id)
