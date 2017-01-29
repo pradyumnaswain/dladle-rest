@@ -1,3 +1,6 @@
+-- 1. Install PostgreSQL.
+-- 2. In command Line type psql postgres postgres then enter
+-- 3. Then give password postgres
 /* Create User*/
 -- DROP USER sysadmin;
 CREATE USER sysadmin WITH PASSWORD 'masterkey';
@@ -6,11 +9,8 @@ CREATE USER sysadmin WITH PASSWORD 'masterkey';
 CREATE DATABASE dladle WITH OWNER = sysadmin;
 /* Grant privileges*/
 GRANT ALL PRIVILEGES ON DATABASE dladle TO sysadmin;
-/*user_type*/
 
-DROP OWNED BY sysadmin;
-
-DROP DATABASE dladle;
+-- DROP OWNED BY sysadmin;
 
 /*User Type*/
 CREATE TABLE user_type
