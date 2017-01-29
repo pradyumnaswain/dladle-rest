@@ -18,13 +18,13 @@ CREATE TABLE user_type
 /*user_dladle*/
 CREATE TABLE user_dladle
 (
-  id           SERIAL PRIMARY KEY  NOT NULL,
-  emailId      VARCHAR(100)        NOT NULL,
-  password     VARCHAR(500)        NOT NULL,
-  user_type_id INT,
-  verified     BOOLEAN,
+  id                SERIAL PRIMARY KEY  NOT NULL,
+  emailId           VARCHAR(100)        NOT NULL,
+  password          VARCHAR(500)        NOT NULL,
+  user_type_id      INT,
+  verified          BOOLEAN,
   verification_code VARCHAR(100),
-  otp VARCHAR(10)
+  otp               VARCHAR(10)
 );
 /*landlord*/
 CREATE TABLE landlord
@@ -95,7 +95,8 @@ CREATE TABLE property
   id          SERIAL PRIMARY KEY NOT NULL,
   landlord_id INT,
   location    VARCHAR(100),
-  address     VARCHAR(100)
+  address     VARCHAR(100),
+  place_name  VARCHAR(100)
 );
 /*lease*/
 CREATE TABLE lease
@@ -135,10 +136,16 @@ CREATE TABLE bedroom_type
   name VARCHAR(20)
 );
 
-CREATE TABLE homeview_type
+CREATE TABLE home_view_type
 (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR (20)
+  id   SERIAL PRIMARY KEY,
+  name VARCHAR(20)
+);
+
+CREATE TABLE years_exp
+(
+  id   SERIAL PRIMARY KEY,
+  name VARCHAR(20)
 );
 
 CREATE UNIQUE INDEX user_dladle_email_uindex
