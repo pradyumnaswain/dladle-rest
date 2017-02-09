@@ -11,7 +11,7 @@ public class UserUpdateRequest {
 
     private String identityNumber;
 
-    private String cellNumber;
+    private Integer cellNumber;
 
 
     public UserUpdateRequest() {
@@ -41,11 +41,9 @@ public class UserUpdateRequest {
         this.identityNumber = identityNumber;
     }
 
-    public String getCellNumber() {
+    public Integer getCellNumber() {
         return cellNumber;
     }
 
-    public void setCellNumber(String cellNumber) {
-        this.cellNumber = cellNumber;
-    }
+    public void setCellNumber(Integer cellNumber) { this.cellNumber = cellNumber; }
 }

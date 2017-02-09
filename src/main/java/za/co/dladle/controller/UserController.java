@@ -127,7 +127,7 @@ public class UserController {
         try {
             int rows = userService.update(userUpdateRequest);
             if (rows == 1) {
-                return ResponseUtil.response("Success", "{}", "User Registered Successfully");
+                return ResponseUtil.response("Success", "{}", "User Updated Successfully");
             } else {
                 return ResponseUtil.response("Success", "{}", "Unable to update User");
             }
@@ -144,9 +144,9 @@ public class UserController {
         try {
             int rows = userService.update(vendorUpdateRequest);
             if (rows == 1) {
-                return ResponseUtil.response("Success", "{}", "User Registered Successfully");
+                return ResponseUtil.response("Success", "{}", "Vendor updated Successfully");
             } else {
-                return ResponseUtil.response("Success", "{}", "Unable to update User");
+                return ResponseUtil.response("Success", "{}", "Unable to update Vendor");
             }
         } catch (Exception e) {
             return ResponseUtil.response("Fail", "{}", e.getMessage());

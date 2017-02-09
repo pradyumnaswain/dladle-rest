@@ -13,7 +13,7 @@ public class VendorUpdateRequest {
 
     private String identityNumber;
 
-    private String cellNumber;
+    private Integer cellNumber;
 
     private String businessName;
 
@@ -25,7 +25,7 @@ public class VendorUpdateRequest {
 
     private boolean transport;
 
-    private boolean experience;
+    private Integer experience;
 
     public VendorUpdateRequest() {
     }
@@ -54,11 +54,11 @@ public class VendorUpdateRequest {
         this.identityNumber = identityNumber;
     }
 
-    public String getCellNumber() {
+    public Integer getCellNumber() {
         return cellNumber;
     }
 
-    public void setCellNumber(String cellNumber) {
+    public void setCellNumber(Integer cellNumber) {
         this.cellNumber = cellNumber;
     }
 
@@ -102,11 +102,11 @@ public class VendorUpdateRequest {
         this.transport = transport;
     }
 
-    public boolean isExperience() {
+    public Integer getExperience() {
         return experience;
     }
 
-    public void setExperience(boolean experience) {
+    public void setExperience(Integer experience) {
         this.experience = experience;
     }
 }

@@ -1,11 +1,9 @@
 package za.co.dladle.entity;
 
 /**
- * Created by Jugal on 29/01/2017.
+ * Created by jugal on 09/02/2017.
  */
-public class PropertyAddRequest {
-
-    private int landlordId;
+public class propertyUpdateRequest {
 
     private String location;
 
@@ -25,16 +23,7 @@ public class PropertyAddRequest {
 
     private int homeView;
 
-    public PropertyAddRequest( ) {
-    }
-
-
-    public int getLandlordId() {
-        return landlordId;
-    }
-
-    public void setLandlordId(int landlordId) {
-        this.landlordId = landlordId;
+    public propertyUpdateRequest() {
     }
 
     public String getLocation() {
