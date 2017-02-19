@@ -1,6 +1,7 @@
 package za.co.dladle.entity;
 
 import za.co.dladle.model.ServiceType;
+import za.co.dladle.model.YearsExperience;
 
 /**
  * Created by prady on 11/20/2016.
@@ -25,7 +26,7 @@ public class VendorUpdateRequest {
 
     private boolean transport;
 
-    private Integer experience;
+    private YearsExperience experienceType;
 
     public VendorUpdateRequest() {
     }
@@ -102,11 +103,11 @@ public class VendorUpdateRequest {
         this.transport = transport;
     }
 
-    public Integer getExperience() {
-        return experience;
+    public YearsExperience getExperienceType() {
+        return experienceType;
     }
 
-    public void setExperience(Integer experience) {
-        this.experience = experience;
+    public void setExperienceType(YearsExperience experienceType) {
+        this.experienceType = experienceType;
     }
 }

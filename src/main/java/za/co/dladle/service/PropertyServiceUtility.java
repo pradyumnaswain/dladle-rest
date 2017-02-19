@@ -9,6 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import za.co.dladle.entity.PropertyAddRequest;
+import za.co.dladle.entity.PropertyAddResponse;
 import za.co.dladle.entity.propertyUpdateRequest;
 import za.co.dladle.exception.PropertyAlreadyExistsException;
 import za.co.dladle.session.UserSession;
@@ -41,7 +42,7 @@ public class PropertyServiceUtility {
     //------------------------------------------------------------------------------------------------------------------
 
     @Transactional
-    public int propertyRegistration(PropertyAddRequest property) throws PropertyAlreadyExistsException {
+    public PropertyAddResponse propertyRegistration(PropertyAddRequest property) throws PropertyAlreadyExistsException {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
         String email = userSession.getUser().getEmailId();
 
@@ -49,20 +50,20 @@ public class PropertyServiceUtility {
         map.put("address", property.getAddress());
         map.put("emailId", email);
 
-        String  getUserSql= "SELECT id FROM user_dladle WHERE emailid=:emailId";
+        String getUserSql = "SELECT landlord.id landord_id FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id WHERE emailid=:emailId";
         Integer userId = this.parameterJdbcTemplate.queryForObject(getUserSql, map, Integer.class);
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
                 .addValue("landlordId", userId)
-                .addValue("location", property.getLocation())
                 .addValue("address", property.getAddress())
                 .addValue("placeName", property.getPlaceName())
-                .addValue("placeType", property.getPlaceType())
+                .addValue("PlaceType", property.getPlaceType())
                 .addValue("complexName", property.getComplexName())
                 .addValue("unitNumber", property.getUnitNumber())
                 .addValue("bedRoomType", property.getBedRoomType())
                 .addValue("imgUrl", property.getImgUrl())
-                .addValue("homeView", property.getHomeView());;
+                .addValue("homeView", property.getHomeView());
+        ;
 
 
         String countSql = "SELECT COUNT(address) FROM property WHERE address=:address";
@@ -75,15 +76,17 @@ public class PropertyServiceUtility {
 
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
-            String PropertySql = "INSERT INTO property (landlord_id, location, address, place_name, place_type_id,complex_name,unit_number,bedroom_type_id,image_url,home_view_type_id) VALUES (:landlordId,  :location, :address, :placeName,:placeType,:complexName,:unitNumber,:bedRoomType,:imgUrl,:homeView)";
+            String PropertySql = "INSERT INTO property (landlord_id, address, place_name, place_type_id,complex_name,unit_number,bedroom_type_id,image_url,home_view_type_id) VALUES (:landlordId, :address, :placeName,:placeType,:complexName,:unitNumber,:bedRoomType,:imgUrl,:homeView)";
 
             this.parameterJdbcTemplate.update(PropertySql, mapSqlParameterSource, keyHolder, new String[]{"id"});
 
             System.out.println(keyHolder.getKey());
-            map.put("propertyId", keyHolder.getKey());
 
+            PropertyAddResponse propertyAddResponse = new PropertyAddResponse();
 
-            return rowsUpdated;
+            propertyAddResponse.setPropertyId(keyHolder.getKey().longValue());
+
+            return propertyAddResponse;
         } else {
             throw new PropertyAlreadyExistsException("Property already Exists");
         }
@@ -99,22 +102,22 @@ public class PropertyServiceUtility {
         Map<String, Object> map = new HashMap<>();
         map.put("emailId", email);
 
-        String  getUserSql= "SELECT id FROM user_dladle WHERE emailid=:emailId";
+        String getUserSql = "SELECT id FROM user_dladle WHERE emailid=:emailId";
         Integer userId = this.parameterJdbcTemplate.queryForObject(getUserSql, map, Integer.class);
 
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        System.out.println(keyHolder.getKey());
 
         map.put("landlordId", userId);
-        map.put("location", propertyUpdateRequest.getLocation());
-        map.put("address",propertyUpdateRequest.getAddress());
-        map.put("placeName",propertyUpdateRequest.getPlaceName() );
-        map.put("placeTypeId", propertyUpdateRequest.getPlaceType() );
+        map.put("placeName", propertyUpdateRequest.getPlaceName());
+        map.put("placeTypeId", propertyUpdateRequest.getPlaceType());
         map.put("complexName", propertyUpdateRequest.getComplexName());
         map.put("unitNumber", propertyUpdateRequest.getUnitNumber());
         map.put("bedRoomTypeId", propertyUpdateRequest.getBedRoomType());
         map.put("imageUrl", propertyUpdateRequest.getImgUrl());
-        map.put("homeViewTypeId", propertyUpdateRequest.getHomeView() );
+        map.put("homeViewTypeId", propertyUpdateRequest.getHomeView());
 
-        String sql = " UPDATE property SET  location=:location, address=:address, place_name=:placeName, place_type_id=:placeTypeId, complex_name=:complexName, unit_number=:unitNumber, bedroom_type_id=:bedRoomTypeId,image_url =:imageUrl, home_view_type_id=:homeViewTypeId WHERE landlord_id=:landlordId";
+        String sql = " UPDATE property SET place_name=:placeName, place_type_id=:placeTypeId, complex_name=:complexName, unit_number=:unitNumber, bedroom_type_id=:bedRoomTypeId,image_url =:imageUrl, home_view_type_id=:homeViewTypeId WHERE landlord_id=:landlordId";
         return this.parameterJdbcTemplate.update(sql, map);
     }
 }

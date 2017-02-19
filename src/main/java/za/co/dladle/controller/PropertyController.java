@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.dladle.entity.PropertyAddRequest;
+import za.co.dladle.entity.PropertyAddResponse;
 import za.co.dladle.entity.propertyUpdateRequest;
 import za.co.dladle.exception.PropertyAlreadyExistsException;
 import za.co.dladle.service.PropertyServiceUtility;
@@ -22,14 +23,15 @@ public class PropertyController {
 
     @Autowired
     PropertyServiceUtility propertyServiceUtility;
+
     //------------------------------------------------------------------------------------------------------------------
     //Add Property
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "/api/property/add", method = RequestMethod.POST)
     public Map<String, Object> AddProperty(@RequestBody(required = false) PropertyAddRequest propertyAddRequest) throws IOException {
         try {
-            propertyServiceUtility.propertyRegistration(propertyAddRequest);
-            return ResponseUtil.response("Success", "{}", "Property Registered Successfully");
+            PropertyAddResponse propertyAddResponse = propertyServiceUtility.propertyRegistration(propertyAddRequest);
+            return ResponseUtil.response("Success", propertyAddResponse, "Property Registered Successfully");
         } catch (PropertyAlreadyExistsException e) {
             return ResponseUtil.response("Fail", "{}", e.getMessage());
         } catch (Exception e) {

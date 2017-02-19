@@ -82,7 +82,9 @@ CREATE TABLE landlord
 (
   id          SERIAL PRIMARY KEY NOT NULL,
   user_id     INT,
-  FOREIGN KEY (user_id) REFERENCES user_dladle (id)
+  home_view_type_id INT,
+  FOREIGN KEY (user_id) REFERENCES user_dladle (id),
+  FOREIGN KEY (home_view_type_id) REFERENCES home_view_type (id)
 );
 
 /*property*/
@@ -98,10 +100,8 @@ CREATE TABLE property
   unit_number       VARCHAR(20),
   bedroom_type_id   INT,
   image_url         VARCHAR(100),
-  home_view_type_id INT,
   FOREIGN KEY (place_type_id) REFERENCES place_type (id),
   FOREIGN KEY (bedroom_type_id) REFERENCES bedroom_type (id),
-  FOREIGN KEY (home_view_type_id) REFERENCES home_view_type (id),
   FOREIGN KEY (landlord_id) REFERENCES landlord (id)
 );
 

@@ -67,8 +67,6 @@ public class UserService {
     public User login(UserRequest user) throws UserNotFoundException {
         String hashedPassword = Hashing.sha512().hashString(user.getPassword(), Charset.defaultCharset()).toString();
 
-        user.setPassword(hashedPassword);
-
         return userServiceUtility.findUserByEmailAndPassword(user.getEmailId(), hashedPassword);
     }
 
@@ -156,6 +154,7 @@ public class UserService {
         return this.parameterJdbcTemplate.update(sql, map);
     }
 
+    @Transactional
     public int update(VendorUpdateRequest vendorUpdateRequest){
     UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
     String emailId = userSession.getUser().getEmailId();
@@ -167,16 +166,37 @@ public class UserService {
         map.put("identityNumber",vendorUpdateRequest.getIdentityNumber());
         map.put("cellNumber",vendorUpdateRequest.getCellNumber());
         map.put("businessName", vendorUpdateRequest.getBusinessName());;
-        map.put("businessAdress", vendorUpdateRequest.getBusinessAddress());
+        map.put("businessAddress", vendorUpdateRequest.getBusinessAddress());
         map.put("serviceType",vendorUpdateRequest.getServiceType().getId());
         map.put("tools",vendorUpdateRequest.isTools());
         map.put("transport",vendorUpdateRequest.isTransport());
-        map.put("experience",vendorUpdateRequest.getExperience());
+        map.put("experience",vendorUpdateRequest.getExperienceType().getId());
 
         String userSql = " UPDATE user_dladle SET first_name=:firstName, last_name=:lastName, id_number=:identityNumber, cell_number=:cellNumber WHERE emailid=:emailId";
         this.parameterJdbcTemplate.update(userSql, map);
-        String vendorSql = " UPDATE vendor SET  service_type_id=:serviceType, business_name=:businessName,business_address=:businessAdress, tools=:tools, transport=:transport, experience_id=:experience WHERE user_id=(select id from user_dladle where emailid=:emailId)";
+        String vendorSql = " UPDATE vendor SET  service_type_id=:serviceType, business_name=:businessName,business_address=:businessAddress, tools=:tools, transport=:transport, experience_id=:experience WHERE user_id=(select id from user_dladle where emailid=:emailId)";
         return this.parameterJdbcTemplate.update(vendorSql, map);
 
     }
+
+    @Transactional
+    public int update(LandlordUpdateRequest landlordUpdateRequest) {
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+        String emailId = userSession.getUser().getEmailId();
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("emailId", emailId);
+        map.put("firstName", landlordUpdateRequest.getFirstName());
+        map.put("lastName", landlordUpdateRequest.getLastName());
+        map.put("identityNumber",landlordUpdateRequest.getIdentityNumber());
+        map.put("cellNumber",landlordUpdateRequest.getCellNumber());
+        map.put("homeViewType",landlordUpdateRequest.getHomeViewType().getId());
+
+
+        String sql = " UPDATE user_dladle SET first_name=:firstName, last_name=:lastName, id_number=:identityNumber, cell_number=:cellNumber WHERE emailid=:emailId";
+        this.parameterJdbcTemplate.update(sql, map);
+        String landlordSql = " UPDATE landlord SET  home_view_type_id=:homeViewType WHERE user_id=(select id from user_dladle where emailid=:emailId)";
+        return this.parameterJdbcTemplate.update(landlordSql, map);
+    }
+
 }
