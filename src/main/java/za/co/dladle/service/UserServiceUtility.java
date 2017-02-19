@@ -56,7 +56,13 @@ public class UserServiceUtility {
         try {
             String sql = "SELECT * FROM user_dladle INNER JOIN user_type ON user_dladle.user_type_id = user_type.id WHERE emailid=? AND password=?";
             return this.jdbcTemplate.queryForObject(sql, new Object[]{emailId, password}, (rs, rowNum) ->
-                    new User(rs.getString("emailId"), rs.getString("password"), rs.getBoolean("verified"), UserType.valueOf(rs.getString("name").toUpperCase())));
+                    new User(rs.getString("emailId"),
+                            null,
+                            rs.getBoolean("verified"),
+                            UserType.valueOf(rs.getString("name").toUpperCase()),
+                            rs.getString("first_name"),
+                            rs.getString("last_name"),
+                            rs.getString("cell_number")));
         } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException("Username or password is wrong. Please check and login again");
         }

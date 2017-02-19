@@ -5,14 +5,11 @@ package za.co.dladle.entity;
  */
 public class PropertyAddRequest {
 
-    private int landlordId;
-
-    private String location;
-
     private String address;
 
     private String placeName;
 
+    // TODO: 19/02/2017 Change PlaceType, BedRoomType, HomeViewType to enum
     private int placeType;
 
     private String complexName;
@@ -27,23 +24,7 @@ public class PropertyAddRequest {
 
     public PropertyAddRequest( ) {
     }
-
-
-    public int getLandlordId() {
-        return landlordId;
-    }
-
-    public void setLandlordId(int landlordId) {
-        this.landlordId = landlordId;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
+    
 
     public String getAddress() {
         return address;

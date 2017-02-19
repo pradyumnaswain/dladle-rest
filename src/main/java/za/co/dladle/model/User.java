@@ -13,6 +13,12 @@ public class User {
 
     private UserType userType;
 
+    private String firstName;
+
+    private String lastName;
+
+    private String mobileNumber;
+
     public User() {
     }
 
@@ -26,11 +32,14 @@ public class User {
         this.verified = verified;
     }
 
-    public User(String emailId, String password, boolean verified, UserType userType) {
+    public User(String emailId, String password, boolean verified, UserType userType, String firstName, String lastName, String mobileNumber) {
         this.emailId = emailId;
         this.password = password;
         this.verified = verified;
         this.userType = userType;
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.mobileNumber=mobileNumber;
     }
 
     public String getEmailId() {
@@ -63,5 +72,29 @@ public class User {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
     }
 }

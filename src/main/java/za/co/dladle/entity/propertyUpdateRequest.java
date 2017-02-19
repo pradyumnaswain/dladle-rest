@@ -5,10 +5,6 @@ package za.co.dladle.entity;
  */
 public class propertyUpdateRequest {
 
-    private String location;
-
-    private String address;
-
     private String placeName;
 
     private int placeType;
@@ -24,22 +20,6 @@ public class propertyUpdateRequest {
     private int homeView;
 
     public propertyUpdateRequest() {
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public String getPlaceName() {

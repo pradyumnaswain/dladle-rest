@@ -1,5 +1,6 @@
 package za.co.dladle.controller;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.co.dladle.entity.*;
@@ -94,6 +95,7 @@ public class UserController {
     //------------------------------------------------------------------------------------------------------------------
     //Register
     //------------------------------------------------------------------------------------------------------------------
+    @ApiOperation(value = "Register API", notes = "UserType=[TENANT,VENDOR,LANDLORD]")
     @RequestMapping(value = "api/user/register", method = RequestMethod.POST)
     public Map<String, Object> register(@RequestBody(required = false) UserRegisterRequest registerRequest) {
         try {
@@ -122,8 +124,8 @@ public class UserController {
     //------------------------------------------------------------------------------------------------------------------
     //Update User Profile
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "/api/user/update", method = RequestMethod.POST)
-    public Map<String, Object> updateUser(@RequestBody(required = false) UserUpdateRequest userUpdateRequest) throws IOException {
+    @RequestMapping(value = "/api/user/tenant/update", method = RequestMethod.POST)
+    public Map<String, Object> updateTenant(@RequestBody(required = false) UserUpdateRequest userUpdateRequest) throws IOException {
         try {
             int rows = userService.update(userUpdateRequest);
             if (rows == 1) {
@@ -137,8 +139,28 @@ public class UserController {
     }
 
     //------------------------------------------------------------------------------------------------------------------
+    //Update User Profile
+    //------------------------------------------------------------------------------------------------------------------
+
+    @ApiOperation(value = "Update Landlord", notes = "HomeViewType=[HOME_VIEW_TYPE_1,HOME_VIEW_TYPE_2,HOME_VIEW_TYPE_3]")
+    @RequestMapping(value = "/api/user/landlord/update", method = RequestMethod.POST)
+    public Map<String, Object> updateLandlord(@RequestBody(required = false) LandlordUpdateRequest landlordUpdateRequest) throws IOException {
+        try {
+            int rows = userService.update(landlordUpdateRequest);
+            if (rows == 1) {
+                return ResponseUtil.response("Success", "{}", "LandLord Updated Successfully");
+            } else {
+                return ResponseUtil.response("Success", "{}", "Unable to update LandLord");
+            }
+        } catch (Exception e) {
+            return ResponseUtil.response("Fail", "{}", e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
     //Update Vendor Profile
     //------------------------------------------------------------------------------------------------------------------
+    @ApiOperation(value = "Update Vendor", notes = "ServiceType=[PLUMBER, ELECTRICIAN,PAINTER],experienceType=[ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE,TEN,MORE_THAN_TEN] ")
     @RequestMapping(value = "/api/user/vendor/update", method = RequestMethod.POST)
     public Map<String, Object> updateVendor(@RequestBody(required = false) VendorUpdateRequest vendorUpdateRequest) throws IOException {
         try {
