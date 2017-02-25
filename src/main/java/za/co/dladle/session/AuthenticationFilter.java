@@ -53,7 +53,7 @@ public class AuthenticationFilter extends GenericFilterBean {
         return httpServletRequest.getRequestURI().contains("/welcome");
     }
     private boolean isTermsEndpoint(HttpServletRequest httpServletRequest) {
-        return httpServletRequest.getRequestURI().contains("/DlaDle_TC.html");
+        return httpServletRequest.getRequestURI().contains("/DlaDle_TC.html") || httpServletRequest.getRequestURI().contains("/DlaDle_FAQ.html") || httpServletRequest.getRequestURI().contains("/DlaDle_Contact_US.html");
     }
     private boolean isLoginEndpoint(HttpServletRequest httpServletRequest) {
         return httpServletRequest.getRequestURI().contains("/api/user/login");
