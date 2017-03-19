@@ -92,16 +92,14 @@ CREATE TABLE property
 (
   id                SERIAL PRIMARY KEY NOT NULL,
   landlord_id       INT,
-  location          VARCHAR(100),
+  place_type_id INT,
   address           VARCHAR(100),
-  place_name        VARCHAR(100),
-  place_type_id     INT,
+  isEstate       VARCHAR(100),
+  estate_name    VARCHAR(100),
   complex_name      VARCHAR(45),
   unit_number       VARCHAR(20),
-  bedroom_type_id   INT,
   image_url         VARCHAR(100),
   FOREIGN KEY (place_type_id) REFERENCES place_type (id),
-  FOREIGN KEY (bedroom_type_id) REFERENCES bedroom_type (id),
   FOREIGN KEY (landlord_id) REFERENCES landlord (id)
 );
 
