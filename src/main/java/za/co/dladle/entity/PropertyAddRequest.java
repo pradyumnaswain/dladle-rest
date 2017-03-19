@@ -1,5 +1,7 @@
 package za.co.dladle.entity;
 
+import za.co.dladle.model.PlaceType;
+
 /**
  * Created by Jugal on 29/01/2017.
  */
@@ -7,24 +9,20 @@ public class PropertyAddRequest {
 
     private String address;
 
-    private String placeName;
+    private boolean IsEstate;
 
-    // TODO: 19/02/2017 Change PlaceType, BedRoomType, HomeViewType to enum
-    private int placeType;
+    private String estateName;
+
+    private PlaceType placeType;
 
     private String complexName;
 
     private String unitNumber;
 
-    private int bedRoomType;
-
     private String imgUrl;
-
-    private int homeView;
 
     public PropertyAddRequest( ) {
     }
-    
 
     public String getAddress() {
         return address;
@@ -34,19 +32,27 @@ public class PropertyAddRequest {
         this.address = address;
     }
 
-    public String getPlaceName() {
-        return placeName;
+    public boolean isEstate() {
+        return IsEstate;
     }
 
-    public void setPlaceName(String placeName) {
-        this.placeName = placeName;
+    public void setEstate(boolean estate) {
+        IsEstate = estate;
     }
 
-    public int getPlaceType() {
+    public String getEstateName() {
+        return estateName;
+    }
+
+    public void setEstateName(String estateName) {
+        this.estateName = estateName;
+    }
+
+    public PlaceType getPlaceType() {
         return placeType;
     }
 
-    public void setPlaceType(int placeType) {
+    public void setPlaceType(PlaceType placeType) {
         this.placeType = placeType;
     }
 
@@ -66,27 +72,11 @@ public class PropertyAddRequest {
         this.unitNumber = unitNumber;
     }
 
-    public int getBedRoomType() {
-        return bedRoomType;
-    }
-
-    public void setBedRoomType(int bedRoomType) {
-        this.bedRoomType = bedRoomType;
-    }
-
     public String getImgUrl() {
         return imgUrl;
     }
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
-    }
-
-    public int getHomeView() {
-        return homeView;
-    }
-
-    public void setHomeView(int homeView) {
-        this.homeView = homeView;
     }
 }

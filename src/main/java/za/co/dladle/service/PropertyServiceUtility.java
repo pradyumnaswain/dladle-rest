@@ -10,7 +10,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import za.co.dladle.entity.PropertyAddRequest;
 import za.co.dladle.entity.PropertyAddResponse;
-import za.co.dladle.entity.propertyUpdateRequest;
 import za.co.dladle.exception.PropertyAlreadyExistsException;
 import za.co.dladle.session.UserSession;
 
@@ -20,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by 310252258 on 05/02/2017.
+ * Created by jugal on 05/02/2017.
  */
 
 @Service
@@ -56,13 +55,12 @@ public class PropertyServiceUtility {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
                 .addValue("landlordId", userId)
                 .addValue("address", property.getAddress())
-                .addValue("placeName", property.getPlaceName())
-                .addValue("PlaceType", property.getPlaceType())
+                .addValue("PlaceType", property.getPlaceType().getId())
                 .addValue("complexName", property.getComplexName())
                 .addValue("unitNumber", property.getUnitNumber())
-                .addValue("bedRoomType", property.getBedRoomType())
                 .addValue("imgUrl", property.getImgUrl())
-                .addValue("homeView", property.getHomeView());
+                .addValue("isEstate", property.isEstate())
+                .addValue("estateName", property.getEstateName());
         ;
 
 
@@ -76,7 +74,7 @@ public class PropertyServiceUtility {
 
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
-            String PropertySql = "INSERT INTO property (landlord_id, address, place_name, place_type_id,complex_name,unit_number,bedroom_type_id,image_url,home_view_type_id) VALUES (:landlordId, :address, :placeName,:placeType,:complexName,:unitNumber,:bedRoomType,:imgUrl,:homeView)";
+            String PropertySql = "INSERT INTO property (landlord_id, address, place_type_id, complex_name, unit_number, image_url, isEstate, estate_name) VALUES (:landlordId, :address, :PlaceType,:complexName,:unitNumber,:imgUrl,:isEstate, :estateName)";
 
             this.parameterJdbcTemplate.update(PropertySql, mapSqlParameterSource, keyHolder, new String[]{"id"});
 
@@ -92,32 +90,4 @@ public class PropertyServiceUtility {
         }
     }
 
-    //------------------------------------------------------------------------------------------------------------------
-    //Update Property
-    //------------------------------------------------------------------------------------------------------------------
-    public int updateProperty(propertyUpdateRequest propertyUpdateRequest) {
-        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
-        String email = userSession.getUser().getEmailId();
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("emailId", email);
-
-        String getUserSql = "SELECT id FROM user_dladle WHERE emailid=:emailId";
-        Integer userId = this.parameterJdbcTemplate.queryForObject(getUserSql, map, Integer.class);
-
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        System.out.println(keyHolder.getKey());
-
-        map.put("landlordId", userId);
-        map.put("placeName", propertyUpdateRequest.getPlaceName());
-        map.put("placeTypeId", propertyUpdateRequest.getPlaceType());
-        map.put("complexName", propertyUpdateRequest.getComplexName());
-        map.put("unitNumber", propertyUpdateRequest.getUnitNumber());
-        map.put("bedRoomTypeId", propertyUpdateRequest.getBedRoomType());
-        map.put("imageUrl", propertyUpdateRequest.getImgUrl());
-        map.put("homeViewTypeId", propertyUpdateRequest.getHomeView());
-
-        String sql = " UPDATE property SET place_name=:placeName, place_type_id=:placeTypeId, complex_name=:complexName, unit_number=:unitNumber, bedroom_type_id=:bedRoomTypeId,image_url =:imageUrl, home_view_type_id=:homeViewTypeId WHERE landlord_id=:landlordId";
-        return this.parameterJdbcTemplate.update(sql, map);
-    }
 }
