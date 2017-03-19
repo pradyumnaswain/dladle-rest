@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.dladle.entity.PropertyAddRequest;
 import za.co.dladle.entity.PropertyAddResponse;
-import za.co.dladle.entity.propertyUpdateRequest;
 import za.co.dladle.exception.PropertyAlreadyExistsException;
 import za.co.dladle.service.PropertyServiceUtility;
 import za.co.dladle.util.ResponseUtil;
@@ -34,23 +33,6 @@ public class PropertyController {
             return ResponseUtil.response("Success", propertyAddResponse, "Property Registered Successfully");
         } catch (PropertyAlreadyExistsException e) {
             return ResponseUtil.response("Fail", "{}", e.getMessage());
-        } catch (Exception e) {
-            return ResponseUtil.response("Fail", "{}", e.getMessage());
-        }
-    }
-
-    //------------------------------------------------------------------------------------------------------------------
-    //Update Property
-    //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "/api/property/update", method = RequestMethod.POST)
-    public Map<String, Object> updateProperty(@RequestBody(required = false) propertyUpdateRequest propertyUpdateRequest) throws IOException {
-        try {
-            int rows = propertyServiceUtility.updateProperty(propertyUpdateRequest);
-            if (rows == 1) {
-                return ResponseUtil.response("Success", "{}", "Property updated Successfully");
-            } else {
-                return ResponseUtil.response("Fail", "{}", "Unable to update Property");
-            }
         } catch (Exception e) {
             return ResponseUtil.response("Fail", "{}", e.getMessage());
         }
