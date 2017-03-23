@@ -32,6 +32,9 @@ public class UserServiceUtility {
     JdbcTemplate jdbcTemplate;
 
     @Autowired
+    NotificationService notificationService;
+
+    @Autowired
     NamedParameterJdbcTemplate parameterJdbcTemplate;
 
     //------------------------------------------------------------------------------------------------------------------
@@ -188,6 +191,7 @@ public class UserServiceUtility {
 
             String sqlUpdate = "UPDATE user_dladle SET verified=TRUE WHERE emailid=:emailId AND verification_code=:verifyCode";
             this.parameterJdbcTemplate.update(sqlUpdate, mapSqlParameterSource);
+            notificationService.sendWelcomeMail(emailId);
         } catch (Exception e) {
             throw new UserVerificationCodeNotMatchException("Either EmailId or Verification Code for User doesn't match");
         }
