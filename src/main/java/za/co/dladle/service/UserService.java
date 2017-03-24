@@ -37,7 +37,7 @@ public class UserService {
     UserServiceUtility userServiceUtility;
 
     @Autowired
-    NotificationService notificationService;
+    NotificationServiceSendGridImpl notificationServiceSendGridImpl;
 
 
     @Autowired
@@ -117,7 +117,7 @@ public class UserService {
 
         if (rows == 1) {
             //send mail
-            notificationService.sendMail(user.getEmailId(), verification);
+            notificationServiceSendGridImpl.sendVerificationMail(user.getEmailId(), verification);
         }
     }
 
@@ -135,7 +135,7 @@ public class UserService {
     public void sendOtp(String emailId) throws IOException {
         Integer otp = RandomUtil.generateRandom();
         userServiceUtility.updateUserOtp(emailId, otp);
-        notificationService.sendMail(emailId, otp);
+        notificationServiceSendGridImpl.sendOtpMail(emailId, otp);
     }
 
     public int update(UserUpdateRequest userUpdateRequest) {

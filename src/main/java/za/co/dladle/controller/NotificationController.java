@@ -6,10 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import za.co.dladle.service.NotificationService;
+import za.co.dladle.service.NotificationServiceSendGridImpl;
 
 import java.io.IOException;
-import java.util.Date;
 
 /**
  * Created by prady on 7/26/2016.
@@ -17,11 +16,11 @@ import java.util.Date;
 @RestController
 public class NotificationController {
     @Autowired
-    private NotificationService notificationService;
+    private NotificationServiceSendGridImpl notificationServiceSendGridImpl;
 
     @RequestMapping(value = "/send-email", method = RequestMethod.POST)
     public String sendMail(@RequestParam String emailId) throws IOException {
-        Response response = notificationService.sendMail(emailId, "");
+        Response response = notificationServiceSendGridImpl.sendVerificationMail(emailId, "");
 
         return response.body;
     }
