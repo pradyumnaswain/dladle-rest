@@ -4,8 +4,6 @@ import com.sendgrid.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -86,13 +84,13 @@ public class NotificationServiceSendGridImpl implements NotificationService {
         String name = this.parameterJdbcTemplate.queryForObject(getUserSql, map, String.class);
         String subject = "Welcome to DlaDle, Welcome Home ";
         Email to = new Email(toEmailId);
-        Content content = new Content("text/plain", "WELCOME to DLADLE : " + "\n" +
-                "Hi " + name + "!" + "\n" +
-                "Thanks for Signing Up with DLADLE" + "\n" +
-                "Dladle is a Smartphone app that allows you to manage your property." + "\n" +
-                "Click here to begin your awesome journey!" + "\n" +
-                "Welcome home " + "\n" +
-                "DlaDle");
+        Content content = new Content("text/html", "<html><body><p>WELCOME to DLADLE :</p> " +
+                "<P>Hi "  + name + "!</p>" +
+                "<P>Thanks for Signing Up with DLADLE</P>" +
+                "<P>Dladle is a Smartphone app that allows you to manage your property.</P>" +
+                "<P>Click here to begin your awesome journey!</P>" +
+                "<P>Welcome home </P>" +
+                "<P>DlaDle</P></body></html>");
 
         Mail mail = new Mail(from, subject, to, content);
 
