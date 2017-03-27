@@ -8,6 +8,7 @@ import za.co.dladle.exception.OtpMismatchException;
 import za.co.dladle.exception.UseAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.exception.UserVerificationCodeNotMatchException;
+import za.co.dladle.exception.PasswordMismatchException;
 import za.co.dladle.model.User;
 import za.co.dladle.service.UserService;
 import za.co.dladle.util.ResponseUtil;
@@ -87,9 +88,14 @@ public class UserController {
     //Change Password
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "api/user/change-password", method = RequestMethod.POST)
-    public Map<String, Object> changePassword(@RequestParam String newPassword) {
-        userService.changePassword(newPassword);
-        return ResponseUtil.response("Success", "{}", "Password Changed Successfully");
+    public Map<String, Object> changePassword(@RequestBody ChangePasswordRequest changePassword) {
+        try {
+            userService.changePassword(changePassword);
+            return ResponseUtil.response("Success", "{}", "Password Changed Successfully");
+        } catch (PasswordMismatchException e) {
+            e.printStackTrace();
+            return ResponseUtil.response("Fail", null, e.getMessage());
+        }
     }
 
     //------------------------------------------------------------------------------------------------------------------
