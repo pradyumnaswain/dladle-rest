@@ -11,6 +11,7 @@ import za.co.dladle.exception.OtpMismatchException;
 import za.co.dladle.exception.UseAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.exception.UserVerificationCodeNotMatchException;
+import za.co.dladle.exception.PasswordMismatchException;
 import za.co.dladle.model.User;
 import za.co.dladle.session.UserSession;
 import za.co.dladle.util.RandomUtil;
@@ -96,11 +97,28 @@ public class UserService {
     //------------------------------------------------------------------------------------------------------------------
     //Change Password
     //------------------------------------------------------------------------------------------------------------------
-    public void changePassword(String newPassword) {
-        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
-        String emailId = userSession.getUser().getEmailId();
-        String hashedPassword = Hashing.sha512().hashString(newPassword, Charset.defaultCharset()).toString();
-        userServiceUtility.updateUserPassword(emailId, hashedPassword);
+    public void changePassword(ChangePasswordRequest changePassword) throws PasswordMismatchException {
+        //UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+        //String emailId = userSession.getUser().getEmailId();
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("emailId", changePassword.getEmailId());
+
+        String sql = "SELECT password FROM user_dladle WHERE emailid=:emailId";
+        String oldPassword = this.parameterJdbcTemplate.queryForObject(sql, map, String.class);
+        String hashedOldPassword = Hashing.sha512().hashString(changePassword.getCurrentPassword(), Charset.defaultCharset()).toString();
+        if(oldPassword.equals(hashedOldPassword)){
+
+            if(changePassword.getNewPassword().equals(changePassword.getNewConfirmPassword())){
+                String hashedPassword = Hashing.sha512().hashString(changePassword.getNewPassword(), Charset.defaultCharset()).toString();
+                userServiceUtility.updateUserPassword(changePassword.getEmailId(), hashedPassword);
+            } else {
+                throw new PasswordMismatchException("Password confirmation does not match ");
+            }
+        } else {
+            throw new PasswordMismatchException("You entered the wrong current password");
+
+        }
     }
 
     //------------------------------------------------------------------------------------------------------------------
