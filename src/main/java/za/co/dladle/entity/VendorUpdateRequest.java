@@ -14,7 +14,7 @@ public class VendorUpdateRequest {
 
     private String identityNumber;
 
-    private Integer cellNumber;
+    private String cellNumber;
 
     private String businessName;
 
@@ -55,11 +55,11 @@ public class VendorUpdateRequest {
         this.identityNumber = identityNumber;
     }
 
-    public Integer getCellNumber() {
+    public String getCellNumber() {
         return cellNumber;
     }
 
-    public void setCellNumber(Integer cellNumber) {
+    public void setCellNumber(String cellNumber) {
         this.cellNumber = cellNumber;
     }
 

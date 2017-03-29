@@ -13,7 +13,7 @@ public class LandlordUpdateRequest {
 
     private String identityNumber;
 
-    private Integer cellNumber;
+    private String cellNumber;
 
     private HomeViewType homeViewType;
 
@@ -52,11 +52,11 @@ public class LandlordUpdateRequest {
         this.identityNumber = identityNumber;
     }
 
-    public Integer getCellNumber() {
+    public String getCellNumber() {
         return cellNumber;
     }
 
-    public void setCellNumber(Integer cellNumber) {
+    public void setCellNumber(String cellNumber) {
         this.cellNumber = cellNumber;
     }
 }
