@@ -13,6 +13,7 @@ import za.co.dladle.exception.OtpMismatchException;
 import za.co.dladle.exception.UseAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.exception.UserVerificationCodeNotMatchException;
+import za.co.dladle.mapper.UserTypeMapper;
 import za.co.dladle.model.User;
 import za.co.dladle.entity.UserRegisterRequest;
 import za.co.dladle.model.UserType;
@@ -134,7 +135,7 @@ public class UserServiceUtility {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
                 .addValue("emailId", user.getEmailId())
                 .addValue("password", hashedPassword)
-                .addValue("userType", user.getUserType().getId())
+                .addValue("userType", UserTypeMapper.getUserType(user.getUserType()))
                 .addValue("verified", false)
                 .addValue("verifyCode", hashedCode)
                 .addValue("firstName", user.getFirstName())

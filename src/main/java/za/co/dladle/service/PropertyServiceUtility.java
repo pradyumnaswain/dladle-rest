@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import za.co.dladle.entity.PropertyAddRequest;
 import za.co.dladle.entity.PropertyAddResponse;
 import za.co.dladle.exception.PropertyAlreadyExistsException;
+import za.co.dladle.mapper.PlaceTypeMapper;
 import za.co.dladle.session.UserSession;
 
 import javax.servlet.http.HttpSession;
@@ -55,7 +56,7 @@ public class PropertyServiceUtility {
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
                 .addValue("landlordId", userId)
                 .addValue("address", property.getAddress())
-                .addValue("PlaceType", property.getPlaceType().getId())
+                .addValue("PlaceType", PlaceTypeMapper.getPlaceType(property.getPlaceType()))
                 .addValue("complexName", property.getComplexName())
                 .addValue("unitNumber", property.getUnitNumber())
                 .addValue("imgUrl", property.getImgUrl())

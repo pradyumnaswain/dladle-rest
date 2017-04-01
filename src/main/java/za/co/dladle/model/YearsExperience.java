@@ -5,25 +5,18 @@ package za.co.dladle.model;
  */
 public enum YearsExperience {
 
-    ONE(1),
-    TWO(2),
-    THREE(3),
-    FOUR(4),
-    FIVE(5),
-    SIX(6),
-    SEVEN(7),
-    EIGHT(8),
-    NINE(9),
-    TEN(10),
-    MORE_THAN_10(11);
+    LESS_THAN_ONE("<1 Year"),
+    ONE_TWO_THREE("1-2 Years"),
+    THREE_TO_FIVE("3-5 Years"),
+    MORE_THAN_FIVE(">5 Years");
 
-    private final int id;
+    private final String id;
 
-    private YearsExperience(int id) {
+    private YearsExperience(String id) {
         this.id = id;
     }
 
-    public int getId() {
+    public String getId() {
         return this.id;
     }
 }

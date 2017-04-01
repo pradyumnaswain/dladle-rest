@@ -4,16 +4,17 @@ package za.co.dladle.model;
  * Created by prady on 7/26/2016.
  */
 public enum ServiceType {
-    PLUMBER(1),
-    ELECTRICIAN(2),
-    PAINTER(3);
-    private final int id;
+    PLUMBER("Plumber"),
+    ELECTRICIAN("Electrician"),
+    PAINTER("Painter");
 
-    private ServiceType(int id) {
+    private final String id;
+
+    private ServiceType(String id) {
         this.id = id;
     }
 
-    public int getId() {
+    public String getId() {
         return this.id;
     }
 }

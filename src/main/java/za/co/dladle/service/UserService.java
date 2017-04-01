@@ -12,6 +12,9 @@ import za.co.dladle.exception.UseAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.exception.UserVerificationCodeNotMatchException;
 import za.co.dladle.exception.PasswordMismatchException;
+import za.co.dladle.mapper.HomeViewTypeMapper;
+import za.co.dladle.mapper.ServiceTypeMapper;
+import za.co.dladle.mapper.YearsOfExperienceTypeMapper;
 import za.co.dladle.model.User;
 import za.co.dladle.session.UserSession;
 import za.co.dladle.util.RandomUtil;
@@ -35,13 +38,16 @@ public class UserService {
     private ApplicationContext applicationContext;
 
     @Autowired
+    private
     UserServiceUtility userServiceUtility;
 
     @Autowired
+    private
     NotificationServiceSendGridImpl notificationServiceSendGridImpl;
 
 
     @Autowired
+    private
     NamedParameterJdbcTemplate parameterJdbcTemplate;
 
     @Value("${verification.link}")
@@ -91,7 +97,7 @@ public class UserService {
     public void resetPassword(UserRequestForResetPassword user) throws OtpMismatchException {
         String emailId = user.getEmailId();
         String hashedPassword = Hashing.sha512().hashString(user.getNewPassword(), Charset.defaultCharset()).toString();
-        userServiceUtility.updateUserPasswordWithOtp(emailId, hashedPassword,user.getOtp());
+        userServiceUtility.updateUserPasswordWithOtp(emailId, hashedPassword, user.getOtp());
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -107,9 +113,9 @@ public class UserService {
         String sql = "SELECT password FROM user_dladle WHERE emailid=:emailId";
         String oldPassword = this.parameterJdbcTemplate.queryForObject(sql, map, String.class);
         String hashedOldPassword = Hashing.sha512().hashString(changePassword.getCurrentPassword(), Charset.defaultCharset()).toString();
-        if(oldPassword.equals(hashedOldPassword)){
+        if (oldPassword.equals(hashedOldPassword)) {
 
-            if(changePassword.getNewPassword().equals(changePassword.getNewConfirmPassword())){
+            if (changePassword.getNewPassword().equals(changePassword.getNewConfirmPassword())) {
                 String hashedPassword = Hashing.sha512().hashString(changePassword.getNewPassword(), Charset.defaultCharset()).toString();
                 userServiceUtility.updateUserPassword(changePassword.getEmailId(), hashedPassword);
             } else {
@@ -164,8 +170,8 @@ public class UserService {
         map.put("emailId", emailId);
         map.put("firstName", userUpdateRequest.getFirstName());
         map.put("lastName", userUpdateRequest.getLastName());
-        map.put("identityNumber",userUpdateRequest.getIdentityNumber());
-        map.put("cellNumber",userUpdateRequest.getCellNumber());
+        map.put("identityNumber", userUpdateRequest.getIdentityNumber());
+        map.put("cellNumber", userUpdateRequest.getCellNumber());
 
 
         String sql = " UPDATE user_dladle SET first_name=:firstName, last_name=:lastName, id_number=:identityNumber, cell_number=:cellNumber WHERE emailid=:emailId";
@@ -173,26 +179,28 @@ public class UserService {
     }
 
     @Transactional
-    public int update(VendorUpdateRequest vendorUpdateRequest){
-    UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
-    String emailId = userSession.getUser().getEmailId();
-    Map<String, Object> map = new HashMap<>();
+    public int update(VendorUpdateRequest vendorUpdateRequest) {
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+        String emailId = userSession.getUser().getEmailId();
+        Map<String, Object> map = new HashMap<>();
 
         map.put("emailId", emailId);
-        map.put("firstName", vendorUpdateRequest.getFirstName());;
+        map.put("firstName", vendorUpdateRequest.getFirstName());
+        ;
         map.put("lastName", vendorUpdateRequest.getLastName());
-        map.put("identityNumber",vendorUpdateRequest.getIdentityNumber());
-        map.put("cellNumber",vendorUpdateRequest.getCellNumber());
-        map.put("businessName", vendorUpdateRequest.getBusinessName());;
+        map.put("identityNumber", vendorUpdateRequest.getIdentityNumber());
+        map.put("cellNumber", vendorUpdateRequest.getCellNumber());
+        map.put("businessName", vendorUpdateRequest.getBusinessName());
+        ;
         map.put("businessAddress", vendorUpdateRequest.getBusinessAddress());
-        map.put("serviceType",vendorUpdateRequest.getServiceType().getId());
-        map.put("tools",vendorUpdateRequest.isTools());
-        map.put("transport",vendorUpdateRequest.isTransport());
-        map.put("experience",vendorUpdateRequest.getExperienceType().getId());
+        map.put("serviceType", ServiceTypeMapper.getServiceType(vendorUpdateRequest.getServiceType()));
+        map.put("tools", vendorUpdateRequest.isTools());
+        map.put("transport", vendorUpdateRequest.isTransport());
+        map.put("experience", YearsOfExperienceTypeMapper.getYearsExperience(vendorUpdateRequest.getExperienceType()));
 
         String userSql = " UPDATE user_dladle SET first_name=:firstName, last_name=:lastName, id_number=:identityNumber, cell_number=:cellNumber WHERE emailid=:emailId";
         this.parameterJdbcTemplate.update(userSql, map);
-        String vendorSql = " UPDATE vendor SET  service_type_id=:serviceType, business_name=:businessName,business_address=:businessAddress, tools=:tools, transport=:transport, experience_id=:experience WHERE user_id=(select id from user_dladle where emailid=:emailId)";
+        String vendorSql = " UPDATE vendor SET  service_type_id=:serviceType, business_name=:businessName,business_address=:businessAddress, tools=:tools, transport=:transport, experience_id=:experience WHERE user_id=(SELECT id FROM user_dladle WHERE emailid=:emailId)";
         return this.parameterJdbcTemplate.update(vendorSql, map);
 
     }
@@ -206,14 +214,14 @@ public class UserService {
         map.put("emailId", emailId);
         map.put("firstName", landlordUpdateRequest.getFirstName());
         map.put("lastName", landlordUpdateRequest.getLastName());
-        map.put("identityNumber",landlordUpdateRequest.getIdentityNumber());
-        map.put("cellNumber",landlordUpdateRequest.getCellNumber());
-        map.put("homeViewType",landlordUpdateRequest.getHomeViewType().getId());
+        map.put("identityNumber", landlordUpdateRequest.getIdentityNumber());
+        map.put("cellNumber", landlordUpdateRequest.getCellNumber());
+        map.put("homeViewType", HomeViewTypeMapper.getHomeViewType(landlordUpdateRequest.getHomeViewType()));
 
 
         String sql = " UPDATE user_dladle SET first_name=:firstName, last_name=:lastName, id_number=:identityNumber, cell_number=:cellNumber WHERE emailid=:emailId";
         this.parameterJdbcTemplate.update(sql, map);
-        String landlordSql = " UPDATE landlord SET  home_view_type_id=:homeViewType WHERE user_id=(select id from user_dladle where emailid=:emailId)";
+        String landlordSql = " UPDATE landlord SET  home_view_type_id=:homeViewType WHERE user_id=(SELECT id FROM user_dladle WHERE emailid=:emailId)";
         return this.parameterJdbcTemplate.update(landlordSql, map);
     }
 

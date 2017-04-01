@@ -4,17 +4,17 @@ package za.co.dladle.model;
  * Created by prady on 7/26/2016.
  */
 public enum HomeViewType {
-    HOME_VIEW_TYPE_1(1),
-    HOME_VIEW_TYPE_2(2),
-    HOME_VIEW_TYPE_3(3);
+    HOME_VIEW_TYPE_1("Home View Type 1"),
+    HOME_VIEW_TYPE_2("Home View Type 2"),
+    HOME_VIEW_TYPE_3("Home View Type 3");
 
-    private final int id;
+    private final String id;
 
-    private HomeViewType(int id) {
+    private HomeViewType(String id) {
         this.id = id;
     }
 
-    public int getId() {
+    public String getId() {
         return this.id;
     }
 }

@@ -35,6 +35,7 @@ public class AuthenticationFilter extends GenericFilterBean {
                     isForgotPasswordEndpoint(httpServletRequest) ||
                     isResestPasswordEndpoint(httpServletRequest) ||
                     isVerifyEndPoint(httpServletRequest) ||
+                    isUserTypeEndpoint(httpServletRequest) ||
                     isSwaggerEndpoint(httpServletRequest)) {
                 chain.doFilter(httpServletRequest, httpServletResponse);
             } else try {
@@ -52,9 +53,11 @@ public class AuthenticationFilter extends GenericFilterBean {
     private boolean isTestEndpoint(HttpServletRequest httpServletRequest) {
         return httpServletRequest.getRequestURI().contains("/welcome");
     }
+
     private boolean isTermsEndpoint(HttpServletRequest httpServletRequest) {
         return httpServletRequest.getRequestURI().contains("/DlaDle_TC.html") || httpServletRequest.getRequestURI().contains("/DlaDle_FAQ.html") || httpServletRequest.getRequestURI().contains("/DlaDle_Contact_US.html");
     }
+
     private boolean isLoginEndpoint(HttpServletRequest httpServletRequest) {
         return httpServletRequest.getRequestURI().contains("/api/user/login");
     }
@@ -73,6 +76,10 @@ public class AuthenticationFilter extends GenericFilterBean {
 
     private boolean isVerifyEndPoint(HttpServletRequest httpServletRequest) {
         return httpServletRequest.getRequestURI().matches("/verify/(.*)");
+    }
+
+    private boolean isUserTypeEndpoint(HttpServletRequest httpServletRequest) {
+        return httpServletRequest.getRequestURI().contains("/api/select/usertype");
     }
 
     private static boolean isSwaggerEndpoint(HttpServletRequest httpRequest) {

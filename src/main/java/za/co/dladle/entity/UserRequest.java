@@ -1,7 +1,5 @@
 package za.co.dladle.entity;
 
-import za.co.dladle.model.UserType;
-
 /**
  * Created by prady on 9/3/2016.
  */

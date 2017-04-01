@@ -4,17 +4,17 @@ package za.co.dladle.model;
  * Created by prady on 7/26/2016.
  */
 public enum UserType {
-    TENANT(1),
-    LANDLORD(2),
-    VENDOR(3);
+    TENANT("Tenant"),
+    LANDLORD("Landlord"),
+    VENDOR("Vendor");
 
-    private final int id;
+    private final String id;
 
-    private UserType(int id) {
+    private UserType(String id) {
         this.id = id;
     }
 
-    public int getId() {
+    public String getId() {
         return this.id;
     }
 }
