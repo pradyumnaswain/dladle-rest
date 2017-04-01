@@ -32,3 +32,6 @@ ALTER TABLE property
   ADD COLUMN estate_name VARCHAR(100);
 ALTER TABLE user_dladle
   ALTER COLUMN cell_number TYPE VARCHAR(45) USING cell_number :: VARCHAR(45);
+ALTER TABLE vendor
+  DROP COLUMN business_name;
+

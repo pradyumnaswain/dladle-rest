@@ -185,22 +185,16 @@ public class UserService {
         Map<String, Object> map = new HashMap<>();
 
         map.put("emailId", emailId);
-        map.put("firstName", vendorUpdateRequest.getFirstName());
-        ;
-        map.put("lastName", vendorUpdateRequest.getLastName());
-        map.put("identityNumber", vendorUpdateRequest.getIdentityNumber());
         map.put("cellNumber", vendorUpdateRequest.getCellNumber());
-        map.put("businessName", vendorUpdateRequest.getBusinessName());
-        ;
         map.put("businessAddress", vendorUpdateRequest.getBusinessAddress());
         map.put("serviceType", ServiceTypeMapper.getServiceType(vendorUpdateRequest.getServiceType()));
         map.put("tools", vendorUpdateRequest.isTools());
         map.put("transport", vendorUpdateRequest.isTransport());
         map.put("experience", YearsOfExperienceTypeMapper.getYearsExperience(vendorUpdateRequest.getExperienceType()));
 
-        String userSql = " UPDATE user_dladle SET first_name=:firstName, last_name=:lastName, id_number=:identityNumber, cell_number=:cellNumber WHERE emailid=:emailId";
+        String userSql = " UPDATE user_dladle SET cell_number=:cellNumber WHERE emailid=:emailId";
         this.parameterJdbcTemplate.update(userSql, map);
-        String vendorSql = " UPDATE vendor SET  service_type_id=:serviceType, business_name=:businessName,business_address=:businessAddress, tools=:tools, transport=:transport, experience_id=:experience WHERE user_id=(SELECT id FROM user_dladle WHERE emailid=:emailId)";
+        String vendorSql = " UPDATE vendor SET  service_type_id=:serviceType, business_address=:businessAddress, tools=:tools, transport=:transport, experience_id=:experience WHERE user_id=(SELECT id FROM user_dladle WHERE emailid=:emailId)";
         return this.parameterJdbcTemplate.update(vendorSql, map);
 
     }

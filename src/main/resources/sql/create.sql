@@ -156,7 +156,6 @@ CREATE TABLE tenant
 CREATE TABLE vendor
 (
   id               SERIAL PRIMARY KEY NOT NULL,
-  business_name    VARCHAR(20),
   user_id          INT,
   business_address VARCHAR(50),
   service_type_id  INT,
