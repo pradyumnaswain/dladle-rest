@@ -26,8 +26,9 @@ ALTER TABLE property
   DROP COLUMN bedroom_type_id;
 
 ALTER TABLE property
-  ADD COLUMN isEstate boolean;
+  ADD COLUMN isEstate BOOLEAN;
 
 ALTER TABLE property
   ADD COLUMN estate_name VARCHAR(100);
-ALTER TABLE user_dladle ALTER COLUMN cell_number TYPE VARCHAR(45) USING cell_number::VARCHAR(45);
+ALTER TABLE user_dladle
+  ALTER COLUMN cell_number TYPE VARCHAR(45) USING cell_number :: VARCHAR(45);
