@@ -4,21 +4,16 @@ import com.google.common.hash.Hashing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import za.co.dladle.entity.*;
-import za.co.dladle.exception.OtpMismatchException;
-import za.co.dladle.exception.UseAlreadyExistsException;
-import za.co.dladle.exception.UserNotFoundException;
-import za.co.dladle.exception.UserVerificationCodeNotMatchException;
-import za.co.dladle.exception.PasswordMismatchException;
-import za.co.dladle.mapper.HomeViewTypeMapper;
+import za.co.dladle.exception.*;
 import za.co.dladle.mapper.ServiceTypeMapper;
 import za.co.dladle.mapper.YearsOfExperienceTypeMapper;
 import za.co.dladle.model.User;
 import za.co.dladle.session.UserSession;
 import za.co.dladle.util.RandomUtil;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -210,13 +205,9 @@ public class UserService {
         map.put("lastName", landlordUpdateRequest.getLastName());
         map.put("identityNumber", landlordUpdateRequest.getIdentityNumber());
         map.put("cellNumber", landlordUpdateRequest.getCellNumber());
-        map.put("homeViewType", HomeViewTypeMapper.getHomeViewType(landlordUpdateRequest.getHomeViewType()));
-
 
         String sql = " UPDATE user_dladle SET first_name=:firstName, last_name=:lastName, id_number=:identityNumber, cell_number=:cellNumber WHERE emailid=:emailId";
-        this.parameterJdbcTemplate.update(sql, map);
-        String landlordSql = " UPDATE landlord SET  home_view_type_id=:homeViewType WHERE user_id=(SELECT id FROM user_dladle WHERE emailid=:emailId)";
-        return this.parameterJdbcTemplate.update(landlordSql, map);
+        return this.parameterJdbcTemplate.update(sql, map);
     }
 
 }
