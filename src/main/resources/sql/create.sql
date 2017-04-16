@@ -127,18 +127,13 @@ CREATE TABLE amenities
 CREATE TABLE rating
 (
   id      SERIAL PRIMARY KEY NOT NULL,
-  user_id INT,
-  value   DECIMAL
-);
-
-/*comments*/
-CREATE TABLE rating_comments
-(
-  id          SERIAL PRIMARY KEY NOT NULL,
-  rating_id   INT,
-  user_id     INT,
-  description VARCHAR(100),
-  FOREIGN KEY (rating_id) REFERENCES rating (id)
+  rated_user INT,
+  rating_user INT,
+  value   DECIMAL,
+  rating_comment VARCHAR(500),
+  FOREIGN KEY (rated_user) REFERENCES user_dladle(id),
+  FOREIGN KEY (rating_user) REFERENCES user_dladle(id),
+  UNIQUE (rating_user,rated_user)
 );
 
 /*tenant*/

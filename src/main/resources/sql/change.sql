@@ -35,3 +35,13 @@ ALTER TABLE user_dladle
 ALTER TABLE vendor
   DROP COLUMN business_name;
 
+ALTER TABLE rating DROP COLUMN user_id;
+ALTER TABLE rating ADD COLUMN rated_user INT;
+ALTER TABLE rating ADD COLUMN rating_user INT;
+ALTER TABLE rating ADD COLUMN rating_comment VARCHAR(500);
+ALTER TABLE rating ADD FOREIGN KEY (rated_user) REFERENCES user_dladle(id);
+ALTER TABLE rating ADD FOREIGN KEY (rating_user) REFERENCES user_dladle(id);
+ALTER TABLE rating ADD CONSTRAINT rating_rated_user UNIQUE (rating_user,rated_user) ;
+
+DROP TABLE rating_comments;
+

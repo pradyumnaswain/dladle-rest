@@ -45,9 +45,9 @@ public class AuthenticationFilter extends GenericFilterBean {
             }
         } else {
             chain.doFilter(request, response);
+            httpServletResponse.addHeader("Set-Cookie", "JSESSIONID=" + session.getId());
+            httpServletResponse.addHeader("Access-Control-Allow-Origin", "true");
         }
-        httpServletResponse.addHeader("Set-Cookie", "JSESSIONID=" + session.getId());
-        httpServletResponse.addHeader("Access-Control-Allow-Origin", "true");
     }
 
     private boolean isTestEndpoint(HttpServletRequest httpServletRequest) {

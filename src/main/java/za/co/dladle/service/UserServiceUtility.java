@@ -53,6 +53,19 @@ public class UserServiceUtility {
     }
 
     //------------------------------------------------------------------------------------------------------------------
+    //Find User Id By Email Id
+    //------------------------------------------------------------------------------------------------------------------
+    public Long findUserIdByEmail(String emailId) throws UserNotFoundException {
+
+        try {
+            String sql = "SELECT id FROM user_dladle WHERE emailid=?";
+            return this.jdbcTemplate.queryForObject(sql, new Object[]{emailId}, (rs, rowNum) -> rs.getLong("id"));
+        } catch (EmptyResultDataAccessException e) {
+            throw new UserNotFoundException("User doesn't exist");
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
     //Find User By Email Id and Password
     //------------------------------------------------------------------------------------------------------------------
     public User findUserByEmailAndPassword(String emailId, String password) throws UserNotFoundException {

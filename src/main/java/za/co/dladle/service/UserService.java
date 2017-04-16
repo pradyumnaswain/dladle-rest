@@ -53,14 +53,13 @@ public class UserService {
     //Set Session
     //------------------------------------------------------------------------------------------------------------------
     @Transactional
-    public User setSessionService(User user) {
+    public void setSessionService(User user) {
         session.setAttribute("user", user);
 
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
         userSession.setUser(user);
 
-        return user;
     }
 
     //------------------------------------------------------------------------------------------------------------------
