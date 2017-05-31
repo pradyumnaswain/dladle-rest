@@ -31,8 +31,6 @@ public class PropertyController {
         try {
             PropertyAddResponse propertyAddResponse = propertyServiceUtility.propertyRegistration(propertyAddRequest);
             return ResponseUtil.response("Success", propertyAddResponse, "Property Registered Successfully");
-        } catch (PropertyAlreadyExistsException e) {
-            return ResponseUtil.response("Fail", "{}", e.getMessage());
         } catch (Exception e) {
             return ResponseUtil.response("Fail", "{}", e.getMessage());
         }

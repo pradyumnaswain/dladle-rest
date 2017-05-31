@@ -25,17 +25,12 @@ import java.util.Map;
 
 @Service
 public class PropertyServiceUtility {
-    @Autowired
-    private HttpSession session;
 
     @Autowired
     private ApplicationContext applicationContext;
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    NamedParameterJdbcTemplate parameterJdbcTemplate;
+    private NamedParameterJdbcTemplate parameterJdbcTemplate;
 
     //------------------------------------------------------------------------------------------------------------------
     //Insert Property
