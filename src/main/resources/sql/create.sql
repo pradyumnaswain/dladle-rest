@@ -59,6 +59,13 @@ CREATE TABLE years_exp
   name VARCHAR(20)
 );
 
+/*Contact Type*/
+CREATE TABLE contact_type
+(
+  id   SERIAL PRIMARY KEY,
+  name VARCHAR(20)
+);
+
 /* User*/
 CREATE TABLE user_dladle
 (

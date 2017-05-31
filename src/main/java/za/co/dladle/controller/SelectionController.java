@@ -18,6 +18,12 @@ public class SelectionController {
     @Autowired
     private SelectionService selectionService;
 
+    @RequestMapping(value = "api/select/contacttype", method = RequestMethod.GET)
+    public Map<String, Object> getContactType() {
+        Map<String, String> contactTypes = selectionService.getContactTypes();
+
+        return ResponseUtil.response("SUCCESS", contactTypes, "Contact Types Fetched");
+    }
     @RequestMapping(value = "api/select/homeviewtype", method = RequestMethod.GET)
     public Map<String, Object> getHomeViewType() {
         Map<String, String> homeViewTypes = selectionService.getHomeViewTypes();

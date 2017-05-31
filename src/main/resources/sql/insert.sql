@@ -18,3 +18,6 @@ INSERT INTO years_exp (name) VALUES ('< 1 Year');
 INSERT INTO years_exp (name) VALUES ('1-3 Years');
 INSERT INTO years_exp (name) VALUES ('3-5 Years');
 INSERT INTO years_exp (name) VALUES ('5+ Years');
+
+INSERT INTO contact_type (name) VALUES ('Hospital');
+INSERT INTO contact_type (name) VALUES ('Electrician');

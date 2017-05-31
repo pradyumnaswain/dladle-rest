@@ -54,4 +54,13 @@ public class SelectionService {
         }
         return map;
     }
+
+    public Map<String, String> getContactTypes() {
+        Map<String, String> map = new HashMap<>();
+
+        for (ContactType contactType : ContactType.values()) {
+            map.put(contactType.getId(), contactType.name());
+        }
+        return map;
+    }
 }
