@@ -87,8 +87,8 @@ CREATE UNIQUE INDEX user_dladle_email_uindex
 /*landlord*/
 CREATE TABLE landlord
 (
-  id          SERIAL PRIMARY KEY NOT NULL,
-  user_id     INT,
+  id                SERIAL PRIMARY KEY NOT NULL,
+  user_id           INT,
   home_view_type_id INT,
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),
   FOREIGN KEY (home_view_type_id) REFERENCES home_view_type (id)
@@ -97,17 +97,30 @@ CREATE TABLE landlord
 /*property*/
 CREATE TABLE property
 (
-  id                SERIAL PRIMARY KEY NOT NULL,
-  landlord_id       INT,
+  id            SERIAL PRIMARY KEY NOT NULL,
+  landlord_id   INT,
   place_type_id INT,
-  address           VARCHAR(100),
-  isEstate       VARCHAR(100),
-  estate_name    VARCHAR(100),
-  complex_name      VARCHAR(45),
-  unit_number       VARCHAR(20),
-  image_url         VARCHAR(100),
+  address       VARCHAR(100),
+  isEstate      VARCHAR(100),
+  estate_name   VARCHAR(100),
+  complex_name  VARCHAR(45),
+  unit_number   VARCHAR(20),
+  image_url     VARCHAR(100),
   FOREIGN KEY (place_type_id) REFERENCES place_type (id),
   FOREIGN KEY (landlord_id) REFERENCES landlord (id)
+);
+
+/*property_contact*/
+CREATE TABLE property_contact
+(
+  id              SERIAL PRIMARY KEY NOT NULL,
+  property_id     INT,
+  contact_type_id INT,
+  name            VARCHAR(50),
+  address         VARCHAR(200),
+  contact_number  VARCHAR(12),
+  FOREIGN KEY (property_id) REFERENCES property (id),
+  FOREIGN KEY (contact_type_id) REFERENCES contact_type (id)
 );
 
 /*house*/
@@ -133,14 +146,14 @@ CREATE TABLE amenities
 /*rating*/
 CREATE TABLE rating
 (
-  id      SERIAL PRIMARY KEY NOT NULL,
-  rated_user INT,
-  rating_user INT,
-  value   DECIMAL,
+  id             SERIAL PRIMARY KEY NOT NULL,
+  rated_user     INT,
+  rating_user    INT,
+  value          DECIMAL,
   rating_comment VARCHAR(500),
-  FOREIGN KEY (rated_user) REFERENCES user_dladle(id),
-  FOREIGN KEY (rating_user) REFERENCES user_dladle(id),
-  UNIQUE (rating_user,rated_user)
+  FOREIGN KEY (rated_user) REFERENCES user_dladle (id),
+  FOREIGN KEY (rating_user) REFERENCES user_dladle (id),
+  UNIQUE (rating_user, rated_user)
 );
 
 /*tenant*/
