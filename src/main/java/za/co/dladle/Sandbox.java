@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSessionListener;
 public class Sandbox {
 
     @Autowired
-    UserSessionMonitor sessionMonitor;
+    private UserSessionMonitor sessionMonitor;
 
     public static void main(String[] args) {
         SpringApplication.run(Sandbox.class);
