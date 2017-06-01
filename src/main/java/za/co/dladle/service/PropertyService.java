@@ -9,10 +9,14 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import za.co.dladle.entity.PropertyAddRequest;
 import za.co.dladle.entity.PropertyAddResponse;
+import za.co.dladle.entity.PropertyContactView;
 import za.co.dladle.exception.PropertyAddException;
 import za.co.dladle.exception.PropertyAlreadyExistsException;
 import za.co.dladle.mapper.ContactTypeMapper;
 import za.co.dladle.mapper.PlaceTypeMapper;
+import za.co.dladle.model.ContactType;
+import za.co.dladle.model.PlaceType;
+import za.co.dladle.model.Property;
 import za.co.dladle.model.PropertyContact;
 import za.co.dladle.session.UserSession;
 
@@ -40,7 +44,7 @@ public class PropertyService {
     //------------------------------------------------------------------------------------------------------------------
 
     @Transactional
-    public PropertyAddResponse addProperty(PropertyAddRequest property) throws PropertyAlreadyExistsException, PropertyAddException {
+    public boolean addProperty(PropertyAddRequest property) throws PropertyAlreadyExistsException, PropertyAddException {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
         if (userSession.getUser().getUserType().eqLANDLORD()) {
@@ -97,13 +101,13 @@ public class PropertyService {
                 String sqlHouse = "INSERT INTO house(property_id) VALUES (:propertyId)";
                 this.parameterJdbcTemplate.update(sqlHouse, mapSqlParameterSource, houseId, new String[]{"id"});
 
-                PropertyAddResponse propertyAddResponse = new PropertyAddResponse();
+//                PropertyAddResponse propertyAddResponse = new PropertyAddResponse();
+//
+//                propertyAddResponse.setPropertyId(propertyId.getKey().longValue());
+//
+//                propertyAddResponse.setHouseId(houseId.getKey().longValue());
 
-                propertyAddResponse.setPropertyId(propertyId.getKey().longValue());
-
-                propertyAddResponse.setHouseId(houseId.getKey().longValue());
-
-                return propertyAddResponse;
+                return true;
             } else {
                 throw new PropertyAlreadyExistsException("Property already Exists");
             }
@@ -112,7 +116,65 @@ public class PropertyService {
         }
     }
 
-    public PropertyAddResponse listProperties() {
-        return null;
+    public List<Property> listProperties() throws PropertyAddException {
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+
+        if (userSession.getUser().getUserType().eqLANDLORD()) {
+            String email = userSession.getUser().getEmailId();
+
+            List<Property> propertyList = new ArrayList<>();
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("emailId", email);
+            String landlordSql = "SELECT property.*,property.id property_id, house.id house_id,place_type.name place_name FROM property " +
+                    " INNER JOIN landlord ON property.landlord_id= landlord.id" +
+                    " INNER JOIN place_type ON property.place_type_id= place_type.id" +
+                    " INNER JOIN house ON property.id= house.property_id " +
+                    " INNER JOIN user_dladle ON landlord.user_id = user_dladle.id " +
+                    " WHERE emailid=:emailId";
+            this.parameterJdbcTemplate.query(landlordSql, map, (rs, rowNum) -> {
+                Property property = new Property();
+                property.setAddress(rs.getString("address"));
+                property.setComplexName(rs.getString("complex_name"));
+                property.setEstate(rs.getBoolean("isestate"));
+                property.setEstateName(rs.getString("estate_name"));
+                property.setPlaceImage(rs.getString("image_url"));
+                property.setUnitNumber(rs.getString("unit_number"));
+                property.setPlaceType(rs.getString("place_name"));
+                property.setPropertyId(rs.getLong("property_id"));
+                property.setHouseId(rs.getLong("house_id"));
+
+                List<PropertyContactView> contacts = new ArrayList<>();
+                map.put("propertyId", property.getPropertyId());
+                String sql = "SELECT property_contact.*,property_contact.name property_conact_name, contact_type.name contact_type_name FROM property_contact INNER JOIN contact_type ON property_contact.contact_type_id = contact_type.id WHERE property_id=:propertyId";
+                this.parameterJdbcTemplate.query(sql, map, (rs1, rowNum1) -> {
+                    PropertyContactView propertyContact = new PropertyContactView();
+                    propertyContact.setAddress(rs1.getString("address"));
+                    propertyContact.setName(rs1.getString("property_conact_name"));
+                    propertyContact.setContactType(rs1.getString("contact_type_name"));
+                    propertyContact.setContactNumber(rs1.getString("contact_number"));
+                    contacts.add(propertyContact);
+                    return propertyContact;
+                });
+                property.setPropertyContactList(contacts);
+
+                List<String> tenantList = new ArrayList<>();
+                map.put("houseId", property.getHouseId());
+                String sql1 = "SELECT user_dladle.* FROM tenant INNER JOIN user_dladle ON tenant.user_id = user_dladle.id WHERE house_id=:houseId";
+                this.parameterJdbcTemplate.query(sql1, map, (rs1, rowNum1) -> {
+                    String tenant = rs1.getString("emailid");
+                    tenantList.add(tenant);
+                    return tenant;
+                });
+                property.setTenantList(tenantList);
+
+                propertyList.add(property);
+
+                return property;
+            });
+            return propertyList;
+        } else {
+            throw new PropertyAddException("Property Unavailable");
+        }
     }
 }

@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.dladle.entity.PropertyAddRequest;
 import za.co.dladle.entity.PropertyAddResponse;
+import za.co.dladle.model.Property;
 import za.co.dladle.service.PropertyService;
 import za.co.dladle.util.ResponseUtil;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,8 +30,8 @@ public class PropertyController {
     @RequestMapping(value = "/api/property/add", method = RequestMethod.POST)
     public Map<String, Object> addProperty(@RequestBody(required = false) PropertyAddRequest propertyAddRequest) throws IOException {
         try {
-            PropertyAddResponse propertyAddResponse = propertyService.addProperty(propertyAddRequest);
-            return ResponseUtil.response("Success", propertyAddResponse, "Property Added Successfully");
+            Boolean aBoolean = propertyService.addProperty(propertyAddRequest);
+            return ResponseUtil.response("Success", "{}", "Property Added Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("Fail", "{}", e.getMessage());
         }
@@ -41,8 +43,8 @@ public class PropertyController {
     @RequestMapping(value = "/api/property/list", method = RequestMethod.GET)
     public Map<String, Object> listProperty() throws IOException {
         try {
-            PropertyAddResponse propertyAddResponse = propertyService.listProperties();
-            return ResponseUtil.response("Success", propertyAddResponse, "Property Added Successfully");
+            List<Property> property= propertyService.listProperties();
+            return ResponseUtil.response("Success", property, "Property listed Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("Fail", "{}", e.getMessage());
         }
