@@ -127,7 +127,6 @@ CREATE TABLE property_contact
 CREATE TABLE house
 (
   id           SERIAL PRIMARY KEY NOT NULL,
-  house_number INT UNIQUE         NOT NULL,
   property_id  INT,
   FOREIGN KEY (property_id) REFERENCES property (id)
 );

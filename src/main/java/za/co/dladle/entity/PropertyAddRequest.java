@@ -1,6 +1,9 @@
 package za.co.dladle.entity;
 
 import za.co.dladle.model.PlaceType;
+import za.co.dladle.model.PropertyContact;
+
+import java.util.List;
 
 /**
  * Created by Jugal on 29/01/2017.
@@ -9,7 +12,7 @@ public class PropertyAddRequest {
 
     private String address;
 
-    private boolean IsEstate;
+    private boolean isInEstate;
 
     private String estateName;
 
@@ -17,11 +20,13 @@ public class PropertyAddRequest {
 
     private String complexName;
 
-    private String unitNumber;
+    private String unitNo;
 
-    private String imgUrl;
+    private String placeImage;
 
-    public PropertyAddRequest( ) {
+    private List<PropertyContact> propertyContactList;
+
+    public PropertyAddRequest() {
     }
 
     public String getAddress() {
@@ -32,12 +37,12 @@ public class PropertyAddRequest {
         this.address = address;
     }
 
-    public boolean isEstate() {
-        return IsEstate;
+    public boolean isInEstate() {
+        return isInEstate;
     }
 
-    public void setEstate(boolean estate) {
-        IsEstate = estate;
+    public void setInEstate(boolean inEstate) {
+        isInEstate = inEstate;
     }
 
     public String getEstateName() {
@@ -64,19 +69,27 @@ public class PropertyAddRequest {
         this.complexName = complexName;
     }
 
-    public String getUnitNumber() {
-        return unitNumber;
+    public String getUnitNo() {
+        return unitNo;
     }
 
-    public void setUnitNumber(String unitNumber) {
-        this.unitNumber = unitNumber;
+    public void setUnitNo(String unitNo) {
+        this.unitNo = unitNo;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getPlaceImage() {
+        return placeImage;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setPlaceImage(String placeImage) {
+        this.placeImage = placeImage;
+    }
+
+    public List<PropertyContact> getPropertyContactList() {
+        return propertyContactList;
+    }
+
+    public void setPropertyContactList(List<PropertyContact> propertyContactList) {
+        this.propertyContactList = propertyContactList;
     }
 }

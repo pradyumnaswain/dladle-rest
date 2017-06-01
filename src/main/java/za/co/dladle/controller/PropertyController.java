@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.dladle.entity.PropertyAddRequest;
 import za.co.dladle.entity.PropertyAddResponse;
-import za.co.dladle.exception.PropertyAlreadyExistsException;
-import za.co.dladle.service.PropertyServiceUtility;
+import za.co.dladle.service.PropertyService;
 import za.co.dladle.util.ResponseUtil;
 
 import java.io.IOException;
@@ -21,16 +20,29 @@ import java.util.Map;
 public class PropertyController {
 
     @Autowired
-    PropertyServiceUtility propertyServiceUtility;
+    private PropertyService propertyService;
 
     //------------------------------------------------------------------------------------------------------------------
     //Add Property
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "/api/property/add", method = RequestMethod.POST)
-    public Map<String, Object> AddProperty(@RequestBody(required = false) PropertyAddRequest propertyAddRequest) throws IOException {
+    public Map<String, Object> addProperty(@RequestBody(required = false) PropertyAddRequest propertyAddRequest) throws IOException {
         try {
-            PropertyAddResponse propertyAddResponse = propertyServiceUtility.propertyRegistration(propertyAddRequest);
-            return ResponseUtil.response("Success", propertyAddResponse, "Property Registered Successfully");
+            PropertyAddResponse propertyAddResponse = propertyService.addProperty(propertyAddRequest);
+            return ResponseUtil.response("Success", propertyAddResponse, "Property Added Successfully");
+        } catch (Exception e) {
+            return ResponseUtil.response("Fail", "{}", e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //List Property of a Landlord
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = "/api/property/list", method = RequestMethod.GET)
+    public Map<String, Object> listProperty() throws IOException {
+        try {
+            PropertyAddResponse propertyAddResponse = propertyService.listProperties();
+            return ResponseUtil.response("Success", propertyAddResponse, "Property Added Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("Fail", "{}", e.getMessage());
         }

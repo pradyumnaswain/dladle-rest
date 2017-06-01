@@ -17,4 +17,16 @@ public enum UserType {
     public String getId() {
         return this.id;
     }
+
+    public Boolean eqTENANT() {
+        return getId().equals(UserType.TENANT.getId());
+    }
+
+    public Boolean eqLANDLORD() {
+        return getId().equals(UserType.LANDLORD.getId());
+    }
+
+    public Boolean eqVENDOR() {
+        return getId().equals(UserType.VENDOR.getId());
+    }
 }
