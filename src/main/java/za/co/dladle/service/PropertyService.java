@@ -1,7 +1,13 @@
 package za.co.dladle.service;
 
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -20,6 +26,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by jugal on 05/02/2017.
@@ -36,6 +44,11 @@ public class PropertyService {
 
     @Autowired
     private UserServiceUtility userServiceUtility;
+
+    @Autowired
+    private AndroidPushNotificationsService pushNotificationsService;
+
+    private static final Logger log = LoggerFactory.getLogger(PropertyService.class);
 
     //------------------------------------------------------------------------------------------------------------------
     //Insert Property
@@ -238,6 +251,44 @@ public class PropertyService {
 
 
     public void inviteTenant(PropertyInviteRequest propertyInviteRequest) {
+        JSONObject body = new JSONObject();
+        // JsonArray registration_ids = new JsonArray();
+        // body.put("registration_ids", registration_ids);
+        body.put("to", "xxxxxxxxxxxxxxxxxxxjPwZpLgLpji_");
+        body.put("priority", "high");
+        // body.put("dry_run", true);
 
+        JSONObject notification = new JSONObject();
+        notification.put("body", "body string here");
+        notification.put("title", "title string here");
+        // notification.put("icon", "myicon");
+
+        JSONObject data = new JSONObject();
+        data.put("key1", "value1");
+        data.put("key2", "value2");
+
+        body.put("notification", notification);
+        body.put("data", data);
+
+        HttpEntity<String> request = new HttpEntity<>(body.toString());
+
+        CompletableFuture<FirebaseResponse> pushNotification = pushNotificationsService.send(request);
+        CompletableFuture.allOf(pushNotification).join();
+
+        try {
+            FirebaseResponse firebaseResponse = pushNotification.get();
+            if (firebaseResponse.getSuccess() == 1) {
+                log.info("push notification sent ok!");
+            } else {
+                log.error("error sending push notifications: " + firebaseResponse.toString());
+            }
+//            return new ResponseEntity<>(firebaseResponse.toString(), HttpStatus.OK);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+//        return new ResponseEntity<>("the push notification cannot be send.", HttpStatus.BAD_REQUEST);
     }
 }
