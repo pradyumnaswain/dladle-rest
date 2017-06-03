@@ -4,14 +4,18 @@ import com.google.common.hash.Hashing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import za.co.dladle.entity.*;
 import za.co.dladle.exception.*;
 import za.co.dladle.mapper.ServiceTypeMapper;
+import za.co.dladle.mapper.UserTypeMapper;
 import za.co.dladle.mapper.YearsOfExperienceTypeMapper;
 import za.co.dladle.model.User;
+import za.co.dladle.model.UserType;
 import za.co.dladle.session.UserSession;
 import za.co.dladle.util.RandomUtil;
 
@@ -19,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,10 +45,12 @@ public class UserService {
     private
     NotificationServiceSendGridImpl notificationServiceSendGridImpl;
 
-
     @Autowired
     private
     NamedParameterJdbcTemplate parameterJdbcTemplate;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Value("${verification.link}")
     private String verificationLink;
@@ -209,4 +216,26 @@ public class UserService {
         return this.parameterJdbcTemplate.update(sql, map);
     }
 
+    public List<UserSearchResponse> search(UserSearchRequest userSearchRequest) throws UserNotFoundException {
+        try {
+            String sql = "SELECT * FROM user_dladle INNER JOIN user_type ON user_dladle.user_type_id = user_type.id WHERE user_type_id=? AND (lower(first_name) LIKE ? OR lower(last_name)=?)";
+            return this.jdbcTemplate.query(sql, new Object[]{UserTypeMapper.getUserType(userSearchRequest.getUserType()), "%" + userSearchRequest.getName().toLowerCase() + "%", "%" + userSearchRequest.getName().toLowerCase() + "%"}, (rs, rowNum) ->
+                    new UserSearchResponse(rs.getString("emailId"), rs.getString("first_name") + " " + rs.getString("last_name")));
+        } catch (EmptyResultDataAccessException e) {
+            throw new UserNotFoundException("User Not Found");
+        }
+
+    }
+
+    public void saveDeviceDetails(String emailId, String deviceId) throws UserNotFoundException {
+        Map<String, Object> map = new HashMap<>();
+
+        Long userId = userServiceUtility.findUserIdByEmail(emailId);
+        map.put("userId", userId);
+        map.put("deviceId", deviceId);
+
+        String sql = " INSERT INTO user_device (device_id, user_id) VALUES (:deviceId,:userId) ON CONFLICT ON CONSTRAINT unique_device DO NOTHING;";
+        this.parameterJdbcTemplate.update(sql, map);
+
+    }
 }

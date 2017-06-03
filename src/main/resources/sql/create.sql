@@ -126,8 +126,8 @@ CREATE TABLE property_contact
 /*house*/
 CREATE TABLE house
 (
-  id           SERIAL PRIMARY KEY NOT NULL,
-  property_id  INT,
+  id          SERIAL PRIMARY KEY NOT NULL,
+  property_id INT,
   FOREIGN KEY (property_id) REFERENCES property (id)
 );
 
@@ -201,4 +201,14 @@ CREATE TABLE service
   vendor_id       INT,
   FOREIGN KEY (service_type_id) REFERENCES service_type (id),
   FOREIGN KEY (vendor_id) REFERENCES vendor (id)
+);
+/*User Device*/
+DROP TABLE user_device;
+CREATE TABLE user_device
+(
+  id        SERIAL PRIMARY KEY NOT NULL,
+  device_id VARCHAR(1000),
+  user_id   INT,
+  CONSTRAINT unique_device UNIQUE (device_id, user_id),
+  FOREIGN KEY (user_id) REFERENCES user_dladle (id)
 );

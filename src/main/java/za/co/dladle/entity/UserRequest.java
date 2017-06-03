@@ -9,6 +9,8 @@ public class UserRequest {
 
     private String password;
 
+    private String deviceId;
+
     public UserRequest() {
     }
 
@@ -30,5 +32,13 @@ public class UserRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 }

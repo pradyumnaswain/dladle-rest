@@ -10,10 +10,12 @@ import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.exception.UserVerificationCodeNotMatchException;
 import za.co.dladle.exception.PasswordMismatchException;
 import za.co.dladle.model.User;
+import za.co.dladle.model.UserType;
 import za.co.dladle.service.UserService;
 import za.co.dladle.util.ResponseUtil;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,14 +38,17 @@ public class UserController {
 
             if (returnedUser.isVerified()) {
 
+                if (user.getDeviceId() != null) {
+                    userService.saveDeviceDetails(user.getEmailId(), user.getDeviceId());
+                }
                 userService.setSessionService(returnedUser);
-                return ResponseUtil.response("Success", returnedUser, "Login Success");
+                return ResponseUtil.response("SUCCESS", returnedUser, "Login Success");
             } else {
                 return ResponseUtil.response("Not Verified", null, "Please verify your Email to continue");
             }
         } catch (UserNotFoundException e) {
             // TODO: 1/8/2017 Chnage Message to wrong username or password
-            return ResponseUtil.response("Fail", null, e.getMessage());
+            return ResponseUtil.response("FAIL", null, e.getMessage());
         }
     }
 
@@ -53,7 +58,7 @@ public class UserController {
     @RequestMapping(value = "api/user/logout", method = RequestMethod.GET)
     public Map<String, Object> logout() {
         userService.logout();
-        return ResponseUtil.response("Success", "{}", "Logged Out Successfully");
+        return ResponseUtil.response("SUCCESS", "{}", "Logged Out Successfully");
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -64,9 +69,9 @@ public class UserController {
         try {
             User user = userService.forgotPassword(passwordRequest.getEmailId());
             userService.sendOtp(user.getEmailId());
-            return ResponseUtil.response("Success", user.getEmailId(), "User Exists");
+            return ResponseUtil.response("SUCCESS", user.getEmailId(), "User Exists");
         } catch (UserNotFoundException | IOException e) {
-            return ResponseUtil.response("Fail", null, e.getMessage());
+            return ResponseUtil.response("FAIL", null, e.getMessage());
         }
     }
 
@@ -77,10 +82,10 @@ public class UserController {
     public Map<String, Object> resetPassword(@RequestBody UserRequestForResetPassword user) {
         try {
             userService.resetPassword(user);
-            return ResponseUtil.response("Success", "{}", "Password Updated Successfully");
+            return ResponseUtil.response("SUCCESS", "{}", "Password Updated Successfully");
         } catch (OtpMismatchException e) {
             e.printStackTrace();
-            return ResponseUtil.response("Fail", null, e.getMessage());
+            return ResponseUtil.response("FAIL", null, e.getMessage());
         }
     }
 
@@ -91,10 +96,10 @@ public class UserController {
     public Map<String, Object> changePassword(@RequestBody ChangePasswordRequest changePassword) {
         try {
             userService.changePassword(changePassword);
-            return ResponseUtil.response("Success", "{}", "Password Changed Successfully");
+            return ResponseUtil.response("SUCCESS", "{}", "Password Changed Successfully");
         } catch (PasswordMismatchException e) {
             e.printStackTrace();
-            return ResponseUtil.response("Fail", null, e.getMessage());
+            return ResponseUtil.response("FAIL", null, e.getMessage());
         }
     }
 
@@ -106,11 +111,11 @@ public class UserController {
     public Map<String, Object> register(@RequestBody(required = false) UserRegisterRequest registerRequest) {
         try {
             userService.register(registerRequest);
-            return ResponseUtil.response("Success", "{}", "User Registered Successfully");
+            return ResponseUtil.response("SUCCESS", "{}", "User Registered Successfully");
         } catch (UseAlreadyExistsException e) {
-            return ResponseUtil.response("Fail", "{}", e.getMessage());
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
         } catch (IOException e) {
-            return ResponseUtil.response("Fail", "{}", e.getMessage());
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }
     }
 
@@ -135,12 +140,12 @@ public class UserController {
         try {
             int rows = userService.update(userUpdateRequest);
             if (rows == 1) {
-                return ResponseUtil.response("Success", "{}", "User Updated Successfully");
+                return ResponseUtil.response("SUCCESS", "{}", "User Updated Successfully");
             } else {
-                return ResponseUtil.response("Success", "{}", "Unable to update User");
+                return ResponseUtil.response("SUCCESS", "{}", "Unable to update User");
             }
         } catch (Exception e) {
-            return ResponseUtil.response("Fail", "{}", e.getMessage());
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }
     }
 
@@ -154,12 +159,12 @@ public class UserController {
         try {
             int rows = userService.update(landlordUpdateRequest);
             if (rows == 1) {
-                return ResponseUtil.response("Success", "{}", "LandLord Updated Successfully");
+                return ResponseUtil.response("SUCCESS", "{}", "LandLord Updated Successfully");
             } else {
-                return ResponseUtil.response("Success", "{}", "Unable to update LandLord");
+                return ResponseUtil.response("SUCCESS", "{}", "Unable to update LandLord");
             }
         } catch (Exception e) {
-            return ResponseUtil.response("Fail", "{}", e.getMessage());
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }
     }
 
@@ -172,12 +177,26 @@ public class UserController {
         try {
             int rows = userService.update(vendorUpdateRequest);
             if (rows == 1) {
-                return ResponseUtil.response("Success", "{}", "Vendor updated Successfully");
+                return ResponseUtil.response("SUCCESS", "{}", "Vendor updated Successfully");
             } else {
-                return ResponseUtil.response("Success", "{}", "Unable to update Vendor");
+                return ResponseUtil.response("SUCCESS", "{}", "Unable to update Vendor");
             }
         } catch (Exception e) {
-            return ResponseUtil.response("Fail", "{}", e.getMessage());
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Search for a User
+    //------------------------------------------------------------------------------------------------------------------
+    @ApiOperation(value = "Search User", notes = "Search")
+    @RequestMapping(value = "/api/user/search", method = RequestMethod.POST)
+    public Map<String, Object> updateVendor(@RequestBody UserSearchRequest userSearchRequest) throws IOException {
+        try {
+            List<UserSearchResponse> userSearchResponseList = userService.search(userSearchRequest);
+            return ResponseUtil.response("SUCCESS", userSearchResponseList, "User Fetched Successfully");
+        } catch (Exception e) {
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }
     }
 }

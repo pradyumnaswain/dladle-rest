@@ -29,9 +29,9 @@ public class RatingController {
     public Map<String, Object> viewRating() throws IOException {
         try {
             RatingView ratingView = ratingService.viewRating();
-            return ResponseUtil.response("Success", ratingView, "Rate retrieved Successfully");
+            return ResponseUtil.response("SUCCESS", ratingView, "Rate retrieved Successfully");
         } catch (Exception e) {
-            return ResponseUtil.response("Success", null, "Rate not available for above user");
+            return ResponseUtil.response("SUCCESS", null, "Rate not available for above user");
         }
     }
 
@@ -42,9 +42,9 @@ public class RatingController {
     public Map<String, Object> viewRatingDetails() throws IOException {
         try {
             List<RatingViewDetails> ratingViewDetails = ratingService.viewRatingDetails();
-            return ResponseUtil.response("Success", ratingViewDetails, "Rate retrieved Successfully");
+            return ResponseUtil.response("SUCCESS", ratingViewDetails, "Rate retrieved Successfully");
         } catch (Exception e) {
-            return ResponseUtil.response("Success", null, "Rate not available for above user");
+            return ResponseUtil.response("SUCCESS", null, "Rate not available for above user");
         }
     }
 
@@ -55,9 +55,9 @@ public class RatingController {
     public Map<String, Object> postRating(@RequestBody(required = false) RatingAddRequest ratingAddRequest) throws IOException {
         try {
             boolean b = ratingService.postRating(ratingAddRequest);
-            return ResponseUtil.response("Success", b, "Rate posted Successfully");
+            return ResponseUtil.response("SUCCESS", b, "Rate posted Successfully");
         } catch (Exception e) {
-            return ResponseUtil.response("Success", null, "Unable to post rating");
+            return ResponseUtil.response("SUCCESS", null, "Unable to post rating");
         }
     }
     //------------------------------------------------------------------------------------------------------------------
@@ -67,9 +67,9 @@ public class RatingController {
     public Map<String, Object> updateRating(@RequestBody(required = false) RatingUpdateRequest ratingUpdateRequest) throws IOException {
         try {
             boolean b = ratingService.updateRating(ratingUpdateRequest);
-            return ResponseUtil.response("Success", b, "Rate updated Successfully");
+            return ResponseUtil.response("SUCCESS", b, "Rate updated Successfully");
         } catch (Exception e) {
-            return ResponseUtil.response("Success", null, "Unable to uodate rating");
+            return ResponseUtil.response("SUCCESS", null, "Unable to uodate rating");
         }
     }
 

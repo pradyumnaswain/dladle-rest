@@ -21,6 +21,6 @@ public class WelcomeController {
     @RequestMapping(value = "/welcome", method = RequestMethod.GET)
     public Map<String, Object> welcome() {
         String welcome = welcomeService.welcome();
-        return ResponseUtil.response("Success", welcome, welcome);
+        return ResponseUtil.response("SUCCESS", welcome, welcome);
     }
 }
