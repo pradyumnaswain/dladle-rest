@@ -64,7 +64,8 @@ public class PropertyService {
                     .addValue("PlaceType", PlaceTypeMapper.getPlaceType(property.getPlaceType()))
                     .addValue("complexName", property.getComplexName())
                     .addValue("unitNumber", property.getUnitNo())
-                    .addValue("imgUrl", property.getPlaceImage())
+                    // TODO: 6/3/2017 Adding Image
+                    .addValue("imgUrl", "image_url")
                     .addValue("isEstate", property.isInEstate())
                     .addValue("estateName", property.getEstateName());
 

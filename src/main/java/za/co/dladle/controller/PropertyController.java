@@ -43,7 +43,20 @@ public class PropertyController {
     @RequestMapping(value = "/api/property/list", method = RequestMethod.GET)
     public Map<String, Object> listProperty() throws IOException {
         try {
-            List<Property> property= propertyService.listProperties();
+            List<Property> property = propertyService.listProperties();
+            return ResponseUtil.response("Success", property, "Property listed Successfully");
+        } catch (Exception e) {
+            return ResponseUtil.response("Fail", "{}", e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Assign Tenant to Property
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = "/api/property/assign", method = RequestMethod.GET)
+    public Map<String, Object> assignPropertyToTenant() throws IOException {
+        try {
+            List<Property> property = propertyService.listProperties();
             return ResponseUtil.response("Success", property, "Property listed Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("Fail", "{}", e.getMessage());
