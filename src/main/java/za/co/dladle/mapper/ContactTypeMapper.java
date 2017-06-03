@@ -11,7 +11,7 @@ public class ContactTypeMapper {
             case HOSPITAL:
                 return 1;
             case ELECTRICIAN:
-                return 3;
+                return 2;
             default:
                 return null;
         }
