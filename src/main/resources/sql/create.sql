@@ -80,6 +80,7 @@ CREATE TABLE user_dladle
   last_name         VARCHAR(20),
   id_number         VARCHAR(45),
   cell_number       VARCHAR(10),
+  device_id         VARCHAR(1000),
   FOREIGN KEY (user_type_id) REFERENCES user_type (id)
 );
 CREATE UNIQUE INDEX user_dladle_email_uindex
@@ -202,14 +203,13 @@ CREATE TABLE service
   FOREIGN KEY (service_type_id) REFERENCES service_type (id),
   FOREIGN KEY (vendor_id) REFERENCES vendor (id)
 );
+DROP TABLE user_device;
 /*User Device*/
 CREATE TABLE user_device
 (
   id        SERIAL PRIMARY KEY NOT NULL,
   device_id VARCHAR(1000),
-  user_id   INT,
-  CONSTRAINT unique_device UNIQUE (device_id, user_id),
-  FOREIGN KEY (user_id) REFERENCES user_dladle (id)
+  CONSTRAINT unique_device UNIQUE (device_id)
 );
 
 DROP TABLE tenant_contact;

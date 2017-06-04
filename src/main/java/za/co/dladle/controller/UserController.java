@@ -38,9 +38,9 @@ public class UserController {
 
             if (returnedUser.isVerified()) {
 
-                if (user.getDeviceId() != null) {
-                    userService.saveDeviceDetails(user.getEmailId(), user.getDeviceId());
-                }
+//                if (user.getDeviceId() != null) {
+//                    userService.saveDeviceDetails(user.getEmailId(), user.getDeviceId());
+//                }
                 userService.setSessionService(returnedUser);
                 return ResponseUtil.response("SUCCESS", returnedUser, "Login Success");
             } else {
@@ -56,7 +56,7 @@ public class UserController {
     //Logout
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "api/user/logout", method = RequestMethod.GET)
-    public Map<String, Object> logout() {
+    public Map<String, Object> logout() throws UserNotFoundException {
         userService.logout();
         return ResponseUtil.response("SUCCESS", "{}", "Logged Out Successfully");
     }
@@ -195,6 +195,20 @@ public class UserController {
         try {
             List<UserSearchResponse> userSearchResponseList = userService.search(userSearchRequest);
             return ResponseUtil.response("SUCCESS", userSearchResponseList, "User Fetched Successfully");
+        } catch (Exception e) {
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Search for a User
+    //------------------------------------------------------------------------------------------------------------------
+    @ApiOperation(value = "Add Device Id", notes = "Add Device Id")
+    @RequestMapping(value = "/api/user/add/deviceid", method = RequestMethod.POST)
+    public Map<String, Object> updateVendor(@RequestParam String deviceId, @RequestParam(required = false) String emailId) throws IOException {
+        try {
+            userService.saveDeviceDetails(emailId, deviceId);
+            return ResponseUtil.response("SUCCESS", "", "Device Details Saved Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }

@@ -46,3 +46,6 @@ ALTER TABLE rating ADD CONSTRAINT rating_rated_user UNIQUE (rating_user,rated_us
 DROP TABLE rating_comments;
 
 ALTER TABLE house DROP COLUMN house_number;
+
+ALTER TABLE user_dladle ADD COLUMN device_id VARCHAR(5000);
+ALTER TABLE user_device DROP COLUMN user_id;

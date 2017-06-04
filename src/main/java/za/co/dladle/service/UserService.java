@@ -81,7 +81,10 @@ public class UserService {
     //------------------------------------------------------------------------------------------------------------------
     //Logout
     //------------------------------------------------------------------------------------------------------------------
-    public void logout() {
+    public void logout() throws UserNotFoundException {
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+
+        invalidateDeviceId(userSession.getUser().getEmailId());
         session.invalidate();
     }
 
@@ -229,13 +232,24 @@ public class UserService {
 
     public void saveDeviceDetails(String emailId, String deviceId) throws UserNotFoundException {
         Map<String, Object> map = new HashMap<>();
+        if (emailId == null || emailId.length() == 0) {
+            map.put("deviceId", deviceId);
+            String sql = " INSERT INTO user_device (device_id) VALUES (:deviceId) ON CONFLICT ON CONSTRAINT unique_device DO NOTHING ;";
+            this.parameterJdbcTemplate.update(sql, map);
+        } else {
+            Long userId = userServiceUtility.findUserIdByEmail(emailId);
+            map.put("userId", userId);
+            map.put("deviceId", deviceId);
+            String sql = "UPDATE user_dladle SET device_id=:deviceId WHERE id=:userId;";
+            this.parameterJdbcTemplate.update(sql, map);
+        }
+    }
 
+    public void invalidateDeviceId(String emailId) throws UserNotFoundException {
+        Map<String, Object> map = new HashMap<>();
         Long userId = userServiceUtility.findUserIdByEmail(emailId);
         map.put("userId", userId);
-        map.put("deviceId", deviceId);
-
-        String sql = " INSERT INTO user_device (device_id, user_id) VALUES (:deviceId,:userId) ON CONFLICT ON CONSTRAINT unique_device DO NOTHING;";
+        String sql = "UPDATE user_dladle SET device_id=NULL WHERE id=:userId;";
         this.parameterJdbcTemplate.update(sql, map);
-
     }
 }
