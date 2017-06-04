@@ -203,7 +203,6 @@ CREATE TABLE service
   FOREIGN KEY (vendor_id) REFERENCES vendor (id)
 );
 /*User Device*/
-DROP TABLE user_device;
 CREATE TABLE user_device
 (
   id        SERIAL PRIMARY KEY NOT NULL,
@@ -211,4 +210,20 @@ CREATE TABLE user_device
   user_id   INT,
   CONSTRAINT unique_device UNIQUE (device_id, user_id),
   FOREIGN KEY (user_id) REFERENCES user_dladle (id)
+);
+
+DROP TABLE tenant_contact;
+/*tenant_contact*/
+CREATE TABLE tenant_contact
+(
+  id              SERIAL PRIMARY KEY NOT NULL,
+  tenant_id       INT,
+  house_id        INT,
+  contact_type_id INT,
+  name            VARCHAR(50),
+  address         VARCHAR(200),
+  contact_number  VARCHAR(12),
+  FOREIGN KEY (tenant_id) REFERENCES tenant (id),
+  FOREIGN KEY (house_id) REFERENCES house (id),
+  FOREIGN KEY (contact_type_id) REFERENCES contact_type (id)
 );
