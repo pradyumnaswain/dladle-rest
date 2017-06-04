@@ -1,14 +1,12 @@
 package za.co.dladle.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import za.co.dladle.entity.PropertyAddRequest;
 import za.co.dladle.entity.PropertyAssignmentRequest;
 import za.co.dladle.entity.PropertyInviteRequest;
 import za.co.dladle.model.Property;
+import za.co.dladle.model.PropertyContact;
 import za.co.dladle.service.PropertyService;
 import za.co.dladle.util.ResponseUtil;
 
@@ -33,6 +31,19 @@ public class PropertyController {
         try {
             Boolean aBoolean = propertyService.addProperty(propertyAddRequest);
             return ResponseUtil.response("SUCCESS", "{}", "Property Added Successfully");
+        } catch (Exception e) {
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Add Property
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = "/api/property/add/contact", method = RequestMethod.POST)
+    public Map<String, Object> addContact(@RequestBody(required = false) List<PropertyContact> propertyContactList, @RequestParam Long propertyId) throws IOException {
+        try {
+            Boolean aBoolean = propertyService.addContact(propertyContactList,propertyId);
+            return ResponseUtil.response("SUCCESS", "{}", "Property Contact Added Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }

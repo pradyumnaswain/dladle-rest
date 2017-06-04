@@ -291,4 +291,29 @@ public class PropertyService {
         }
 //        return new ResponseEntity<>("the push notification cannot be send.", HttpStatus.BAD_REQUEST);
     }
+
+    public Boolean addContact(List<PropertyContact> propertyContactList, Long propertyId) throws PropertyAddException {
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+
+        if (userSession.getUser().getUserType().eqLANDLORD()) {
+            List<Map<String, Object>> list = new ArrayList<>();
+
+            for (PropertyContact propertyContact : propertyContactList) {
+                Map<String, Object> map1 = new HashMap<>();
+                map1.put("propertyId", propertyId);
+                map1.put("contactType", ContactTypeMapper.getPropertyContactType(propertyContact.getContactType()));
+                map1.put("name", propertyContact.getName());
+                map1.put("address", propertyContact.getAddress());
+                map1.put("contactNumber", propertyContact.getContactNumber());
+                list.add(map1);
+            }
+            String sql = "INSERT INTO property_contact(property_id, contact_type_id, name, address, contact_number) VALUES (:propertyId,:contactType,:name,:address,:contactNumber)";
+            this.parameterJdbcTemplate.batchUpdate(sql, list.toArray(new Map[propertyContactList.size()]));
+
+            return true;
+        } else {
+            throw new PropertyAddException("Property contact can only be added by Landlord");
+        }
+
+    }
 }
