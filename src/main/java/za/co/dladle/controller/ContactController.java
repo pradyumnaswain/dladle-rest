@@ -6,13 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.dladle.entity.ContactAddRequest;
-import za.co.dladle.entity.PropertyAddRequest;
-import za.co.dladle.model.Contact;
-import za.co.dladle.model.Property;
+import za.co.dladle.entity.TenantContactView;
 import za.co.dladle.service.ContactService;
 import za.co.dladle.util.ResponseUtil;
 
-import javax.xml.ws.Action;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +42,7 @@ public class ContactController {
     @RequestMapping(value = "/api/contact/list", method = RequestMethod.GET)
     public Map<String, Object> listContact() throws IOException {
         try {
-            List<Contact> contactList = contactService.listContacts();
+            List<TenantContactView> contactList = contactService.listContacts();
             return ResponseUtil.response("SUCCESS", contactList, "Contacts listed Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());

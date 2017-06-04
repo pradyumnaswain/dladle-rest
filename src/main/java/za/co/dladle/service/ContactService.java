@@ -5,8 +5,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import za.co.dladle.entity.ContactAddRequest;
+import za.co.dladle.entity.PropertyContactView;
+import za.co.dladle.entity.TenantContactView;
+import za.co.dladle.exception.PropertyAddException;
 import za.co.dladle.mapper.ContactTypeMapper;
 import za.co.dladle.model.Contact;
+import za.co.dladle.model.Property;
 import za.co.dladle.session.UserSession;
 
 import java.util.ArrayList;
@@ -57,7 +61,33 @@ public class ContactService {
         }
     }
 
-    public List<Contact> listContacts() {
-        return null;
+    public List<TenantContactView> listContacts() throws Exception {
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+
+        if (userSession.getUser().getUserType().eqTENANT()) {
+            String email = userSession.getUser().getEmailId();
+
+            Map<String, Object> map = new HashMap<>();
+            List<TenantContactView> contacts = new ArrayList<>();
+            map.put("emailId", email);
+            String sql = "SELECT tenant_contact.*,tenant_contact.name tenant_conact_name, contact_type.name contact_type_name FROM tenant_contact " +
+                    " INNER JOIN contact_type ON tenant_contact.contact_type_id = contact_type.id " +
+                    " INNER JOIN tenant ON tenant_contact.tenant_id= tenant.id " +
+                    " INNER JOIN user_dladle ON user_dladle.id= tenant.user_id " +
+                    " WHERE emailid=:emailId";
+            this.parameterJdbcTemplate.query(sql, map, (rs1, rowNum1) -> {
+                TenantContactView propertyContact = new TenantContactView();
+                propertyContact.setAddress(rs1.getString("address"));
+                propertyContact.setName(rs1.getString("tenant_conact_name"));
+                propertyContact.setContactType(rs1.getString("contact_type_name"));
+                propertyContact.setContactNumber(rs1.getString("contact_number"));
+                contacts.add(propertyContact);
+                return propertyContact;
+            });
+
+            return contacts;
+        } else {
+            throw new Exception("Contacts Unavailable");
+        }
     }
 }
