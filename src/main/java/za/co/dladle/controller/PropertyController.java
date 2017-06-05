@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.co.dladle.entity.PropertyAddRequest;
 import za.co.dladle.entity.PropertyAssignmentRequest;
+import za.co.dladle.entity.PropertyDeleteRequest;
 import za.co.dladle.entity.PropertyInviteRequest;
 import za.co.dladle.model.Property;
 import za.co.dladle.model.PropertyContact;
@@ -39,10 +40,23 @@ public class PropertyController {
     //------------------------------------------------------------------------------------------------------------------
     //Add Property
     //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = "/api/property/delete", method = RequestMethod.DELETE)
+    public Map<String, Object> deleteProperty(@RequestBody PropertyDeleteRequest propertyDeleteRequest) throws IOException {
+        try {
+            Boolean aBoolean = propertyService.deleteProperty(propertyDeleteRequest);
+            return ResponseUtil.response("SUCCESS", "{}", "Property deleted Successfully");
+        } catch (Exception e) {
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Add Property
+    //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "/api/property/add/contact", method = RequestMethod.POST)
     public Map<String, Object> addContact(@RequestBody(required = false) List<PropertyContact> propertyContactList, @RequestParam Long propertyId) throws IOException {
         try {
-            Boolean aBoolean = propertyService.addContact(propertyContactList,propertyId);
+            Boolean aBoolean = propertyService.addContact(propertyContactList, propertyId);
             return ResponseUtil.response("SUCCESS", "{}", "Property Contact Added Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());

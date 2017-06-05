@@ -236,7 +236,7 @@ public class PropertyService {
 
     public void assignPropertyToTenant(PropertyAssignmentRequest propertyAssignmentRequest) throws Exception {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
-
+// TODO: 6/5/2017 wrong here
         Long tenantId = userServiceUtility.findUserIdByEmail(userSession.getUser().getEmailId());
         Long landlordId = userServiceUtility.findUserIdByEmail(propertyAssignmentRequest.getEmailId());
         Map<String, Object> map = new HashMap<>();
@@ -251,21 +251,24 @@ public class PropertyService {
 
 
     public void inviteTenant(PropertyInviteRequest propertyInviteRequest) {
+
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+
         JSONObject body = new JSONObject();
         // JsonArray registration_ids = new JsonArray();
         // body.put("registration_ids", registration_ids);
-        body.put("to", "xxxxxxxxxxxxxxxxxxxjPwZpLgLpji_");
+        body.put("to", "dvGj4etnp6o:APA91bG1x6bci2xWXWdp0ERDxj39r6nlHbpZL_KEExUan_G6mrvjQ_ofI66XhxABHWz5ZRVI-hLdMpsBoiOLxnOgk8UzhpYy2Y3EYuN9OWu7Wml8BzR3oqsxP-_hBBXw9uOtkqEALuwT");
         body.put("priority", "high");
         // body.put("dry_run", true);
 
         JSONObject notification = new JSONObject();
-        notification.put("body", "body string here");
-        notification.put("title", "title string here");
+        notification.put("body", "Please accept this property invitation");
+        notification.put("title", "Dladle Property Request");
         // notification.put("icon", "myicon");
 
         JSONObject data = new JSONObject();
-        data.put("key1", "value1");
-        data.put("key2", "value2");
+        data.put("landlordEmailId", userSession.getUser().getEmailId());
+        data.put("houseId", propertyInviteRequest.getHouseId());
 
         body.put("notification", notification);
         body.put("data", data);
@@ -315,5 +318,39 @@ public class PropertyService {
             throw new PropertyAddException("Property contact can only be added by Landlord");
         }
 
+    }
+
+    @Transactional
+    public Boolean deleteProperty(PropertyDeleteRequest propertyDeleteRequest) throws Exception {
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+
+        if (userSession.getUser().getUserType().eqLANDLORD()) {
+            Map<String, Object> map1 = new HashMap<>();
+            map1.put("emailId", userSession.getUser().getEmailId());
+            String landlordSql = "SELECT landlord.id landord_id FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id WHERE emailid=:emailId";
+            Integer landlordId = this.parameterJdbcTemplate.queryForObject(landlordSql, map1, Integer.class);
+            map1.put("propertyId", propertyDeleteRequest.getPropertyId());
+            map1.put("houseId", propertyDeleteRequest.getHouseId());
+            map1.put("landlordId", landlordId);
+            String sql = "SELECT property.id property_id FROM property INNER JOIN house ON property.id = house.property_id WHERE property.landlord_id=:landlordId AND property_id=:propertyId AND house.id=:houseId";
+            String sqlUpdate = "UPDATE tenant SET house_id=NULL WHERE house_id=:houseId";
+            String sqlDeleteTenantContact = "DELETE FROM tenant_contact WHERE house_id=:houseId";
+            String sqlDeleteContact = "DELETE FROM property_contact WHERE property_id=:propertyId";
+            String sqlDeleteHouse = "DELETE FROM house WHERE id=:houseId";
+            String sqlDeleteProperty = "DELETE FROM property WHERE id=:propertyId";
+            try {
+                this.parameterJdbcTemplate.queryForObject(sql, map1, Integer.class);
+                this.parameterJdbcTemplate.update(sqlUpdate, map1);
+                this.parameterJdbcTemplate.update(sqlDeleteTenantContact, map1);
+                this.parameterJdbcTemplate.update(sqlDeleteContact, map1);
+                this.parameterJdbcTemplate.update(sqlDeleteHouse, map1);
+                this.parameterJdbcTemplate.update(sqlDeleteProperty, map1);
+            } catch (Exception e) {
+                throw new Exception("Property doesn't belongs to Landlord");
+            }
+            return true;
+        } else {
+            throw new Exception("Property can only be deleted by Landlord");
+        }
     }
 }
