@@ -40,7 +40,7 @@ public class PropertyController {
     //------------------------------------------------------------------------------------------------------------------
     //Add Property
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "/api/property/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/property/delete", method = RequestMethod.POST)
     public Map<String, Object> deleteProperty(@RequestBody PropertyDeleteRequest propertyDeleteRequest) throws IOException {
         try {
             Boolean aBoolean = propertyService.deleteProperty(propertyDeleteRequest);
