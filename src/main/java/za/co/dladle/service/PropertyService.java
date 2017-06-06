@@ -250,47 +250,55 @@ public class PropertyService {
     }
 
 
-    public void inviteTenant(PropertyInviteRequest propertyInviteRequest) {
+    public void inviteTenant(PropertyInviteRequest propertyInviteRequest) throws Exception {
 
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
-        JSONObject body = new JSONObject();
-        // JsonArray registration_ids = new JsonArray();
-        // body.put("registration_ids", registration_ids);
-        body.put("to", "dvGj4etnp6o:APA91bG1x6bci2xWXWdp0ERDxj39r6nlHbpZL_KEExUan_G6mrvjQ_ofI66XhxABHWz5ZRVI-hLdMpsBoiOLxnOgk8UzhpYy2Y3EYuN9OWu7Wml8BzR3oqsxP-_hBBXw9uOtkqEALuwT");
-        body.put("priority", "high");
-        // body.put("dry_run", true);
+        Map<String, Object> map = new HashMap<>();
+        map.put("emailId", userSession.getUser().getEmailId());
+        String sql = "SELECT device_id FROM user_dladle WHERE emailid=:emailId";
+        String deviceId = this.parameterJdbcTemplate.queryForObject(sql, map, String.class);
 
-        JSONObject notification = new JSONObject();
-        notification.put("body", "Please accept this property invitation");
-        notification.put("title", "Dladle Property Request");
-        // notification.put("icon", "myicon");
+        if (deviceId != null) {
 
-        JSONObject data = new JSONObject();
-        data.put("landlordEmailId", userSession.getUser().getEmailId());
-        data.put("houseId", propertyInviteRequest.getHouseId());
+            JSONObject body = new JSONObject();
+            // JsonArray registration_ids = new JsonArray();
+            // body.put("registration_ids", registration_ids);
+            body.put("to", deviceId);
+            body.put("priority", "high");
+            // body.put("dry_run", true);
 
-        body.put("notification", notification);
-        body.put("data", data);
+            JSONObject notification = new JSONObject();
+            notification.put("body", "Please accept this property invitation");
+            notification.put("title", "Dladle Property Request");
+            // notification.put("icon", "myicon");
 
-        HttpEntity<String> request = new HttpEntity<>(body.toString());
+            JSONObject data = new JSONObject();
+            data.put("landlordEmailId", userSession.getUser().getEmailId());
+            data.put("houseId", propertyInviteRequest.getHouseId());
 
-        CompletableFuture<FirebaseResponse> pushNotification = pushNotificationsService.send(request);
-        CompletableFuture.allOf(pushNotification).join();
+            body.put("notification", notification);
+            body.put("data", data);
 
-        try {
-            FirebaseResponse firebaseResponse = pushNotification.get();
-            if (firebaseResponse.getSuccess() == 1) {
-                log.info("push notification sent ok!");
-            } else {
-                log.error("error sending push notifications: " + firebaseResponse.toString());
-            }
+            HttpEntity<String> request = new HttpEntity<>(body.toString());
+
+            CompletableFuture<FirebaseResponse> pushNotification = pushNotificationsService.send(request);
+            CompletableFuture.allOf(pushNotification).join();
+
+            try {
+                FirebaseResponse firebaseResponse = pushNotification.get();
+                if (firebaseResponse.getSuccess() == 1) {
+                    log.info("push notification sent ok!");
+                } else {
+                    log.error("error sending push notifications: " + firebaseResponse.toString());
+                }
 //            return new ResponseEntity<>(firebaseResponse.toString(), HttpStatus.OK);
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        } else {
+            throw new Exception("Device Id can't be null");
         }
 //        return new ResponseEntity<>("the push notification cannot be send.", HttpStatus.BAD_REQUEST);
     }
