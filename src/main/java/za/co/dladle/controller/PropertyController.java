@@ -80,7 +80,7 @@ public class PropertyController {
     //Assign Tenant to Property
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "/api/property/assign", method = RequestMethod.POST)
-    public Map<String, Object> assignPropertyToTenant(PropertyAssignmentRequest propertyAssignmentRequest) throws IOException {
+    public Map<String, Object> assignPropertyToTenant(@RequestBody PropertyAssignmentRequest propertyAssignmentRequest) throws IOException {
         try {
             propertyService.assignPropertyToTenant(propertyAssignmentRequest);
             return ResponseUtil.response("SUCCESS", "{}", "Property Assigned");
@@ -93,9 +93,8 @@ public class PropertyController {
     //Invite Tenant to Property
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "/api/property/invite", method = RequestMethod.POST)
-    public Map<String, Object> inviteTenantToProperty(PropertyInviteRequest propertyInviteRequest) throws IOException {
+    public Map<String, Object> inviteTenantToProperty(@RequestBody PropertyInviteRequest propertyInviteRequest) throws IOException {
         try {
-            // TODO: 6/3/2017 Push Notification
             propertyService.inviteTenant(propertyInviteRequest);
             return ResponseUtil.response("SUCCESS", "{}", "Property Assigned");
         } catch (Exception e) {
