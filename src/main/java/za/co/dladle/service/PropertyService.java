@@ -48,6 +48,9 @@ public class PropertyService {
     @Autowired
     private AndroidPushNotificationsService pushNotificationsService;
 
+    @Autowired
+    private PushNotificationService notificationService;
+
     private static final Logger log = LoggerFactory.getLogger(PropertyService.class);
 
     //------------------------------------------------------------------------------------------------------------------
@@ -236,15 +239,22 @@ public class PropertyService {
 
     public void assignPropertyToTenant(PropertyAssignmentRequest propertyAssignmentRequest) throws Exception {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
-// TODO: 6/5/2017 wrong here
-        Long tenantId = userServiceUtility.findUserIdByEmail(userSession.getUser().getEmailId());
-        Long landlordId = userServiceUtility.findUserIdByEmail(propertyAssignmentRequest.getEmailId());
         Map<String, Object> map = new HashMap<>();
+        map.put("landlordEmailId", propertyAssignmentRequest.getEmailId());
+        String landlordSql = "SELECT landlord.id landord_id FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id WHERE emailid=:landlordEmailId";
+        Integer landlordId = this.parameterJdbcTemplate.queryForObject(landlordSql, map, Integer.class);
+
+        map.put("tenantEmailId", userSession.getUser().getEmailId());
+        String tenantSql = "SELECT landlord.id landord_id FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id WHERE emailid=:tenantEmailId";
+        Integer tenantId = this.parameterJdbcTemplate.queryForObject(tenantSql, map, Integer.class);
+
         map.put("landlordId", landlordId);
         map.put("tenantId", tenantId);
         map.put("houseId", propertyAssignmentRequest.getHouseId());
 
         String sql = "UPDATE tenant SET house_id=:houseId AND landlord_id=:landlordId WHERE tenant.id=:tenantId";
+
+        notificationService.actionNotifications(tenantId, landlordId, Boolean.TRUE);
 
         parameterJdbcTemplate.update(sql, map);
     }
@@ -255,10 +265,18 @@ public class PropertyService {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("emailId", userSession.getUser().getEmailId());
+        map.put("emailId", propertyInviteRequest.getEmailId());
         String sql = "SELECT device_id FROM user_dladle WHERE emailid=:emailId";
         String deviceId = this.parameterJdbcTemplate.queryForObject(sql, map, String.class);
 
+        //save notification
+        Notification notifications = new Notification(userSession.getUser().getEmailId(),
+                propertyInviteRequest.getEmailId(),
+                "New Property Request",
+                "Please accept this property invitation",
+                "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + propertyInviteRequest.getHouseId(),
+                "image");
+        notificationService.saveNotification(notifications);
         if (deviceId != null) {
 
             JSONObject body = new JSONObject();
@@ -270,7 +288,7 @@ public class PropertyService {
 
             JSONObject notification = new JSONObject();
             notification.put("body", "Please accept this property invitation");
-            notification.put("title", "Dladle Property Request");
+            notification.put("title", "New Property Request");
             // notification.put("icon", "myicon");
 
             JSONObject data = new JSONObject();
