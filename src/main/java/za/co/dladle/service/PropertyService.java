@@ -379,4 +379,25 @@ public class PropertyService {
             throw new Exception("Property can only be deleted by Landlord");
         }
     }
+
+    public List<TenantView> listTenantsOnProperty(long houseId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("houseId", houseId);
+
+        List<TenantView> tenantViews = new ArrayList<>();
+        String sql = "SELECT * FROM tenant INNER JOIN user_dladle ON tenant.user_id = user_dladle.id WHERE house_id=:houseId";
+        this.parameterJdbcTemplate.query(sql, map, (rs, rowNum) -> {
+            TenantView tenantView = new TenantView(
+                    rs.getString("emailid"),
+                    rs.getString("first_name"),
+                    rs.getString("last_name"),
+                    rs.getString("id_number"),
+                    rs.getString("cell_number")
+            );
+
+            tenantViews.add(tenantView);
+            return tenantView;
+        });
+        return tenantViews;
+    }
 }

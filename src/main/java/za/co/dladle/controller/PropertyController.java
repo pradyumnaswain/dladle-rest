@@ -2,10 +2,7 @@ package za.co.dladle.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import za.co.dladle.entity.PropertyAddRequest;
-import za.co.dladle.entity.PropertyAssignmentRequest;
-import za.co.dladle.entity.PropertyDeleteRequest;
-import za.co.dladle.entity.PropertyInviteRequest;
+import za.co.dladle.entity.*;
 import za.co.dladle.model.Property;
 import za.co.dladle.model.PropertyContact;
 import za.co.dladle.service.PropertyService;
@@ -71,6 +68,19 @@ public class PropertyController {
         try {
             List<Property> property = propertyService.listProperties();
             return ResponseUtil.response("SUCCESS", property, "Property listed Successfully");
+        } catch (Exception e) {
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //List Property of a Landlord
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = "/api/property/tenant/list", method = RequestMethod.GET)
+    public Map<String, Object> listTenantsOnProperty(@RequestParam long houseId) throws IOException {
+        try {
+            List<TenantView> tenantViews= propertyService.listTenantsOnProperty(houseId);
+            return ResponseUtil.response("SUCCESS", tenantViews, "Tenants for Property listed Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }
