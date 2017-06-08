@@ -100,30 +100,23 @@ public class PropertyService {
 
                 mapSqlParameterSource.addValue("propertyId", propertyId.getKey().longValue());
 
+                KeyHolder houseId = new GeneratedKeyHolder();
+                String sqlHouse = "INSERT INTO house(property_id) VALUES (:propertyId)";
+                this.parameterJdbcTemplate.update(sqlHouse, mapSqlParameterSource, houseId, new String[]{"id"});
+
                 List<Map<String, Object>> list = new ArrayList<>();
 
                 for (PropertyContact propertyContact : property.getPropertyContactList()) {
                     Map<String, Object> map1 = new HashMap<>();
-                    map1.put("propertyId", propertyId.getKey().longValue());
+                    map1.put("houseId", houseId.getKey().longValue());
                     map1.put("contactType", ContactTypeMapper.getPropertyContactType(propertyContact.getContactType()));
                     map1.put("name", propertyContact.getName());
                     map1.put("address", propertyContact.getAddress());
                     map1.put("contactNumber", propertyContact.getContactNumber());
                     list.add(map1);
                 }
-                String sql = "INSERT INTO property_contact(property_id, contact_type_id, name, address, contact_number) VALUES (:propertyId,:contactType,:name,:address,:contactNumber)";
+                String sql = "INSERT INTO property_contact(house_id, contact_type_id, name, address, contact_number) VALUES (:houseId,:contactType,:name,:address,:contactNumber)";
                 this.parameterJdbcTemplate.batchUpdate(sql, list.toArray(new Map[property.getPropertyContactList().size()]));
-
-                KeyHolder houseId = new GeneratedKeyHolder();
-
-                String sqlHouse = "INSERT INTO house(property_id) VALUES (:propertyId)";
-                this.parameterJdbcTemplate.update(sqlHouse, mapSqlParameterSource, houseId, new String[]{"id"});
-
-//                PropertyAddResponse propertyAddResponse = new PropertyAddResponse();
-//
-//                propertyAddResponse.setPropertyId(propertyId.getKey().longValue());
-//
-//                propertyAddResponse.setHouseId(houseId.getKey().longValue());
 
                 return true;
             } else {
@@ -163,8 +156,8 @@ public class PropertyService {
                 property.setHouseId(rs.getLong("house_id"));
 
                 List<PropertyContactView> contacts = new ArrayList<>();
-                map.put("propertyId", property.getPropertyId());
-                String sql = "SELECT property_contact.*,property_contact.name property_conact_name, contact_type.name contact_type_name FROM property_contact INNER JOIN contact_type ON property_contact.contact_type_id = contact_type.id WHERE property_id=:propertyId";
+                map.put("houseId", property.getHouseId());
+                String sql = "SELECT property_contact.*,property_contact.name property_conact_name, contact_type.name contact_type_name FROM property_contact INNER JOIN contact_type ON property_contact.contact_type_id = contact_type.id WHERE house_id=:houseId";
                 this.parameterJdbcTemplate.query(sql, map, (rs1, rowNum1) -> {
                     PropertyContactView propertyContact = new PropertyContactView();
                     propertyContact.setAddress(rs1.getString("address"));
@@ -217,8 +210,8 @@ public class PropertyService {
                 property.setHouseId(rs.getLong("house_id"));
 
                 List<PropertyContactView> contacts = new ArrayList<>();
-                map.put("propertyId", property.getPropertyId());
-                String sql = "SELECT property_contact.*,property_contact.name property_conact_name, contact_type.name contact_type_name FROM property_contact INNER JOIN contact_type ON property_contact.contact_type_id = contact_type.id WHERE property_id=:propertyId";
+                map.put("houseId", property.getHouseId());
+                String sql = "SELECT property_contact.*,property_contact.name property_conact_name, contact_type.name contact_type_name FROM property_contact INNER JOIN contact_type ON property_contact.contact_type_id = contact_type.id WHERE house_id=:houseId";
                 this.parameterJdbcTemplate.query(sql, map, (rs1, rowNum1) -> {
                     PropertyContactView propertyContact = new PropertyContactView();
                     propertyContact.setAddress(rs1.getString("address"));
@@ -251,11 +244,10 @@ public class PropertyService {
         String tenantSql = "SELECT landlord.id landord_id FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id WHERE emailid=:tenantEmailId";
         Integer tenantId = this.parameterJdbcTemplate.queryForObject(tenantSql, map, Integer.class);
 
-        map.put("landlordId", landlordId);
         map.put("tenantId", tenantId);
         map.put("houseId", propertyAssignmentRequest.getHouseId());
 
-        String sql = "UPDATE tenant SET house_id=:houseId AND landlord_id=:landlordId WHERE tenant.id=:tenantId";
+        String sql = "UPDATE tenant SET house_id=:houseId WHERE tenant.id=:tenantId";
 
         notificationService.actionNotifications(tenantId, landlordId, Boolean.TRUE);
 
@@ -329,7 +321,7 @@ public class PropertyService {
 //        return new ResponseEntity<>("the push notification cannot be send.", HttpStatus.BAD_REQUEST);
     }
 
-    public Boolean addContact(List<PropertyContact> propertyContactList, Long propertyId) throws PropertyAddException {
+    public Boolean addContact(List<PropertyContact> propertyContactList, Long houseId) throws PropertyAddException {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
         if (userSession.getUser().getUserType().eqLANDLORD()) {
@@ -337,14 +329,14 @@ public class PropertyService {
 
             for (PropertyContact propertyContact : propertyContactList) {
                 Map<String, Object> map1 = new HashMap<>();
-                map1.put("propertyId", propertyId);
+                map1.put("houseId", houseId);
                 map1.put("contactType", ContactTypeMapper.getPropertyContactType(propertyContact.getContactType()));
                 map1.put("name", propertyContact.getName());
                 map1.put("address", propertyContact.getAddress());
                 map1.put("contactNumber", propertyContact.getContactNumber());
                 list.add(map1);
             }
-            String sql = "INSERT INTO property_contact(property_id, contact_type_id, name, address, contact_number) VALUES (:propertyId,:contactType,:name,:address,:contactNumber)";
+            String sql = "INSERT INTO property_contact(house_id, contact_type_id, name, address, contact_number) VALUES (:houseId,:contactType,:name,:address,:contactNumber)";
             this.parameterJdbcTemplate.batchUpdate(sql, list.toArray(new Map[propertyContactList.size()]));
 
             return true;
@@ -369,7 +361,7 @@ public class PropertyService {
             String sql = "SELECT property.id property_id FROM property INNER JOIN house ON property.id = house.property_id WHERE property.landlord_id=:landlordId AND property_id=:propertyId AND house.id=:houseId";
             String sqlUpdate = "UPDATE tenant SET house_id=NULL WHERE house_id=:houseId";
             String sqlDeleteTenantContact = "DELETE FROM tenant_contact WHERE house_id=:houseId";
-            String sqlDeleteContact = "DELETE FROM property_contact WHERE property_id=:propertyId";
+            String sqlDeleteContact = "DELETE FROM property_contact WHERE house_id=:houseId";
             String sqlDeleteHouse = "DELETE FROM house WHERE id=:houseId";
             String sqlDeleteProperty = "DELETE FROM property WHERE id=:propertyId";
             try {

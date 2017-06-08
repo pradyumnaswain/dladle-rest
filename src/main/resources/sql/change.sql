@@ -49,3 +49,15 @@ ALTER TABLE house DROP COLUMN house_number;
 
 ALTER TABLE user_dladle ADD COLUMN device_id VARCHAR(5000);
 ALTER TABLE user_device DROP COLUMN user_id;
+
+ALTER TABLE house ADD COLUMN notificationCount INT;
+ALTER TABLE house ADD COLUMN activeJob BOOLEAN;
+ALTER TABLE house ADD COLUMN contactsCount INT;
+ALTER TABLE house ADD COLUMN isHome BOOLEAN;
+ALTER TABLE house ADD COLUMN tenantCount INT;
+
+ALTER TABLE property_contact DROP COLUMN property_id;
+ALTER TABLE property_contact ADD COLUMN house_id INT;
+ALTER TABLE property_contact ADD FOREIGN KEY (house_id) REFERENCES house(id);
+
+ALTER TABLE tenant DROP COLUMN landlord_id;

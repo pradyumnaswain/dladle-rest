@@ -115,12 +115,12 @@ CREATE TABLE property
 CREATE TABLE property_contact
 (
   id              SERIAL PRIMARY KEY NOT NULL,
-  property_id     INT,
+  house_id     INT,
   contact_type_id INT,
   name            VARCHAR(50),
   address         VARCHAR(200),
   contact_number  VARCHAR(12),
-  FOREIGN KEY (property_id) REFERENCES property (id),
+  FOREIGN KEY (house_id) REFERENCES property (id),
   FOREIGN KEY (contact_type_id) REFERENCES contact_type (id)
 );
 
@@ -129,6 +129,11 @@ CREATE TABLE house
 (
   id          SERIAL PRIMARY KEY NOT NULL,
   property_id INT,
+  notificationCount INT,
+  activeJob BOOLEAN,
+  contactsCount INT,
+  isHome BOOLEAN,
+  tenantCount INT,
   FOREIGN KEY (property_id) REFERENCES property (id)
 );
 
@@ -161,10 +166,8 @@ CREATE TABLE tenant
 (
   id          SERIAL PRIMARY KEY NOT NULL,
   user_id     INT,
-  landlord_id INT,
   house_id    INT,
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),
-  FOREIGN KEY (landlord_id) REFERENCES landlord (id),
   FOREIGN KEY (house_id) REFERENCES house (id)
 );
 /*tenant*/
