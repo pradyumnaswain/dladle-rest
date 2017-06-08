@@ -39,4 +39,10 @@ public class NotificationServiceJavaMailImpl implements NotificationService {
     public void sendVerificationMail(String toEmailId, String verifyLink) {
 
     }
+
+    @Override
+    public void sendPropertyInviteMail(String toEmailId) {
+
+    }
+
 }
