@@ -54,6 +54,26 @@ public class NotificationServiceSendGridImpl implements NotificationService {
         }
     }
 
+    @Override
+    public void sendPropertyInviteMail(String toEmailId) {
+        Email from = new Email(FROM_EMAIL);
+        String subject = "New Property Invite Request";
+        Email to = new Email(toEmailId);
+        Content content = new Content("text/html", "<html><body>" +
+                "<P>Hi " + "!</p>" +
+                "<P>Please check Dladle App to accept property invitation</P>" +
+                "<P>DlaDle</P></body></html>");
+        Mail mail = new Mail(from, subject, to, content);
+
+        SendGrid sg = new SendGrid(SENDGRID_API_KEY);
+        Request request = new Request();
+        try {
+            sendMailUtil(mail, sg, request);
+        } catch (IOException ex) {
+        }
+
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     //Send Email
     //------------------------------------------------------------------------------------------------------------------
@@ -85,7 +105,7 @@ public class NotificationServiceSendGridImpl implements NotificationService {
         String subject = "Welcome to DlaDle, Welcome Home ";
         Email to = new Email(toEmailId);
         Content content = new Content("text/html", "<html><body><p>WELCOME to DLADLE :</p> " +
-                "<P>Hi "  + name + "!</p>" +
+                "<P>Hi " + name + "!</p>" +
                 "<P>Thanks for Signing Up with DLADLE</P>" +
                 "<P>Dladle is a Smartphone app that allows you to manage your property.</P>" +
                 "<P>Click here to begin your awesome journey!</P>" +

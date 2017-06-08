@@ -9,4 +9,6 @@ public interface NotificationService {
     void sendOtpMail(String toEmailId, int otp);
 
     void sendVerificationMail(String toEmailId, String verifyLink);
+
+    void sendPropertyInviteMail(String toEmailId);
 }

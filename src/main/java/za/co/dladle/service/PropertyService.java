@@ -51,6 +51,9 @@ public class PropertyService {
     @Autowired
     private PushNotificationService notificationService;
 
+    @Autowired
+    private NotificationServiceSendGridImpl emailService;
+
     private static final Logger log = LoggerFactory.getLogger(PropertyService.class);
 
     //------------------------------------------------------------------------------------------------------------------
@@ -277,6 +280,11 @@ public class PropertyService {
                 "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + propertyInviteRequest.getHouseId(),
                 "image");
         notificationService.saveNotification(notifications);
+
+        //Send Email
+        emailService.sendPropertyInviteMail(propertyInviteRequest.getEmailId());
+
+        //Send Push Notification
         if (deviceId != null) {
 
             JSONObject body = new JSONObject();
