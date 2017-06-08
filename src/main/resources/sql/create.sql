@@ -129,11 +129,11 @@ CREATE TABLE house
 (
   id          SERIAL PRIMARY KEY NOT NULL,
   property_id INT,
-  notificationCount INT,
-  activeJob BOOLEAN,
-  contactsCount INT,
-  isHome BOOLEAN,
-  tenantCount INT,
+  notifications_count INT DEFAULT 0,
+  active_job BOOLEAN DEFAULT FALSE ,
+  contacts_count INT DEFAULT 0,
+  is_home BOOLEAN DEFAULT FALSE ,
+  tenants_count INT DEFAULT 0,
   FOREIGN KEY (property_id) REFERENCES property (id)
 );
 

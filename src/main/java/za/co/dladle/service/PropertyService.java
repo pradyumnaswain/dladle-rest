@@ -137,7 +137,7 @@ public class PropertyService {
 
             Map<String, Object> map = new HashMap<>();
             map.put("emailId", email);
-            String landlordSql = "SELECT property.*,property.id property_id, house.id house_id,place_type.name place_name FROM property " +
+            String landlordSql = "SELECT property.*,property.id property_id,house.*, house.id house_id,place_type.name place_name FROM property " +
                     " INNER JOIN landlord ON property.landlord_id= landlord.id" +
                     " INNER JOIN place_type ON property.place_type_id= place_type.id" +
                     " INNER JOIN house ON property.id= house.property_id " +
@@ -154,6 +154,11 @@ public class PropertyService {
                 property.setPlaceType(rs.getString("place_name"));
                 property.setPropertyId(rs.getLong("property_id"));
                 property.setHouseId(rs.getLong("house_id"));
+                property.setNotificationsCount(rs.getInt("notifications_count"));
+                property.setContactsCount(rs.getInt("contacts_count"));
+                property.setTenantsCount(rs.getInt("tenants_count"));
+                property.setHome(rs.getBoolean("is_home"));
+                property.setActiveJob(rs.getBoolean("active_job"));
 
                 List<PropertyContactView> contacts = new ArrayList<>();
                 map.put("houseId", property.getHouseId());
@@ -399,5 +404,20 @@ public class PropertyService {
             return tenantView;
         });
         return tenantViews;
+    }
+
+    public void setHome(long houseId) throws PropertyAddException {
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+
+        if (userSession.getUser().getUserType().eqLANDLORD()) {
+
+            Map<String, Object> map1 = new HashMap<>();
+            map1.put("houseId", houseId);
+            String sql = "UPDATE house SET is_home=TRUE WHERE house.id=:houseId";
+            this.parameterJdbcTemplate.update(sql, map1);
+
+        } else {
+            throw new PropertyAddException("Property home can only be set by Landlord");
+        }
     }
 }

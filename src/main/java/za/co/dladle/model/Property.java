@@ -1,5 +1,6 @@
 package za.co.dladle.model;
 
+import io.swagger.models.auth.In;
 import za.co.dladle.entity.PropertyContactView;
 
 import java.util.List;
@@ -17,6 +18,11 @@ public class Property {
     private String placeImage;
     private boolean isEstate;
     private String estateName;
+    private int notificationsCount;
+    private int contactsCount;
+    private int tenantsCount;
+    private boolean activeJob;
+    private boolean isHome;
     private List<PropertyContactView> propertyContactList;
     private List<String> tenantList;
 
@@ -109,5 +115,45 @@ public class Property {
 
     public void setTenantList(List<String> tenantList) {
         this.tenantList = tenantList;
+    }
+
+    public int getNotificationsCount() {
+        return notificationsCount;
+    }
+
+    public void setNotificationsCount(int notificationsCount) {
+        this.notificationsCount = notificationsCount;
+    }
+
+    public int getContactsCount() {
+        return contactsCount;
+    }
+
+    public void setContactsCount(int contactsCount) {
+        this.contactsCount = contactsCount;
+    }
+
+    public int getTenantsCount() {
+        return tenantsCount;
+    }
+
+    public void setTenantsCount(int tenantsCount) {
+        this.tenantsCount = tenantsCount;
+    }
+
+    public boolean isActiveJob() {
+        return activeJob;
+    }
+
+    public void setActiveJob(boolean activeJob) {
+        this.activeJob = activeJob;
+    }
+
+    public boolean isHome() {
+        return isHome;
+    }
+
+    public void setHome(boolean home) {
+        isHome = home;
     }
 }

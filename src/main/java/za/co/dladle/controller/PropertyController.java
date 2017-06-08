@@ -79,8 +79,21 @@ public class PropertyController {
     @RequestMapping(value = "/api/property/tenant/list", method = RequestMethod.GET)
     public Map<String, Object> listTenantsOnProperty(@RequestParam long houseId) throws IOException {
         try {
-            List<TenantView> tenantViews= propertyService.listTenantsOnProperty(houseId);
+            List<TenantView> tenantViews = propertyService.listTenantsOnProperty(houseId);
             return ResponseUtil.response("SUCCESS", tenantViews, "Tenants for Property listed Successfully");
+        } catch (Exception e) {
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Set Home
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = "/api/property/home", method = RequestMethod.POST)
+    public Map<String, Object> setHome(@RequestParam long houseId) throws IOException {
+        try {
+            propertyService.setHome(houseId);
+            return ResponseUtil.response("SUCCESS", "{}", "Property Home Assigned");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }
