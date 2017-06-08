@@ -20,4 +20,6 @@ INSERT INTO years_exp (name) VALUES ('3-5 Years');
 INSERT INTO years_exp (name) VALUES ('5+ Years');
 
 INSERT INTO contact_type (name) VALUES ('Hospital');
-INSERT INTO contact_type (name) VALUES ('Electrician');
+INSERT INTO contact_type (name) VALUES ('Police Station');
+INSERT INTO contact_type (name) VALUES ('Fire Station');
+INSERT INTO contact_type (name) VALUES ('Landlord');

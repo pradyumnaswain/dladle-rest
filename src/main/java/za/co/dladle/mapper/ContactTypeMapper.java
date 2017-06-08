@@ -10,8 +10,12 @@ public class ContactTypeMapper {
         switch (contactType) {
             case HOSPITAL:
                 return 1;
-            case ELECTRICIAN:
+            case POLICE_STATION:
                 return 2;
+            case FIRE_STATION:
+                return 3;
+            case LANDLORD:
+                return 4;
             default:
                 return null;
         }
