@@ -4,6 +4,7 @@ package za.co.dladle.entity;
  * Created by prady on 6/1/2017.
  */
 public class TenantContactView {
+    private long contactId;
     private String contactType;
 
     private String name;
@@ -13,6 +14,14 @@ public class TenantContactView {
     private String contactNumber;
 
     public TenantContactView() {
+    }
+
+    public long getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(long contactId) {
+        this.contactId = contactId;
     }
 
     public String getContactType() {

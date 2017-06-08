@@ -1,10 +1,7 @@
 package za.co.dladle.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import za.co.dladle.entity.ContactAddRequest;
 import za.co.dladle.entity.TenantContactView;
 import za.co.dladle.service.ContactService;
@@ -24,13 +21,26 @@ public class ContactController {
     private ContactService contactService;
 
     //------------------------------------------------------------------------------------------------------------------
-    //Add Property
+    //Add Contact
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "/api/contact/add", method = RequestMethod.POST)
     public Map<String, Object> addContact(@RequestBody(required = false) ContactAddRequest contactAddRequest) throws IOException {
         try {
             Boolean aBoolean = contactService.addContact(contactAddRequest);
             return ResponseUtil.response("SUCCESS", "{}", "Contacts Added Successfully");
+        } catch (Exception e) {
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Delete Contact
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = "/api/contact/delete", method = RequestMethod.POST)
+    public Map<String, Object> deleteContact(@RequestParam long contactId) throws IOException {
+        try {
+            Boolean aBoolean = contactService.deleteContact(contactId);
+            return ResponseUtil.response("SUCCESS", "{}", "Contacts deleted Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }

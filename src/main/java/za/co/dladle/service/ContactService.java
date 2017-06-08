@@ -70,13 +70,14 @@ public class ContactService {
             Map<String, Object> map = new HashMap<>();
             List<TenantContactView> contacts = new ArrayList<>();
             map.put("emailId", email);
-            String sql = "SELECT tenant_contact.*,tenant_contact.name tenant_conact_name, contact_type.name contact_type_name FROM tenant_contact " +
+            String sql = "SELECT tenant_contact.*,tenant_contact.id tenant_contact_id, tenant_contact.name tenant_conact_name, contact_type.name contact_type_name FROM tenant_contact " +
                     " INNER JOIN contact_type ON tenant_contact.contact_type_id = contact_type.id " +
                     " INNER JOIN tenant ON tenant_contact.tenant_id= tenant.id " +
                     " INNER JOIN user_dladle ON user_dladle.id= tenant.user_id " +
                     " WHERE emailid=:emailId";
             this.parameterJdbcTemplate.query(sql, map, (rs1, rowNum1) -> {
                 TenantContactView propertyContact = new TenantContactView();
+                propertyContact.setContactId(rs1.getLong("tenant_contact_id"));
                 propertyContact.setAddress(rs1.getString("address"));
                 propertyContact.setName(rs1.getString("tenant_conact_name"));
                 propertyContact.setContactType(rs1.getString("contact_type_name"));
@@ -89,5 +90,21 @@ public class ContactService {
         } else {
             throw new Exception("Contacts Unavailable");
         }
+    }
+
+    public Boolean deleteContact(long contactId) throws PropertyAddException {
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+
+        if (userSession.getUser().getUserType().eqTENANT()) {
+
+            Map<String, Object> map1 = new HashMap<>();
+            map1.put("contactId", contactId);
+            String sql = "DELETE  FROM tenant_contact WHERE id=:contactId";
+            this.parameterJdbcTemplate.update(sql, map1);
+            return true;
+        } else {
+            throw new PropertyAddException("Contacts can only be deleted by Tenant");
+        }
+
     }
 }

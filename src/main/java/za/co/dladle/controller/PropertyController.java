@@ -61,6 +61,19 @@ public class PropertyController {
     }
 
     //------------------------------------------------------------------------------------------------------------------
+    //Add Property
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = "/api/property/delete/contact", method = RequestMethod.POST)
+    public Map<String, Object> deleteContact(@RequestParam long contactId) throws IOException {
+        try {
+            Boolean aBoolean = propertyService.deleteContact(contactId);
+            return ResponseUtil.response("SUCCESS", "{}", "Property Contact deleted Successfully");
+        } catch (Exception e) {
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
     //List Property of a Landlord
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "/api/property/list", method = RequestMethod.GET)

@@ -6,6 +6,8 @@ import za.co.dladle.model.ContactType;
  * Created by prady on 6/1/2017.
  */
 public class PropertyContactView {
+
+    private long propertyContactId;
     private String contactType;
 
     private String name;
@@ -15,6 +17,14 @@ public class PropertyContactView {
     private String contactNumber;
 
     public PropertyContactView() {
+    }
+
+    public long getPropertyContactId() {
+        return propertyContactId;
+    }
+
+    public void setPropertyContactId(long propertyContactId) {
+        this.propertyContactId = propertyContactId;
     }
 
     public String getContactType() {

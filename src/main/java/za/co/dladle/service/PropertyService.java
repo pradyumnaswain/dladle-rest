@@ -165,6 +165,7 @@ public class PropertyService {
                 String sql = "SELECT property_contact.*,property_contact.name property_conact_name, contact_type.name contact_type_name FROM property_contact INNER JOIN contact_type ON property_contact.contact_type_id = contact_type.id WHERE house_id=:houseId";
                 this.parameterJdbcTemplate.query(sql, map, (rs1, rowNum1) -> {
                     PropertyContactView propertyContact = new PropertyContactView();
+                    propertyContact.setPropertyContactId(rs.getLong("id"));
                     propertyContact.setAddress(rs1.getString("address"));
                     propertyContact.setName(rs1.getString("property_conact_name"));
                     propertyContact.setContactType(rs1.getString("contact_type_name"));
@@ -219,6 +220,7 @@ public class PropertyService {
                 String sql = "SELECT property_contact.*,property_contact.name property_conact_name, contact_type.name contact_type_name FROM property_contact INNER JOIN contact_type ON property_contact.contact_type_id = contact_type.id WHERE house_id=:houseId";
                 this.parameterJdbcTemplate.query(sql, map, (rs1, rowNum1) -> {
                     PropertyContactView propertyContact = new PropertyContactView();
+                    propertyContact.setPropertyContactId(rs.getLong("id"));
                     propertyContact.setAddress(rs1.getString("address"));
                     propertyContact.setName(rs1.getString("property_conact_name"));
                     propertyContact.setContactType(rs1.getString("contact_type_name"));
@@ -418,6 +420,21 @@ public class PropertyService {
 
         } else {
             throw new PropertyAddException("Property home can only be set by Landlord");
+        }
+    }
+
+    public Boolean deleteContact(long contactId) throws PropertyAddException {
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+
+        if (userSession.getUser().getUserType().eqLANDLORD()) {
+
+            Map<String, Object> map1 = new HashMap<>();
+            map1.put("contactId", contactId);
+            String sql = "DELETE  FROM property_contact WHERE id=:contactId";
+            this.parameterJdbcTemplate.update(sql, map1);
+            return true;
+        } else {
+            throw new PropertyAddException("Property Contact can ony be deleted by Landlord");
         }
     }
 }
