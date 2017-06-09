@@ -103,9 +103,9 @@ public class PropertyController {
     //Set Home
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "/api/property/home", method = RequestMethod.POST)
-    public Map<String, Object> setHome(@RequestParam long houseId) throws IOException {
+    public Map<String, Object> setHome(@RequestBody HomeRequest homeRequest) throws IOException {
         try {
-            propertyService.setHome(houseId);
+            propertyService.setHome(homeRequest);
             return ResponseUtil.response("SUCCESS", "{}", "Property Home Assigned");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());

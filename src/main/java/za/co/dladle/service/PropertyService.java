@@ -325,7 +325,8 @@ public class PropertyService {
                 e.printStackTrace();
             }
         } else {
-            throw new Exception("Device Id can't be null");
+            log.error("Device Id can't be null");
+
         }
 //        return new ResponseEntity<>("the push notification cannot be send.", HttpStatus.BAD_REQUEST);
     }
@@ -410,13 +411,13 @@ public class PropertyService {
         return tenantViews;
     }
 
-    public void setHome(long houseId) throws PropertyAddException {
+    public void setHome(HomeRequest homeRequest) throws PropertyAddException {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
         if (userSession.getUser().getUserType().eqLANDLORD()) {
 
             Map<String, Object> map1 = new HashMap<>();
-            map1.put("houseId", houseId);
+            map1.put("houseId", homeRequest.getHouseId());
             String sql = "UPDATE house SET is_home=TRUE WHERE house.id=:houseId";
             this.parameterJdbcTemplate.update(sql, map1);
 
