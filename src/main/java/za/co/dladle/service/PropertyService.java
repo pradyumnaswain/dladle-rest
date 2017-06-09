@@ -154,7 +154,7 @@ public class PropertyService {
                 property.setPlaceType(rs.getString("place_name"));
                 property.setPropertyId(rs.getLong("property_id"));
                 property.setHouseId(rs.getLong("house_id"));
-                property.setNotificationsCount(rs.getInt("notifications_count"));
+                property.setNotificationsCount(rs.getInt("notifications_count_landlord"));
                 property.setContactsCount(rs.getInt("contacts_count"));
                 property.setTenantsCount(rs.getInt("tenants_count"));
                 property.setHome(rs.getBoolean("is_home"));
@@ -214,6 +214,8 @@ public class PropertyService {
                 property.setPlaceType(rs.getString("place_name"));
                 property.setPropertyId(rs.getLong("property_id"));
                 property.setHouseId(rs.getLong("house_id"));
+                property.setNotificationsCount(rs.getInt("notifications_count_tenant"));
+                property.setActiveJob(rs.getBoolean("active_job"));
 
                 List<PropertyContactView> contacts = new ArrayList<>();
                 map.put("houseId", property.getHouseId());

@@ -115,7 +115,7 @@ CREATE TABLE property
 CREATE TABLE property_contact
 (
   id              SERIAL PRIMARY KEY NOT NULL,
-  house_id     INT,
+  house_id        INT,
   contact_type_id INT,
   name            VARCHAR(50),
   address         VARCHAR(200),
@@ -127,13 +127,15 @@ CREATE TABLE property_contact
 /*house*/
 CREATE TABLE house
 (
-  id          SERIAL PRIMARY KEY NOT NULL,
-  property_id INT,
-  notifications_count INT DEFAULT 0,
-  active_job BOOLEAN DEFAULT FALSE ,
-  contacts_count INT DEFAULT 0,
-  is_home BOOLEAN DEFAULT FALSE ,
-  tenants_count INT DEFAULT 0,
+  id                           SERIAL PRIMARY KEY NOT NULL,
+  property_id                  INT,
+  notifications_count_tenant   INT     DEFAULT 0,
+  notifications_count_landlord INT     DEFAULT 0,
+  notifications_count_vendor   INT     DEFAULT 0,
+  active_job                   BOOLEAN DEFAULT FALSE,
+  contacts_count               INT     DEFAULT 0,
+  is_home                      BOOLEAN DEFAULT FALSE,
+  tenants_count                INT     DEFAULT 0,
   FOREIGN KEY (property_id) REFERENCES property (id)
 );
 
@@ -164,9 +166,9 @@ CREATE TABLE rating
 /*tenant*/
 CREATE TABLE tenant
 (
-  id          SERIAL PRIMARY KEY NOT NULL,
-  user_id     INT,
-  house_id    INT,
+  id       SERIAL PRIMARY KEY NOT NULL,
+  user_id  INT,
+  house_id INT,
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),
   FOREIGN KEY (house_id) REFERENCES house (id)
 );

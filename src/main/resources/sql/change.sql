@@ -50,7 +50,11 @@ ALTER TABLE house DROP COLUMN house_number;
 ALTER TABLE user_dladle ADD COLUMN device_id VARCHAR(5000);
 ALTER TABLE user_device DROP COLUMN user_id;
 
-ALTER TABLE house ADD COLUMN notifications_count INT DEFAULT 0;
+
+ALTER TABLE house DROP COLUMN notifications_count;
+ALTER TABLE house ADD COLUMN notifications_count_tenant INT DEFAULT 0;
+ALTER TABLE house ADD COLUMN notifications_count_landlord INT DEFAULT 0;
+ALTER TABLE house ADD COLUMN notifications_count_vendor INT DEFAULT 0;
 ALTER TABLE house ADD COLUMN active_job BOOLEAN DEFAULT FALSE ;
 ALTER TABLE house ADD COLUMN contacts_count INT DEFAULT 0;
 ALTER TABLE house ADD COLUMN is_home BOOLEAN DEFAULT FALSE ;
