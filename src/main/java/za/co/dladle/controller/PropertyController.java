@@ -89,11 +89,24 @@ public class PropertyController {
     //------------------------------------------------------------------------------------------------------------------
     //List Property of a Landlord
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "/api/property/tenant/list", method = RequestMethod.GET)
-    public Map<String, Object> listTenantsOnProperty(@RequestBody TenantListRequest tenantListRequest) throws IOException {
+    @RequestMapping(value = "/api/property/tenant/list/{houseId}", method = RequestMethod.GET)
+    public Map<String, Object> listTenantsOnProperty(@PathVariable long houseId) throws IOException {
         try {
-            List<TenantView> tenantViews = propertyService.listTenantsOnProperty(tenantListRequest);
+            List<TenantView> tenantViews = propertyService.listTenantsOnProperty(houseId);
             return ResponseUtil.response("SUCCESS", tenantViews, "Tenants for Property listed Successfully");
+        } catch (Exception e) {
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //List Contacts of a House
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = "/api/property/contact/list/{houseId}", method = RequestMethod.GET)
+    public Map<String, Object> listContactsOfProperty(@PathVariable long houseId) throws IOException {
+        try {
+            List<PropertyContactView> propertyContactViews = propertyService.listContactsOfProperty(houseId);
+            return ResponseUtil.response("SUCCESS", propertyContactViews, "Contacts for Property listed Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }

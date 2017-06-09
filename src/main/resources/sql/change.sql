@@ -68,3 +68,5 @@ ALTER TABLE tenant DROP COLUMN landlord_id;
 ALTER TABLE notification ADD COLUMN house_id INT;
 ALTER TABLE notification ADD FOREIGN KEY (house_id) REFERENCES house(id);
 
+ALTER TABLE lease DROP COLUMN tenant_id
+

@@ -192,12 +192,10 @@ CREATE TABLE lease
 (
   id           SERIAL PRIMARY KEY NOT NULL,
   landlord_id  INT,
-  tenant_id    INT,
   lease_date   DATE,
   renewal_date DATE,
   remark       VARCHAR(100),
   FOREIGN KEY (landlord_id) REFERENCES landlord (id),
-  FOREIGN KEY (tenant_id) REFERENCES tenant (id)
 );
 /*service*/
 CREATE TABLE service
@@ -249,4 +247,13 @@ CREATE TABLE notification
   FOREIGN KEY (notification_from) REFERENCES user_dladle (id),
   FOREIGN KEY (notification_to) REFERENCES user_dladle (id),
   FOREIGN KEY (house_id) REFERENCES house (id)
+);
+CREATE TABLE lease_tenant
+(
+  id          SERIAL PRIMARY KEY NOT NULL,
+  lease_id    INT,
+  tenant_id   INT,
+  joined_date TIMESTAMP,
+  FOREIGN KEY (tenant_id) REFERENCES tenant (id),
+  FOREIGN KEY (lease_id) REFERENCES lease (id)
 );

@@ -390,9 +390,9 @@ public class PropertyService {
         }
     }
 
-    public List<TenantView> listTenantsOnProperty(TenantListRequest tenantListRequest) {
+    public List<TenantView> listTenantsOnProperty(long houseId) {
         Map<String, Object> map = new HashMap<>();
-        map.put("houseId", tenantListRequest.getHouseId());
+        map.put("houseId", houseId);
 
         List<TenantView> tenantViews = new ArrayList<>();
         String sql = "SELECT * FROM tenant INNER JOIN user_dladle ON tenant.user_id = user_dladle.id WHERE house_id=:houseId";
@@ -439,5 +439,24 @@ public class PropertyService {
         } else {
             throw new PropertyAddException("Property Contact can ony be deleted by Landlord");
         }
+    }
+
+    public List<PropertyContactView> listContactsOfProperty(long houseId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("houseId", houseId);
+
+        List<PropertyContactView> propertyContactViews = new ArrayList<>();
+        String sql = "SELECT property_contact.*,property_contact.name property_conact_name, contact_type.name contact_type_name FROM property_contact INNER JOIN contact_type ON property_contact.contact_type_id = contact_type.id WHERE house_id=:houseId";
+        this.parameterJdbcTemplate.query(sql, map, (rs, rowNum) -> {
+            PropertyContactView propertyContact = new PropertyContactView();
+            propertyContact.setPropertyContactId(rs.getLong("id"));
+            propertyContact.setAddress(rs.getString("address"));
+            propertyContact.setName(rs.getString("property_conact_name"));
+            propertyContact.setContactType(rs.getString("contact_type_name"));
+            propertyContact.setContactNumber(rs.getString("contact_number"));
+            propertyContactViews.add(propertyContact);
+            return propertyContact;
+        });
+        return propertyContactViews;
     }
 }
