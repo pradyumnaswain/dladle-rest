@@ -64,9 +64,9 @@ public class PropertyController {
     //Add Property
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "/api/property/delete/contact", method = RequestMethod.POST)
-    public Map<String, Object> deleteContact(@RequestParam long contactId) throws IOException {
+    public Map<String, Object> deleteContact(@RequestBody DeleteContactRequest deleteContactRequest) throws IOException {
         try {
-            Boolean aBoolean = propertyService.deleteContact(contactId);
+            Boolean aBoolean = propertyService.deleteContact(deleteContactRequest);
             return ResponseUtil.response("SUCCESS", "{}", "Property Contact deleted Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
@@ -90,9 +90,9 @@ public class PropertyController {
     //List Property of a Landlord
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "/api/property/tenant/list", method = RequestMethod.GET)
-    public Map<String, Object> listTenantsOnProperty(@RequestParam long houseId) throws IOException {
+    public Map<String, Object> listTenantsOnProperty(@RequestBody TenantListRequest tenantListRequest) throws IOException {
         try {
-            List<TenantView> tenantViews = propertyService.listTenantsOnProperty(houseId);
+            List<TenantView> tenantViews = propertyService.listTenantsOnProperty(tenantListRequest);
             return ResponseUtil.response("SUCCESS", tenantViews, "Tenants for Property listed Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());

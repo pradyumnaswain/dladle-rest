@@ -5,6 +5,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import za.co.dladle.entity.ContactAddRequest;
+import za.co.dladle.entity.DeleteContactRequest;
 import za.co.dladle.entity.PropertyContactView;
 import za.co.dladle.entity.TenantContactView;
 import za.co.dladle.exception.PropertyAddException;
@@ -92,13 +93,13 @@ public class ContactService {
         }
     }
 
-    public Boolean deleteContact(long contactId) throws PropertyAddException {
+    public Boolean deleteContact(DeleteContactRequest deleteContactRequest) throws PropertyAddException {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
         if (userSession.getUser().getUserType().eqTENANT()) {
 
             Map<String, Object> map1 = new HashMap<>();
-            map1.put("contactId", contactId);
+            map1.put("contactId", deleteContactRequest.getContactId());
             String sql = "DELETE  FROM tenant_contact WHERE id=:contactId";
             this.parameterJdbcTemplate.update(sql, map1);
             return true;

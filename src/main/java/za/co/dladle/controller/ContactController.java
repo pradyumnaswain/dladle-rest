@@ -3,6 +3,7 @@ package za.co.dladle.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.co.dladle.entity.ContactAddRequest;
+import za.co.dladle.entity.DeleteContactRequest;
 import za.co.dladle.entity.TenantContactView;
 import za.co.dladle.service.ContactService;
 import za.co.dladle.util.ResponseUtil;
@@ -37,9 +38,9 @@ public class ContactController {
     //Delete Contact
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "/api/contact/delete", method = RequestMethod.POST)
-    public Map<String, Object> deleteContact(@RequestParam long contactId) throws IOException {
+    public Map<String, Object> deleteContact(@RequestBody DeleteContactRequest deleteContactRequest) throws IOException {
         try {
-            Boolean aBoolean = contactService.deleteContact(contactId);
+            Boolean aBoolean = contactService.deleteContact(deleteContactRequest);
             return ResponseUtil.response("SUCCESS", "{}", "Contacts deleted Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());

@@ -390,9 +390,9 @@ public class PropertyService {
         }
     }
 
-    public List<TenantView> listTenantsOnProperty(long houseId) {
+    public List<TenantView> listTenantsOnProperty(TenantListRequest tenantListRequest) {
         Map<String, Object> map = new HashMap<>();
-        map.put("houseId", houseId);
+        map.put("houseId", tenantListRequest.getHouseId());
 
         List<TenantView> tenantViews = new ArrayList<>();
         String sql = "SELECT * FROM tenant INNER JOIN user_dladle ON tenant.user_id = user_dladle.id WHERE house_id=:houseId";
@@ -426,13 +426,13 @@ public class PropertyService {
         }
     }
 
-    public Boolean deleteContact(long contactId) throws PropertyAddException {
+    public Boolean deleteContact(DeleteContactRequest deleteContactRequest) throws PropertyAddException {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
         if (userSession.getUser().getUserType().eqLANDLORD()) {
 
             Map<String, Object> map1 = new HashMap<>();
-            map1.put("contactId", contactId);
+            map1.put("contactId", deleteContactRequest.getContactId());
             String sql = "DELETE  FROM property_contact WHERE id=:contactId";
             this.parameterJdbcTemplate.update(sql, map1);
             return true;
