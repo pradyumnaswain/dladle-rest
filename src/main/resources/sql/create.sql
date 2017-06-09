@@ -245,6 +245,8 @@ CREATE TABLE notification
   notification_time            TIMESTAMP,
   notification_read_status     BOOLEAN,
   notification_actioned_status BOOLEAN,
+  house_id                     INT,
   FOREIGN KEY (notification_from) REFERENCES user_dladle (id),
-  FOREIGN KEY (notification_to) REFERENCES user_dladle (id)
+  FOREIGN KEY (notification_to) REFERENCES user_dladle (id),
+  FOREIGN KEY (house_id) REFERENCES house (id)
 );

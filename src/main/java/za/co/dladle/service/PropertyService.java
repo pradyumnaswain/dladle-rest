@@ -279,7 +279,7 @@ public class PropertyService {
                 "New Property Request",
                 "Please accept this property invitation",
                 "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + propertyInviteRequest.getHouseId(),
-                "image");
+                "image", propertyInviteRequest.getHouseId());
         notificationService.saveNotification(notifications);
 
         //Send Email

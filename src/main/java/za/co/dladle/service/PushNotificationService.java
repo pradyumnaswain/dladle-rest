@@ -50,6 +50,7 @@ public class PushNotificationService {
             notification.setImageUrl(rs1.getString("notification_image_url"));
             notification.setRead(rs1.getBoolean("notification_read_status"));
             notification.setActioned(rs1.getBoolean("notification_actioned_status"));
+            notification.setHouseId(rs1.getLong("house_id"));
             notificationList.add(notification);
             return notification;
         });
@@ -87,9 +88,11 @@ public class PushNotificationService {
         map.put("time", LocalDateTime.now(ZoneId.systemDefault()));
         map.put("read", Boolean.FALSE);
         map.put("actioned", Boolean.FALSE);
+        map.put("houseId", notification.getHouseId());
 
-        String sql = "INSERT INTO notification(notification_from, notification_to, notification_title, notification_body, notification_data, notification_image_url, notification_time, notification_read_status, notification_actioned_status) " +
-                " VALUES (:from,:to,:title,:body,:data,:imageUrl,:time,:read,:actioned)";
+
+        String sql = "INSERT INTO notification(notification_from, notification_to, notification_title, notification_body, notification_data, notification_image_url, notification_time, notification_read_status, notification_actioned_status,house_id) " +
+                " VALUES (:from,:to,:title,:body,:data,:imageUrl,:time,:read,:actioned,:houseId)";
         this.jdbcTemplate.update(sql, map);
     }
 

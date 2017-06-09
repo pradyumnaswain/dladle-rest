@@ -17,17 +17,19 @@ public class Notification {
     private String time;
     private boolean read;
     private boolean actioned;
+    private long houseId;
 
     public Notification() {
     }
 
-    public Notification(String from, String to, String title, String body, String data, String imageUrl) {
+    public Notification(String from, String to, String title, String body, String data, String imageUrl, long houseId) {
         this.from = from;
         this.to = to;
         this.title = title;
         this.body = body;
         this.data = data;
         this.imageUrl = imageUrl;
+        this.houseId = houseId;
     }
 
     public long getId() {
@@ -108,5 +110,13 @@ public class Notification {
 
     public void setActioned(boolean actioned) {
         this.actioned = actioned;
+    }
+
+    public long getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(long houseId) {
+        this.houseId = houseId;
     }
 }
