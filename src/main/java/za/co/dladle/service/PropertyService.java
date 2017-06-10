@@ -22,6 +22,7 @@ import za.co.dladle.model.*;
 import za.co.dladle.session.UserSession;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +55,9 @@ public class PropertyService {
     @Autowired
     private NotificationServiceSendGridImpl emailService;
 
+    @Autowired
+    private FileManagementServiceCloudinaryImpl fileManagementServiceCloudinary;
+
     private static final Logger log = LoggerFactory.getLogger(PropertyService.class);
 
     //------------------------------------------------------------------------------------------------------------------
@@ -61,7 +65,7 @@ public class PropertyService {
     //------------------------------------------------------------------------------------------------------------------
 
     @Transactional
-    public boolean addProperty(PropertyAddRequest property) throws PropertyAlreadyExistsException, PropertyAddException {
+    public boolean addProperty(PropertyAddRequest property) throws PropertyAlreadyExistsException, PropertyAddException, IOException {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
         if (userSession.getUser().getUserType().eqLANDLORD()) {
@@ -81,8 +85,6 @@ public class PropertyService {
                     .addValue("PlaceType", PlaceTypeMapper.getPlaceType(property.getPlaceType()))
                     .addValue("complexName", property.getComplexName())
                     .addValue("unitNumber", property.getUnitNo())
-                    // TODO: 6/3/2017 Adding Image
-                    .addValue("imgUrl", "image_url")
                     .addValue("isEstate", property.isInEstate())
                     .addValue("estateName", property.getEstateName());
 
@@ -91,6 +93,10 @@ public class PropertyService {
             Integer countAddress = this.parameterJdbcTemplate.queryForObject(countSql, map, Integer.class);
 
             if (countAddress == 0) {
+
+                String imagePath = fileManagementServiceCloudinary.upload(property.getPlaceImage());
+
+                mapSqlParameterSource.addValue("imgUrl", imagePath);
 
                 KeyHolder propertyId = new GeneratedKeyHolder();
 
