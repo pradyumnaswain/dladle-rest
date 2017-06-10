@@ -79,7 +79,8 @@ public class UserServiceUtility {
                             UserType.valueOf(rs.getString("name").toUpperCase()),
                             rs.getString("first_name"),
                             rs.getString("last_name"),
-                            rs.getString("cell_number")));
+                            rs.getString("cell_number"),
+                            rs.getString("profile_picture")));
         } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException("Username or password is wrong. Please check and login again");
         }

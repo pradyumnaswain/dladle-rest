@@ -19,6 +19,8 @@ public class User {
 
     private String mobileNumber;
 
+    private String profilePicture;
+
     public User() {
     }
 
@@ -32,14 +34,15 @@ public class User {
         this.verified = verified;
     }
 
-    public User(String emailId, String password, boolean verified, UserType userType, String firstName, String lastName, String mobileNumber) {
+    public User(String emailId, String password, boolean verified, UserType userType, String firstName, String lastName, String mobileNumber, String profilePicture) {
         this.emailId = emailId;
         this.password = password;
         this.verified = verified;
         this.userType = userType;
-        this.firstName=firstName;
-        this.lastName=lastName;
-        this.mobileNumber=mobileNumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.mobileNumber = mobileNumber;
+        this.profilePicture = profilePicture;
     }
 
     public String getEmailId() {
@@ -96,5 +99,13 @@ public class User {
 
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 }

@@ -38,16 +38,16 @@ public class UserService {
     private ApplicationContext applicationContext;
 
     @Autowired
-    private
-    UserServiceUtility userServiceUtility;
+    private UserServiceUtility userServiceUtility;
 
     @Autowired
-    private
-    NotificationServiceSendGridImpl notificationServiceSendGridImpl;
+    private NotificationServiceSendGridImpl notificationServiceSendGridImpl;
 
     @Autowired
-    private
-    NamedParameterJdbcTemplate parameterJdbcTemplate;
+    private FileManagementServiceCloudinaryImpl fileManagementService;
+
+    @Autowired
+    private NamedParameterJdbcTemplate parameterJdbcTemplate;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -251,5 +251,19 @@ public class UserService {
         map.put("userId", userId);
         String sql = "UPDATE user_dladle SET device_id=NULL WHERE id=:userId;";
         this.parameterJdbcTemplate.update(sql, map);
+    }
+
+    public String uploadProfilePic(String base64Image) throws IOException, UserNotFoundException {
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+        Long userId = userServiceUtility.findUserIdByEmail(userSession.getUser().getEmailId());
+
+        String imageUrl = fileManagementService.upload(base64Image);
+        Map<String, Object> map = new HashMap<>();
+        map.put("profilePicture", imageUrl);
+        map.put("userId", userId);
+        String sql = "UPDATE user_dladle SET profile_picture=:profilePicture WHERE id=:userId;";
+        this.parameterJdbcTemplate.update(sql, map);
+
+        return imageUrl;
     }
 }

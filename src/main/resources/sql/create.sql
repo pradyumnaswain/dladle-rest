@@ -81,6 +81,7 @@ CREATE TABLE user_dladle
   id_number         VARCHAR(45),
   cell_number       VARCHAR(10),
   device_id         VARCHAR(1000),
+  profile_picture   VARCHAR(1000),
   FOREIGN KEY (user_type_id) REFERENCES user_type (id)
 );
 CREATE UNIQUE INDEX user_dladle_email_uindex

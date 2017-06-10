@@ -120,6 +120,20 @@ public class UserController {
     }
 
     //------------------------------------------------------------------------------------------------------------------
+    //Upload Profile Pic
+    //------------------------------------------------------------------------------------------------------------------
+    @ApiOperation(value = "Upload user profile pic", notes = "")
+    @RequestMapping(value = "api/user/profile/upload/image", method = RequestMethod.POST)
+    public Map<String, Object> uploadProfilePicture(@RequestBody String base64Image) {
+        try {
+            String imagePath = userService.uploadProfilePic(base64Image);
+            return ResponseUtil.response("SUCCESS", imagePath, "Profile picture uploaded Successfully");
+        } catch (Exception e) {
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
     //Verify User
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "/verify/{emailId}/{hashedCode}", method = RequestMethod.GET)
