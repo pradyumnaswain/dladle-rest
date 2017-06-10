@@ -15,54 +15,54 @@ GRANT ALL PRIVILEGES ON DATABASE dladle TO sysadmin;
 /*User Type*/
 CREATE TABLE user_type
 (
-  id   SERIAL PRIMARY KEY  NOT NULL,
+  id   INT PRIMARY KEY  NOT NULL,
   name VARCHAR(128)        NOT NULL
 );
 
 /*service_type*/
 CREATE TABLE service_type
 (
-  id   SERIAL PRIMARY KEY NOT NULL,
+  id   INT PRIMARY KEY NOT NULL,
   name VARCHAR(128)       NOT NULL
 );
 
 /*amenities_type*/
 CREATE TABLE amenities_type
 (
-  id   SERIAL PRIMARY KEY NOT NULL,
+  id   INT PRIMARY KEY NOT NULL,
   name VARCHAR(128)       NOT NULL
 );
 /*place_type*/
 CREATE TABLE place_type
 (
-  id   SERIAL PRIMARY KEY,
+  id   INT PRIMARY KEY,
   name VARCHAR(20)
 );
 /*bedroom_type*/
 CREATE TABLE bedroom_type
 (
-  id   SERIAL PRIMARY KEY,
+  id   INT PRIMARY KEY,
   name VARCHAR(20)
 );
 
 /*Home View Type*/
 CREATE TABLE home_view_type
 (
-  id   SERIAL PRIMARY KEY,
+  id   INT PRIMARY KEY,
   name VARCHAR(20)
 );
 
 /*Years of Experience*/
 CREATE TABLE years_exp
 (
-  id   SERIAL PRIMARY KEY,
+  id   INT PRIMARY KEY,
   name VARCHAR(20)
 );
 
 /*Contact Type*/
 CREATE TABLE contact_type
 (
-  id   SERIAL PRIMARY KEY,
+  id   INT PRIMARY KEY,
   name VARCHAR(20)
 );
 
@@ -196,7 +196,7 @@ CREATE TABLE lease
   lease_date   DATE,
   renewal_date DATE,
   remark       VARCHAR(100),
-  FOREIGN KEY (landlord_id) REFERENCES landlord (id),
+  FOREIGN KEY (landlord_id) REFERENCES landlord (id)
 );
 /*service*/
 CREATE TABLE service
@@ -216,7 +216,6 @@ CREATE TABLE user_device
   CONSTRAINT unique_device UNIQUE (device_id)
 );
 
-DROP TABLE tenant_contact;
 /*tenant_contact*/
 CREATE TABLE tenant_contact
 (

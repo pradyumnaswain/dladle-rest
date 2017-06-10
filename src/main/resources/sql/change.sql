@@ -68,7 +68,15 @@ ALTER TABLE tenant DROP COLUMN landlord_id;
 ALTER TABLE notification ADD COLUMN house_id INT;
 ALTER TABLE notification ADD FOREIGN KEY (house_id) REFERENCES house(id);
 
-ALTER TABLE lease DROP COLUMN tenant_id;
 
 ALTER TABLE user_dladle ADD COLUMN profile_picture   VARCHAR(1000);
+
+ALTER TABLE lease DROP COLUMN tenant_id;
+ALTER TABLE lease DROP COLUMN lease_date;
+ALTER TABLE lease DROP COLUMN renewal_date;
+ALTER TABLE lease ADD COLUMN lease_start_date TIMESTAMP;
+ALTER TABLE lease ADD COLUMN lease_terminate_date TIMESTAMP;
+ALTER TABLE lease ADD COLUMN lease_end_date TIMESTAMP;
+ALTER TABLE lease ADD COLUMN lease_renewal_date TIMESTAMP;
+
 

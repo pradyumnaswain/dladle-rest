@@ -248,6 +248,7 @@ public class PropertyService {
         }
     }
 
+    @Transactional
     public void assignPropertyToTenant(PropertyAssignmentRequest propertyAssignmentRequest) throws Exception {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
         Map<String, Object> map = new HashMap<>();
@@ -264,9 +265,9 @@ public class PropertyService {
 
         String sql = "UPDATE tenant SET house_id=:houseId WHERE tenant.id=:tenantId";
 
-        notificationService.actionNotifications(tenantId, landlordId, Boolean.TRUE);
-
         parameterJdbcTemplate.update(sql, map);
+
+        notificationService.actionNotifications(tenantId, landlordId, Boolean.TRUE);
     }
 
 
