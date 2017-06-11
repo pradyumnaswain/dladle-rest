@@ -29,7 +29,7 @@ public class FileManagementServiceCloudinaryImpl implements FileManagementServic
 
         Cloudinary cloudinary = new Cloudinary(config);
 
-        Map resultMap = cloudinary.uploader().upload(image, ObjectUtils.emptyMap());
+        Map resultMap = cloudinary.uploader().upload("data:image/png;base64," + image, ObjectUtils.emptyMap());
 
         return resultMap.get("secure_url").toString();
 
