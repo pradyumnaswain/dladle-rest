@@ -93,7 +93,7 @@ public class PropertyService {
 
             if (countAddress == 0) {
 
-                if (property.getPlaceImage() != null || property.getPlaceImage().equalsIgnoreCase("")) {
+                if (property.getPlaceImage() != null || !property.getPlaceImage().equalsIgnoreCase("")) {
 
                     String imagePath = fileManagementServiceCloudinary.upload(property.getPlaceImage());
                     mapSqlParameterSource.addValue("imgUrl", imagePath);
