@@ -64,7 +64,7 @@ public class PropertyService {
     //------------------------------------------------------------------------------------------------------------------
 
     @Transactional
-    public boolean addProperty(PropertyAddRequest property) throws PropertyAlreadyExistsException, PropertyAddException, IOException {
+    public PropertyAddResponse addProperty(PropertyAddRequest property) throws PropertyAlreadyExistsException, PropertyAddException, IOException {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
         if (userSession.getUser().getUserType().eqLANDLORD()) {
@@ -130,7 +130,11 @@ public class PropertyService {
                 String sql = "INSERT INTO property_contact(house_id, contact_type_id, name, address, contact_number) VALUES (:houseId,:contactType,:name,:address,:contactNumber)";
                 this.parameterJdbcTemplate.batchUpdate(sql, list.toArray(new Map[property.getPropertyContactList().size()]));
 
-                return true;
+                PropertyAddResponse propertyAddResponse = new PropertyAddResponse();
+
+                propertyAddResponse.setHouseId(houseId.getKey().longValue());
+                propertyAddResponse.setPropertyId(propertyId.getKey().longValue());
+                return propertyAddResponse;
             } else {
                 throw new PropertyAlreadyExistsException("Property already Exists");
             }

@@ -28,8 +28,8 @@ public class PropertyController {
     @RequestMapping(value = "/api/property/add", method = RequestMethod.POST)
     public Map<String, Object> addProperty(@RequestBody(required = false) PropertyAddRequest propertyAddRequest) throws IOException {
         try {
-            Boolean aBoolean = propertyService.addProperty(propertyAddRequest);
-            return ResponseUtil.response("SUCCESS", "{}", "Property Added Successfully");
+            PropertyAddResponse propertyAddResponse = propertyService.addProperty(propertyAddRequest);
+            return ResponseUtil.response("SUCCESS", propertyAddResponse, "Property Added Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }
