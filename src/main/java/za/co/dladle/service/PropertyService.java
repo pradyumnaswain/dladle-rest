@@ -93,13 +93,16 @@ public class PropertyService {
 
             if (countAddress == 0) {
 
-                if (property.getPlaceImage() != null || !property.getPlaceImage().equalsIgnoreCase("")) {
+                if (property.getPlaceImage() != null) {
+                    if (!property.getPlaceImage().equalsIgnoreCase("")) {
 
-                    String imagePath = fileManagementServiceCloudinary.upload(property.getPlaceImage());
-                    mapSqlParameterSource.addValue("imgUrl", imagePath);
+                        String imagePath = fileManagementServiceCloudinary.upload(property.getPlaceImage());
+                        mapSqlParameterSource.addValue("imgUrl", imagePath);
+                    }else {
+                        mapSqlParameterSource.addValue("imgUrl", null);
+                    }
                 } else {
                     mapSqlParameterSource.addValue("imgUrl", null);
-
                 }
                 KeyHolder propertyId = new GeneratedKeyHolder();
 
