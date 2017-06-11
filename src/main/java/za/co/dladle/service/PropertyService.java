@@ -478,7 +478,7 @@ public class PropertyService {
         String imageUrl = fileManagementServiceCloudinary.upload(propertyImageUploadRequest.getBase64Image());
         Map<String, Object> map = new HashMap<>();
         map.put("profilePicture", imageUrl);
-        map.put("propertyId", Long.valueOf(propertyImageUploadRequest.getPropertyId()));
+        map.put("propertyId", propertyImageUploadRequest.getPropertyId());
         String sql = "UPDATE property SET image_url=:profilePicture WHERE id=:propertyId;";
         this.parameterJdbcTemplate.update(sql, map);
 

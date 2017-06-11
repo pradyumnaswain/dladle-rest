@@ -5,7 +5,7 @@ package za.co.dladle.entity;
  */
 public class PropertyImageUploadRequest {
     private String base64Image;
-    private String propertyId;
+    private long propertyId;
 
     public PropertyImageUploadRequest() {
     }
@@ -18,11 +18,11 @@ public class PropertyImageUploadRequest {
         this.base64Image = base64Image;
     }
 
-    public String getPropertyId() {
+    public long getPropertyId() {
         return propertyId;
     }
 
-    public void setPropertyId(String propertyId) {
+    public void setPropertyId(long propertyId) {
         this.propertyId = propertyId;
     }
 }
