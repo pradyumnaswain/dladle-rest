@@ -6,8 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,6 +14,7 @@ import org.springframework.stereotype.Service;
 import za.co.dladle.entity.*;
 import za.co.dladle.exception.PropertyAddException;
 import za.co.dladle.exception.PropertyAlreadyExistsException;
+import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.mapper.ContactTypeMapper;
 import za.co.dladle.mapper.PlaceTypeMapper;
 import za.co.dladle.model.*;
@@ -469,5 +468,17 @@ public class PropertyService {
             return propertyContact;
         });
         return propertyContactViews;
+    }
+
+    public String uploadPropertyPic(PropertyImageUploadRequest propertyImageUploadRequest) throws UserNotFoundException, IOException {
+
+        String imageUrl = fileManagementServiceCloudinary.upload(propertyImageUploadRequest.getBase64Image());
+        Map<String, Object> map = new HashMap<>();
+        map.put("profilePicture", imageUrl);
+        map.put("propertyId", propertyImageUploadRequest.getPropertyId());
+        String sql = "UPDATE property SET image_url=:profilePicture WHERE id=:propertyId;";
+        this.parameterJdbcTemplate.update(sql, map);
+
+        return imageUrl;
     }
 }

@@ -1,5 +1,6 @@
 package za.co.dladle.controller;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.co.dladle.entity.*;
@@ -29,6 +30,20 @@ public class PropertyController {
         try {
             Boolean aBoolean = propertyService.addProperty(propertyAddRequest);
             return ResponseUtil.response("SUCCESS", "{}", "Property Added Successfully");
+        } catch (Exception e) {
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Upload Profile Pic
+    //------------------------------------------------------------------------------------------------------------------
+    @ApiOperation(value = "Upload Property pic", notes = "")
+    @RequestMapping(value = "api/property/upload/image", method = RequestMethod.POST)
+    public Map<String, Object> uploadProfilePicture(@RequestBody PropertyImageUploadRequest propertyImageUploadRequest) {
+        try {
+            String imagePath = propertyService.uploadPropertyPic(propertyImageUploadRequest);
+            return ResponseUtil.response("SUCCESS", imagePath, "Profile picture uploaded Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }
