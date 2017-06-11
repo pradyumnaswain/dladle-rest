@@ -94,10 +94,14 @@ public class PropertyService {
 
             if (countAddress == 0) {
 
-                String imagePath = fileManagementServiceCloudinary.upload(property.getPlaceImage());
+                if (property.getPlaceImage() != null || property.getPlaceImage().equalsIgnoreCase("")) {
 
-                mapSqlParameterSource.addValue("imgUrl", imagePath);
+                    String imagePath = fileManagementServiceCloudinary.upload(property.getPlaceImage());
+                    mapSqlParameterSource.addValue("imgUrl", imagePath);
+                } else {
+                    mapSqlParameterSource.addValue("imgUrl", null);
 
+                }
                 KeyHolder propertyId = new GeneratedKeyHolder();
 
                 String PropertySql = "INSERT INTO property (landlord_id, address, place_type_id, complex_name, unit_number, image_url, isEstate, estate_name) VALUES (:landlordId, :address, :PlaceType,:complexName,:unitNumber,:imgUrl,:isEstate, :estateName)";
