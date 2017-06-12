@@ -2,6 +2,7 @@ package za.co.dladle.model;
 
 import io.swagger.models.auth.In;
 import za.co.dladle.entity.PropertyContactView;
+import za.co.dladle.entity.TenantView;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class Property {
     private boolean activeJob;
     private boolean isHome;
     private List<PropertyContactView> propertyContactList;
-    private List<String> tenantList;
+    private List<TenantView> tenantList;
 
     public Property() {
     }
@@ -109,11 +110,11 @@ public class Property {
         this.propertyContactList = propertyContactList;
     }
 
-    public List<String> getTenantList() {
+    public List<TenantView> getTenantList() {
         return tenantList;
     }
 
-    public void setTenantList(List<String> tenantList) {
+    public void setTenantList(List<TenantView> tenantList) {
         this.tenantList = tenantList;
     }
 

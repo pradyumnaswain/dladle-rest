@@ -9,16 +9,18 @@ public class TenantView {
     private String lastName;
     private String idNumber;
     private String cellNumber;
+    private String profilePicture;
 
     public TenantView() {
     }
 
-    public TenantView(String emailId, String firstName, String lastName, String idNumber, String cellNumber) {
+    public TenantView(String emailId, String firstName, String lastName, String idNumber, String cellNumber, String profilePicture) {
         this.emailId = emailId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.idNumber = idNumber;
         this.cellNumber = cellNumber;
+        this.profilePicture = profilePicture;
     }
 
     public String getEmailId() {
@@ -59,5 +61,13 @@ public class TenantView {
 
     public void setCellNumber(String cellNumber) {
         this.cellNumber = cellNumber;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 }

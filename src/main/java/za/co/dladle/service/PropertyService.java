@@ -191,13 +191,21 @@ public class PropertyService {
                 });
                 property.setPropertyContactList(contacts);
 
-                List<String> tenantList = new ArrayList<>();
+                List<TenantView> tenantList = new ArrayList<>();
                 map.put("houseId", property.getHouseId());
-                String sql1 = "SELECT user_dladle.* FROM tenant INNER JOIN user_dladle ON tenant.user_id = user_dladle.id WHERE house_id=:houseId";
+                String sql1 = "SELECT * FROM user_dladle INNER JOIN tenant ON tenant.user_id = user_dladle.id WHERE house_id=:houseId";
                 this.parameterJdbcTemplate.query(sql1, map, (rs1, rowNum1) -> {
-                    String tenant = rs1.getString("emailid");
-                    tenantList.add(tenant);
-                    return tenant;
+                    TenantView tenantView = new TenantView(
+                            rs1.getString("emailid"),
+                            rs1.getString("first_name"),
+                            rs1.getString("last_name"),
+                            rs1.getString("id_number"),
+                            rs1.getString("cell_number"),
+                            rs1.getString("profile_picture")
+                    );
+
+                    tenantList.add(tenantView);
+                    return tenantView;
                 });
                 property.setTenantList(tenantList);
 
@@ -213,7 +221,7 @@ public class PropertyService {
 
             Map<String, Object> map = new HashMap<>();
             map.put("emailId", email);
-            String landlordSql = "SELECT property.*,property.id property_id, house.id house_id,place_type.name place_name FROM property " +
+            String landlordSql = "SELECT property.*,property.id property_id,house.*, house.id house_id,place_type.name place_name FROM property " +
                     " INNER JOIN place_type ON property.place_type_id= place_type.id" +
                     " INNER JOIN house ON property.id= house.property_id " +
                     " INNER JOIN tenant ON house.id = tenant.house_id " +
@@ -419,7 +427,8 @@ public class PropertyService {
                     rs.getString("first_name"),
                     rs.getString("last_name"),
                     rs.getString("id_number"),
-                    rs.getString("cell_number")
+                    rs.getString("cell_number"),
+                    rs.getString("profile_picture")
             );
 
             tenantViews.add(tenantView);
