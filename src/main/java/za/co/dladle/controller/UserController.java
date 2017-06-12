@@ -55,6 +55,19 @@ public class UserController {
     //------------------------------------------------------------------------------------------------------------------
     //Logout
     //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = "api/user/get/details", method = RequestMethod.GET)
+    public Map<String, Object> getUserDetails(@RequestParam String emailId) throws UserNotFoundException {
+        try {
+            User user = userService.getDetails(emailId);
+            return ResponseUtil.response("SUCCESS", user, "Logged Out Successfully");
+        } catch (Exception e) {
+            return ResponseUtil.response("FAIL", null, e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Logout
+    //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "api/user/logout", method = RequestMethod.GET)
     public Map<String, Object> logout() throws UserNotFoundException {
         userService.logout();

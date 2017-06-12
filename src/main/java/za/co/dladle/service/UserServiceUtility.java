@@ -79,10 +79,32 @@ public class UserServiceUtility {
                             UserType.valueOf(rs.getString("name").toUpperCase()),
                             rs.getString("first_name"),
                             rs.getString("last_name"),
+                            rs.getString("id_number"),
                             rs.getString("cell_number"),
                             rs.getString("profile_picture")));
         } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException("Username or password is wrong. Please check and login again");
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Find User By Email Id and Password
+    //------------------------------------------------------------------------------------------------------------------
+    User findUserDetailsByEmail(String emailId) throws UserNotFoundException {
+
+        try {
+            String sql = "SELECT * FROM user_dladle INNER JOIN user_type ON user_dladle.user_type_id = user_type.id WHERE emailid=?";
+            return this.jdbcTemplate.queryForObject(sql, new Object[]{emailId.toLowerCase()}, (rs, rowNum) ->
+                    new User(rs.getString("emailId"),
+                            rs.getBoolean("verified"),
+                            UserType.valueOf(rs.getString("name").toUpperCase()),
+                            rs.getString("first_name"),
+                            rs.getString("last_name"),
+                            rs.getString("id_number"),
+                            rs.getString("cell_number"),
+                            rs.getString("profile_picture")));
+        } catch (EmptyResultDataAccessException e) {
+            throw new UserNotFoundException("User Not Found");
         }
     }
 

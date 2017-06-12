@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 public class Notification {
     private long id;
     private String from;
+    private String name;
+    private String profilePicture;
     private String to;
     private String title;
     private String body;
@@ -118,5 +120,21 @@ public class Notification {
 
     public void setHouseId(long houseId) {
         this.houseId = houseId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 }

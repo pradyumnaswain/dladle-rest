@@ -37,11 +37,13 @@ public class PushNotificationService {
         Map<String, Object> map = new HashMap<>();
         List<Notification> notificationList = new ArrayList<>();
         map.put("userId", userId);
-        String sql = "SELECT notification.*,u.emailid toId, p.emailid fromId FROM notification INNER JOIN user_dladle u ON notification_from=u.id INNER JOIN user_dladle p ON notification_to=p.id WHERE (notification_from=:userId OR notification_to=:userId)";
+        String sql = "SELECT notification.*,u.*,u.emailid toId, p.emailid fromId FROM notification INNER JOIN user_dladle u ON notification_from=u.id INNER JOIN user_dladle p ON notification_to=p.id WHERE (notification_from=:userId OR notification_to=:userId)";
         this.jdbcTemplate.query(sql, map, (rs1, rowNum1) -> {
             Notification notification = new Notification();
             notification.setId(rs1.getLong("id"));
             notification.setFrom(rs1.getString("fromId"));
+            notification.setName(rs1.getString("first_name") + " " + rs1.getString("last_name"));
+            notification.setProfilePicture(rs1.getString("profile_picture"));
             notification.setTo(rs1.getString("toId"));
             notification.setData(rs1.getString("notification_data"));
             notification.setTitle(rs1.getString("notification_title"));
