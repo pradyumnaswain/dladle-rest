@@ -5,7 +5,7 @@ package za.co.dladle.entity;
  */
 public class PropertyAssignmentRequest {
     private String emailId;
-    private String houseId;
+    private Long houseId;
 
     public PropertyAssignmentRequest() {
     }
@@ -18,11 +18,11 @@ public class PropertyAssignmentRequest {
         this.emailId = emailId;
     }
 
-    public String getHouseId() {
+    public Long getHouseId() {
         return houseId;
     }
 
-    public void setHouseId(String houseId) {
+    public void setHouseId(Long houseId) {
         this.houseId = houseId;
     }
 }

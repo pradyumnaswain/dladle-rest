@@ -59,6 +59,15 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
+    public User(String emailId, String firstName, String lastName, String mobileNumber, String profilePicture, String idNumber) {
+        this.emailId = emailId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.mobileNumber = mobileNumber;
+        this.profilePicture = profilePicture;
+        this.idNumber = idNumber;
+    }
+
     public String getEmailId() {
         return emailId;
     }

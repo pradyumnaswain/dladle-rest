@@ -43,7 +43,7 @@ public class PropertyService {
     private NamedParameterJdbcTemplate parameterJdbcTemplate;
 
     @Autowired
-    private UserServiceUtility userServiceUtility;
+    private LeaseService leaseService;
 
     @Autowired
     private AndroidPushNotificationsService pushNotificationsService;
@@ -276,7 +276,7 @@ public class PropertyService {
 
         map.put("tenantEmailId", userSession.getUser().getEmailId());
         String tenantSql = "SELECT landlord.id landord_id FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id WHERE emailid=:tenantEmailId";
-        Integer tenantId = this.parameterJdbcTemplate.queryForObject(tenantSql, map, Integer.class);
+        Long tenantId = this.parameterJdbcTemplate.queryForObject(tenantSql, map, Long.class);
 
         map.put("tenantId", tenantId);
         map.put("houseId", propertyAssignmentRequest.getHouseId());
@@ -284,6 +284,9 @@ public class PropertyService {
         String sql = "UPDATE tenant SET house_id=:houseId WHERE tenant.id=:tenantId";
 
         parameterJdbcTemplate.update(sql, map);
+
+        //Create/Update Lease
+        leaseService.createOrUpdateLease(propertyAssignmentRequest.getHouseId(), tenantId);
 
         notificationService.actionNotifications(tenantId, landlordId, Boolean.TRUE);
     }

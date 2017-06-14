@@ -98,7 +98,7 @@ public class PushNotificationService {
         this.jdbcTemplate.update(sql, map);
     }
 
-    void actionNotifications(Integer tenantId, Integer landlordId, Boolean aTrue) {
+    void actionNotifications(Long tenantId, Integer landlordId, Boolean aTrue) {
         Map<String, Object> map = new HashMap<>();
         map.put("to", tenantId);
         map.put("from", landlordId);

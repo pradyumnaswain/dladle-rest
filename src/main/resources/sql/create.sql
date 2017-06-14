@@ -16,21 +16,21 @@ GRANT ALL PRIVILEGES ON DATABASE dladle TO sysadmin;
 CREATE TABLE user_type
 (
   id   INT PRIMARY KEY  NOT NULL,
-  name VARCHAR(128)        NOT NULL
+  name VARCHAR(128)     NOT NULL
 );
 
 /*service_type*/
 CREATE TABLE service_type
 (
   id   INT PRIMARY KEY NOT NULL,
-  name VARCHAR(128)       NOT NULL
+  name VARCHAR(128)    NOT NULL
 );
 
 /*amenities_type*/
 CREATE TABLE amenities_type
 (
   id   INT PRIMARY KEY NOT NULL,
-  name VARCHAR(128)       NOT NULL
+  name VARCHAR(128)    NOT NULL
 );
 /*place_type*/
 CREATE TABLE place_type
@@ -188,15 +188,18 @@ CREATE TABLE vendor
   FOREIGN KEY (user_id) REFERENCES user_dladle (id)
 );
 
-/*lease*/
+/*leaseTenant*/
 CREATE TABLE lease
 (
-  id           SERIAL PRIMARY KEY NOT NULL,
-  landlord_id  INT,
-  lease_date   DATE,
-  renewal_date DATE,
-  remark       VARCHAR(100),
-  FOREIGN KEY (landlord_id) REFERENCES landlord (id)
+  id                   SERIAL PRIMARY KEY NOT NULL,
+  house_id             INT,
+  lease_start_date     TIMESTAMP,
+  lease_terminate_date TIMESTAMP,
+  lease_end_date       TIMESTAMP,
+  lease_renewal_date   TIMESTAMP,
+  remark               VARCHAR(100),
+  lease_status         BOOLEAN DEFAULT FALSE,
+  FOREIGN KEY (house_id) REFERENCES house (id)
 );
 /*service*/
 CREATE TABLE service
@@ -255,5 +258,6 @@ CREATE TABLE lease_tenant
   tenant_id   INT,
   joined_date TIMESTAMP,
   FOREIGN KEY (tenant_id) REFERENCES tenant (id),
-  FOREIGN KEY (lease_id) REFERENCES lease (id)
+  FOREIGN KEY (lease_id) REFERENCES lease (id),
+  UNIQUE (lease_id, tenant_id)
 );

@@ -66,6 +66,19 @@ public class UserServiceUtility {
     }
 
     //------------------------------------------------------------------------------------------------------------------
+    //Find Tenant Id By Email Id
+    //------------------------------------------------------------------------------------------------------------------
+    Long findTenantIdByEmail(String emailId) throws UserNotFoundException {
+
+        try {
+            String sql = "SELECT tenant.id tenant_id FROM user_dladle INNER JOIN tenant ON user_dladle.id = tenant.user_id WHERE emailid=?";
+            return this.jdbcTemplate.queryForObject(sql, new Object[]{emailId.toLowerCase()}, (rs, rowNum) -> rs.getLong("tenant_id"));
+        } catch (EmptyResultDataAccessException e) {
+            throw new UserNotFoundException("User doesn't exist");
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
     //Find User By Email Id and Password
     //------------------------------------------------------------------------------------------------------------------
     User findUserByEmailAndPassword(String emailId, String password) throws UserNotFoundException {

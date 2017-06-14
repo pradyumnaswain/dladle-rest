@@ -78,5 +78,9 @@ ALTER TABLE lease ADD COLUMN lease_start_date TIMESTAMP;
 ALTER TABLE lease ADD COLUMN lease_terminate_date TIMESTAMP;
 ALTER TABLE lease ADD COLUMN lease_end_date TIMESTAMP;
 ALTER TABLE lease ADD COLUMN lease_renewal_date TIMESTAMP;
-
+ALTER TABLE lease DROP COLUMN landlord_id;
+ALTER TABLE lease ADD COLUMN house_id INT;
+ALTER TABLE lease ADD COLUMN lease_status BOOLEAN DEFAULT FALSE ;
+ALTER TABLE lease ADD FOREIGN KEY (house_id) REFERENCES house(id);
+ALTER TABLE lease_tenant ADD UNIQUE (lease_id,tenant_id) ;
 

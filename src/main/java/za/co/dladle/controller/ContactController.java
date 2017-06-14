@@ -59,5 +59,4 @@ public class ContactController {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }
     }
-
 }
