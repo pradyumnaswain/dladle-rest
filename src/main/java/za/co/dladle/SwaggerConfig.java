@@ -31,7 +31,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("Dladle Web Service")
                 .description("RESTful Web Service for Dladle Application")
-                .contact(new Contact("Pradyumna Swain", "http://www.pradyumnaswain.info", "pswain@sysappweb.in"))
+                .contact(new Contact("Pradyumna Swain", "http://www.pradyumnaswain.xyz", "pswain@sysappweb.in"))
                 .license("© 2017 SysAppWeb Pvt. Ltd")
                 .build();
     }
