@@ -1,31 +1,24 @@
-package za.co.dladle.model;
+package za.co.dladle.entity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import za.co.dladle.model.NotificationType;
 
 /**
  * Created by prady on 6/7/2017.
  */
-public class Notification {
-    private long id;
+public class NotificationView {
     private String from;
-    private String name;
-    private String profilePicture;
     private String to;
     private String title;
     private String body;
     private String data;
     private String imageUrl;
-    private String time;
-    private boolean read;
-    private boolean actioned;
     private long houseId;
-    private String notificationType;
+    private NotificationType notificationType;
 
-    public Notification() {
+    public NotificationView() {
     }
 
-    public Notification(String from, String to, String title, String body, String data, String imageUrl, long houseId, String notificationType) {
+    public NotificationView(String from, String to, String title, String body, String data, String imageUrl, long houseId, NotificationType notificationType) {
         this.from = from;
         this.to = to;
         this.title = title;
@@ -34,14 +27,6 @@ public class Notification {
         this.imageUrl = imageUrl;
         this.houseId = houseId;
         this.notificationType = notificationType;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getFrom() {
@@ -92,30 +77,6 @@ public class Notification {
         this.imageUrl = imageUrl;
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public boolean isRead() {
-        return read;
-    }
-
-    public void setRead(boolean read) {
-        this.read = read;
-    }
-
-    public boolean isActioned() {
-        return actioned;
-    }
-
-    public void setActioned(boolean actioned) {
-        this.actioned = actioned;
-    }
-
     public long getHouseId() {
         return houseId;
     }
@@ -124,27 +85,11 @@ public class Notification {
         this.houseId = houseId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
-    }
-
-    public String getNotificationType() {
+    public NotificationType getNotificationType() {
         return notificationType;
     }
 
-    public void setNotificationType(String notificationType) {
+    public void setNotificationType(NotificationType notificationType) {
         this.notificationType = notificationType;
     }
 }

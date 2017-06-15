@@ -2,7 +2,6 @@ package za.co.dladle.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -10,7 +9,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import za.co.dladle.entity.PropertyView;
 import za.co.dladle.entity.TenantLeaseView;
-import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.model.LeaseLandlord;
 import za.co.dladle.model.LeaseTenant;
 import za.co.dladle.model.User;

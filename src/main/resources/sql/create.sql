@@ -65,6 +65,12 @@ CREATE TABLE contact_type
   id   INT PRIMARY KEY,
   name VARCHAR(20)
 );
+/*Notification Type*/
+CREATE TABLE notification_type
+(
+  id   INT PRIMARY KEY,
+  name VARCHAR(100)
+);
 
 /* User*/
 CREATE TABLE user_dladle
@@ -237,6 +243,7 @@ CREATE TABLE tenant_contact
 CREATE TABLE notification
 (
   id                           SERIAL PRIMARY KEY NOT NULL,
+  notification_type_id INT,
   notification_from            INT,
   notification_to              INT,
   notification_title           VARCHAR(100),
@@ -249,7 +256,8 @@ CREATE TABLE notification
   house_id                     INT,
   FOREIGN KEY (notification_from) REFERENCES user_dladle (id),
   FOREIGN KEY (notification_to) REFERENCES user_dladle (id),
-  FOREIGN KEY (house_id) REFERENCES house (id)
+  FOREIGN KEY (house_id) REFERENCES house (id),
+  FOREIGN KEY (notification_type_id) REFERENCES notification_type (id)
 );
 CREATE TABLE lease_tenant
 (

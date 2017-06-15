@@ -311,12 +311,12 @@ public class PropertyService {
         String deviceId = this.parameterJdbcTemplate.queryForObject(sql, map, String.class);
 
         //save notification
-        Notification notifications = new Notification(userSession.getUser().getEmailId(),
+        NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
                 propertyInviteRequest.getEmailId(),
                 "New Property Request",
                 "Please accept this property invitation",
                 "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + propertyInviteRequest.getHouseId(),
-                "image", propertyInviteRequest.getHouseId());
+                "image", propertyInviteRequest.getHouseId(), NotificationType.LANDLORD_REQUEST_TENANT);
         notificationService.saveNotification(notifications);
 
         //Send Email

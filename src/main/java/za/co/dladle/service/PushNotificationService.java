@@ -4,10 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
+import za.co.dladle.entity.NotificationView;
 import za.co.dladle.exception.UserNotFoundException;
+import za.co.dladle.mapper.NotificationTypeMapper;
 import za.co.dladle.model.Notification;
+import za.co.dladle.model.NotificationType;
 import za.co.dladle.session.UserSession;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -37,7 +41,11 @@ public class PushNotificationService {
         Map<String, Object> map = new HashMap<>();
         List<Notification> notificationList = new ArrayList<>();
         map.put("userId", userId);
-        String sql = "SELECT notification.*,u.*,u.emailid toId, p.emailid fromId FROM notification INNER JOIN user_dladle u ON notification_from=u.id INNER JOIN user_dladle p ON notification_to=p.id WHERE (notification_from=:userId OR notification_to=:userId)";
+        String sql = "SELECT notification.*,u.*,u.emailid toId, p.emailid fromId,notification_type.name FROM notification " +
+                "INNER JOIN notification_type ON notification.notification_type_id = notification_type.id " +
+                "INNER JOIN user_dladle u ON notification_from=u.id " +
+                "INNER JOIN user_dladle p ON notification_to=p.id " +
+                "WHERE (notification_from=:userId OR notification_to=:userId)";
         this.jdbcTemplate.query(sql, map, (rs1, rowNum1) -> {
             Notification notification = new Notification();
             notification.setId(rs1.getLong("id"));
@@ -53,6 +61,7 @@ public class PushNotificationService {
             notification.setRead(rs1.getBoolean("notification_read_status"));
             notification.setActioned(rs1.getBoolean("notification_actioned_status"));
             notification.setHouseId(rs1.getLong("house_id"));
+            notification.setNotificationType(rs1.getString("name"));
             notificationList.add(notification);
             return notification;
         });
@@ -79,7 +88,7 @@ public class PushNotificationService {
         this.jdbcTemplate.update(sql, map);
     }
 
-    void saveNotification(Notification notification) throws UserNotFoundException {
+    void saveNotification(NotificationView notification) throws UserNotFoundException {
         Map<String, Object> map = new HashMap<>();
         map.put("title", notification.getTitle());
         map.put("from", userServiceUtility.findUserIdByEmail(notification.getFrom()));
@@ -87,10 +96,11 @@ public class PushNotificationService {
         map.put("body", notification.getBody());
         map.put("data", notification.getData());
         map.put("imageUrl", notification.getImageUrl());
-        map.put("time", LocalDateTime.now(ZoneId.systemDefault()));
+        map.put("time", LocalDate.now());
         map.put("read", Boolean.FALSE);
         map.put("actioned", Boolean.FALSE);
         map.put("houseId", notification.getHouseId());
+        map.put("notificationTypeId", NotificationTypeMapper.getNotificationType(notification.getNotificationType()));
 
 
         String sql = "INSERT INTO notification(notification_from, notification_to, notification_title, notification_body, notification_data, notification_image_url, notification_time, notification_read_status, notification_actioned_status,house_id) " +

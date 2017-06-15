@@ -84,3 +84,6 @@ ALTER TABLE lease ADD COLUMN lease_status BOOLEAN DEFAULT FALSE ;
 ALTER TABLE lease ADD FOREIGN KEY (house_id) REFERENCES house(id);
 ALTER TABLE lease_tenant ADD UNIQUE (lease_id,tenant_id) ;
 
+ALTER TABLE notification ADD COLUMN notification_type_id INT;
+ALTER TABLE notification ADD FOREIGN KEY (notification_type_id) REFERENCES notification_type(id);
+

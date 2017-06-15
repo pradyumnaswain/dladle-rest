@@ -52,4 +52,6 @@ public class LeaseController {
         }
     }
 
+    // TODO: 6/15/2017 terminate Lease or Renew Lease
+
 }
