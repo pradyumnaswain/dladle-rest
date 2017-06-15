@@ -164,7 +164,7 @@ public class LeaseService {
             String sql1 = "INSERT INTO lease_tenant(lease_id, tenant_id, joined_date) VALUES (:leaseId,:tenantId,:joinedDate) ON CONFLICT DO NOTHING ";
             this.jdbcTemplate.update(sql1, map);
 
-        } catch (EmptyResultDataAccessException e) {
+        } catch (Exception e) {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource().addValue("houseId", houseId)
                     .addValue("leaseStartDate", LocalDate.now())

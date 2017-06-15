@@ -270,25 +270,34 @@ public class PropertyService {
     public void assignPropertyToTenant(PropertyAssignmentRequest propertyAssignmentRequest) throws Exception {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
         Map<String, Object> map = new HashMap<>();
-        map.put("landlordEmailId", propertyAssignmentRequest.getEmailId());
-        String landlordSql = "SELECT landlord.id landord_id FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id WHERE emailid=:landlordEmailId";
-        Integer landlordId = this.parameterJdbcTemplate.queryForObject(landlordSql, map, Integer.class);
+        if (userSession.getUser().getUserType().eqTENANT()) {
+            map.put("landlordEmailId", propertyAssignmentRequest.getEmailId());
+            String landlordSql = "SELECT landlord.id landord_id FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id WHERE emailid=:landlordEmailId";
 
-        map.put("tenantEmailId", userSession.getUser().getEmailId());
-        String tenantSql = "SELECT landlord.id landord_id FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id WHERE emailid=:tenantEmailId";
-        Long tenantId = this.parameterJdbcTemplate.queryForObject(tenantSql, map, Long.class);
+            try {
+                Integer landlordId = this.parameterJdbcTemplate.queryForObject(landlordSql, map, Integer.class);
+                map.put("tenantEmailId", userSession.getUser().getEmailId());
+                String tenantSql = "SELECT landlord.id landord_id FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id WHERE emailid=:tenantEmailId";
+                Long tenantId = this.parameterJdbcTemplate.queryForObject(tenantSql, map, Long.class);
 
-        map.put("tenantId", tenantId);
-        map.put("houseId", propertyAssignmentRequest.getHouseId());
+                map.put("tenantId", tenantId);
+                map.put("houseId", propertyAssignmentRequest.getHouseId());
 
-        String sql = "UPDATE tenant SET house_id=:houseId WHERE tenant.id=:tenantId";
+                String sql = "UPDATE tenant SET house_id=:houseId WHERE tenant.id=:tenantId";
 
-        parameterJdbcTemplate.update(sql, map);
+                parameterJdbcTemplate.update(sql, map);
 
-        //Create/Update Lease
-        leaseService.createOrUpdateLease(propertyAssignmentRequest.getHouseId(), tenantId);
+                //Create/Update Lease
+                leaseService.createOrUpdateLease(propertyAssignmentRequest.getHouseId(), tenantId);
 
-        notificationService.actionNotifications(tenantId, landlordId, Boolean.TRUE);
+                notificationService.actionNotifications(tenantId, landlordId, Boolean.TRUE);
+
+            } catch (Exception e) {
+                throw new Exception("Landlord doesn't exist for the given email Id");
+            }
+        } else {
+            throw new Exception("Not authorised to use this API");
+        }
     }
 
 
