@@ -25,7 +25,11 @@ public class LeaseController {
     public Map<String, Object> viewLease() throws IOException {
         try {
             LeaseTenant leaseTenant = leaseService.viewLease();
-            return ResponseUtil.response("SUCCESS", leaseTenant, "LeaseTenant fetched Successfully");
+            if (leaseTenant != null) {
+                return ResponseUtil.response("SUCCESS", leaseTenant, "LeaseTenant fetched Successfully");
+            } else {
+                return ResponseUtil.response("SUCCESS", "{}", "LeaseTenant fetched Successfully");
+            }
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }
@@ -38,7 +42,11 @@ public class LeaseController {
     public Map<String, Object> viewLease(@PathVariable long houseId) throws IOException {
         try {
             LeaseLandlord leaseLandlord = leaseService.viewLease(houseId);
-            return ResponseUtil.response("SUCCESS", leaseLandlord, "LeaseTenant fetched Successfully");
+            if (leaseLandlord != null) {
+                return ResponseUtil.response("SUCCESS", leaseLandlord, "LeaseLandlord fetched Successfully");
+            } else {
+                return ResponseUtil.response("SUCCESS", "{}", "LeaseLandlord fetched Successfully");
+            }
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }
