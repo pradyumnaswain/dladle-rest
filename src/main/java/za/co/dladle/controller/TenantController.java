@@ -2,10 +2,9 @@ package za.co.dladle.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import za.co.dladle.entity.ContactAddRequest;
-import za.co.dladle.entity.DeleteContactRequest;
-import za.co.dladle.entity.TenantContactView;
+import za.co.dladle.entity.*;
 import za.co.dladle.service.ContactService;
+import za.co.dladle.service.PropertyService;
 import za.co.dladle.util.ResponseUtil;
 
 import java.io.IOException;
@@ -16,10 +15,13 @@ import java.util.Map;
  * Created by prady on 6/4/2017.
  */
 @RestController
-public class ContactController {
+public class TenantController {
 
     @Autowired
     private ContactService contactService;
+
+    @Autowired
+    private PropertyService propertyService;
 
     //------------------------------------------------------------------------------------------------------------------
     //Add Contact
@@ -59,4 +61,18 @@ public class ContactController {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }
     }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Invite Tenant to Property
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = "/api/property/request", method = RequestMethod.POST)
+    public Map<String, Object> inviteTenantToProperty(@RequestBody PropertyRequest propertyRequest) throws IOException {
+        try {
+            propertyService.requestLandlord(propertyRequest);
+            return ResponseUtil.response("SUCCESS", "{}", "Property Requested");
+        } catch (Exception e) {
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+        }
+    }
+
 }

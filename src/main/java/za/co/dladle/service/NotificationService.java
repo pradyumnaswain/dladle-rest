@@ -11,4 +11,6 @@ public interface NotificationService {
     void sendVerificationMail(String toEmailId, String verifyLink);
 
     void sendPropertyInviteMail(String toEmailId);
+
+    void sendPropertyRequesteMail(String toEmailId);
 }

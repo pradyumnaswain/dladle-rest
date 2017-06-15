@@ -160,7 +160,7 @@ public class PropertyController {
     public Map<String, Object> inviteTenantToProperty(@RequestBody PropertyInviteRequest propertyInviteRequest) throws IOException {
         try {
             propertyService.inviteTenant(propertyInviteRequest);
-            return ResponseUtil.response("SUCCESS", "{}", "Property Assigned");
+            return ResponseUtil.response("SUCCESS", "{}", "Property Invitation Sent");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }

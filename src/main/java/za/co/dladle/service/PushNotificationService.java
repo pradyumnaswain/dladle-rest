@@ -79,15 +79,6 @@ public class PushNotificationService {
         this.jdbcTemplate.update(sql, map);
     }
 
-    public void actionNotifications(long notificationId, boolean actioned) {
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("id", notificationId);
-        map.put("actioned", actioned);
-        String sql = "UPDATE notification SET notification_actioned_status=:actioned WHERE id=:id";
-        this.jdbcTemplate.update(sql, map);
-    }
-
     void saveNotification(NotificationView notification) throws UserNotFoundException {
         Map<String, Object> map = new HashMap<>();
         map.put("title", notification.getTitle());
@@ -99,21 +90,24 @@ public class PushNotificationService {
         map.put("time", LocalDate.now());
         map.put("read", Boolean.FALSE);
         map.put("actioned", Boolean.FALSE);
-        map.put("houseId", notification.getHouseId());
+        if (notification.getHouseId() == null) {
+            map.put("houseId", null);
+        } else {
+            map.put("houseId", Long.valueOf(notification.getHouseId()));
+        }
         map.put("notificationTypeId", NotificationTypeMapper.getNotificationType(notification.getNotificationType()));
 
 
-        String sql = "INSERT INTO notification(notification_from, notification_to, notification_title, notification_body, notification_data, notification_image_url, notification_time, notification_read_status, notification_actioned_status,house_id) " +
-                " VALUES (:from,:to,:title,:body,:data,:imageUrl,:time,:read,:actioned,:houseId)";
+        String sql = "INSERT INTO notification(notification_from, notification_to, notification_title, notification_body, notification_data, notification_image_url, notification_time, notification_read_status, notification_actioned_status,house_id,notification_type_id) " +
+                " VALUES (:from,:to,:title,:body,:data,:imageUrl,:time,:read,:actioned,:houseId,:notificationTypeId)";
         this.jdbcTemplate.update(sql, map);
     }
 
-    void actionNotifications(Long tenantId, Integer landlordId, Boolean aTrue) {
+    void actionNotifications(Long tenantId, Long landlordId) {
         Map<String, Object> map = new HashMap<>();
         map.put("to", tenantId);
         map.put("from", landlordId);
-        map.put("actioned", aTrue);
-        String sql = "UPDATE notification SET notification_actioned_status=:actioned WHERE notification_from=:from AND notification_to=:to";
+        String sql = "UPDATE notification SET notification_actioned_status=TRUE WHERE notification_from=:from AND notification_to=:to";
         this.jdbcTemplate.update(sql, map);
 
     }

@@ -12,13 +12,13 @@ public class NotificationView {
     private String body;
     private String data;
     private String imageUrl;
-    private long houseId;
+    private String houseId;
     private NotificationType notificationType;
 
     public NotificationView() {
     }
 
-    public NotificationView(String from, String to, String title, String body, String data, String imageUrl, long houseId, NotificationType notificationType) {
+    public NotificationView(String from, String to, String title, String body, String data, String imageUrl, String houseId, NotificationType notificationType) {
         this.from = from;
         this.to = to;
         this.title = title;
@@ -77,11 +77,11 @@ public class NotificationView {
         this.imageUrl = imageUrl;
     }
 
-    public long getHouseId() {
+    public String getHouseId() {
         return houseId;
     }
 
-    public void setHouseId(long houseId) {
+    public void setHouseId(String houseId) {
         this.houseId = houseId;
     }
 

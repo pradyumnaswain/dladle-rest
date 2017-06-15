@@ -74,6 +74,26 @@ public class NotificationServiceSendGridImpl implements NotificationService {
 
     }
 
+    @Override
+    public void sendPropertyRequesteMail(String toEmailId) {
+        Email from = new Email(FROM_EMAIL);
+        String subject = "Tenant Requests Property";
+        Email to = new Email(toEmailId);
+        Content content = new Content("text/html", "<html><body>" +
+                "<P>Hi " + "!</p>" +
+                "<P>Please check Dladle App to accept property request</P>" +
+                "<P>DlaDle</P></body></html>");
+        Mail mail = new Mail(from, subject, to, content);
+
+        SendGrid sg = new SendGrid(SENDGRID_API_KEY);
+        Request request = new Request();
+        try {
+            sendMailUtil(mail, sg, request);
+        } catch (IOException ex) {
+        }
+
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     //Send Email
     //------------------------------------------------------------------------------------------------------------------
