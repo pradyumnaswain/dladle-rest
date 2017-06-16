@@ -87,3 +87,18 @@ ALTER TABLE lease_tenant ADD UNIQUE (lease_id,tenant_id) ;
 ALTER TABLE notification ADD COLUMN notification_type_id INT;
 ALTER TABLE notification ADD FOREIGN KEY (notification_type_id) REFERENCES notification_type(id);
 
+ALTER TABLE house DROP COLUMN notifications_count_tenant ;
+ALTER TABLE house DROP COLUMN notifications_count_landlord;
+ALTER TABLE house DROP COLUMN notifications_count_vendor ;
+
+DROP TABLE notification_count;
+
+CREATE TABLE notification_count
+(
+  id SERIAL PRIMARY KEY NOT NULL,
+  user_id INT,
+  count INT,
+  FOREIGN KEY (user_id) REFERENCES user_dladle(id),
+  UNIQUE (user_id)
+);
+

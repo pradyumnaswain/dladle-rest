@@ -136,9 +136,6 @@ CREATE TABLE house
 (
   id                           SERIAL PRIMARY KEY NOT NULL,
   property_id                  INT,
-  notifications_count_tenant   INT     DEFAULT 0,
-  notifications_count_landlord INT     DEFAULT 0,
-  notifications_count_vendor   INT     DEFAULT 0,
   active_job                   BOOLEAN DEFAULT FALSE,
   contacts_count               INT     DEFAULT 0,
   is_home                      BOOLEAN DEFAULT FALSE,
@@ -259,6 +256,15 @@ CREATE TABLE notification
   FOREIGN KEY (house_id) REFERENCES house (id),
   FOREIGN KEY (notification_type_id) REFERENCES notification_type (id)
 );
+CREATE TABLE notification_count
+(
+  id SERIAL PRIMARY KEY NOT NULL,
+  user_id INT,
+  count INT,
+  FOREIGN KEY (user_id) REFERENCES user_dladle(id),
+  UNIQUE (user_id)
+);
+
 CREATE TABLE lease_tenant
 (
   id          SERIAL PRIMARY KEY NOT NULL,

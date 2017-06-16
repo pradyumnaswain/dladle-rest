@@ -57,6 +57,9 @@ public class PropertyService {
     @Autowired
     private FileManagementServiceCloudinaryImpl fileManagementServiceCloudinary;
 
+    @Autowired
+    private UserServiceUtility userServiceUtility;
+
     private static final Logger log = LoggerFactory.getLogger(PropertyService.class);
 
     //------------------------------------------------------------------------------------------------------------------
@@ -143,7 +146,7 @@ public class PropertyService {
         }
     }
 
-    public List<Property> listProperties() throws PropertyAddException {
+    public List<Property> listProperties() throws Exception {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
         if (userSession.getUser().getUserType().eqLANDLORD()) {
@@ -170,11 +173,25 @@ public class PropertyService {
                 property.setPlaceType(rs.getString("place_name"));
                 property.setPropertyId(rs.getLong("property_id"));
                 property.setHouseId(rs.getLong("house_id"));
-                property.setNotificationsCount(rs.getInt("notifications_count_landlord"));
                 property.setContactsCount(rs.getInt("contacts_count"));
                 property.setTenantsCount(rs.getInt("tenants_count"));
                 property.setHome(rs.getBoolean("is_home"));
                 property.setActiveJob(rs.getBoolean("active_job"));
+
+                try {
+                    Long userId = userServiceUtility.findUserIdByEmail(email);
+                    map.put("userId", userId);
+                    String sqlCount = "SELECT count FROM notification_count WHERE user_id=:userId";
+
+                    try {
+                        Integer count = this.parameterJdbcTemplate.queryForObject(sqlCount, map, Integer.class);
+                        property.setNotificationsCount(count);
+                    } catch (Exception e) {
+                        property.setNotificationsCount(0);
+                    }
+                } catch (UserNotFoundException e) {
+                    e.printStackTrace();
+                }
 
                 List<PropertyContactView> contacts = new ArrayList<>();
                 map.put("houseId", property.getHouseId());
@@ -238,8 +255,22 @@ public class PropertyService {
                 property.setPlaceType(rs.getString("place_name"));
                 property.setPropertyId(rs.getLong("property_id"));
                 property.setHouseId(rs.getLong("house_id"));
-                property.setNotificationsCount(rs.getInt("notifications_count_tenant"));
                 property.setActiveJob(rs.getBoolean("active_job"));
+
+                try {
+                    Long userId = userServiceUtility.findUserIdByEmail(email);
+                    map.put("userId", userId);
+                    String sqlCount = "SELECT count FROM notification_count WHERE user_id=:userId";
+
+                    try {
+                        Integer count = this.parameterJdbcTemplate.queryForObject(sqlCount, map, Integer.class);
+                        property.setNotificationsCount(count);
+                    } catch (Exception e) {
+                        property.setNotificationsCount(0);
+                    }
+                } catch (UserNotFoundException e) {
+                    e.printStackTrace();
+                }
 
                 List<PropertyContactView> contacts = new ArrayList<>();
                 map.put("houseId", property.getHouseId());
