@@ -21,19 +21,10 @@ public class Notification {
     private boolean actioned;
     private long houseId;
     private String notificationType;
+    private Long notificationTypeId;
+    private Double rating;
 
     public Notification() {
-    }
-
-    public Notification(String from, String to, String title, String body, String data, String imageUrl, long houseId, String notificationType) {
-        this.from = from;
-        this.to = to;
-        this.title = title;
-        this.body = body;
-        this.data = data;
-        this.imageUrl = imageUrl;
-        this.houseId = houseId;
-        this.notificationType = notificationType;
     }
 
     public long getId() {
@@ -146,5 +137,21 @@ public class Notification {
 
     public void setNotificationType(String notificationType) {
         this.notificationType = notificationType;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    public Long getNotificationTypeId() {
+        return notificationTypeId;
+    }
+
+    public void setNotificationTypeId(Long notificationTypeId) {
+        this.notificationTypeId = notificationTypeId;
     }
 }
