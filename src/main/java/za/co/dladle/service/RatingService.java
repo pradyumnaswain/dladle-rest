@@ -11,6 +11,7 @@ import za.co.dladle.entity.RatingViewDetails;
 import za.co.dladle.model.User;
 import za.co.dladle.session.UserSession;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,19 +36,6 @@ public class RatingService {
         User user = userSession.getUser();
 
         Long userId = utility.findUserIdByEmail(user.getEmailId());
-
-        Map<String, Long> map = new HashMap<>();
-
-        map.put("userId", userId);
-
-        String sql = "SELECT avg(value) AS rate,count(rating.id) AS count FROM rating WHERE rated_user=:userId";
-
-        return jdbcTemplate.queryForObject(sql, map, (rs, rowNum) -> new RatingView(rs.getDouble("rate"), rs.getInt("count")));
-    }
-
-    public RatingView viewRatings(String emailId) throws Exception {
-
-        Long userId = utility.findUserIdByEmail(emailId);
 
         Map<String, Long> map = new HashMap<>();
 
@@ -85,6 +73,21 @@ public class RatingService {
         String sql = "SELECT * FROM rating INNER JOIN user_dladle ON rating.rating_user=user_dladle.id WHERE rated_user=:userId";
 
         return jdbcTemplate.query(sql, map, (rs, rowNum) -> new RatingViewDetails(rs.getDouble("value"), rs.getString("rating_comment"), rs.getString("first_name") + " " + rs.getString("last_name")));
+    }
+
+    public List<RatingViewDetails> viewRatingDetails(String emailId) throws Exception {
+
+        List<RatingViewDetails> ratingViewDetails = new ArrayList<>();
+        Long userId = utility.findUserIdByEmail(emailId);
+
+        Map<String, Long> map = new HashMap<>();
+
+        map.put("userId", userId);
+
+        String sql = "SELECT * FROM rating INNER JOIN user_dladle ON rating.rating_user=user_dladle.id WHERE rated_user=:userId";
+
+        ratingViewDetails = jdbcTemplate.query(sql, map, (rs, rowNum) -> new RatingViewDetails(rs.getDouble("value"), rs.getString("rating_comment"), rs.getString("first_name") + " " + rs.getString("last_name")));
+        return ratingViewDetails;
     }
 
     public boolean postRating(RatingAddRequest ratingAddRequest) throws Exception {

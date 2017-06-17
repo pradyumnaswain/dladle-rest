@@ -1,5 +1,9 @@
 package za.co.dladle.model;
 
+import za.co.dladle.entity.RatingViewDetails;
+
+import java.util.List;
+
 /**
  * Created by prady on 9/3/2016.
  */
@@ -23,8 +27,7 @@ public class User {
 
     private String idNumber;
 
-    private Double rating;
-    private Integer numberOfRatedUsers;
+    private List<RatingViewDetails> ratingViewDetails;
 
 
     public User() {
@@ -52,7 +55,7 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    public User(String emailId, boolean verified, UserType userType, String firstName, String lastName, String idNumber, String mobileNumber, String profilePicture, Double rating, Integer numberOfRatedUsers) {
+    public User(String emailId, boolean verified, UserType userType, String firstName, String lastName, String idNumber, String mobileNumber, String profilePicture, List<RatingViewDetails> ratingViewDetails) {
         this.emailId = emailId;
         this.verified = verified;
         this.userType = userType;
@@ -61,8 +64,7 @@ public class User {
         this.idNumber = idNumber;
         this.mobileNumber = mobileNumber;
         this.profilePicture = profilePicture;
-        this.rating = rating;
-        this.numberOfRatedUsers = numberOfRatedUsers;
+        this.ratingViewDetails = ratingViewDetails;
     }
 
     public User(String emailId, String firstName, String lastName, String mobileNumber, String profilePicture, String idNumber) {
@@ -146,19 +148,11 @@ public class User {
         this.idNumber = idNumber;
     }
 
-    public Double getRating() {
-        return rating;
+    public List<RatingViewDetails> getRatingViewDetails() {
+        return ratingViewDetails;
     }
 
-    public void setRating(Double rating) {
-        this.rating = rating;
-    }
-
-    public Integer getNumberOfRatedUsers() {
-        return numberOfRatedUsers;
-    }
-
-    public void setNumberOfRatedUsers(Integer numberOfRatedUsers) {
-        this.numberOfRatedUsers = numberOfRatedUsers;
+    public void setRatingViewDetails(List<RatingViewDetails> ratingViewDetails) {
+        this.ratingViewDetails = ratingViewDetails;
     }
 }
