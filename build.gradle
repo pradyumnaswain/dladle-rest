@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.4.3.RELEASE'
+        springBootVersion = '1.5.4.RELEASE'
     }
     repositories {
         jcenter()
@@ -12,7 +12,7 @@ buildscript {
 }
 
 apply plugin: 'org.springframework.boot'
-
+sourceCompatibility = 1.8
 springBoot {
     mainClass = "za.co.dladle.Sandbox"
 }
