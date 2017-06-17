@@ -1,5 +1,6 @@
 package za.co.dladle.service;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -578,7 +579,7 @@ public class PropertyService {
         return imageUrl;
     }
 
-    public void requestLandlord(PropertyRequest propertyRequest) throws UserNotFoundException {
+    public void requestLandlord(PropertyRequest propertyRequest) throws UserNotFoundException, JSONException {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
         Map<String, Object> map = new HashMap<>();
