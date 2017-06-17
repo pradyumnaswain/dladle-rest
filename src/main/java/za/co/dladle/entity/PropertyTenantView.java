@@ -1,16 +1,13 @@
-package za.co.dladle.model;
+package za.co.dladle.entity;
 
-import io.swagger.models.auth.In;
-import za.co.dladle.entity.LandlordView;
-import za.co.dladle.entity.PropertyContactView;
-import za.co.dladle.entity.TenantView;
+import za.co.dladle.model.User;
 
 import java.util.List;
 
 /**
  * Created by prady on 6/1/2017.
  */
-public class Property {
+public class PropertyTenantView {
     private long propertyId;
     private long houseId;
     private String address;
@@ -26,11 +23,9 @@ public class Property {
     private boolean activeJob;
     private boolean isHome;
     private List<PropertyContactView> propertyContactList;
-    private List<TenantView> tenantList;
-    private LandlordView landlord;
+    private User landlord;
 
-
-    public Property() {
+    public PropertyTenantView() {
     }
 
     public long getPropertyId() {
@@ -113,14 +108,6 @@ public class Property {
         this.propertyContactList = propertyContactList;
     }
 
-    public List<TenantView> getTenantList() {
-        return tenantList;
-    }
-
-    public void setTenantList(List<TenantView> tenantList) {
-        this.tenantList = tenantList;
-    }
-
     public int getNotificationsCount() {
         return notificationsCount;
     }
@@ -161,11 +148,11 @@ public class Property {
         isHome = home;
     }
 
-    public LandlordView getLandlord() {
+    public User getLandlord() {
         return landlord;
     }
 
-    public void setLandlord(LandlordView landlord) {
+    public void setLandlord(User landlord) {
         this.landlord = landlord;
     }
 }

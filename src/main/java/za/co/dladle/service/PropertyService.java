@@ -287,6 +287,20 @@ public class PropertyService {
                 });
                 property.setPropertyContactList(contacts);
 
+                map.put("propertyId", property.getPropertyId());
+                String sql1 = "SELECT * FROM user_dladle INNER JOIN landlord ON landlord.user_id = user_dladle.id " +
+                        "INNER JOIN property ON landlord.id = property.landlord_id " +
+                        "WHERE property.id=:propertyId";
+                LandlordView landlordView = this.parameterJdbcTemplate.queryForObject(sql1, map, (rs1, rowNum1) -> new LandlordView(
+                        rs1.getString("emailid"),
+                        rs1.getString("first_name"),
+                        rs1.getString("last_name"),
+                        rs1.getString("id_number"),
+                        rs1.getString("cell_number"),
+                        rs1.getString("profile_picture")
+                ));
+                property.setLandlord(landlordView);
+
                 propertyList.add(property);
 
                 return property;
