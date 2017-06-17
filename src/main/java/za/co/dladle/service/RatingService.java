@@ -45,6 +45,19 @@ public class RatingService {
         return jdbcTemplate.queryForObject(sql, map, (rs, rowNum) -> new RatingView(rs.getDouble("rate"), rs.getInt("count")));
     }
 
+    public RatingView viewRatings(String emailId) throws Exception {
+
+        Long userId = utility.findUserIdByEmail(emailId);
+
+        Map<String, Long> map = new HashMap<>();
+
+        map.put("userId", userId);
+
+        String sql = "SELECT avg(value) AS rate,count(rating.id) AS count FROM rating WHERE rated_user=:userId";
+
+        return jdbcTemplate.queryForObject(sql, map, (rs, rowNum) -> new RatingView(rs.getDouble("rate"), rs.getInt("count")));
+    }
+
     public Double viewRating(String emailId) throws Exception {
 
         Long userId = utility.findUserIdByEmail(emailId);

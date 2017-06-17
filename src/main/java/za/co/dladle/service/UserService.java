@@ -267,7 +267,7 @@ public class UserService {
         return imageUrl;
     }
 
-    public User getDetails(String emailId) throws UserNotFoundException {
+    public User getDetails(String emailId) throws Exception {
         return userServiceUtility.findUserDetailsByEmail(emailId);
     }
 }

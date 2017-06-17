@@ -59,7 +59,7 @@ public class UserController {
     public Map<String, Object> getUserDetails(@RequestParam String emailId) throws UserNotFoundException {
         try {
             User user = userService.getDetails(emailId);
-            return ResponseUtil.response("SUCCESS", user, "Logged Out Successfully");
+            return ResponseUtil.response("SUCCESS", user, "User details fetched Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", null, e.getMessage());
         }

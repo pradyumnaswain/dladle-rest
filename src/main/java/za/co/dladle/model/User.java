@@ -23,6 +23,10 @@ public class User {
 
     private String idNumber;
 
+    private Double rating;
+    private Integer numberOfRatedUsers;
+
+
     public User() {
     }
 
@@ -48,15 +52,17 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    public User(String emailId, boolean verified, UserType userType, String firstName, String lastName, String idNumber, String mobileNumber, String profilePicture) {
+    public User(String emailId, boolean verified, UserType userType, String firstName, String lastName, String idNumber, String mobileNumber, String profilePicture, Double rating, Integer numberOfRatedUsers) {
         this.emailId = emailId;
         this.verified = verified;
         this.userType = userType;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.idNumber=idNumber;
+        this.idNumber = idNumber;
         this.mobileNumber = mobileNumber;
         this.profilePicture = profilePicture;
+        this.rating = rating;
+        this.numberOfRatedUsers = numberOfRatedUsers;
     }
 
     public User(String emailId, String firstName, String lastName, String mobileNumber, String profilePicture, String idNumber) {
@@ -130,5 +136,29 @@ public class User {
 
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    public Integer getNumberOfRatedUsers() {
+        return numberOfRatedUsers;
+    }
+
+    public void setNumberOfRatedUsers(Integer numberOfRatedUsers) {
+        this.numberOfRatedUsers = numberOfRatedUsers;
     }
 }

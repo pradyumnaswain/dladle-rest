@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
+import za.co.dladle.entity.RatingView;
 import za.co.dladle.exception.OtpMismatchException;
 import za.co.dladle.exception.UseAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
@@ -37,6 +38,9 @@ public class UserServiceUtility {
 
     @Autowired
     private NamedParameterJdbcTemplate parameterJdbcTemplate;
+
+    @Autowired
+    private RatingService ratingService;
 
     //------------------------------------------------------------------------------------------------------------------
     //Find User By Email Id
@@ -116,9 +120,10 @@ public class UserServiceUtility {
     //------------------------------------------------------------------------------------------------------------------
     //Find User By Email Id and Password
     //------------------------------------------------------------------------------------------------------------------
-    User findUserDetailsByEmail(String emailId) throws UserNotFoundException {
+    User findUserDetailsByEmail(String emailId) throws Exception {
 
         try {
+            RatingView ratingView = ratingService.viewRatings(emailId);
             String sql = "SELECT * FROM user_dladle INNER JOIN user_type ON user_dladle.user_type_id = user_type.id WHERE emailid=?";
             return this.jdbcTemplate.queryForObject(sql, new Object[]{emailId.toLowerCase()}, (rs, rowNum) ->
                     new User(rs.getString("emailId"),
@@ -128,10 +133,24 @@ public class UserServiceUtility {
                             rs.getString("last_name"),
                             rs.getString("id_number"),
                             rs.getString("cell_number"),
-                            rs.getString("profile_picture")));
-        } catch (EmptyResultDataAccessException e) {
-            throw new UserNotFoundException("User Not Found");
+                            rs.getString("profile_picture"),
+                            ratingView.getRate(), ratingView.getCount()));
+        } catch (UserNotFoundException e) {
+            throw new Exception(e.getMessage());
+        } catch (Exception e) {
+            String sql = "SELECT * FROM user_dladle INNER JOIN user_type ON user_dladle.user_type_id = user_type.id WHERE emailid=?";
+            return this.jdbcTemplate.queryForObject(sql, new Object[]{emailId.toLowerCase()}, (rs, rowNum) ->
+                    new User(rs.getString("emailId"),
+                            rs.getBoolean("verified"),
+                            UserType.valueOf(rs.getString("name").toUpperCase()),
+                            rs.getString("first_name"),
+                            rs.getString("last_name"),
+                            rs.getString("id_number"),
+                            rs.getString("cell_number"),
+                            rs.getString("profile_picture"),
+                            0D, 0));
         }
+
     }
 
     //------------------------------------------------------------------------------------------------------------------
