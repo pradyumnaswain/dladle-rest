@@ -12,8 +12,6 @@ import za.co.dladle.model.NotificationType;
 import za.co.dladle.session.UserSession;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -114,12 +112,12 @@ public class PushNotificationService {
         this.jdbcTemplate.update(sql, map);
     }
 
-    void actionNotifications(Long tenantId, Long landlordId) {
+    void actionNotifications(Long tenantId, Long landlordId, NotificationType notificationTypeId) {
         Map<String, Object> map = new HashMap<>();
         map.put("to", tenantId);
         map.put("from", landlordId);
-        String sql = "UPDATE notification SET notification_actioned_status=TRUE WHERE notification_from=:from AND notification_to=:to";
+        map.put("notificationTypeId", NotificationTypeMapper.getNotificationType(notificationTypeId));
+        String sql = "UPDATE notification SET notification_actioned_status=TRUE WHERE notification_from=:from AND notification_to=:to AND notification_type_id=:notificationTypeId";
         this.jdbcTemplate.update(sql, map);
-
     }
 }

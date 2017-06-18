@@ -15,4 +15,6 @@ public interface NotificationService {
     void sendPropertyRequesteMail(String toEmailId);
 
     void sendPropertyDeclineMail(String emailId);
+
+    void sendPropertyAcceptMail(String emailId);
 }

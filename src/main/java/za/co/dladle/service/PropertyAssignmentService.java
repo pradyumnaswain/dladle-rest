@@ -60,8 +60,38 @@ public class PropertyAssignmentService {
                 //Create/Update Lease
                 leaseService.createOrUpdateLease(propertyAssignmentRequest.getHouseId(), tenantId);
 
-                notificationService.actionNotifications(landlordId, tenantId);
+                notificationService.actionNotifications(landlordId, tenantId, NotificationType.TENANT_ACCEPTS_PROPERTY_INVITATION);
 
+                String sqlDevice = "SELECT device_id FROM user_dladle WHERE emailid=:landlordEmailId";
+                String deviceId = this.parameterJdbcTemplate.queryForObject(sqlDevice, map, String.class);
+
+                NotificationView notifications = new NotificationView(
+                        userSession.getUser().getEmailId(),
+                        propertyAssignmentRequest.getEmailId(),
+                        "Property Accepted Tenant",
+                        "Tenant Accepted the Property Invitation ",
+                        "",
+                        "", propertyAssignmentRequest.getHouseId().toString(), NotificationType.TENANT_ACCEPTS_PROPERTY_INVITATION);
+                notificationService.saveNotification(notifications);
+                emailService.sendPropertyAcceptMail(propertyAssignmentRequest.getEmailId());
+
+                //Send Push Notification
+                if (deviceId != null) {
+                    JSONObject body = new JSONObject();
+                    body.put("to", deviceId);
+                    body.put("priority", "high");
+
+                    JSONObject notification = new JSONObject();
+                    notification.put("title", "Property Accepted Tenant");
+                    notification.put("body", "Tenant Accepted the Property Invitation");
+
+                    JSONObject data = new JSONObject();
+                    body.put("notification", notification);
+                    body.put("data", data);
+                    pushNotificationsService.sendNotification(body);
+                } else {
+                    System.out.println("Device Id can't be null");
+                }
             } catch (Exception e) {
                 throw new Exception("Landlord doesn't exist for the given email Id");
             }
@@ -85,10 +115,42 @@ public class PropertyAssignmentService {
                 //Create/Update Lease
                 leaseService.createOrUpdateLease(propertyAssignmentRequest.getHouseId(), tenantId);
 
-                notificationService.actionNotifications(tenantId, landlordId);
+                notificationService.actionNotifications(tenantId, landlordId, NotificationType.LANDLORD_ACCEPTS_PROPERTY_INVITATION);
+
+                String sqlDevice = "SELECT device_id FROM user_dladle WHERE emailid=:tenantEmailId";
+                String deviceId = this.parameterJdbcTemplate.queryForObject(sqlDevice, map, String.class);
+
+                NotificationView notifications = new NotificationView(
+                        userSession.getUser().getEmailId(),
+                        propertyAssignmentRequest.getEmailId(),
+                        "Property Request Accepted by Landlord",
+                        "Landlord Accepted the Property Request ",
+                        "",
+                        "", propertyAssignmentRequest.getHouseId().toString(), NotificationType.LANDLORD_ACCEPTS_PROPERTY_INVITATION);
+                notificationService.saveNotification(notifications);
+                emailService.sendPropertyAcceptMail(propertyAssignmentRequest.getEmailId());
+
+                //Send Push Notification
+                if (deviceId != null) {
+                    JSONObject body = new JSONObject();
+                    body.put("to", deviceId);
+                    body.put("priority", "high");
+
+                    JSONObject notification = new JSONObject();
+                    notification.put("title", "Property Request Accepted by Landlord");
+                    notification.put("body", "Tenant Accepted the Property Invitation");
+
+                    JSONObject data = new JSONObject();
+                    body.put("notification", notification);
+                    body.put("data", data);
+                    pushNotificationsService.sendNotification(body);
+                } else {
+                    System.out.println("Device Id can't be null");
+                }
+
 
             } catch (Exception e) {
-                throw new Exception("Landlord doesn't exist for the given email Id");
+                throw new Exception("Tenant doesn't exist for the given email Id");
             }
 
         } else {

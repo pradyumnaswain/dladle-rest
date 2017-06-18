@@ -55,4 +55,9 @@ public class NotificationServiceJavaMailImpl implements NotificationService {
 
     }
 
+    @Override
+    public void sendPropertyAcceptMail(String emailId) {
+
+    }
+
 }

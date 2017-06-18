@@ -97,11 +97,11 @@ public class NotificationServiceSendGridImpl implements NotificationService {
     @Override
     public void sendPropertyDeclineMail(String emailId) {
         Email from = new Email(FROM_EMAIL);
-        String subject = "Tenant Declines Property";
+        String subject = "Property Decline";
         Email to = new Email(emailId);
         Content content = new Content("text/html", "<html><body>" +
                 "<P>Hi " + "!</p>" +
-                "<P>Please check Dladle App to check decline request from tenant</P>" +
+                "<P>Please check Dladle App to check decline property</P>" +
                 "<P>DlaDle</P></body></html>");
         Mail mail = new Mail(from, subject, to, content);
 
@@ -111,6 +111,27 @@ public class NotificationServiceSendGridImpl implements NotificationService {
             sendMailUtil(mail, sg, request);
         } catch (IOException ex) {
         }
+
+    }
+
+    @Override
+    public void sendPropertyAcceptMail(String emailId) {
+        Email from = new Email(FROM_EMAIL);
+        String subject = "Property Accepted";
+        Email to = new Email(emailId);
+        Content content = new Content("text/html", "<html><body>" +
+                "<P>Hi " + "!</p>" +
+                "<P>Please check Dladle App for more details</P>" +
+                "<P>DlaDle</P></body></html>");
+        Mail mail = new Mail(from, subject, to, content);
+
+        SendGrid sg = new SendGrid(SENDGRID_API_KEY);
+        Request request = new Request();
+        try {
+            sendMailUtil(mail, sg, request);
+        } catch (IOException ex) {
+        }
+
 
     }
 
