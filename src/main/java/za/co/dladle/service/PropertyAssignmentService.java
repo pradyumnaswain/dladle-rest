@@ -168,7 +168,6 @@ public class PropertyAssignmentService {
         Map<String, Object> map = new HashMap<>();
         map.put("emailId", propertyInviteRequest.getEmailId());
         String sql = "SELECT device_id FROM user_dladle WHERE emailid=:emailId";
-        String deviceId = this.parameterJdbcTemplate.queryForObject(sql, map, String.class);
 
         //save notification
         NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
@@ -181,28 +180,34 @@ public class PropertyAssignmentService {
 
         //Send Email
         emailService.sendPropertyInviteMail(propertyInviteRequest.getEmailId());
+        try {
 
-        //Send Push Notification
-        if (deviceId != null) {
-            JSONObject body = new JSONObject();
-            body.put("to", deviceId);
-            body.put("priority", "high");
+            String deviceId = this.parameterJdbcTemplate.queryForObject(sql, map, String.class);
+            if (deviceId != null) {
+                JSONObject body = new JSONObject();
+                body.put("to", deviceId);
+                body.put("priority", "high");
 
-            JSONObject notification = new JSONObject();
-            notification.put("body", "Please accept this property invitation");
-            notification.put("title", "New Property Request");
+                JSONObject notification = new JSONObject();
+                notification.put("body", "Please accept this property invitation");
+                notification.put("title", "New Property Request");
 
-            JSONObject data = new JSONObject();
-            data.put("landlordEmailId", userSession.getUser().getEmailId());
-            data.put("houseId", propertyInviteRequest.getHouseId());
+                JSONObject data = new JSONObject();
+                data.put("landlordEmailId", userSession.getUser().getEmailId());
+                data.put("houseId", propertyInviteRequest.getHouseId());
 
-            body.put("notification", notification);
-            body.put("data", data);
+                body.put("notification", notification);
+                body.put("data", data);
 
-            pushNotificationsService.sendNotification(body);
-        } else {
+                pushNotificationsService.sendNotification(body);
+            } else {
+                System.out.println("Device Id can't be null");
+            }
+        } catch (Exception e) {
             System.out.println("Device Id can't be null");
         }
+        //Send Push Notification
+
     }
 
     public void requestLandlord(PropertyRequest propertyRequest) throws UserNotFoundException, JSONException {
