@@ -74,9 +74,9 @@ public class PropertyController {
     //Add Property
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = "/api/property/add/contact", method = RequestMethod.POST)
-    public Map<String, Object> addContact(@RequestBody(required = false) List<PropertyContact> propertyContactList, @RequestParam Long houseId) throws IOException {
+    public Map<String, Object> addContact(@RequestBody PropertyContactAddRequest propertyContactAddRequest) throws IOException {
         try {
-            Boolean aBoolean = propertyContactService.addContact(propertyContactList, houseId);
+            Boolean aBoolean = propertyContactService.addContact(propertyContactAddRequest.getPropertyContactList(), propertyContactAddRequest.getHouseId());
             return ResponseUtil.response("SUCCESS", "{}", "Property Contact Added Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
