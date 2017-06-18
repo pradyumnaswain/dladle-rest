@@ -44,24 +44,10 @@ public class PropertyService {
     private NamedParameterJdbcTemplate parameterJdbcTemplate;
 
     @Autowired
-    private LeaseService leaseService;
-
-    @Autowired
-    private AndroidPushNotificationsService pushNotificationsService;
-
-    @Autowired
-    private PushNotificationService notificationService;
-
-    @Autowired
-    private NotificationServiceSendGridImpl emailService;
-
-    @Autowired
     private FileManagementServiceCloudinaryImpl fileManagementServiceCloudinary;
 
     @Autowired
     private UserServiceUtility userServiceUtility;
-
-    private static final Logger log = LoggerFactory.getLogger(PropertyService.class);
 
     //------------------------------------------------------------------------------------------------------------------
     //Insert Property
@@ -313,156 +299,6 @@ public class PropertyService {
     }
 
     @Transactional
-    public void assignPropertyToTenant(PropertyAssignmentRequest propertyAssignmentRequest) throws Exception {
-        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
-        Map<String, Object> map = new HashMap<>();
-        if (userSession.getUser().getUserType().eqTENANT()) {
-            map.put("landlordEmailId", propertyAssignmentRequest.getEmailId());
-            String landlordSql = "SELECT landlord.id landord_id FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id WHERE emailid=:landlordEmailId";
-
-            try {
-                Long landlordId = this.parameterJdbcTemplate.queryForObject(landlordSql, map, Long.class);
-                map.put("tenantEmailId", userSession.getUser().getEmailId());
-                String tenantSql = "SELECT tenant.id tenant_id FROM user_dladle INNER JOIN tenant ON user_dladle.id = tenant.user_id WHERE emailid=:tenantEmailId";
-                Long tenantId = this.parameterJdbcTemplate.queryForObject(tenantSql, map, Long.class);
-
-                map.put("tenantId", tenantId);
-                map.put("houseId", propertyAssignmentRequest.getHouseId());
-
-                String sql = "UPDATE tenant SET house_id=:houseId WHERE tenant.id=:tenantId";
-
-                parameterJdbcTemplate.update(sql, map);
-
-                //Create/Update Lease
-                leaseService.createOrUpdateLease(propertyAssignmentRequest.getHouseId(), tenantId);
-
-                notificationService.actionNotifications(landlordId, tenantId);
-
-            } catch (Exception e) {
-                throw new Exception("Landlord doesn't exist for the given email Id");
-            }
-        } else if (userSession.getUser().getUserType().eqLANDLORD()) {
-            map.put("tenantEmailId", propertyAssignmentRequest.getEmailId());
-            String tenantSql = "SELECT tenant.id landord_id FROM user_dladle INNER JOIN tenant ON user_dladle.id = tenant.user_id WHERE emailid=:tenantEmailId";
-
-            try {
-                Long tenantId = this.parameterJdbcTemplate.queryForObject(tenantSql, map, Long.class);
-                map.put("landlordEmailId", userSession.getUser().getEmailId());
-                String landlordSql = "SELECT landlord.id landord_id FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id WHERE emailid=:landlordEmailId";
-                Long landlordId = this.parameterJdbcTemplate.queryForObject(landlordSql, map, Long.class);
-
-                map.put("tenantId", tenantId);
-                map.put("houseId", propertyAssignmentRequest.getHouseId());
-
-                String sql = "UPDATE tenant SET house_id=:houseId WHERE tenant.id=:tenantId";
-
-                parameterJdbcTemplate.update(sql, map);
-
-                //Create/Update Lease
-                leaseService.createOrUpdateLease(propertyAssignmentRequest.getHouseId(), tenantId);
-
-                notificationService.actionNotifications(tenantId, landlordId);
-
-            } catch (Exception e) {
-                throw new Exception("Landlord doesn't exist for the given email Id");
-            }
-
-        } else {
-            throw new Exception("Not authorised to use this API");
-        }
-    }
-
-
-    public void inviteTenant(PropertyInviteRequest propertyInviteRequest) throws Exception {
-
-        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("emailId", propertyInviteRequest.getEmailId());
-        String sql = "SELECT device_id FROM user_dladle WHERE emailid=:emailId";
-        String deviceId = this.parameterJdbcTemplate.queryForObject(sql, map, String.class);
-
-        //save notification
-        NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
-                propertyInviteRequest.getEmailId(),
-                "New Property Request",
-                "Please accept this property invitation",
-                "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + propertyInviteRequest.getHouseId(),
-                "", String.valueOf(propertyInviteRequest.getHouseId()), NotificationType.LANDLORD_REQUEST_TENANT);
-        notificationService.saveNotification(notifications);
-
-        //Send Email
-        emailService.sendPropertyInviteMail(propertyInviteRequest.getEmailId());
-
-        //Send Push Notification
-        if (deviceId != null) {
-
-            JSONObject body = new JSONObject();
-            // JsonArray registration_ids = new JsonArray();
-            // body.put("registration_ids", registration_ids);
-            body.put("to", deviceId);
-            body.put("priority", "high");
-            // body.put("dry_run", true);
-
-            JSONObject notification = new JSONObject();
-            notification.put("body", "Please accept this property invitation");
-            notification.put("title", "New Property Request");
-            // notification.put("icon", "myicon");
-
-            JSONObject data = new JSONObject();
-            data.put("landlordEmailId", userSession.getUser().getEmailId());
-            data.put("houseId", propertyInviteRequest.getHouseId());
-
-            body.put("notification", notification);
-            body.put("data", data);
-
-            HttpEntity<String> request = new HttpEntity<>(body.toString());
-
-            CompletableFuture<FirebaseResponse> pushNotification = pushNotificationsService.send(request);
-            CompletableFuture.allOf(pushNotification).join();
-
-            try {
-                FirebaseResponse firebaseResponse = pushNotification.get();
-                if (firebaseResponse.getSuccess() == 1) {
-                    log.info("push notification sent ok!");
-                } else {
-                    log.error("error sending push notifications: " + firebaseResponse.toString());
-                }
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        } else {
-            log.error("Device Id can't be null");
-
-        }
-    }
-
-    public Boolean addContact(List<PropertyContact> propertyContactList, Long houseId) throws PropertyAddException {
-        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
-
-        if (userSession.getUser().getUserType().eqLANDLORD()) {
-            List<Map<String, Object>> list = new ArrayList<>();
-
-            for (PropertyContact propertyContact : propertyContactList) {
-                Map<String, Object> map1 = new HashMap<>();
-                map1.put("houseId", houseId);
-                map1.put("contactType", ContactTypeMapper.getPropertyContactType(propertyContact.getContactType()));
-                map1.put("name", propertyContact.getName());
-                map1.put("address", propertyContact.getAddress());
-                map1.put("contactNumber", propertyContact.getContactNumber());
-                list.add(map1);
-            }
-            String sql = "INSERT INTO property_contact(house_id, contact_type_id, name, address, contact_number) VALUES (:houseId,:contactType,:name,:address,:contactNumber)";
-            this.parameterJdbcTemplate.batchUpdate(sql, list.toArray(new Map[propertyContactList.size()]));
-
-            return true;
-        } else {
-            throw new PropertyAddException("Property contact can only be added by Landlord");
-        }
-
-    }
-
-    @Transactional
     public Boolean deleteProperty(PropertyDeleteRequest propertyDeleteRequest) throws Exception {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
@@ -533,40 +369,6 @@ public class PropertyService {
         }
     }
 
-    public Boolean deleteContact(DeleteContactRequest deleteContactRequest) throws PropertyAddException {
-        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
-
-        if (userSession.getUser().getUserType().eqLANDLORD()) {
-
-            Map<String, Object> map1 = new HashMap<>();
-            map1.put("contactId", deleteContactRequest.getContactId());
-            String sql = "DELETE  FROM property_contact WHERE id=:contactId";
-            this.parameterJdbcTemplate.update(sql, map1);
-            return true;
-        } else {
-            throw new PropertyAddException("Property Contact can ony be deleted by Landlord");
-        }
-    }
-
-    public List<PropertyContactView> listContactsOfProperty(long houseId) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("houseId", houseId);
-
-        List<PropertyContactView> propertyContactViews = new ArrayList<>();
-        String sql = "SELECT property_contact.*,property_contact.name property_conact_name, contact_type.name contact_type_name FROM property_contact INNER JOIN contact_type ON property_contact.contact_type_id = contact_type.id WHERE house_id=:houseId";
-        this.parameterJdbcTemplate.query(sql, map, (rs, rowNum) -> {
-            PropertyContactView propertyContact = new PropertyContactView();
-            propertyContact.setPropertyContactId(rs.getLong("id"));
-            propertyContact.setAddress(rs.getString("address"));
-            propertyContact.setName(rs.getString("property_conact_name"));
-            propertyContact.setContactType(rs.getString("contact_type_name"));
-            propertyContact.setContactNumber(rs.getString("contact_number"));
-            propertyContactViews.add(propertyContact);
-            return propertyContact;
-        });
-        return propertyContactViews;
-    }
-
     public String uploadPropertyPic(PropertyImageUploadRequest propertyImageUploadRequest) throws UserNotFoundException, IOException {
 
         String imageUrl = fileManagementServiceCloudinary.upload(propertyImageUploadRequest.getBase64Image());
@@ -579,67 +381,4 @@ public class PropertyService {
         return imageUrl;
     }
 
-    public void requestLandlord(PropertyRequest propertyRequest) throws UserNotFoundException, JSONException {
-        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("emailId", propertyRequest.getEmailId());
-        String sql = "SELECT device_id FROM user_dladle WHERE emailid=:emailId";
-        String deviceId = this.parameterJdbcTemplate.queryForObject(sql, map, String.class);
-
-        //save notification
-        NotificationView notifications = new NotificationView(
-                userSession.getUser().getEmailId(),
-                propertyRequest.getEmailId(),
-                "Property Request from Tenant",
-                "Please accept this property Request",
-                "tenantEmailId:" + userSession.getUser().getEmailId(),
-                "", null, NotificationType.TENANT_REQUEST_LANDLORD);
-        notificationService.saveNotification(notifications);
-
-        //Send Email
-        emailService.sendPropertyRequesteMail(propertyRequest.getEmailId());
-
-        //Send Push Notification
-        if (deviceId != null) {
-
-            JSONObject body = new JSONObject();
-            // JsonArray registration_ids = new JsonArray();
-            // body.put("registration_ids", registration_ids);
-            body.put("to", deviceId);
-            body.put("priority", "high");
-            // body.put("dry_run", true);
-
-            JSONObject notification = new JSONObject();
-            notification.put("body", "Please accept Property request from Tenant");
-            notification.put("title", "New Tenant Request");
-            // notification.put("icon", "myicon");
-
-            JSONObject data = new JSONObject();
-            data.put("landlordEmailId", userSession.getUser().getEmailId());
-
-            body.put("notification", notification);
-            body.put("data", data);
-
-            HttpEntity<String> request = new HttpEntity<>(body.toString());
-
-            CompletableFuture<FirebaseResponse> pushNotification = pushNotificationsService.send(request);
-            CompletableFuture.allOf(pushNotification).join();
-
-            try {
-                FirebaseResponse firebaseResponse = pushNotification.get();
-                if (firebaseResponse.getSuccess() == 1) {
-                    log.info("push notification sent ok!");
-                } else {
-                    log.error("error sending push notifications: " + firebaseResponse.toString());
-                }
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        } else {
-            log.error("Device Id can't be null");
-
-        }
-
-    }
 }

@@ -28,4 +28,8 @@ INSERT INTO notification_type (id, name) VALUES (1, 'Landlord Request Tenant to 
 INSERT INTO notification_type (id, name) VALUES (2, 'Tenant Request Landlord for Property');
 INSERT INTO notification_type (id, name) VALUES (3, 'Lease Terminate Request');
 INSERT INTO notification_type (id, name) VALUES (4, 'Lease Renewal Request');
+INSERT INTO notification_type (id, name) VALUES (5, 'Tenant Accepts Property Invitation');
+INSERT INTO notification_type (id, name) VALUES (6, 'Tenant Rejects Property Invitation');
+INSERT INTO notification_type (id, name) VALUES (7, 'Landlord Accepts Property Request');
+INSERT INTO notification_type (id, name) VALUES (8, 'Landlord Rejects Property Request');
 

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.co.dladle.entity.*;
 import za.co.dladle.service.ContactService;
+import za.co.dladle.service.PropertyAssignmentService;
 import za.co.dladle.service.PropertyService;
 import za.co.dladle.util.ResponseUtil;
 
@@ -21,7 +22,7 @@ public class TenantController {
     private ContactService contactService;
 
     @Autowired
-    private PropertyService propertyService;
+    private PropertyAssignmentService propertyAssignmentService;
 
     //------------------------------------------------------------------------------------------------------------------
     //Add Contact
@@ -68,7 +69,7 @@ public class TenantController {
     @RequestMapping(value = "/api/property/request", method = RequestMethod.POST)
     public Map<String, Object> inviteTenantToProperty(@RequestBody PropertyRequest propertyRequest) throws IOException {
         try {
-            propertyService.requestLandlord(propertyRequest);
+            propertyAssignmentService.requestLandlord(propertyRequest);
             return ResponseUtil.response("SUCCESS", "{}", "Property Requested");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());

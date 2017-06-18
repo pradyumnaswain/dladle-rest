@@ -17,6 +17,14 @@ public class NotificationTypeMapper {
                 return 3;
             case LEASE_RENEWAL:
                 return 4;
+            case TENANT_ACCEPTS_PROPERTY_INVITATION:
+                return 5;
+            case TENANT_REJECTS_PROPERTY_INVITATION:
+                return 6;
+            case LANDLORD_ACCEPTS_PROPERTY_INVITATION:
+                return 7;
+            case LANDLORD_REJECTS_PROPERTY_INVITATION:
+                return 8;
             default:
                 return null;
         }

@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import za.co.dladle.entity.*;
 import za.co.dladle.model.Property;
 import za.co.dladle.model.PropertyContact;
+import za.co.dladle.service.PropertyAssignmentService;
+import za.co.dladle.service.PropertyContactService;
 import za.co.dladle.service.PropertyService;
 import za.co.dladle.util.ResponseUtil;
 
@@ -21,6 +23,12 @@ public class PropertyController {
 
     @Autowired
     private PropertyService propertyService;
+
+    @Autowired
+    private PropertyContactService propertyContactService;
+
+    @Autowired
+    private PropertyAssignmentService propertyAssignmentService;
 
     //------------------------------------------------------------------------------------------------------------------
     //Add Property
@@ -68,7 +76,7 @@ public class PropertyController {
     @RequestMapping(value = "/api/property/add/contact", method = RequestMethod.POST)
     public Map<String, Object> addContact(@RequestBody(required = false) List<PropertyContact> propertyContactList, @RequestParam Long houseId) throws IOException {
         try {
-            Boolean aBoolean = propertyService.addContact(propertyContactList, houseId);
+            Boolean aBoolean = propertyContactService.addContact(propertyContactList, houseId);
             return ResponseUtil.response("SUCCESS", "{}", "Property Contact Added Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
@@ -81,7 +89,7 @@ public class PropertyController {
     @RequestMapping(value = "/api/property/delete/contact", method = RequestMethod.POST)
     public Map<String, Object> deleteContact(@RequestBody DeleteContactRequest deleteContactRequest) throws IOException {
         try {
-            Boolean aBoolean = propertyService.deleteContact(deleteContactRequest);
+            Boolean aBoolean = propertyContactService.deleteContact(deleteContactRequest);
             return ResponseUtil.response("SUCCESS", "{}", "Property Contact deleted Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
@@ -120,7 +128,7 @@ public class PropertyController {
     @RequestMapping(value = "/api/property/contact/list/{houseId}", method = RequestMethod.GET)
     public Map<String, Object> listContactsOfProperty(@PathVariable long houseId) throws IOException {
         try {
-            List<PropertyContactView> propertyContactViews = propertyService.listContactsOfProperty(houseId);
+            List<PropertyContactView> propertyContactViews = propertyContactService.listContactsOfProperty(houseId);
             return ResponseUtil.response("SUCCESS", propertyContactViews, "Contacts for Property listed Successfully");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
@@ -146,8 +154,21 @@ public class PropertyController {
     @RequestMapping(value = "/api/property/assign", method = RequestMethod.POST)
     public Map<String, Object> assignPropertyToTenant(@RequestBody PropertyAssignmentRequest propertyAssignmentRequest) throws IOException {
         try {
-            propertyService.assignPropertyToTenant(propertyAssignmentRequest);
+            propertyAssignmentService.assignPropertyToTenant(propertyAssignmentRequest);
             return ResponseUtil.response("SUCCESS", "{}", "Property Assigned");
+        } catch (Exception e) {
+            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Reject Property Request
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = "/api/property/assign", method = RequestMethod.POST)
+    public Map<String, Object> declinePropertyRequest(@RequestBody PropertyDeclineRequest propertyDeclineRequest) throws IOException {
+        try {
+            propertyAssignmentService.declineProperty(propertyDeclineRequest);
+            return ResponseUtil.response("SUCCESS", "{}", "Property Declined");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }
@@ -159,7 +180,7 @@ public class PropertyController {
     @RequestMapping(value = "/api/property/invite", method = RequestMethod.POST)
     public Map<String, Object> inviteTenantToProperty(@RequestBody PropertyInviteRequest propertyInviteRequest) throws IOException {
         try {
-            propertyService.inviteTenant(propertyInviteRequest);
+            propertyAssignmentService.inviteTenant(propertyInviteRequest);
             return ResponseUtil.response("SUCCESS", "{}", "Property Invitation Sent");
         } catch (Exception e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());

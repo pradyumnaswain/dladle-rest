@@ -7,7 +7,12 @@ public enum NotificationType {
     LANDLORD_REQUEST_TENANT("Landlord Request Tenant to Property"),
     TENANT_REQUEST_LANDLORD("Tenant Request Landlord for Property"),
     LEASE_TERMINATE("Lease Terminate Request"),
-    LEASE_RENEWAL("Lease Renewal Request");
+    LEASE_RENEWAL("Lease Renewal Request"),
+    TENANT_ACCEPTS_PROPERTY_INVITATION("Tenant Accepts Property Invitation"),
+    TENANT_REJECTS_PROPERTY_INVITATION("Tenant Rejects Property Invitation"),
+    LANDLORD_ACCEPTS_PROPERTY_INVITATION("Landlord Accepts Property Request"),
+    LANDLORD_REJECTS_PROPERTY_INVITATION("Landlord Rejects Property Request");
+
 
     private final String id;
 

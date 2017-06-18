@@ -50,4 +50,9 @@ public class NotificationServiceJavaMailImpl implements NotificationService {
 
     }
 
+    @Override
+    public void sendPropertyDeclineMail(String emailId) {
+
+    }
+
 }
