@@ -164,7 +164,7 @@ public class PropertyController {
     //------------------------------------------------------------------------------------------------------------------
     //Reject Property Request
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "/api/property/assign", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/property/decline", method = RequestMethod.POST)
     public Map<String, Object> declinePropertyRequest(@RequestBody PropertyDeclineRequest propertyDeclineRequest) throws IOException {
         try {
             propertyAssignmentService.declineProperty(propertyDeclineRequest);
