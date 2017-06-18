@@ -24,8 +24,6 @@ public class PropertyAddRequest {
 
     private String placeImage;
 
-    private List<PropertyContact> propertyContactList;
-
     public PropertyAddRequest() {
     }
 
@@ -83,13 +81,5 @@ public class PropertyAddRequest {
 
     public void setPlaceImage(String placeImage) {
         this.placeImage = placeImage;
-    }
-
-    public List<PropertyContact> getPropertyContactList() {
-        return propertyContactList;
-    }
-
-    public void setPropertyContactList(List<PropertyContact> propertyContactList) {
-        this.propertyContactList = propertyContactList;
     }
 }

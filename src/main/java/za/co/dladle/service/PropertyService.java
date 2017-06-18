@@ -106,20 +106,6 @@ public class PropertyService {
                 String sqlHouse = "INSERT INTO house(property_id) VALUES (:propertyId)";
                 this.parameterJdbcTemplate.update(sqlHouse, mapSqlParameterSource, houseId, new String[]{"id"});
 
-                List<Map<String, Object>> list = new ArrayList<>();
-
-                for (PropertyContact propertyContact : property.getPropertyContactList()) {
-                    Map<String, Object> map1 = new HashMap<>();
-                    map1.put("houseId", houseId.getKey().longValue());
-                    map1.put("contactType", ContactTypeMapper.getPropertyContactType(propertyContact.getContactType()));
-                    map1.put("name", propertyContact.getName());
-                    map1.put("address", propertyContact.getAddress());
-                    map1.put("contactNumber", propertyContact.getContactNumber());
-                    list.add(map1);
-                }
-                String sql = "INSERT INTO property_contact(house_id, contact_type_id, name, address, contact_number) VALUES (:houseId,:contactType,:name,:address,:contactNumber)";
-                this.parameterJdbcTemplate.batchUpdate(sql, list.toArray(new Map[property.getPropertyContactList().size()]));
-
                 PropertyAddResponse propertyAddResponse = new PropertyAddResponse();
 
                 propertyAddResponse.setHouseId(houseId.getKey().longValue());
