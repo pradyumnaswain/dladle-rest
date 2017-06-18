@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Service;
 import za.co.dladle.entity.*;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.model.NotificationType;
@@ -17,6 +18,7 @@ import java.util.Map;
 /**
  * Created by prady on 6/18/2017.
  */
+@Service
 public class PropertyAssignmentService {
     @Autowired
     private ApplicationContext applicationContext;
