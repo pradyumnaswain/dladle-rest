@@ -10,13 +10,22 @@ import java.util.List;
  * Created by prady on 6/14/2017.
  */
 public class LeaseLandlord {
-    private List<TenantLeaseView> tenantList;
+    private long leaseId;
     private Date leaseStartDate;
     private Date leaseEndDate;
     private Date leaseRenewalDate;
     private Date leaseTerminateDate;
+    private List<TenantLeaseView> tenantList;
 
     public LeaseLandlord() {
+    }
+
+    public long getLeaseId() {
+        return leaseId;
+    }
+
+    public void setLeaseId(long leaseId) {
+        this.leaseId = leaseId;
     }
 
     public Date getLeaseStartDate() {

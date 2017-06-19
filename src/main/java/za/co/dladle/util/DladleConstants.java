@@ -7,11 +7,13 @@ public class DladleConstants {
 
     public static final String SUCCESS_RESPONSE = "SUCCESS";
     public static final String FAILURE_RESPONSE = "FAIL";
+    public static final String FAILURE = "Unable to Process your Request";
     //------------------------------------------------------------------------------------------------------------------
     //Lease
     //------------------------------------------------------------------------------------------------------------------
     public static final String LEASE_TENANT = "LeaseTenant fetched Successfully";
     public static final String LEASE_LANDLORD = "LeaseLandlord fetched Successfully";
+    public static final String LEASE_TERMINATE = "Lease terminated Successfully";
     //------------------------------------------------------------------------------------------------------------------
     //Notification
     //------------------------------------------------------------------------------------------------------------------

@@ -131,6 +131,25 @@ public class NotificationServiceSendGridImpl implements NotificationService {
             sendMailUtil(mail, sg, request);
         } catch (IOException ex) {
         }
+    }
+
+    @Override
+    public void sendLeaseTerminateRequest(String emailId) {
+        Email from = new Email(FROM_EMAIL);
+        Email to = new Email(emailId);
+        String subject = "Lease Termination Request";
+        Content content = new Content("text/html", "<html><body>" +
+                "<P>Hi " + "!</p>" +
+                "<P>Please check Dladle App for more details</P>" +
+                "<P>DlaDle</P></body></html>");
+        Mail mail = new Mail(from, subject, to, content);
+
+        SendGrid sg = new SendGrid(SENDGRID_API_KEY);
+        Request request = new Request();
+        try {
+            sendMailUtil(mail, sg, request);
+        } catch (IOException ex) {
+        }
 
 
     }

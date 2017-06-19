@@ -25,11 +25,15 @@ INSERT INTO contact_type (id, name) VALUES (3, 'Fire Station');
 INSERT INTO contact_type (id, name) VALUES (4, 'Landlord');
 
 INSERT INTO notification_type (id, name) VALUES (1, 'Landlord Request Tenant to Property');
-INSERT INTO notification_type (id, name) VALUES (2, 'Tenant Request Landlord for Property');
-INSERT INTO notification_type (id, name) VALUES (3, 'Lease Terminate Request');
-INSERT INTO notification_type (id, name) VALUES (4, 'Lease Renewal Request');
-INSERT INTO notification_type (id, name) VALUES (5, 'Tenant Accepts Property Invitation');
-INSERT INTO notification_type (id, name) VALUES (6, 'Tenant Rejects Property Invitation');
-INSERT INTO notification_type (id, name) VALUES (7, 'Landlord Accepts Property Request');
-INSERT INTO notification_type (id, name) VALUES (8, 'Landlord Rejects Property Request');
+INSERT INTO notification_type (id, name) VALUES (2, 'Tenant Accepts Property Invitation');
+INSERT INTO notification_type (id, name) VALUES (3, 'Tenant Rejects Property Invitation');
+INSERT INTO notification_type (id, name) VALUES (4, 'Tenant Request Landlord for Property');
+INSERT INTO notification_type (id, name) VALUES (5, 'Landlord Accepts Property Request');
+INSERT INTO notification_type (id, name) VALUES (6, 'Landlord Rejects Property Request');
+INSERT INTO notification_type (id, name) VALUES (7, 'Lease Terminate Request from Landlord to Tenant');
+INSERT INTO notification_type (id, name) VALUES (8, 'Tenant Accepts Lease Termination');
+INSERT INTO notification_type (id, name) VALUES (9, 'Tenant Rejects Lease Termination');
+INSERT INTO notification_type (id, name) VALUES (10, 'Lease Terminate Request from Tenant to Landlord');
+INSERT INTO notification_type (id, name) VALUES (11, 'Landlord Accepts Lease Termination');
+INSERT INTO notification_type (id, name) VALUES (12, 'Landlord Rejects Lease Termination');
 

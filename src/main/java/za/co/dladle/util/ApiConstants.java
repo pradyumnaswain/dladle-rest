@@ -9,6 +9,10 @@ public class ApiConstants {
     //------------------------------------------------------------------------------------------------------------------
     public static final String LEASE_VIEW = "/api/lease/view";
     public static final String LEASE_VIEW_HOUSE_ID = "/api/lease/view/{houseId}";
+    public static final String LEASE_RENEW = "/api/lease/renew";
+    public static final String LEASE_TERMINATE_REQUEST = "/api/lease/terminate/request";
+    public static final String LEASE_TERMINATE_ACCEPT = "/api/lease/terminate/accept";
+    public static final String LEASE_TERMINATE_REJECT = "/api/lease/terminate/reject";
     //------------------------------------------------------------------------------------------------------------------
     //Notification API
     //------------------------------------------------------------------------------------------------------------------

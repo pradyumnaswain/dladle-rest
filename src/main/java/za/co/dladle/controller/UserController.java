@@ -125,9 +125,7 @@ public class UserController {
         try {
             userService.register(registerRequest);
             return ResponseUtil.response("SUCCESS", "{}", "User Registered Successfully");
-        } catch (UseAlreadyExistsException e) {
-            return ResponseUtil.response("FAIL", "{}", e.getMessage());
-        } catch (IOException e) {
+        } catch (UseAlreadyExistsException | IOException e) {
             return ResponseUtil.response("FAIL", "{}", e.getMessage());
         }
     }

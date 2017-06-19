@@ -17,4 +17,6 @@ public interface NotificationService {
     void sendPropertyDeclineMail(String emailId);
 
     void sendPropertyAcceptMail(String emailId);
+
+    void sendLeaseTerminateRequest(String emailId);
 }

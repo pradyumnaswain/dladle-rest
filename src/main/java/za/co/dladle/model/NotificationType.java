@@ -5,13 +5,17 @@ package za.co.dladle.model;
  */
 public enum NotificationType {
     LANDLORD_REQUEST_TENANT("Landlord Request Tenant to Property"),
-    TENANT_REQUEST_LANDLORD("Tenant Request Landlord for Property"),
-    LEASE_TERMINATE("Lease Terminate Request"),
-    LEASE_RENEWAL("Lease Renewal Request"),
     TENANT_ACCEPTS_PROPERTY_INVITATION("Tenant Accepts Property Invitation"),
     TENANT_REJECTS_PROPERTY_INVITATION("Tenant Rejects Property Invitation"),
+    TENANT_REQUEST_LANDLORD("Tenant Request Landlord for Property"),
     LANDLORD_ACCEPTS_PROPERTY_INVITATION("Landlord Accepts Property Request"),
-    LANDLORD_REJECTS_PROPERTY_INVITATION("Landlord Rejects Property Request");
+    LANDLORD_REJECTS_PROPERTY_INVITATION("Landlord Rejects Property Request"),
+    LEASE_TERMINATE_REQUEST_LANDLORD("Lease Terminate Request from Landlord to Tenant"),
+    LEASE_TERMINATE_TENANT_ACCEPT("Tenant Accepts Lease Termination"),
+    LEASE_TERMINATE_TENANT_REJECT("Tenant Rejects Lease Termination"),
+    LEASE_TERMINATE_REQUEST_TENANT("Lease Terminate Request from Tenant to Landlord"),
+    LEASE_TERMINATE_LANDLORD_ACCEPT("Landlord Accepts Lease Termination"),
+    LEASE_TERMINATE_LANDLORD_REJECT("Landlord Rejects Lease Termination");
 
 
     private final String id;
@@ -32,11 +36,4 @@ public enum NotificationType {
         return getId().equals(NotificationType.TENANT_REQUEST_LANDLORD.getId());
     }
 
-    public Boolean eqLEASE_TERMINATE() {
-        return getId().equals(NotificationType.LEASE_TERMINATE.getId());
-    }
-
-    public Boolean eqLEASE_RENEWAL() {
-        return getId().equals(NotificationType.LEASE_RENEWAL.getId());
-    }
 }

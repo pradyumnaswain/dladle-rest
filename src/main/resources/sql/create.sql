@@ -134,12 +134,12 @@ CREATE TABLE property_contact
 /*house*/
 CREATE TABLE house
 (
-  id                           SERIAL PRIMARY KEY NOT NULL,
-  property_id                  INT,
-  active_job                   BOOLEAN DEFAULT FALSE,
-  contacts_count               INT     DEFAULT 0,
-  is_home                      BOOLEAN DEFAULT FALSE,
-  tenants_count                INT     DEFAULT 0,
+  id             SERIAL PRIMARY KEY NOT NULL,
+  property_id    INT,
+  active_job     BOOLEAN DEFAULT FALSE,
+  contacts_count INT     DEFAULT 0,
+  is_home        BOOLEAN DEFAULT FALSE,
+  tenants_count  INT     DEFAULT 0,
   FOREIGN KEY (property_id) REFERENCES property (id)
 );
 
@@ -194,14 +194,15 @@ CREATE TABLE vendor
 /*leaseTenant*/
 CREATE TABLE lease
 (
-  id                   SERIAL PRIMARY KEY NOT NULL,
-  house_id             INT,
-  lease_start_date     TIMESTAMP,
-  lease_terminate_date TIMESTAMP,
-  lease_end_date       TIMESTAMP,
-  lease_renewal_date   TIMESTAMP,
-  remark               VARCHAR(100),
-  lease_status         BOOLEAN DEFAULT FALSE,
+  id                              SERIAL PRIMARY KEY NOT NULL,
+  house_id                        INT,
+  lease_start_date                TIMESTAMP,
+  lease_terminate_date            TIMESTAMP,
+  lease_end_date                  TIMESTAMP,
+  lease_renewal_date              TIMESTAMP,
+  lease_renewal_notification_date TIMESTAMP,
+  remark                          VARCHAR(100),
+  lease_status                    BOOLEAN DEFAULT FALSE,
   FOREIGN KEY (house_id) REFERENCES house (id)
 );
 /*service*/
@@ -240,7 +241,7 @@ CREATE TABLE tenant_contact
 CREATE TABLE notification
 (
   id                           SERIAL PRIMARY KEY NOT NULL,
-  notification_type_id INT,
+  notification_type_id         INT,
   notification_from            INT,
   notification_to              INT,
   notification_title           VARCHAR(100),
@@ -258,10 +259,10 @@ CREATE TABLE notification
 );
 CREATE TABLE notification_count
 (
-  id SERIAL PRIMARY KEY NOT NULL,
+  id      SERIAL PRIMARY KEY NOT NULL,
   user_id INT,
-  count INT,
-  FOREIGN KEY (user_id) REFERENCES user_dladle(id),
+  count   INT,
+  FOREIGN KEY (user_id) REFERENCES user_dladle (id),
   UNIQUE (user_id)
 );
 

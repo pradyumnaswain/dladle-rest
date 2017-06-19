@@ -8,6 +8,7 @@ import java.util.Date;
  * Created by prady on 6/14/2017.
  */
 public class LeaseTenant {
+    private long leaseId;
     private PropertyView property;
     private User landlord;
     private Date leaseStartDate;
@@ -16,6 +17,14 @@ public class LeaseTenant {
     private Date leaseTerminateDate;
 
     public LeaseTenant() {
+    }
+
+    public long getLeaseId() {
+        return leaseId;
+    }
+
+    public void setLeaseId(long leaseId) {
+        this.leaseId = leaseId;
     }
 
     public PropertyView getProperty() {

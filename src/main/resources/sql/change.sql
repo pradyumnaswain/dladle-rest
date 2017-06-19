@@ -102,3 +102,4 @@ CREATE TABLE notification_count
   UNIQUE (user_id)
 );
 
+ALTER TABLE lease ADD COLUMN lease_renewal_notification_date TIMESTAMP

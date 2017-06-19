@@ -60,4 +60,9 @@ public class NotificationServiceJavaMailImpl implements NotificationService {
 
     }
 
+    @Override
+    public void sendLeaseTerminateRequest(String emailId) {
+
+    }
+
 }

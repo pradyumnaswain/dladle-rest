@@ -2,6 +2,7 @@ package za.co.dladle.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import za.co.dladle.entity.LeaseTerminateRequest;
 import za.co.dladle.model.LeaseLandlord;
 import za.co.dladle.model.LeaseTenant;
 import za.co.dladle.service.LeaseService;
@@ -31,7 +32,7 @@ public class LeaseController {
             if (leaseTenant != null) {
                 return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, leaseTenant, DladleConstants.LEASE_TENANT);
             } else {
-                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.LEASE_TENANT);
+                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.FAILURE);
             }
         } catch (Exception e) {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
@@ -48,7 +49,7 @@ public class LeaseController {
             if (leaseLandlord != null) {
                 return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, leaseLandlord, DladleConstants.LEASE_LANDLORD);
             } else {
-                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.LEASE_LANDLORD);
+                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.FAILURE);
             }
         } catch (Exception e) {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
@@ -56,5 +57,17 @@ public class LeaseController {
     }
 
     // TODO: 6/15/2017 terminate Lease or Renew Lease
+    //------------------------------------------------------------------------------------------------------------------
+    //Lease view
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = ApiConstants.LEASE_TERMINATE_REQUEST, method = RequestMethod.POST)
+    public Map<String, Object> terminate(@RequestBody LeaseTerminateRequest leaseTerminateRequest) throws IOException {
+        try {
+            leaseService.terminateLease(leaseTerminateRequest);
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, true, DladleConstants.LEASE_TERMINATE);
+        } catch (Exception e) {
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+        }
+    }
 
 }
