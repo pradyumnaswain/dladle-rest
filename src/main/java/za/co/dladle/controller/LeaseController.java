@@ -7,6 +7,7 @@ import za.co.dladle.model.LeaseTenant;
 import za.co.dladle.service.LeaseService;
 import za.co.dladle.util.ApiConstants;
 import za.co.dladle.util.DladleConstants;
+import za.co.dladle.util.DladleConstants;
 import za.co.dladle.util.ResponseUtil;
 
 import java.io.IOException;
@@ -28,12 +29,12 @@ public class LeaseController {
         try {
             LeaseTenant leaseTenant = leaseService.viewLease();
             if (leaseTenant != null) {
-                return ResponseUtil.response(ApiConstants.SUCCESS_RESPONSE, leaseTenant, DladleConstants.LEASE_TENANT);
+                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, leaseTenant, DladleConstants.LEASE_TENANT);
             } else {
-                return ResponseUtil.response(ApiConstants.SUCCESS_RESPONSE, null, DladleConstants.LEASE_TENANT);
+                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.LEASE_TENANT);
             }
         } catch (Exception e) {
-            return ResponseUtil.response(ApiConstants.FAILURE_RESPONSE, null, e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
@@ -45,12 +46,12 @@ public class LeaseController {
         try {
             LeaseLandlord leaseLandlord = leaseService.viewLease(houseId);
             if (leaseLandlord != null) {
-                return ResponseUtil.response(ApiConstants.SUCCESS_RESPONSE, leaseLandlord, DladleConstants.LEASE_LANDLORD);
+                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, leaseLandlord, DladleConstants.LEASE_LANDLORD);
             } else {
-                return ResponseUtil.response(ApiConstants.SUCCESS_RESPONSE, "{}", DladleConstants.LEASE_LANDLORD);
+                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.LEASE_LANDLORD);
             }
         } catch (Exception e) {
-            return ResponseUtil.response(ApiConstants.FAILURE_RESPONSE, "{}", e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 

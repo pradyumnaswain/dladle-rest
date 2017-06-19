@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.dladle.entity.*;
 import za.co.dladle.service.RatingService;
+import za.co.dladle.util.ApiConstants;
+import za.co.dladle.util.DladleConstants;
 import za.co.dladle.util.ResponseUtil;
 
 import java.io.IOException;
@@ -25,51 +27,52 @@ public class RatingController {
     //------------------------------------------------------------------------------------------------------------------
     //View Rating
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "/api/rating/view", method = RequestMethod.GET)
+    @RequestMapping(value = ApiConstants.RATING_VIEW, method = RequestMethod.GET)
     public Map<String, Object> viewRating() throws IOException {
         try {
             RatingView ratingView = ratingService.viewRating();
-            return ResponseUtil.response("SUCCESS", ratingView, "Rate retrieved Successfully");
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, ratingView, DladleConstants.RATING_VIEW);
         } catch (Exception e) {
-            return ResponseUtil.response("SUCCESS", null, "Rate not available for above user");
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
     //------------------------------------------------------------------------------------------------------------------
     //View Rating Details
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "/api/rating/view/details", method = RequestMethod.GET)
+    @RequestMapping(value = ApiConstants.RATING_VIEW_DETAILS, method = RequestMethod.GET)
     public Map<String, Object> viewRatingDetails() throws IOException {
         try {
             List<RatingViewDetails> ratingViewDetails = ratingService.viewRatingDetails();
-            return ResponseUtil.response("SUCCESS", ratingViewDetails, "Rate retrieved Successfully");
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, ratingViewDetails, DladleConstants.RATING_VIEW_DETAILS);
         } catch (Exception e) {
-            return ResponseUtil.response("SUCCESS", null, "Rate not available for above user");
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
     //------------------------------------------------------------------------------------------------------------------
     //Give Rating
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "/api/rating/post", method = RequestMethod.POST)
+    @RequestMapping(value = ApiConstants.RATING_POST, method = RequestMethod.POST)
     public Map<String, Object> postRating(@RequestBody(required = false) RatingAddRequest ratingAddRequest) throws IOException {
         try {
             boolean b = ratingService.postRating(ratingAddRequest);
-            return ResponseUtil.response("SUCCESS", b, "Rate posted Successfully");
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, b, DladleConstants.RATING_POST);
         } catch (Exception e) {
-            return ResponseUtil.response("SUCCESS", null, "Unable to post rating");
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
+
     //------------------------------------------------------------------------------------------------------------------
     //Update rating
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "/api/rating/update", method = RequestMethod.POST)
+    @RequestMapping(value = ApiConstants.RATING_UPDATE, method = RequestMethod.POST)
     public Map<String, Object> updateRating(@RequestBody(required = false) RatingUpdateRequest ratingUpdateRequest) throws IOException {
         try {
             boolean b = ratingService.updateRating(ratingUpdateRequest);
-            return ResponseUtil.response("SUCCESS", b, "Rate updated Successfully");
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, b, DladleConstants.RATING_UPDATE);
         } catch (Exception e) {
-            return ResponseUtil.response("SUCCESS", null, "Unable to uodate rating");
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
