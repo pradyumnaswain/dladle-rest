@@ -268,10 +268,11 @@ CREATE TABLE notification_count
 
 CREATE TABLE lease_tenant
 (
-  id          SERIAL PRIMARY KEY NOT NULL,
-  lease_id    INT,
-  tenant_id   INT,
-  joined_date TIMESTAMP,
+  id           SERIAL PRIMARY KEY NOT NULL,
+  lease_id     INT,
+  tenant_id    INT,
+  joined_date  TIMESTAMP,
+  lease_status BOOLEAN DEFAULT FALSE,
   FOREIGN KEY (tenant_id) REFERENCES tenant (id),
   FOREIGN KEY (lease_id) REFERENCES lease (id),
   UNIQUE (lease_id, tenant_id)

@@ -58,12 +58,25 @@ public class LeaseController {
 
     // TODO: 6/15/2017 terminate Lease or Renew Lease
     //------------------------------------------------------------------------------------------------------------------
-    //Lease view
+    //Lease Terminate Request
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = ApiConstants.LEASE_TERMINATE_REQUEST, method = RequestMethod.POST)
     public Map<String, Object> terminate(@RequestBody LeaseTerminateRequest leaseTerminateRequest) throws IOException {
         try {
             leaseService.terminateLease(leaseTerminateRequest);
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, true, DladleConstants.LEASE_TERMINATE);
+        } catch (Exception e) {
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Lease Terminate Request
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = ApiConstants.LEASE_TERMINATE_ACCEPT, method = RequestMethod.POST)
+    public Map<String, Object> acceptLeaseTerminate(@RequestBody LeaseTerminateRequest leaseTerminateRequest) throws IOException {
+        try {
+            leaseService.acceptTerminateLease(leaseTerminateRequest);
             return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, true, DladleConstants.LEASE_TERMINATE);
         } catch (Exception e) {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());

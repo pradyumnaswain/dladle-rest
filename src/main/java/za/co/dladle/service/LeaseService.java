@@ -172,7 +172,7 @@ public class LeaseService {
             Long leaseId = this.jdbcTemplate.queryForObject(sql, map, Long.class);
             map.put("leaseId", leaseId);
             map.put("joinedDate", LocalDate.now());
-            String sql1 = "INSERT INTO lease_tenant(lease_id, tenant_id, joined_date) VALUES (:leaseId,:tenantId,:joinedDate) ON CONFLICT DO NOTHING ";
+            String sql1 = "INSERT INTO lease_tenant(lease_id, tenant_id, joined_date,lease_status) VALUES (:leaseId,:tenantId,:joinedDate,TRUE ) ON CONFLICT DO NOTHING ";
             this.jdbcTemplate.update(sql1, map);
 
         } catch (Exception e) {
@@ -188,7 +188,7 @@ public class LeaseService {
             map.put("leaseId", keyHolder.getKey().longValue());
             map.put("joinedDate", LocalDate.now());
 
-            String sql1 = "INSERT INTO lease_tenant(lease_id, tenant_id, joined_date) VALUES (:leaseId,:tenantId,:joinedDate)";
+            String sql1 = "INSERT INTO lease_tenant(lease_id, tenant_id, joined_date,lease_status) VALUES (:leaseId,:tenantId,:joinedDate,TRUE )";
             this.jdbcTemplate.update(sql1, map);
         }
     }
@@ -205,7 +205,7 @@ public class LeaseService {
             String sql = "SELECT lease.id FROM lease_tenant INNER JOIN lease ON lease_tenant.lease_id = lease.id " +
                     "INNER JOIN tenant ON lease_tenant.tenant_id = tenant.id " +
                     "INNER JOIN user_dladle ON tenant.user_id = user_dladle.id " +
-                    "WHERE emailid=:emailId AND lease.house_id=:houseId AND lease.id=:leaseId AND lease_status=TRUE ";
+                    "WHERE emailid=:emailId AND lease.house_id=:houseId AND lease.id=:leaseId AND lease.lease_status=TRUE ";
             try {
                 Long leaseId = this.jdbcTemplate.queryForObject(sql, map, Long.class);
 
@@ -223,7 +223,7 @@ public class LeaseService {
                                 deviceEmailId.getEmailId(),
                                 NotificationConstants.LEASE_TERMINATE_TITLE,
                                 NotificationConstants.LEASE_TERMINATE_BODY,
-                                "tenantEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + leaseTerminateRequest.getHouseId(),
+                                "tenantEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + leaseTerminateRequest.getHouseId() + "," + "leaseId:" + leaseTerminateRequest.getLeaseId(),
                                 "", String.valueOf(leaseTerminateRequest.getHouseId()), NotificationType.LEASE_TERMINATE_REQUEST_TENANT);
                         notificationService.saveNotification(notifications);
 
@@ -242,6 +242,7 @@ public class LeaseService {
                             JSONObject data = new JSONObject();
                             data.put("tenantEmailId", userSession.getUser().getEmailId());
                             data.put("houseId", leaseTerminateRequest.getHouseId());
+                            data.put("leaseId", leaseTerminateRequest.getLeaseId());
 
                             body.put("notification", notification);
                             body.put("data", data);
@@ -285,7 +286,7 @@ public class LeaseService {
                                     deviceEmailId.getEmailId(),
                                     NotificationConstants.LEASE_TERMINATE_TITLE,
                                     NotificationConstants.LEASE_TERMINATE_BODY,
-                                    "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + leaseTerminateRequest.getHouseId(),
+                                    "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + leaseTerminateRequest.getHouseId() + "," + "leaseId:" + leaseTerminateRequest.getLeaseId(),
                                     "", String.valueOf(leaseTerminateRequest.getHouseId()), NotificationType.LEASE_TERMINATE_REQUEST_LANDLORD);
                             notificationService.saveNotification(notifications);
 
@@ -304,6 +305,7 @@ public class LeaseService {
                                 JSONObject data = new JSONObject();
                                 data.put("landlordEmailId", userSession.getUser().getEmailId());
                                 data.put("houseId", leaseTerminateRequest.getHouseId());
+                                data.put("leaseId", leaseTerminateRequest.getLeaseId());
 
                                 body.put("notification", notification);
                                 body.put("data", data);
@@ -323,7 +325,26 @@ public class LeaseService {
             } catch (Exception e) {
                 throw new Exception("Lease doesn't belong to you");
             }
-
         }
+    }
+
+    public void acceptTerminateLease(LeaseTerminateRequest leaseTerminateRequest) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("houseId", leaseTerminateRequest.getHouseId());
+        map.put("leaseId", leaseTerminateRequest.getLeaseId());
+
+        String sqlLease = "UPDATE lease SET lease_status=FALSE WHERE lease.id=:leaseId AND lease.house_id=:houseId AND lease_status=TRUE ";
+
+        this.jdbcTemplate.update(sqlLease, map);
+
+        String sqlLeaseTenant = "UPDATE lease_tenant SET lease_status=FALSE WHERE lease_tenant.lease_id=:leaseId AND lease_status=TRUE ";
+
+        this.jdbcTemplate.update(sqlLeaseTenant, map);
+
+        String sqlTenant = "UPDATE tenant SET house_id=NULL WHERE tenant.id IN (SELECT lease_tenant.tenant_id FROM lease_tenant WHERE lease_tenant.lease_id=:leaseId AND lease_status=TRUE )";
+
+        this.jdbcTemplate.update(sqlTenant, map);
+
+
     }
 }
