@@ -10,13 +10,5 @@ public interface NotificationService {
 
     void sendVerificationMail(String toEmailId, String verifyLink);
 
-    void sendPropertyInviteMail(String toEmailId);
-
-    void sendPropertyRequesteMail(String toEmailId);
-
-    void sendPropertyDeclineMail(String emailId);
-
-    void sendPropertyAcceptMail(String emailId);
-
-    void sendLeaseTerminateRequest(String emailId);
+    void sendNotificationMail(String emailId, String subject, String body);
 }

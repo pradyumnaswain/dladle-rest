@@ -53,94 +53,13 @@ public class NotificationServiceSendGridImpl implements NotificationService {
         } catch (IOException ex) {
         }
     }
-
     @Override
-    public void sendPropertyInviteMail(String toEmailId) {
-        Email from = new Email(FROM_EMAIL);
-        String subject = "New Property Invite Request";
-        Email to = new Email(toEmailId);
-        Content content = new Content("text/html", "<html><body>" +
-                "<P>Hi " + "!</p>" +
-                "<P>Please check Dladle App to accept property invitation</P>" +
-                "<P>DlaDle</P></body></html>");
-        Mail mail = new Mail(from, subject, to, content);
-
-        SendGrid sg = new SendGrid(SENDGRID_API_KEY);
-        Request request = new Request();
-        try {
-            sendMailUtil(mail, sg, request);
-        } catch (IOException ex) {
-        }
-
-    }
-
-    @Override
-    public void sendPropertyRequesteMail(String toEmailId) {
-        Email from = new Email(FROM_EMAIL);
-        String subject = "Tenant Requests Property";
-        Email to = new Email(toEmailId);
-        Content content = new Content("text/html", "<html><body>" +
-                "<P>Hi " + "!</p>" +
-                "<P>Please check Dladle App to accept property request</P>" +
-                "<P>DlaDle</P></body></html>");
-        Mail mail = new Mail(from, subject, to, content);
-
-        SendGrid sg = new SendGrid(SENDGRID_API_KEY);
-        Request request = new Request();
-        try {
-            sendMailUtil(mail, sg, request);
-        } catch (IOException ex) {
-        }
-
-    }
-
-    @Override
-    public void sendPropertyDeclineMail(String emailId) {
-        Email from = new Email(FROM_EMAIL);
-        String subject = "Property Decline";
-        Email to = new Email(emailId);
-        Content content = new Content("text/html", "<html><body>" +
-                "<P>Hi " + "!</p>" +
-                "<P>Please check Dladle App to check decline property</P>" +
-                "<P>DlaDle</P></body></html>");
-        Mail mail = new Mail(from, subject, to, content);
-
-        SendGrid sg = new SendGrid(SENDGRID_API_KEY);
-        Request request = new Request();
-        try {
-            sendMailUtil(mail, sg, request);
-        } catch (IOException ex) {
-        }
-
-    }
-
-    @Override
-    public void sendPropertyAcceptMail(String emailId) {
-        Email from = new Email(FROM_EMAIL);
-        String subject = "Property Accepted";
-        Email to = new Email(emailId);
-        Content content = new Content("text/html", "<html><body>" +
-                "<P>Hi " + "!</p>" +
-                "<P>Please check Dladle App for more details</P>" +
-                "<P>DlaDle</P></body></html>");
-        Mail mail = new Mail(from, subject, to, content);
-
-        SendGrid sg = new SendGrid(SENDGRID_API_KEY);
-        Request request = new Request();
-        try {
-            sendMailUtil(mail, sg, request);
-        } catch (IOException ex) {
-        }
-    }
-
-    @Override
-    public void sendLeaseTerminateRequest(String emailId) {
+    public void sendNotificationMail(String emailId, String subject, String body) {
         Email from = new Email(FROM_EMAIL);
         Email to = new Email(emailId);
-        String subject = "Lease Termination Request";
         Content content = new Content("text/html", "<html><body>" +
                 "<P>Hi " + "!</p>" +
-                "<P>Please check Dladle App for more details</P>" +
+                "<P>" + body + "</P>" +
                 "<P>DlaDle</P></body></html>");
         Mail mail = new Mail(from, subject, to, content);
 
@@ -150,8 +69,6 @@ public class NotificationServiceSendGridImpl implements NotificationService {
             sendMailUtil(mail, sg, request);
         } catch (IOException ex) {
         }
-
-
     }
 
     //------------------------------------------------------------------------------------------------------------------

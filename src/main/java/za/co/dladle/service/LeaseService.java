@@ -14,6 +14,7 @@ import za.co.dladle.model.LeaseTenant;
 import za.co.dladle.model.NotificationType;
 import za.co.dladle.model.User;
 import za.co.dladle.session.UserSession;
+import za.co.dladle.util.NotificationConstants;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -220,14 +221,14 @@ public class LeaseService {
                         //save notification
                         NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
                                 deviceEmailId.getEmailId(),
-                                "Lease Terminate Request",
-                                "Please review and accept/reject this lease terminate request",
+                                NotificationConstants.LEASE_TERMINATE_TITLE,
+                                NotificationConstants.LEASE_TERMINATE_BODY,
                                 "tenantEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + leaseTerminateRequest.getHouseId(),
                                 "", String.valueOf(leaseTerminateRequest.getHouseId()), NotificationType.LEASE_TERMINATE_REQUEST_TENANT);
                         notificationService.saveNotification(notifications);
 
                         //Send Email
-                        emailService.sendLeaseTerminateRequest(deviceEmailId.getEmailId());
+                        emailService.sendNotificationMail(deviceEmailId.getEmailId(), NotificationConstants.LEASE_TERMINATE_TITLE, NotificationConstants.LEASE_TERMINATE_BODY);
 
                         if (deviceEmailId.getDeviceId() != null) {
                             JSONObject body = new JSONObject();
@@ -235,8 +236,8 @@ public class LeaseService {
                             body.put("priority", "high");
 
                             JSONObject notification = new JSONObject();
-                            notification.put("body", "Please review and accept/reject this lease terminate request");
-                            notification.put("title", "Lease Terminate Request");
+                            notification.put("body", NotificationConstants.LEASE_TERMINATE_BODY);
+                            notification.put("title", NotificationConstants.LEASE_TERMINATE_TITLE);
 
                             JSONObject data = new JSONObject();
                             data.put("tenantEmailId", userSession.getUser().getEmailId());
@@ -282,14 +283,14 @@ public class LeaseService {
                             //save notification
                             NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
                                     deviceEmailId.getEmailId(),
-                                    "Lease Terminate Request",
-                                    "Please review and accept/reject this lease terminate request",
+                                    NotificationConstants.LEASE_TERMINATE_TITLE,
+                                    NotificationConstants.LEASE_TERMINATE_BODY,
                                     "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + leaseTerminateRequest.getHouseId(),
                                     "", String.valueOf(leaseTerminateRequest.getHouseId()), NotificationType.LEASE_TERMINATE_REQUEST_LANDLORD);
                             notificationService.saveNotification(notifications);
 
                             //Send Email
-                            emailService.sendLeaseTerminateRequest(deviceEmailId.getEmailId());
+                            emailService.sendNotificationMail(deviceEmailId.getEmailId(), NotificationConstants.LEASE_TERMINATE_TITLE, NotificationConstants.LEASE_TERMINATE_BODY);
 
                             if (deviceEmailId.getDeviceId() != null) {
                                 JSONObject body = new JSONObject();
@@ -297,8 +298,8 @@ public class LeaseService {
                                 body.put("priority", "high");
 
                                 JSONObject notification = new JSONObject();
-                                notification.put("body", "Please review and accept/reject this lease terminate request");
-                                notification.put("title", "Lease Terminate Request");
+                                notification.put("body", NotificationConstants.LEASE_TERMINATE_BODY);
+                                notification.put("title", NotificationConstants.LEASE_TERMINATE_TITLE);
 
                                 JSONObject data = new JSONObject();
                                 data.put("landlordEmailId", userSession.getUser().getEmailId());

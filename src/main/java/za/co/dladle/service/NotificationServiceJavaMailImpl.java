@@ -41,27 +41,7 @@ public class NotificationServiceJavaMailImpl implements NotificationService {
     }
 
     @Override
-    public void sendPropertyInviteMail(String toEmailId) {
-
-    }
-
-    @Override
-    public void sendPropertyRequesteMail(String toEmailId) {
-
-    }
-
-    @Override
-    public void sendPropertyDeclineMail(String emailId) {
-
-    }
-
-    @Override
-    public void sendPropertyAcceptMail(String emailId) {
-
-    }
-
-    @Override
-    public void sendLeaseTerminateRequest(String emailId) {
+    public void sendNotificationMail(String emailId, String subject, String body) {
 
     }
 

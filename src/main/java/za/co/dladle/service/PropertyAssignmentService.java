@@ -10,6 +10,7 @@ import za.co.dladle.entity.*;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.model.NotificationType;
 import za.co.dladle.session.UserSession;
+import za.co.dladle.util.NotificationConstants;
 
 import javax.transaction.Transactional;
 import java.util.HashMap;
@@ -70,12 +71,12 @@ public class PropertyAssignmentService {
                 NotificationView notifications = new NotificationView(
                         userSession.getUser().getEmailId(),
                         propertyAssignmentRequest.getEmailId(),
-                        "Property Accepted Tenant",
-                        "Tenant Accepted the Property Invitation ",
+                        NotificationConstants.PROPERTY_ACCEPTED_TITLE,
+                        NotificationConstants.PROPERTY_ACCEPTED_BODY,
                         "",
                         "", propertyAssignmentRequest.getHouseId().toString(), NotificationType.TENANT_ACCEPTS_PROPERTY_INVITATION);
                 notificationService.saveNotification(notifications);
-                emailService.sendPropertyAcceptMail(propertyAssignmentRequest.getEmailId());
+                emailService.sendNotificationMail(propertyAssignmentRequest.getEmailId(), NotificationConstants.PROPERTY_ACCEPTED_TITLE, NotificationConstants.PROPERTY_ACCEPTED_BODY);
 
                 //Send Push Notification
                 if (deviceId != null) {
@@ -84,8 +85,8 @@ public class PropertyAssignmentService {
                     body.put("priority", "high");
 
                     JSONObject notification = new JSONObject();
-                    notification.put("title", "Property Accepted Tenant");
-                    notification.put("body", "Tenant Accepted the Property Invitation");
+                    notification.put("title", NotificationConstants.PROPERTY_ACCEPTED_TITLE);
+                    notification.put("body", NotificationConstants.PROPERTY_ACCEPTED_BODY);
 
                     JSONObject data = new JSONObject();
                     body.put("notification", notification);
@@ -125,12 +126,12 @@ public class PropertyAssignmentService {
                 NotificationView notifications = new NotificationView(
                         userSession.getUser().getEmailId(),
                         propertyAssignmentRequest.getEmailId(),
-                        "Property Request Accepted by Landlord",
-                        "Landlord Accepted the Property Request ",
+                        NotificationConstants.PROPERTY_ACCEPTED_TITLE,
+                        NotificationConstants.PROPERTY_ACCEPTED_BODY,
                         "",
                         "", propertyAssignmentRequest.getHouseId().toString(), NotificationType.LANDLORD_ACCEPTS_PROPERTY_INVITATION);
                 notificationService.saveNotification(notifications);
-                emailService.sendPropertyAcceptMail(propertyAssignmentRequest.getEmailId());
+                emailService.sendNotificationMail(propertyAssignmentRequest.getEmailId(), NotificationConstants.PROPERTY_ACCEPTED_TITLE, NotificationConstants.PROPERTY_ACCEPTED_BODY);
 
                 //Send Push Notification
                 if (deviceId != null) {
@@ -139,8 +140,8 @@ public class PropertyAssignmentService {
                     body.put("priority", "high");
 
                     JSONObject notification = new JSONObject();
-                    notification.put("title", "Property Request Accepted by Landlord");
-                    notification.put("body", "Tenant Accepted the Property Invitation");
+                    notification.put("title", NotificationConstants.PROPERTY_ACCEPTED_TITLE);
+                    notification.put("body", NotificationConstants.PROPERTY_ACCEPTED_BODY);
 
                     JSONObject data = new JSONObject();
                     body.put("notification", notification);
@@ -172,14 +173,14 @@ public class PropertyAssignmentService {
         //save notification
         NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
                 propertyInviteRequest.getEmailId(),
-                "New Property Request",
-                "Please accept this property invitation",
+                NotificationConstants.LANDLORD_INVITE_PROPERTY_TITLE,
+                NotificationConstants.LANDLORD_INVITE_PROPERTY_BODY,
                 "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + propertyInviteRequest.getHouseId(),
                 "", String.valueOf(propertyInviteRequest.getHouseId()), NotificationType.LANDLORD_REQUEST_TENANT);
         notificationService.saveNotification(notifications);
 
         //Send Email
-        emailService.sendPropertyInviteMail(propertyInviteRequest.getEmailId());
+        emailService.sendNotificationMail(propertyInviteRequest.getEmailId(), NotificationConstants.LANDLORD_INVITE_PROPERTY_TITLE, NotificationConstants.LANDLORD_INVITE_PROPERTY_BODY);
         try {
 
             String deviceId = this.parameterJdbcTemplate.queryForObject(sql, map, String.class);
@@ -189,8 +190,8 @@ public class PropertyAssignmentService {
                 body.put("priority", "high");
 
                 JSONObject notification = new JSONObject();
-                notification.put("body", "Please accept this property invitation");
-                notification.put("title", "New Property Request");
+                notification.put("body", NotificationConstants.LANDLORD_INVITE_PROPERTY_BODY);
+                notification.put("title", NotificationConstants.LANDLORD_INVITE_PROPERTY_TITLE);
 
                 JSONObject data = new JSONObject();
                 data.put("landlordEmailId", userSession.getUser().getEmailId());
@@ -222,14 +223,14 @@ public class PropertyAssignmentService {
         NotificationView notifications = new NotificationView(
                 userSession.getUser().getEmailId(),
                 propertyRequest.getEmailId(),
-                "Property Request from Tenant",
-                "Please accept this property Request",
+                NotificationConstants.TENANT_REQUEST_PROPERTY_TITLE,
+                NotificationConstants.TENANT_REQUEST_PROPERTY_BODY,
                 "tenantEmailId:" + userSession.getUser().getEmailId(),
                 "", null, NotificationType.TENANT_REQUEST_LANDLORD);
         notificationService.saveNotification(notifications);
 
         //Send Email
-        emailService.sendPropertyRequesteMail(propertyRequest.getEmailId());
+        emailService.sendNotificationMail(propertyRequest.getEmailId(), NotificationConstants.TENANT_REQUEST_PROPERTY_TITLE, NotificationConstants.TENANT_REQUEST_PROPERTY_BODY);
 
         //Send Push Notification
         if (deviceId != null) {
@@ -238,8 +239,8 @@ public class PropertyAssignmentService {
             body.put("priority", "high");
 
             JSONObject notification = new JSONObject();
-            notification.put("body", "Please accept Property request from Tenant");
-            notification.put("title", "New Tenant Request");
+            notification.put("body", NotificationConstants.TENANT_REQUEST_PROPERTY_BODY);
+            notification.put("title", NotificationConstants.TENANT_REQUEST_PROPERTY_TITLE);
 
             JSONObject data = new JSONObject();
             data.put("landlordEmailId", userSession.getUser().getEmailId());
@@ -263,12 +264,12 @@ public class PropertyAssignmentService {
             NotificationView notifications = new NotificationView(
                     userSession.getUser().getEmailId(),
                     propertyDeclineRequest.getEmailId(),
-                    "Property Decline from Tenant",
-                    "Tenant Declined the Property Invitation ",
+                    NotificationConstants.PROPERTY_REJECTED_TITLE,
+                    NotificationConstants.PROPERTY_REJECTED_BODY,
                     "tenantEmailId:" + userSession.getUser().getEmailId(),
                     "", propertyDeclineRequest.getHouseId().toString(), NotificationType.TENANT_REJECTS_PROPERTY_INVITATION);
             notificationService.saveNotification(notifications);
-            emailService.sendPropertyDeclineMail(propertyDeclineRequest.getEmailId());
+            emailService.sendNotificationMail(propertyDeclineRequest.getEmailId(), NotificationConstants.PROPERTY_REJECTED_TITLE, NotificationConstants.PROPERTY_REJECTED_BODY);
 
             //Send Push Notification
             if (deviceId != null) {
@@ -277,8 +278,8 @@ public class PropertyAssignmentService {
                 body.put("priority", "high");
 
                 JSONObject notification = new JSONObject();
-                notification.put("title", "Property Decline from Tenant");
-                notification.put("body", "Tenant Declined the Property Invitation");
+                notification.put("title", NotificationConstants.PROPERTY_REJECTED_TITLE);
+                notification.put("body", NotificationConstants.PROPERTY_REJECTED_BODY);
 
                 JSONObject data = new JSONObject();
                 body.put("notification", notification);
@@ -299,12 +300,12 @@ public class PropertyAssignmentService {
             NotificationView notifications = new NotificationView(
                     userSession.getUser().getEmailId(),
                     propertyDeclineRequest.getEmailId(),
-                    "Property Request Decline fromLandlord",
-                    "Landlord Declined the Property Request ",
+                    NotificationConstants.PROPERTY_REJECTED_TITLE,
+                    NotificationConstants.PROPERTY_REJECTED_BODY,
                     "tenantEmailId:" + userSession.getUser().getEmailId(),
                     "", null, NotificationType.LANDLORD_REJECTS_PROPERTY_INVITATION);
             notificationService.saveNotification(notifications);
-            emailService.sendPropertyDeclineMail(propertyDeclineRequest.getEmailId());
+            emailService.sendNotificationMail(propertyDeclineRequest.getEmailId(), NotificationConstants.PROPERTY_REJECTED_TITLE, NotificationConstants.PROPERTY_REJECTED_BODY);
 
             //Send Push Notification
             if (deviceId != null) {
@@ -313,8 +314,8 @@ public class PropertyAssignmentService {
                 body.put("priority", "high");
 
                 JSONObject notification = new JSONObject();
-                notification.put("title", "Property Request Decline fromLandlord");
-                notification.put("body", "Landlord Declined the Property Request");
+                notification.put("title", NotificationConstants.PROPERTY_REJECTED_TITLE);
+                notification.put("body", NotificationConstants.PROPERTY_REJECTED_BODY);
 
                 JSONObject data = new JSONObject();
                 body.put("notification", notification);
