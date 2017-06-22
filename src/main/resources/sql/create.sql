@@ -16,21 +16,21 @@ GRANT ALL PRIVILEGES ON DATABASE dladle TO sysadmin;
 CREATE TABLE user_type
 (
   id   BIGINT PRIMARY KEY  NOT NULL,
-  name VARCHAR(128)     NOT NULL
+  name VARCHAR(128)        NOT NULL
 );
 
 /*service_type*/
 CREATE TABLE service_type
 (
   id   BIGINT PRIMARY KEY NOT NULL,
-  name VARCHAR(128)    NOT NULL
+  name VARCHAR(128)       NOT NULL
 );
 
 /*amenities_type*/
 CREATE TABLE amenities_type
 (
   id   BIGINT PRIMARY KEY NOT NULL,
-  name VARCHAR(128)    NOT NULL
+  name VARCHAR(128)       NOT NULL
 );
 /*place_type*/
 CREATE TABLE place_type
@@ -76,8 +76,8 @@ CREATE TABLE notification_type
 CREATE TABLE user_dladle
 (
   id                BIGSERIAL PRIMARY KEY  NOT NULL,
-  emailId           VARCHAR(100)        NOT NULL,
-  password          VARCHAR(500)        NOT NULL,
+  emailId           VARCHAR(100)           NOT NULL,
+  password          VARCHAR(500)           NOT NULL,
   user_type_id      BIGINT,
   verified          BOOLEAN,
   verification_code VARCHAR(100),
@@ -137,9 +137,9 @@ CREATE TABLE house
   id             BIGSERIAL PRIMARY KEY NOT NULL,
   property_id    BIGINT,
   active_job     BOOLEAN DEFAULT FALSE,
-  contacts_count BIGINT     DEFAULT 0,
+  contacts_count BIGINT  DEFAULT 0,
   is_home        BOOLEAN DEFAULT FALSE,
-  tenants_count  BIGINT     DEFAULT 0,
+  tenants_count  BIGINT  DEFAULT 0,
   FOREIGN KEY (property_id) REFERENCES property (id)
 );
 
@@ -272,6 +272,7 @@ CREATE TABLE lease_tenant
   lease_id     BIGINT,
   tenant_id    BIGINT,
   joined_date  TIMESTAMP,
+  leave_date   TIMESTAMP,
   lease_status BOOLEAN DEFAULT FALSE,
   FOREIGN KEY (tenant_id) REFERENCES tenant (id),
   FOREIGN KEY (lease_id) REFERENCES lease (id),

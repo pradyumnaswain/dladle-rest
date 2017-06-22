@@ -8,7 +8,6 @@ import za.co.dladle.model.LeaseTenant;
 import za.co.dladle.service.LeaseService;
 import za.co.dladle.util.ApiConstants;
 import za.co.dladle.util.DladleConstants;
-import za.co.dladle.util.DladleConstants;
 import za.co.dladle.util.ResponseUtil;
 
 import java.io.IOException;
@@ -82,5 +81,4 @@ public class LeaseController {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
-
 }

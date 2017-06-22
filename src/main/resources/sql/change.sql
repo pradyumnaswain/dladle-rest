@@ -104,3 +104,4 @@ CREATE TABLE notification_count
 
 ALTER TABLE lease ADD COLUMN lease_renewal_notification_date TIMESTAMP;
 ALTER TABLE lease_tenant ADD COLUMN lease_status BOOLEAN DEFAULT FALSE ;
+ALTER TABLE lease_tenant ADD COLUMN leave_date TIMESTAMP ;
