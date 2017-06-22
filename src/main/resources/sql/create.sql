@@ -15,73 +15,73 @@ GRANT ALL PRIVILEGES ON DATABASE dladle TO sysadmin;
 /*User Type*/
 CREATE TABLE user_type
 (
-  id   INT PRIMARY KEY  NOT NULL,
+  id   BIGINT PRIMARY KEY  NOT NULL,
   name VARCHAR(128)     NOT NULL
 );
 
 /*service_type*/
 CREATE TABLE service_type
 (
-  id   INT PRIMARY KEY NOT NULL,
+  id   BIGINT PRIMARY KEY NOT NULL,
   name VARCHAR(128)    NOT NULL
 );
 
 /*amenities_type*/
 CREATE TABLE amenities_type
 (
-  id   INT PRIMARY KEY NOT NULL,
+  id   BIGINT PRIMARY KEY NOT NULL,
   name VARCHAR(128)    NOT NULL
 );
 /*place_type*/
 CREATE TABLE place_type
 (
-  id   INT PRIMARY KEY,
+  id   BIGINT PRIMARY KEY,
   name VARCHAR(20)
 );
 /*bedroom_type*/
 CREATE TABLE bedroom_type
 (
-  id   INT PRIMARY KEY,
+  id   BIGINT PRIMARY KEY,
   name VARCHAR(20)
 );
 
 /*Home View Type*/
 CREATE TABLE home_view_type
 (
-  id   INT PRIMARY KEY,
+  id   BIGINT PRIMARY KEY,
   name VARCHAR(20)
 );
 
 /*Years of Experience*/
 CREATE TABLE years_exp
 (
-  id   INT PRIMARY KEY,
+  id   BIGINT PRIMARY KEY,
   name VARCHAR(20)
 );
 
 /*Contact Type*/
 CREATE TABLE contact_type
 (
-  id   INT PRIMARY KEY,
+  id   BIGINT PRIMARY KEY,
   name VARCHAR(20)
 );
 /*Notification Type*/
 CREATE TABLE notification_type
 (
-  id   INT PRIMARY KEY,
+  id   BIGINT PRIMARY KEY,
   name VARCHAR(100)
 );
 
 /* User*/
 CREATE TABLE user_dladle
 (
-  id                SERIAL PRIMARY KEY  NOT NULL,
+  id                BIGSERIAL PRIMARY KEY  NOT NULL,
   emailId           VARCHAR(100)        NOT NULL,
   password          VARCHAR(500)        NOT NULL,
-  user_type_id      INT,
+  user_type_id      BIGINT,
   verified          BOOLEAN,
   verification_code VARCHAR(100),
-  otp               INT,
+  otp               BIGINT,
   first_name        VARCHAR(20),
   last_name         VARCHAR(20),
   id_number         VARCHAR(45),
@@ -95,9 +95,9 @@ CREATE UNIQUE INDEX user_dladle_email_uindex
 /*landlord*/
 CREATE TABLE landlord
 (
-  id                SERIAL PRIMARY KEY NOT NULL,
-  user_id           INT,
-  home_view_type_id INT,
+  id                BIGSERIAL PRIMARY KEY NOT NULL,
+  user_id           BIGINT,
+  home_view_type_id BIGINT,
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),
   FOREIGN KEY (home_view_type_id) REFERENCES home_view_type (id)
 );
@@ -105,9 +105,9 @@ CREATE TABLE landlord
 /*property*/
 CREATE TABLE property
 (
-  id            SERIAL PRIMARY KEY NOT NULL,
-  landlord_id   INT,
-  place_type_id INT,
+  id            BIGSERIAL PRIMARY KEY NOT NULL,
+  landlord_id   BIGINT,
+  place_type_id BIGINT,
   address       VARCHAR(100),
   isEstate      VARCHAR(100),
   estate_name   VARCHAR(100),
@@ -121,9 +121,9 @@ CREATE TABLE property
 /*property_contact*/
 CREATE TABLE property_contact
 (
-  id              SERIAL PRIMARY KEY NOT NULL,
-  house_id        INT,
-  contact_type_id INT,
+  id              BIGSERIAL PRIMARY KEY NOT NULL,
+  house_id        BIGINT,
+  contact_type_id BIGINT,
   name            VARCHAR(50),
   address         VARCHAR(200),
   contact_number  VARCHAR(12),
@@ -134,22 +134,22 @@ CREATE TABLE property_contact
 /*house*/
 CREATE TABLE house
 (
-  id             SERIAL PRIMARY KEY NOT NULL,
-  property_id    INT,
+  id             BIGSERIAL PRIMARY KEY NOT NULL,
+  property_id    BIGINT,
   active_job     BOOLEAN DEFAULT FALSE,
-  contacts_count INT     DEFAULT 0,
+  contacts_count BIGINT     DEFAULT 0,
   is_home        BOOLEAN DEFAULT FALSE,
-  tenants_count  INT     DEFAULT 0,
+  tenants_count  BIGINT     DEFAULT 0,
   FOREIGN KEY (property_id) REFERENCES property (id)
 );
 
 /*amenities*/
 CREATE TABLE amenities
 (
-  id                SERIAL PRIMARY KEY NOT NULL,
-  amenities_type_id INT,
-  count             INT,
-  house_id          INT,
+  id                BIGSERIAL PRIMARY KEY NOT NULL,
+  amenities_type_id BIGINT,
+  count             BIGINT,
+  house_id          BIGINT,
   FOREIGN KEY (amenities_type_id) REFERENCES amenities_type (id),
   FOREIGN KEY (house_id) REFERENCES house (id)
 );
@@ -157,9 +157,9 @@ CREATE TABLE amenities
 /*rating*/
 CREATE TABLE rating
 (
-  id             SERIAL PRIMARY KEY NOT NULL,
-  rated_user     INT,
-  rating_user    INT,
+  id             BIGSERIAL PRIMARY KEY NOT NULL,
+  rated_user     BIGINT,
+  rating_user    BIGINT,
   value          DECIMAL,
   rating_comment VARCHAR(500),
   FOREIGN KEY (rated_user) REFERENCES user_dladle (id),
@@ -170,22 +170,22 @@ CREATE TABLE rating
 /*tenant*/
 CREATE TABLE tenant
 (
-  id       SERIAL PRIMARY KEY NOT NULL,
-  user_id  INT,
-  house_id INT,
+  id       BIGSERIAL PRIMARY KEY NOT NULL,
+  user_id  BIGINT,
+  house_id BIGINT,
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),
   FOREIGN KEY (house_id) REFERENCES house (id)
 );
 /*tenant*/
 CREATE TABLE vendor
 (
-  id               SERIAL PRIMARY KEY NOT NULL,
-  user_id          INT,
+  id               BIGSERIAL PRIMARY KEY NOT NULL,
+  user_id          BIGINT,
   business_address VARCHAR(50),
-  service_type_id  INT,
+  service_type_id  BIGINT,
   transport        BOOLEAN,
   tools            BOOLEAN,
-  experience_id    INT,
+  experience_id    BIGINT,
   FOREIGN KEY (service_type_id) REFERENCES service_type (id),
   FOREIGN KEY (experience_id) REFERENCES years_exp (id),
   FOREIGN KEY (user_id) REFERENCES user_dladle (id)
@@ -194,8 +194,8 @@ CREATE TABLE vendor
 /*leaseTenant*/
 CREATE TABLE lease
 (
-  id                              SERIAL PRIMARY KEY NOT NULL,
-  house_id                        INT,
+  id                              BIGSERIAL PRIMARY KEY NOT NULL,
+  house_id                        BIGINT,
   lease_start_date                TIMESTAMP,
   lease_terminate_date            TIMESTAMP,
   lease_end_date                  TIMESTAMP,
@@ -208,9 +208,9 @@ CREATE TABLE lease
 /*service*/
 CREATE TABLE service
 (
-  id              SERIAL PRIMARY KEY NOT NULL,
-  service_type_id INT,
-  vendor_id       INT,
+  id              BIGSERIAL PRIMARY KEY NOT NULL,
+  service_type_id BIGINT,
+  vendor_id       BIGINT,
   FOREIGN KEY (service_type_id) REFERENCES service_type (id),
   FOREIGN KEY (vendor_id) REFERENCES vendor (id)
 );
@@ -218,7 +218,7 @@ DROP TABLE user_device;
 /*User Device*/
 CREATE TABLE user_device
 (
-  id        SERIAL PRIMARY KEY NOT NULL,
+  id        BIGSERIAL PRIMARY KEY NOT NULL,
   device_id VARCHAR(1000),
   CONSTRAINT unique_device UNIQUE (device_id)
 );
@@ -226,10 +226,10 @@ CREATE TABLE user_device
 /*tenant_contact*/
 CREATE TABLE tenant_contact
 (
-  id              SERIAL PRIMARY KEY NOT NULL,
-  tenant_id       INT,
-  house_id        INT,
-  contact_type_id INT,
+  id              BIGSERIAL PRIMARY KEY NOT NULL,
+  tenant_id       BIGINT,
+  house_id        BIGINT,
+  contact_type_id BIGINT,
   name            VARCHAR(50),
   address         VARCHAR(200),
   contact_number  VARCHAR(12),
@@ -240,10 +240,10 @@ CREATE TABLE tenant_contact
 /*Notification*/
 CREATE TABLE notification
 (
-  id                           SERIAL PRIMARY KEY NOT NULL,
-  notification_type_id         INT,
-  notification_from            INT,
-  notification_to              INT,
+  id                           BIGSERIAL PRIMARY KEY NOT NULL,
+  notification_type_id         BIGINT,
+  notification_from            BIGINT,
+  notification_to              BIGINT,
   notification_title           VARCHAR(100),
   notification_body            VARCHAR(1000),
   notification_data            VARCHAR(1000),
@@ -251,7 +251,7 @@ CREATE TABLE notification
   notification_time            TIMESTAMP,
   notification_read_status     BOOLEAN,
   notification_actioned_status BOOLEAN,
-  house_id                     INT,
+  house_id                     BIGINT,
   FOREIGN KEY (notification_from) REFERENCES user_dladle (id),
   FOREIGN KEY (notification_to) REFERENCES user_dladle (id),
   FOREIGN KEY (house_id) REFERENCES house (id),
@@ -259,18 +259,18 @@ CREATE TABLE notification
 );
 CREATE TABLE notification_count
 (
-  id      SERIAL PRIMARY KEY NOT NULL,
-  user_id INT,
-  count   INT,
+  id      BIGSERIAL PRIMARY KEY NOT NULL,
+  user_id BIGINT,
+  count   BIGINT,
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),
   UNIQUE (user_id)
 );
 
 CREATE TABLE lease_tenant
 (
-  id           SERIAL PRIMARY KEY NOT NULL,
-  lease_id     INT,
-  tenant_id    INT,
+  id           BIGSERIAL PRIMARY KEY NOT NULL,
+  lease_id     BIGINT,
+  tenant_id    BIGINT,
   joined_date  TIMESTAMP,
   lease_status BOOLEAN DEFAULT FALSE,
   FOREIGN KEY (tenant_id) REFERENCES tenant (id),
