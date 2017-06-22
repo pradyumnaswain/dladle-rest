@@ -9,6 +9,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import za.co.dladle.entity.*;
+import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.model.LeaseLandlord;
 import za.co.dladle.model.LeaseTenant;
 import za.co.dladle.model.NotificationType;
@@ -17,6 +18,7 @@ import za.co.dladle.session.UserSession;
 import za.co.dladle.util.NotificationConstants;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -332,19 +334,63 @@ public class LeaseService {
         Map<String, Object> map = new HashMap<>();
         map.put("houseId", leaseTerminateRequest.getHouseId());
         map.put("leaseId", leaseTerminateRequest.getLeaseId());
+        map.put("leaveDate", LocalDateTime.now());
 
         String sqlLease = "UPDATE lease SET lease_status=FALSE WHERE lease.id=:leaseId AND lease.house_id=:houseId AND lease_status=TRUE ";
 
         this.jdbcTemplate.update(sqlLease, map);
 
-        String sqlLeaseTenant = "UPDATE lease_tenant SET lease_status=FALSE WHERE lease_tenant.lease_id=:leaseId AND lease_status=TRUE ";
+        String sqlLeaseTenant = "UPDATE lease_tenant SET lease_status=FALSE,lease_tenant.leave_date=:leaveDate WHERE lease_tenant.lease_id=:leaseId AND lease_status=TRUE ";
 
         this.jdbcTemplate.update(sqlLeaseTenant, map);
 
         String sqlTenant = "UPDATE tenant SET house_id=NULL WHERE tenant.id IN (SELECT lease_tenant.tenant_id FROM lease_tenant WHERE lease_tenant.lease_id=:leaseId AND lease_status=TRUE )";
 
         this.jdbcTemplate.update(sqlTenant, map);
+    }
 
+    public void leaveLease() throws Exception {
 
+        Map<String, Object> map = new HashMap<>();
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+
+        if (userSession.getUser().getUserType().eqTENANT()) {
+            Long tenantId = userUtility.findTenantIdByEmail(userSession.getUser().getEmailId());
+
+            map.put("userId", tenantId);
+
+            String sqlLeaseTenant = "UPDATE lease_tenant SET lease_status=FALSE,lease_tenant.leave_date=:leaveDate WHERE lease_tenant.tenant_id=:userId AND lease_status=TRUE ";
+
+            this.jdbcTemplate.update(sqlLeaseTenant, map);
+
+            String sqlTenant = "UPDATE tenant SET house_id=NULL WHERE tenant.id=:userId";
+
+            this.jdbcTemplate.update(sqlTenant, map);
+        } else {
+            throw new Exception("You must be a Tenant to access this");
+        }
+    }
+
+    public void leaveLease(String emailId) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+
+        if (userSession.getUser().getUserType().eqLANDLORD()) {
+            Long tenantId = userUtility.findTenantIdByEmail(emailId);
+
+            map.put("userId", tenantId);
+
+            String sqlLeaseTenant = "UPDATE lease_tenant SET lease_status=FALSE,lease_tenant.leave_date=:leaveDate WHERE lease_tenant.tenant_id=:userId AND lease_status=TRUE ";
+
+            this.jdbcTemplate.update(sqlLeaseTenant, map);
+
+            String sqlTenant = "UPDATE tenant SET house_id=NULL WHERE tenant.id=:userId";
+
+            this.jdbcTemplate.update(sqlTenant, map);
+
+        } else {
+            throw new Exception("You must be a Landlord to access this");
+        }
     }
 }

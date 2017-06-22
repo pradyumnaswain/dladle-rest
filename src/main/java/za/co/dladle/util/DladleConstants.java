@@ -14,6 +14,7 @@ public class DladleConstants {
     public static final String LEASE_TENANT = "LeaseTenant fetched Successfully";
     public static final String LEASE_LANDLORD = "LeaseLandlord fetched Successfully";
     public static final String LEASE_TERMINATE = "Lease terminated Successfully";
+    public static final String LEASE_LEAVE = "Lease left Successfully";
     //------------------------------------------------------------------------------------------------------------------
     //Notification
     //------------------------------------------------------------------------------------------------------------------

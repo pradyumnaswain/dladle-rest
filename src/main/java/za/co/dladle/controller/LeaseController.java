@@ -81,4 +81,30 @@ public class LeaseController {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Lease Terminate Request
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = ApiConstants.LEASE_LEAVE, method = RequestMethod.POST)
+    public Map<String, Object> leaveLease() throws IOException {
+        try {
+            leaseService.leaveLease();
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, true, DladleConstants.LEASE_LEAVE);
+        } catch (Exception e) {
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Lease Terminate Request
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = ApiConstants.LEASE_LEAVE_LANDLORD, method = RequestMethod.GET)
+    public Map<String, Object> leaveLeaseByLandlord(@PathVariable String emailId) throws IOException {
+        try {
+            leaseService.leaveLease(emailId);
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, true, DladleConstants.LEASE_LEAVE);
+        } catch (Exception e) {
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+        }
+    }
 }
