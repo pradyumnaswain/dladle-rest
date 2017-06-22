@@ -277,3 +277,17 @@ CREATE TABLE lease_tenant
   FOREIGN KEY (lease_id) REFERENCES lease (id),
   UNIQUE (lease_id, tenant_id)
 );
+
+CREATE TABLE payment_card
+(
+  id               BIGSERIAL PRIMARY KEY NOT NULL,
+  user_id          BIGINT,
+  card_update_time TIMESTAMP,
+  name_on_card     VARCHAR(100),
+  card_number      VARCHAR(500),
+  expiry_date      VARCHAR(5),
+  cvv_number       VARCHAR(500),
+  card_type        VARCHAR(100),
+  FOREIGN KEY (user_id) REFERENCES user_dladle (id),
+  UNIQUE (user_id)
+);

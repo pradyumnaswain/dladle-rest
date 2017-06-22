@@ -1,12 +1,7 @@
 package za.co.dladle.service;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.http.HttpEntity;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,7 +11,6 @@ import za.co.dladle.entity.*;
 import za.co.dladle.exception.PropertyAddException;
 import za.co.dladle.exception.PropertyAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
-import za.co.dladle.mapper.ContactTypeMapper;
 import za.co.dladle.mapper.PlaceTypeMapper;
 import za.co.dladle.model.*;
 import za.co.dladle.session.UserSession;
@@ -27,8 +21,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by jugal on 05/02/2017.
@@ -47,7 +39,7 @@ public class PropertyService {
     private FileManagementServiceCloudinaryImpl fileManagementServiceCloudinary;
 
     @Autowired
-    private UserServiceUtility userServiceUtility;
+    private UserUtility userUtility;
 
     //------------------------------------------------------------------------------------------------------------------
     //Insert Property
@@ -152,7 +144,7 @@ public class PropertyService {
                 property.setActiveJob(rs.getBoolean("active_job"));
 
                 try {
-                    Long userId = userServiceUtility.findUserIdByEmail(email);
+                    Long userId = userUtility.findUserIdByEmail(email);
                     map.put("userId", userId);
                     String sqlCount = "SELECT count FROM notification_count WHERE user_id=:userId";
 
@@ -231,7 +223,7 @@ public class PropertyService {
                 property.setActiveJob(rs.getBoolean("active_job"));
 
                 try {
-                    Long userId = userServiceUtility.findUserIdByEmail(email);
+                    Long userId = userUtility.findUserIdByEmail(email);
                     map.put("userId", userId);
                     String sqlCount = "SELECT count FROM notification_count WHERE user_id=:userId";
 

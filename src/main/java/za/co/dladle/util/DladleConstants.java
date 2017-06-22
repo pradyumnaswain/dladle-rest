@@ -44,5 +44,12 @@ public class DladleConstants {
     public static final String RATING_VIEW_DETAILS = "Rate retrieved Successfully";
     public static final String RATING_POST = "Rate posted Successfully";
     public static final String RATING_UPDATE = "Rate updated Successfully";
+    //------------------------------------------------------------------------------------------------------------------
+    //Wallet API
+    //------------------------------------------------------------------------------------------------------------------
+    public static final String CARD_ADD = "Payment Card Added Successfully";
+    public static final String CARD_UPDATE = "Payment Card Updated Successfully";
+    public static final String CARD_DELETE = "Payment Card deleted Successfully";
+    public static final String CARD_VIEW = "Payment Card retrieved Successfully";
 
 }

@@ -30,7 +30,7 @@ import java.util.Map;
  * Created by prady on 11/13/2016.
  */
 @Service
-public class UserServiceUtility {
+public class UserUtility {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

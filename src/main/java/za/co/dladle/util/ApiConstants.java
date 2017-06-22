@@ -43,6 +43,12 @@ public class ApiConstants {
     public static final String RATING_VIEW_DETAILS = "/api/rating/view/details";
     public static final String RATING_POST = "/api/rating/post";
     public static final String RATING_UPDATE = "/api/rating/update";
-
+    //------------------------------------------------------------------------------------------------------------------
+    //Wallet API
+    //------------------------------------------------------------------------------------------------------------------
+    public static final String CARD_ADD = "/api/wallet/add/card";
+    public static final String CARD_UPDATE = "/api/wallet/update/card";
+    public static final String CARD_DELETE = "/api/wallet/delete/card";
+    public static final String CARD_VIEW = "/api/wallet/view/card";
 
 }

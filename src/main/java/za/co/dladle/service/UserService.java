@@ -15,7 +15,6 @@ import za.co.dladle.mapper.ServiceTypeMapper;
 import za.co.dladle.mapper.UserTypeMapper;
 import za.co.dladle.mapper.YearsOfExperienceTypeMapper;
 import za.co.dladle.model.User;
-import za.co.dladle.model.UserType;
 import za.co.dladle.session.UserSession;
 import za.co.dladle.util.RandomUtil;
 
@@ -38,7 +37,7 @@ public class UserService {
     private ApplicationContext applicationContext;
 
     @Autowired
-    private UserServiceUtility userServiceUtility;
+    private UserUtility userUtility;
 
     @Autowired
     private NotificationServiceSendGridImpl notificationServiceSendGridImpl;
@@ -75,7 +74,7 @@ public class UserService {
     public User login(UserRequest user) throws UserNotFoundException {
         String hashedPassword = Hashing.sha512().hashString(user.getPassword(), Charset.defaultCharset()).toString();
 
-        return userServiceUtility.findUserByEmailAndPassword(user.getEmailId(), hashedPassword);
+        return userUtility.findUserByEmailAndPassword(user.getEmailId(), hashedPassword);
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -92,7 +91,7 @@ public class UserService {
     //Forgot Password
     //------------------------------------------------------------------------------------------------------------------
     public User forgotPassword(String emailId) throws UserNotFoundException {
-        return userServiceUtility.findUserByEmail(emailId);
+        return userUtility.findUserByEmail(emailId);
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -101,7 +100,7 @@ public class UserService {
     public void resetPassword(UserRequestForResetPassword user) throws OtpMismatchException {
         String emailId = user.getEmailId();
         String hashedPassword = Hashing.sha512().hashString(user.getNewPassword(), Charset.defaultCharset()).toString();
-        userServiceUtility.updateUserPasswordWithOtp(emailId, hashedPassword, user.getOtp());
+        userUtility.updateUserPasswordWithOtp(emailId, hashedPassword, user.getOtp());
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -121,7 +120,7 @@ public class UserService {
 
             if (changePassword.getNewPassword().equals(changePassword.getNewConfirmPassword())) {
                 String hashedPassword = Hashing.sha512().hashString(changePassword.getNewPassword(), Charset.defaultCharset()).toString();
-                userServiceUtility.updateUserPassword(changePassword.getEmailId(), hashedPassword);
+                userUtility.updateUserPassword(changePassword.getEmailId(), hashedPassword);
             } else {
                 throw new PasswordMismatchException("Password confirmation does not match ");
             }
@@ -141,7 +140,7 @@ public class UserService {
 //        String verification = "http://localhost:9098/verify/";
         String hashedCode = Hashing.sha1().hashString(user.getPassword(), Charset.defaultCharset()).toString();
         verification = verification + user.getEmailId() + "/" + hashedCode;
-        int rows = userServiceUtility.userRegistration(user, hashedCode);
+        int rows = userUtility.userRegistration(user, hashedCode);
 
         if (rows == 1) {
             //send mail
@@ -154,7 +153,7 @@ public class UserService {
     //------------------------------------------------------------------------------------------------------------------
     public void verify(String emailId, String verificationCode) throws IOException, UserVerificationCodeNotMatchException {
 
-        userServiceUtility.updateUserVerification(emailId, verificationCode);
+        userUtility.updateUserVerification(emailId, verificationCode);
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -162,7 +161,7 @@ public class UserService {
     //------------------------------------------------------------------------------------------------------------------
     public void sendOtp(String emailId) throws IOException {
         Integer otp = RandomUtil.generateRandom();
-        userServiceUtility.updateUserOtp(emailId, otp);
+        userUtility.updateUserOtp(emailId, otp);
         notificationServiceSendGridImpl.sendOtpMail(emailId, otp);
     }
 
@@ -237,7 +236,7 @@ public class UserService {
             String sql = " INSERT INTO user_device (device_id) VALUES (:deviceId) ON CONFLICT ON CONSTRAINT unique_device DO NOTHING ;";
             this.parameterJdbcTemplate.update(sql, map);
         } else {
-            Long userId = userServiceUtility.findUserIdByEmail(emailId);
+            Long userId = userUtility.findUserIdByEmail(emailId);
             map.put("userId", userId);
             map.put("deviceId", deviceId);
             String sql = "UPDATE user_dladle SET device_id=:deviceId WHERE id=:userId;";
@@ -247,7 +246,7 @@ public class UserService {
 
     public void invalidateDeviceId(String emailId) throws UserNotFoundException {
         Map<String, Object> map = new HashMap<>();
-        Long userId = userServiceUtility.findUserIdByEmail(emailId);
+        Long userId = userUtility.findUserIdByEmail(emailId);
         map.put("userId", userId);
         String sql = "UPDATE user_dladle SET device_id=NULL WHERE id=:userId;";
         this.parameterJdbcTemplate.update(sql, map);
@@ -255,7 +254,7 @@ public class UserService {
 
     public String uploadProfilePic(String base64Image) throws IOException, UserNotFoundException {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
-        Long userId = userServiceUtility.findUserIdByEmail(userSession.getUser().getEmailId());
+        Long userId = userUtility.findUserIdByEmail(userSession.getUser().getEmailId());
 
         String imageUrl = fileManagementService.upload(base64Image);
         Map<String, Object> map = new HashMap<>();
@@ -268,6 +267,6 @@ public class UserService {
     }
 
     public User getDetails(String emailId) throws Exception {
-        return userServiceUtility.findUserDetailsByEmail(emailId);
+        return userUtility.findUserDetailsByEmail(emailId);
     }
 }

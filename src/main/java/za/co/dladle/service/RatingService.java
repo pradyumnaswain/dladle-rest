@@ -28,7 +28,7 @@ public class RatingService {
     private NamedParameterJdbcTemplate jdbcTemplate;
 
     @Autowired
-    private UserServiceUtility utility;
+    private UserUtility utility;
 
     public RatingView viewRating() throws Exception {
 

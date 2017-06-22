@@ -29,7 +29,7 @@ import java.util.Map;
 public class LeaseService {
 
     @Autowired
-    private UserServiceUtility userServiceUtility;
+    private UserUtility userUtility;
 
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
@@ -54,7 +54,7 @@ public class LeaseService {
 
         if (userSession.getUser().getUserType().eqLANDLORD()) {
 
-            Long landlordId = userServiceUtility.findLandlordIdByEmail(userSession.getUser().getEmailId());
+            Long landlordId = userUtility.findLandlordIdByEmail(userSession.getUser().getEmailId());
             map.put("landlordId", landlordId);
             map.put("houseId", houseId);
 
@@ -116,7 +116,7 @@ public class LeaseService {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
         if (userSession.getUser().getUserType().eqTENANT()) {
-            Long tenantId = userServiceUtility.findTenantIdByEmail(userSession.getUser().getEmailId());
+            Long tenantId = userUtility.findTenantIdByEmail(userSession.getUser().getEmailId());
             map.put("tenantId", tenantId);
 
             String sql = "SELECT *,lease.id lease_id FROM lease INNER JOIN lease_tenant ON lease.id = lease_tenant.lease_id " +

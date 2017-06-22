@@ -30,7 +30,7 @@ public class PushNotificationService {
     private ApplicationContext applicationContext;
 
     @Autowired
-    private UserServiceUtility userServiceUtility;
+    private UserUtility userUtility;
 
     @Autowired
     private RatingService ratingService;
@@ -38,7 +38,7 @@ public class PushNotificationService {
     public List<Notification> listNotifications() throws UserNotFoundException {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
-        Long userId = userServiceUtility.findUserIdByEmail(userSession.getUser().getEmailId());
+        Long userId = userUtility.findUserIdByEmail(userSession.getUser().getEmailId());
         Map<String, Object> map = new HashMap<>();
         List<Notification> notificationList = new ArrayList<>();
         map.put("userId", userId);
@@ -91,8 +91,8 @@ public class PushNotificationService {
     void saveNotification(NotificationView notification) throws UserNotFoundException {
         Map<String, Object> map = new HashMap<>();
         map.put("title", notification.getTitle());
-        map.put("from", userServiceUtility.findUserIdByEmail(notification.getFrom()));
-        map.put("to", userServiceUtility.findUserIdByEmail(notification.getTo()));
+        map.put("from", userUtility.findUserIdByEmail(notification.getFrom()));
+        map.put("to", userUtility.findUserIdByEmail(notification.getTo()));
         map.put("body", notification.getBody());
         map.put("data", notification.getData());
         map.put("imageUrl", notification.getImageUrl());
