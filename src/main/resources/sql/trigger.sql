@@ -50,11 +50,20 @@ CREATE OR REPLACE FUNCTION tenant_count_update()
   RETURNS TRIGGER AS
 $BODY$
 BEGIN
-  UPDATE house
-  SET
-    tenants_count = house.tenants_count + 1
-  WHERE id = new.house_id;
-  RETURN new;
+  IF new.house_id IS NOT NULL AND old.house_id IS NULL
+  THEN
+    UPDATE house
+    SET
+      tenants_count = house.tenants_count + 1
+    WHERE id = new.house_id;
+    RETURN new;
+  ELSE
+    UPDATE house
+    SET
+      tenants_count = house.tenants_count - 1
+    WHERE id = old.house_id;
+    RETURN new;
+  END IF;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE
