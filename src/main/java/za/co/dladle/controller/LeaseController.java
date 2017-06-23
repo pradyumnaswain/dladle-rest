@@ -2,6 +2,7 @@ package za.co.dladle.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import za.co.dladle.entity.LeaseRemoveTenant;
 import za.co.dladle.entity.LeaseTerminateRequest;
 import za.co.dladle.model.LeaseLandlord;
 import za.co.dladle.model.LeaseTenant;
@@ -98,10 +99,10 @@ public class LeaseController {
     //------------------------------------------------------------------------------------------------------------------
     //Lease Terminate Request
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = ApiConstants.LEASE_LEAVE_LANDLORD, method = RequestMethod.GET)
-    public Map<String, Object> leaveLeaseByLandlord(@PathVariable String emailId) throws IOException {
+    @RequestMapping(value = ApiConstants.LEASE_LEAVE_LANDLORD, method = RequestMethod.POST)
+    public Map<String, Object> leaveLeaseByLandlord(@RequestBody LeaseRemoveTenant leaseRemoveTenant) throws IOException {
         try {
-            leaseService.leaveLease(emailId);
+            leaseService.leaveLease(leaseRemoveTenant.getEmailId());
             return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, true, DladleConstants.LEASE_LEAVE);
         } catch (Exception e) {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());

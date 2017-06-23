@@ -14,7 +14,7 @@ public class ApiConstants {
     public static final String LEASE_TERMINATE_ACCEPT = "/api/lease/terminate/accept";
     public static final String LEASE_TERMINATE_REJECT = "/api/lease/terminate/reject";
     public static final String LEASE_LEAVE = "/api/lease/leave";
-    public static final String LEASE_LEAVE_LANDLORD = "/api/lease/leave/{emailId}";
+    public static final String LEASE_LEAVE_LANDLORD = "/api/lease/remove/tenant";
     //------------------------------------------------------------------------------------------------------------------
     //Notification API
     //------------------------------------------------------------------------------------------------------------------
