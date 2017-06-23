@@ -1,3 +1,6 @@
 If you find some error related to EXTENSION HSTORE not found then do the following
 >psql -h localhost -p 5432 -U postgres dladle
 CREATE EXTENSION hstore;
+
+For Spring Profile Use in VM Option
+-Dspring.profiles.active=local during run
