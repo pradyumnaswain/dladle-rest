@@ -105,3 +105,22 @@ CREATE TABLE notification_count
 ALTER TABLE lease ADD COLUMN lease_renewal_notification_date TIMESTAMP;
 ALTER TABLE lease_tenant ADD COLUMN lease_status BOOLEAN DEFAULT FALSE ;
 ALTER TABLE lease_tenant ADD COLUMN leave_date TIMESTAMP ;
+
+ALTER TABLE service ADD COLUMN service_request_time TIMESTAMP ;
+ALTER TABLE service ADD COLUMN service_approved_time TIMESTAMP ;
+ALTER TABLE service ADD COLUMN service_start_time TIMESTAMP ;
+ALTER TABLE service ADD COLUMN service_end_time TIMESTAMP ;
+ALTER TABLE service ADD COLUMN service_status_id BIGINT ;
+ALTER TABLE service ADD COLUMN service_requester_user_id BIGINT ;
+ALTER TABLE service ADD COLUMN service_paid_user_id BIGINT ;
+ALTER TABLE service ADD COLUMN service_expected_fee_range_start FLOAT ;
+ALTER TABLE service ADD COLUMN service_expected_fee_range_end FLOAT;
+ALTER TABLE service ADD COLUMN service_fee FLOAT;
+ALTER TABLE service ADD COLUMN service_fee_paid BOOLEAN DEFAULT FALSE;
+ALTER TABLE service ADD FOREIGN KEY (service_status_id) REFERENCES service_status(id);
+ALTER TABLE service ADD FOREIGN KEY (service_requester_user_id) REFERENCES user_dladle(id);
+ALTER TABLE service ADD FOREIGN KEY (service_paid_user_id) REFERENCES user_dladle(id);
+
+
+
+

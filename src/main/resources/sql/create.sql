@@ -71,6 +71,12 @@ CREATE TABLE notification_type
   id   BIGINT PRIMARY KEY,
   name VARCHAR(100)
 );
+/*Service Status*/
+CREATE TABLE service_status
+(
+  id   BIGINT PRIMARY KEY,
+  name VARCHAR(100)
+);
 
 /* User*/
 CREATE TABLE user_dladle
@@ -208,13 +214,43 @@ CREATE TABLE lease
 /*service*/
 CREATE TABLE service
 (
-  id              BIGSERIAL PRIMARY KEY NOT NULL,
-  service_type_id BIGINT,
-  vendor_id       BIGINT,
+  id                               BIGSERIAL PRIMARY KEY NOT NULL,
+  service_type_id                  BIGINT,
+  service_request_time             TIMESTAMP,
+  service_approved_time            TIMESTAMP,
+  service_start_time               TIMESTAMP,
+  service_end_time                 TIMESTAMP,
+  service_requester_user_id        BIGINT,
+  service_paid_user_id             BIGINT,
+  service_expected_fee_range_start FLOAT,
+  service_expected_fee_range_end   FLOAT,
+  service_fee                      FLOAT,
+  service_fee_paid                 BOOLEAN DEFAULT FALSE,
+  service_status_id                BIGINT,
+  vendor_id                        BIGINT,
   FOREIGN KEY (service_type_id) REFERENCES service_type (id),
+  FOREIGN KEY (vendor_id) REFERENCES vendor (id),
+  FOREIGN KEY (service_status_id) REFERENCES service_status (id),
+  FOREIGN KEY (service_requester_user_id) REFERENCES user_dladle (id),
+  FOREIGN KEY (service_paid_user_id) REFERENCES user_dladle (id)
+);
+CREATE TABLE service_images_and_voice_notes
+(
+  id         BIGSERIAL PRIMARY KEY NOT NULL,
+  service_id BIGINT,
+  url        VARCHAR(500),
+  FOREIGN KEY (service_id) REFERENCES service (id)
+);
+CREATE TABLE vendor_work_timeline
+(
+  id                  BIGSERIAL PRIMARY KEY NOT NULL,
+  vendor_id           BIGINT,
+  current_work_status BOOLEAN DEFAULT FALSE,
+  on_work_from        TIMESTAMP,
+  on_work_to          TIMESTAMP,
+  current_location    VARCHAR(500),
   FOREIGN KEY (vendor_id) REFERENCES vendor (id)
 );
-DROP TABLE user_device;
 /*User Device*/
 CREATE TABLE user_device
 (
