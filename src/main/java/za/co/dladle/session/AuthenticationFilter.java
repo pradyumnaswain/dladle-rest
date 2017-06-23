@@ -74,6 +74,7 @@ public class AuthenticationFilter extends GenericFilterBean {
     private boolean isResestPasswordEndpoint(HttpServletRequest httpServletRequest) {
         return httpServletRequest.getRequestURI().contains("/api/user/reset-password");
     }
+
     private boolean isAddDeviceEndPoint(HttpServletRequest httpServletRequest) {
         return httpServletRequest.getRequestURI().contains("/api/user/add/deviceid");
     }

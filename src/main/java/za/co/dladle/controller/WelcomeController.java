@@ -1,12 +1,12 @@
 package za.co.dladle.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import za.co.dladle.service.FileManagementServiceCloudinaryImpl;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import za.co.dladle.service.WelcomeService;
 import za.co.dladle.util.ResponseUtil;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**

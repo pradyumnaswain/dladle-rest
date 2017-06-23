@@ -1,4 +1,4 @@
-package za.co.dladle.service;
+package za.co.dladle.thirdparty;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;

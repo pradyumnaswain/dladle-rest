@@ -10,6 +10,7 @@ import za.co.dladle.entity.RatingView;
 import za.co.dladle.entity.RatingViewDetails;
 import za.co.dladle.model.User;
 import za.co.dladle.session.UserSession;
+import za.co.dladle.util.UserUtility;
 
 import java.util.ArrayList;
 import java.util.HashMap;

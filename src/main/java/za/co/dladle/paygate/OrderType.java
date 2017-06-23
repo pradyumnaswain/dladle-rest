@@ -1,28 +1,19 @@
 
 package za.co.dladle.paygate;
 
-import za.co.dladle.paygate.*;
-import za.co.dladle.paygate.AirlineBookingDetailsType;
-import za.co.dladle.paygate.BillingDetailsType;
-import za.co.dladle.paygate.OrderItemType;
-
-import java.util.ArrayList;
-import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * <p>Java class for OrderType complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType name="OrderType">
  *   &lt;complexContent>
@@ -43,21 +34,19 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "OrderType", propOrder = {
-    "merchantOrderId",
-    "currency",
-    "amount",
-    "discount",
-    "transactionDate",
-    "billingDetails",
-    "shippingDetails",
-    "airlineBookingDetails",
-    "orderItems",
-    "locale"
+        "merchantOrderId",
+        "currency",
+        "amount",
+        "discount",
+        "transactionDate",
+        "billingDetails",
+        "shippingDetails",
+        "airlineBookingDetails",
+        "orderItems",
+        "locale"
 })
 public class OrderType {
 
@@ -90,11 +79,9 @@ public class OrderType {
 
     /**
      * Gets the value of the merchantOrderId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getMerchantOrderId() {
         return merchantOrderId;
@@ -102,11 +89,9 @@ public class OrderType {
 
     /**
      * Sets the value of the merchantOrderId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setMerchantOrderId(String value) {
         this.merchantOrderId = value;
@@ -114,11 +99,9 @@ public class OrderType {
 
     /**
      * Gets the value of the currency property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.CurrencyType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.CurrencyType }
      */
     public za.co.dladle.paygate.CurrencyType getCurrency() {
         return currency;
@@ -126,11 +109,9 @@ public class OrderType {
 
     /**
      * Sets the value of the currency property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.CurrencyType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.CurrencyType }
      */
     public void setCurrency(za.co.dladle.paygate.CurrencyType value) {
         this.currency = value;
@@ -138,7 +119,6 @@ public class OrderType {
 
     /**
      * Gets the value of the amount property.
-     * 
      */
     public int getAmount() {
         return amount;
@@ -146,7 +126,6 @@ public class OrderType {
 
     /**
      * Sets the value of the amount property.
-     * 
      */
     public void setAmount(int value) {
         this.amount = value;
@@ -154,11 +133,9 @@ public class OrderType {
 
     /**
      * Gets the value of the discount property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *     
+     *
+     * @return possible object is
+     * {@link Integer }
      */
     public Integer getDiscount() {
         return discount;
@@ -166,11 +143,9 @@ public class OrderType {
 
     /**
      * Sets the value of the discount property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link Integer }
      */
     public void setDiscount(Integer value) {
         this.discount = value;
@@ -178,11 +153,9 @@ public class OrderType {
 
     /**
      * Gets the value of the transactionDate property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @return possible object is
+     * {@link XMLGregorianCalendar }
      */
     public XMLGregorianCalendar getTransactionDate() {
         return transactionDate;
@@ -190,11 +163,9 @@ public class OrderType {
 
     /**
      * Sets the value of the transactionDate property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link XMLGregorianCalendar }
      */
     public void setTransactionDate(XMLGregorianCalendar value) {
         this.transactionDate = value;
@@ -202,11 +173,9 @@ public class OrderType {
 
     /**
      * Gets the value of the billingDetails property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.BillingDetailsType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.BillingDetailsType }
      */
     public za.co.dladle.paygate.BillingDetailsType getBillingDetails() {
         return billingDetails;
@@ -214,11 +183,9 @@ public class OrderType {
 
     /**
      * Sets the value of the billingDetails property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.BillingDetailsType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.BillingDetailsType }
      */
     public void setBillingDetails(BillingDetailsType value) {
         this.billingDetails = value;
@@ -226,11 +193,9 @@ public class OrderType {
 
     /**
      * Gets the value of the shippingDetails property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link ShippingDetailsType }
-     *     
+     *
+     * @return possible object is
+     * {@link ShippingDetailsType }
      */
     public ShippingDetailsType getShippingDetails() {
         return shippingDetails;
@@ -238,11 +203,9 @@ public class OrderType {
 
     /**
      * Sets the value of the shippingDetails property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link ShippingDetailsType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link ShippingDetailsType }
      */
     public void setShippingDetails(ShippingDetailsType value) {
         this.shippingDetails = value;
@@ -250,11 +213,9 @@ public class OrderType {
 
     /**
      * Gets the value of the airlineBookingDetails property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.AirlineBookingDetailsType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.AirlineBookingDetailsType }
      */
     public za.co.dladle.paygate.AirlineBookingDetailsType getAirlineBookingDetails() {
         return airlineBookingDetails;
@@ -262,11 +223,9 @@ public class OrderType {
 
     /**
      * Sets the value of the airlineBookingDetails property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.AirlineBookingDetailsType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.AirlineBookingDetailsType }
      */
     public void setAirlineBookingDetails(AirlineBookingDetailsType value) {
         this.airlineBookingDetails = value;
@@ -274,25 +233,23 @@ public class OrderType {
 
     /**
      * Gets the value of the orderItems property.
-     * 
+     * <p>
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the orderItems property.
-     * 
+     * <p>
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getOrderItems().add(newItem);
      * </pre>
-     * 
-     * 
+     * <p>
+     * <p>
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link za.co.dladle.paygate.OrderItemType }
-     * 
-     * 
      */
     public List<za.co.dladle.paygate.OrderItemType> getOrderItems() {
         if (orderItems == null) {
@@ -303,11 +260,9 @@ public class OrderType {
 
     /**
      * Gets the value of the locale property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getLocale() {
         return locale;
@@ -315,11 +270,9 @@ public class OrderType {
 
     /**
      * Sets the value of the locale property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setLocale(String value) {
         this.locale = value;

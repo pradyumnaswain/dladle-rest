@@ -1,27 +1,19 @@
 
 package za.co.dladle.paygate;
 
-import za.co.dladle.paygate.*;
-import za.co.dladle.paygate.CurrencyType;
-import za.co.dladle.paygate.PaymentType;
-
-import java.util.ArrayList;
-import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * <p>Java class for StatusType complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType name="StatusType">
  *   &lt;complexContent>
@@ -55,34 +47,32 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "StatusType", propOrder = {
-    "transactionId",
-    "reference",
-    "acquirerCode",
-    "statusName",
-    "statusDetail",
-    "authCode",
-    "payRequestId",
-    "vaultId",
-    "payVaultData",
-    "transactionStatusCode",
-    "transactionStatusDescription",
-    "resultCode",
-    "resultDescription",
-    "currency",
-    "amount",
-    "requestedCurrency",
-    "requestedAmount",
-    "conversionRate",
-    "riskIndicator",
-    "paymentType",
-    "billingDescriptor",
-    "dateTime",
-    "transactionType"
+        "transactionId",
+        "reference",
+        "acquirerCode",
+        "statusName",
+        "statusDetail",
+        "authCode",
+        "payRequestId",
+        "vaultId",
+        "payVaultData",
+        "transactionStatusCode",
+        "transactionStatusDescription",
+        "resultCode",
+        "resultDescription",
+        "currency",
+        "amount",
+        "requestedCurrency",
+        "requestedAmount",
+        "conversionRate",
+        "riskIndicator",
+        "paymentType",
+        "billingDescriptor",
+        "dateTime",
+        "transactionType"
 })
 public class StatusType {
 
@@ -162,11 +152,9 @@ public class StatusType {
 
     /**
      * Gets the value of the transactionId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getTransactionId() {
         return transactionId;
@@ -174,11 +162,9 @@ public class StatusType {
 
     /**
      * Sets the value of the transactionId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setTransactionId(String value) {
         this.transactionId = value;
@@ -186,11 +172,9 @@ public class StatusType {
 
     /**
      * Gets the value of the reference property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getReference() {
         return reference;
@@ -198,11 +182,9 @@ public class StatusType {
 
     /**
      * Sets the value of the reference property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setReference(String value) {
         this.reference = value;
@@ -210,11 +192,9 @@ public class StatusType {
 
     /**
      * Gets the value of the acquirerCode property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getAcquirerCode() {
         return acquirerCode;
@@ -222,11 +202,9 @@ public class StatusType {
 
     /**
      * Sets the value of the acquirerCode property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setAcquirerCode(String value) {
         this.acquirerCode = value;
@@ -234,11 +212,9 @@ public class StatusType {
 
     /**
      * Gets the value of the statusName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.StatusNameType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.StatusNameType }
      */
     public za.co.dladle.paygate.StatusNameType getStatusName() {
         return statusName;
@@ -246,11 +222,9 @@ public class StatusType {
 
     /**
      * Sets the value of the statusName property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.StatusNameType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.StatusNameType }
      */
     public void setStatusName(za.co.dladle.paygate.StatusNameType value) {
         this.statusName = value;
@@ -258,11 +232,9 @@ public class StatusType {
 
     /**
      * Gets the value of the statusDetail property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getStatusDetail() {
         return statusDetail;
@@ -270,11 +242,9 @@ public class StatusType {
 
     /**
      * Sets the value of the statusDetail property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setStatusDetail(String value) {
         this.statusDetail = value;
@@ -282,11 +252,9 @@ public class StatusType {
 
     /**
      * Gets the value of the authCode property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getAuthCode() {
         return authCode;
@@ -294,11 +262,9 @@ public class StatusType {
 
     /**
      * Sets the value of the authCode property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setAuthCode(String value) {
         this.authCode = value;
@@ -306,11 +272,9 @@ public class StatusType {
 
     /**
      * Gets the value of the payRequestId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getPayRequestId() {
         return payRequestId;
@@ -318,11 +282,9 @@ public class StatusType {
 
     /**
      * Sets the value of the payRequestId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setPayRequestId(String value) {
         this.payRequestId = value;
@@ -330,11 +292,9 @@ public class StatusType {
 
     /**
      * Gets the value of the vaultId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getVaultId() {
         return vaultId;
@@ -342,11 +302,9 @@ public class StatusType {
 
     /**
      * Sets the value of the vaultId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setVaultId(String value) {
         this.vaultId = value;
@@ -354,25 +312,23 @@ public class StatusType {
 
     /**
      * Gets the value of the payVaultData property.
-     * 
+     * <p>
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the payVaultData property.
-     * 
+     * <p>
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getPayVaultData().add(newItem);
      * </pre>
-     * 
-     * 
+     * <p>
+     * <p>
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link VaultDataType }
-     * 
-     * 
      */
     public List<VaultDataType> getPayVaultData() {
         if (payVaultData == null) {
@@ -383,11 +339,9 @@ public class StatusType {
 
     /**
      * Gets the value of the transactionStatusCode property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getTransactionStatusCode() {
         return transactionStatusCode;
@@ -395,11 +349,9 @@ public class StatusType {
 
     /**
      * Sets the value of the transactionStatusCode property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setTransactionStatusCode(String value) {
         this.transactionStatusCode = value;
@@ -407,11 +359,9 @@ public class StatusType {
 
     /**
      * Gets the value of the transactionStatusDescription property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getTransactionStatusDescription() {
         return transactionStatusDescription;
@@ -419,11 +369,9 @@ public class StatusType {
 
     /**
      * Sets the value of the transactionStatusDescription property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setTransactionStatusDescription(String value) {
         this.transactionStatusDescription = value;
@@ -431,11 +379,9 @@ public class StatusType {
 
     /**
      * Gets the value of the resultCode property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getResultCode() {
         return resultCode;
@@ -443,11 +389,9 @@ public class StatusType {
 
     /**
      * Sets the value of the resultCode property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setResultCode(String value) {
         this.resultCode = value;
@@ -455,11 +399,9 @@ public class StatusType {
 
     /**
      * Gets the value of the resultDescription property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getResultDescription() {
         return resultDescription;
@@ -467,11 +409,9 @@ public class StatusType {
 
     /**
      * Sets the value of the resultDescription property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setResultDescription(String value) {
         this.resultDescription = value;
@@ -479,11 +419,9 @@ public class StatusType {
 
     /**
      * Gets the value of the currency property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.CurrencyType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.CurrencyType }
      */
     public za.co.dladle.paygate.CurrencyType getCurrency() {
         return currency;
@@ -491,11 +429,9 @@ public class StatusType {
 
     /**
      * Sets the value of the currency property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.CurrencyType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.CurrencyType }
      */
     public void setCurrency(za.co.dladle.paygate.CurrencyType value) {
         this.currency = value;
@@ -503,11 +439,9 @@ public class StatusType {
 
     /**
      * Gets the value of the amount property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *     
+     *
+     * @return possible object is
+     * {@link Integer }
      */
     public Integer getAmount() {
         return amount;
@@ -515,11 +449,9 @@ public class StatusType {
 
     /**
      * Sets the value of the amount property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link Integer }
      */
     public void setAmount(Integer value) {
         this.amount = value;
@@ -527,11 +459,9 @@ public class StatusType {
 
     /**
      * Gets the value of the requestedCurrency property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.CurrencyType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.CurrencyType }
      */
     public za.co.dladle.paygate.CurrencyType getRequestedCurrency() {
         return requestedCurrency;
@@ -539,11 +469,9 @@ public class StatusType {
 
     /**
      * Sets the value of the requestedCurrency property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.CurrencyType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.CurrencyType }
      */
     public void setRequestedCurrency(CurrencyType value) {
         this.requestedCurrency = value;
@@ -551,11 +479,9 @@ public class StatusType {
 
     /**
      * Gets the value of the requestedAmount property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *     
+     *
+     * @return possible object is
+     * {@link Integer }
      */
     public Integer getRequestedAmount() {
         return requestedAmount;
@@ -563,11 +489,9 @@ public class StatusType {
 
     /**
      * Sets the value of the requestedAmount property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link Integer }
      */
     public void setRequestedAmount(Integer value) {
         this.requestedAmount = value;
@@ -575,11 +499,9 @@ public class StatusType {
 
     /**
      * Gets the value of the conversionRate property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getConversionRate() {
         return conversionRate;
@@ -587,11 +509,9 @@ public class StatusType {
 
     /**
      * Sets the value of the conversionRate property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setConversionRate(String value) {
         this.conversionRate = value;
@@ -599,11 +519,9 @@ public class StatusType {
 
     /**
      * Gets the value of the riskIndicator property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getRiskIndicator() {
         return riskIndicator;
@@ -611,11 +529,9 @@ public class StatusType {
 
     /**
      * Sets the value of the riskIndicator property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setRiskIndicator(String value) {
         this.riskIndicator = value;
@@ -623,11 +539,9 @@ public class StatusType {
 
     /**
      * Gets the value of the paymentType property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.PaymentType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.PaymentType }
      */
     public za.co.dladle.paygate.PaymentType getPaymentType() {
         return paymentType;
@@ -635,11 +549,9 @@ public class StatusType {
 
     /**
      * Sets the value of the paymentType property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.PaymentType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.PaymentType }
      */
     public void setPaymentType(PaymentType value) {
         this.paymentType = value;
@@ -647,11 +559,9 @@ public class StatusType {
 
     /**
      * Gets the value of the billingDescriptor property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getBillingDescriptor() {
         return billingDescriptor;
@@ -659,11 +569,9 @@ public class StatusType {
 
     /**
      * Sets the value of the billingDescriptor property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setBillingDescriptor(String value) {
         this.billingDescriptor = value;
@@ -671,11 +579,9 @@ public class StatusType {
 
     /**
      * Gets the value of the dateTime property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @return possible object is
+     * {@link XMLGregorianCalendar }
      */
     public XMLGregorianCalendar getDateTime() {
         return dateTime;
@@ -683,11 +589,9 @@ public class StatusType {
 
     /**
      * Sets the value of the dateTime property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link XMLGregorianCalendar }
      */
     public void setDateTime(XMLGregorianCalendar value) {
         this.dateTime = value;
@@ -695,11 +599,9 @@ public class StatusType {
 
     /**
      * Gets the value of the transactionType property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link TransactionType }
-     *     
+     *
+     * @return possible object is
+     * {@link TransactionType }
      */
     public TransactionType getTransactionType() {
         return transactionType;
@@ -707,11 +609,9 @@ public class StatusType {
 
     /**
      * Sets the value of the transactionType property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link TransactionType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link TransactionType }
      */
     public void setTransactionType(TransactionType value) {
         this.transactionType = value;

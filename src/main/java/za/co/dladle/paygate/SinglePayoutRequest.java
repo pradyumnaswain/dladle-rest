@@ -1,21 +1,14 @@
 
 package za.co.dladle.paygate;
 
-import za.co.dladle.paygate.*;
-import za.co.dladle.paygate.BankPayoutRequestType;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -31,14 +24,12 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cardPayoutRequest",
-    "bankPayoutRequest",
-    "walletPayoutRequest"
+        "cardPayoutRequest",
+        "bankPayoutRequest",
+        "walletPayoutRequest"
 })
 @XmlRootElement(name = "SinglePayoutRequest")
 public class SinglePayoutRequest {
@@ -52,11 +43,9 @@ public class SinglePayoutRequest {
 
     /**
      * Gets the value of the cardPayoutRequest property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.CardPayoutRequestType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.CardPayoutRequestType }
      */
     public za.co.dladle.paygate.CardPayoutRequestType getCardPayoutRequest() {
         return cardPayoutRequest;
@@ -64,11 +53,9 @@ public class SinglePayoutRequest {
 
     /**
      * Sets the value of the cardPayoutRequest property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.CardPayoutRequestType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.CardPayoutRequestType }
      */
     public void setCardPayoutRequest(za.co.dladle.paygate.CardPayoutRequestType value) {
         this.cardPayoutRequest = value;
@@ -76,11 +63,9 @@ public class SinglePayoutRequest {
 
     /**
      * Gets the value of the bankPayoutRequest property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.BankPayoutRequestType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.BankPayoutRequestType }
      */
     public za.co.dladle.paygate.BankPayoutRequestType getBankPayoutRequest() {
         return bankPayoutRequest;
@@ -88,11 +73,9 @@ public class SinglePayoutRequest {
 
     /**
      * Sets the value of the bankPayoutRequest property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.BankPayoutRequestType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.BankPayoutRequestType }
      */
     public void setBankPayoutRequest(BankPayoutRequestType value) {
         this.bankPayoutRequest = value;
@@ -100,11 +83,9 @@ public class SinglePayoutRequest {
 
     /**
      * Gets the value of the walletPayoutRequest property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link WalletPayoutRequestType }
-     *     
+     *
+     * @return possible object is
+     * {@link WalletPayoutRequestType }
      */
     public WalletPayoutRequestType getWalletPayoutRequest() {
         return walletPayoutRequest;
@@ -112,11 +93,9 @@ public class SinglePayoutRequest {
 
     /**
      * Sets the value of the walletPayoutRequest property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link WalletPayoutRequestType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link WalletPayoutRequestType }
      */
     public void setWalletPayoutRequest(WalletPayoutRequestType value) {
         this.walletPayoutRequest = value;

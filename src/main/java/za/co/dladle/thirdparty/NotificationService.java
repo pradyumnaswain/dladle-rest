@@ -1,4 +1,4 @@
-package za.co.dladle.service;
+package za.co.dladle.thirdparty;
 
 /**
  * Created by prady on 3/24/2017.

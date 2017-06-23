@@ -5,8 +5,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import za.co.dladle.entity.ContactAddRequest;
-import za.co.dladle.entity.DeleteContactRequest;
 import za.co.dladle.model.PaymentCard;
 import za.co.dladle.service.WalletService;
 import za.co.dladle.util.ApiConstants;

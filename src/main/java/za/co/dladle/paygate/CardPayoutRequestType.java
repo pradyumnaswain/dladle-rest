@@ -1,27 +1,18 @@
 
 package za.co.dladle.paygate;
 
-import za.co.dladle.paygate.KeyValueType;
-import za.co.dladle.paygate.OrderType;
-import za.co.dladle.paygate.PayGateAccountType;
-import za.co.dladle.paygate.PersonType;
-
-import java.util.ArrayList;
-import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * <p>Java class for CardPayoutRequestType complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType name="CardPayoutRequestType">
  *   &lt;complexContent>
@@ -39,18 +30,16 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "CardPayoutRequestType", propOrder = {
-    "account",
-    "customer",
-    "cardNumber",
-    "cardExpiryDate",
-    "cvv",
-    "order",
-    "userDefinedFields"
+        "account",
+        "customer",
+        "cardNumber",
+        "cardExpiryDate",
+        "cvv",
+        "order",
+        "userDefinedFields"
 })
 public class CardPayoutRequestType {
 
@@ -77,11 +66,9 @@ public class CardPayoutRequestType {
 
     /**
      * Gets the value of the account property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link PayGateAccountType }
-     *     
+     *
+     * @return possible object is
+     * {@link PayGateAccountType }
      */
     public PayGateAccountType getAccount() {
         return account;
@@ -89,11 +76,9 @@ public class CardPayoutRequestType {
 
     /**
      * Sets the value of the account property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link PayGateAccountType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link PayGateAccountType }
      */
     public void setAccount(PayGateAccountType value) {
         this.account = value;
@@ -101,11 +86,9 @@ public class CardPayoutRequestType {
 
     /**
      * Gets the value of the customer property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link PersonType }
-     *     
+     *
+     * @return possible object is
+     * {@link PersonType }
      */
     public PersonType getCustomer() {
         return customer;
@@ -113,11 +96,9 @@ public class CardPayoutRequestType {
 
     /**
      * Sets the value of the customer property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link PersonType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link PersonType }
      */
     public void setCustomer(PersonType value) {
         this.customer = value;
@@ -125,11 +106,9 @@ public class CardPayoutRequestType {
 
     /**
      * Gets the value of the cardNumber property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCardNumber() {
         return cardNumber;
@@ -137,11 +116,9 @@ public class CardPayoutRequestType {
 
     /**
      * Sets the value of the cardNumber property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCardNumber(String value) {
         this.cardNumber = value;
@@ -149,11 +126,9 @@ public class CardPayoutRequestType {
 
     /**
      * Gets the value of the cardExpiryDate property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCardExpiryDate() {
         return cardExpiryDate;
@@ -161,11 +136,9 @@ public class CardPayoutRequestType {
 
     /**
      * Sets the value of the cardExpiryDate property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCardExpiryDate(String value) {
         this.cardExpiryDate = value;
@@ -173,11 +146,9 @@ public class CardPayoutRequestType {
 
     /**
      * Gets the value of the cvv property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCVV() {
         return cvv;
@@ -185,11 +156,9 @@ public class CardPayoutRequestType {
 
     /**
      * Sets the value of the cvv property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCVV(String value) {
         this.cvv = value;
@@ -197,11 +166,9 @@ public class CardPayoutRequestType {
 
     /**
      * Gets the value of the order property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link OrderType }
-     *     
+     *
+     * @return possible object is
+     * {@link OrderType }
      */
     public OrderType getOrder() {
         return order;
@@ -209,11 +176,9 @@ public class CardPayoutRequestType {
 
     /**
      * Sets the value of the order property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link OrderType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link OrderType }
      */
     public void setOrder(OrderType value) {
         this.order = value;
@@ -221,25 +186,23 @@ public class CardPayoutRequestType {
 
     /**
      * Gets the value of the userDefinedFields property.
-     * 
+     * <p>
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the userDefinedFields property.
-     * 
+     * <p>
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getUserDefinedFields().add(newItem);
      * </pre>
-     * 
-     * 
+     * <p>
+     * <p>
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link KeyValueType }
-     * 
-     * 
      */
     public List<KeyValueType> getUserDefinedFields() {
         if (userDefinedFields == null) {

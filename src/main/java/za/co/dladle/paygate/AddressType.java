@@ -1,24 +1,18 @@
 
 package za.co.dladle.paygate;
 
-import za.co.dladle.paygate.CountryType;
-
-import java.util.ArrayList;
-import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * <p>Java class for AddressType complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType name="AddressType">
  *   &lt;complexContent>
@@ -34,16 +28,14 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "AddressType", propOrder = {
-    "addressLine",
-    "city",
-    "country",
-    "state",
-    "zip"
+        "addressLine",
+        "city",
+        "country",
+        "state",
+        "zip"
 })
 public class AddressType {
 
@@ -69,25 +61,23 @@ public class AddressType {
 
     /**
      * Gets the value of the addressLine property.
-     * 
+     * <p>
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the addressLine property.
-     * 
+     * <p>
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getAddressLine().add(newItem);
      * </pre>
-     * 
-     * 
+     * <p>
+     * <p>
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link String }
-     * 
-     * 
      */
     public List<String> getAddressLine() {
         if (addressLine == null) {
@@ -98,11 +88,9 @@ public class AddressType {
 
     /**
      * Gets the value of the city property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCity() {
         return city;
@@ -110,11 +98,9 @@ public class AddressType {
 
     /**
      * Sets the value of the city property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCity(String value) {
         this.city = value;
@@ -122,11 +108,9 @@ public class AddressType {
 
     /**
      * Gets the value of the country property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CountryType }
-     *     
+     *
+     * @return possible object is
+     * {@link CountryType }
      */
     public CountryType getCountry() {
         return country;
@@ -134,11 +118,9 @@ public class AddressType {
 
     /**
      * Sets the value of the country property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CountryType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link CountryType }
      */
     public void setCountry(CountryType value) {
         this.country = value;
@@ -146,11 +128,9 @@ public class AddressType {
 
     /**
      * Gets the value of the state property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getState() {
         return state;
@@ -158,11 +138,9 @@ public class AddressType {
 
     /**
      * Sets the value of the state property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setState(String value) {
         this.state = value;
@@ -170,11 +148,9 @@ public class AddressType {
 
     /**
      * Gets the value of the zip property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getZip() {
         return zip;
@@ -182,11 +158,9 @@ public class AddressType {
 
     /**
      * Sets the value of the zip property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setZip(String value) {
         this.zip = value;

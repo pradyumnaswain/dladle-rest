@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for StatusNameType.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
@@ -26,7 +26,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
- * 
  */
 @XmlType(name = "StatusNameType")
 @XmlEnum
@@ -61,7 +60,7 @@ public enum StatusNameType {
     }
 
     public static StatusNameType fromValue(String v) {
-        for (StatusNameType c: StatusNameType.values()) {
+        for (StatusNameType c : StatusNameType.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for TransactionType.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
@@ -22,7 +22,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
- * 
  */
 @XmlType(name = "TransactionType")
 @XmlEnum
@@ -49,7 +48,7 @@ public enum TransactionType {
     }
 
     public static TransactionType fromValue(String v) {
-        for (TransactionType c: TransactionType.values()) {
+        for (TransactionType c : TransactionType.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

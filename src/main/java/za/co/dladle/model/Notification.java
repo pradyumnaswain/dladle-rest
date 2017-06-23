@@ -1,8 +1,5 @@
 package za.co.dladle.model;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 /**
  * Created by prady on 6/7/2017.
  */

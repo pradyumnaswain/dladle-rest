@@ -2,7 +2,6 @@ package za.co.dladle.test;
 
 import org.springframework.stereotype.Component;
 import za.co.dladle.model.User;
-import za.co.dladle.model.UserType;
 
 /**
  * Created by prady on 9/3/2016.

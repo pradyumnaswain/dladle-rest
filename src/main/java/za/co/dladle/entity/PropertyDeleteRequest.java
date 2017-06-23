@@ -1,10 +1,5 @@
 package za.co.dladle.entity;
 
-import za.co.dladle.model.PlaceType;
-import za.co.dladle.model.PropertyContact;
-
-import java.util.List;
-
 /**
  * Created by Jugal on 29/01/2017.
  */

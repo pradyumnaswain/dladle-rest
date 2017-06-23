@@ -1,21 +1,17 @@
 
 package za.co.dladle.paygate;
 
-import java.math.BigDecimal;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.math.BigDecimal;
 
 
 /**
  * <p>Java class for OrderItemType complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType name="OrderItemType">
  *   &lt;complexContent>
@@ -33,18 +29,16 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "OrderItemType", propOrder = {
-    "productCode",
-    "productDescription",
-    "productCategory",
-    "productRisk",
-    "orderQuantity",
-    "unitPrice",
-    "currency"
+        "productCode",
+        "productDescription",
+        "productCategory",
+        "productRisk",
+        "orderQuantity",
+        "unitPrice",
+        "currency"
 })
 public class OrderItemType {
 
@@ -76,11 +70,9 @@ public class OrderItemType {
 
     /**
      * Gets the value of the productCode property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getProductCode() {
         return productCode;
@@ -88,11 +80,9 @@ public class OrderItemType {
 
     /**
      * Sets the value of the productCode property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setProductCode(String value) {
         this.productCode = value;
@@ -100,11 +90,9 @@ public class OrderItemType {
 
     /**
      * Gets the value of the productDescription property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getProductDescription() {
         return productDescription;
@@ -112,11 +100,9 @@ public class OrderItemType {
 
     /**
      * Sets the value of the productDescription property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setProductDescription(String value) {
         this.productDescription = value;
@@ -124,11 +110,9 @@ public class OrderItemType {
 
     /**
      * Gets the value of the productCategory property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getProductCategory() {
         return productCategory;
@@ -136,11 +120,9 @@ public class OrderItemType {
 
     /**
      * Sets the value of the productCategory property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setProductCategory(String value) {
         this.productCategory = value;
@@ -148,11 +130,9 @@ public class OrderItemType {
 
     /**
      * Gets the value of the productRisk property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getProductRisk() {
         return productRisk;
@@ -160,11 +140,9 @@ public class OrderItemType {
 
     /**
      * Sets the value of the productRisk property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setProductRisk(String value) {
         this.productRisk = value;
@@ -172,11 +150,9 @@ public class OrderItemType {
 
     /**
      * Gets the value of the orderQuantity property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Long }
-     *     
+     *
+     * @return possible object is
+     * {@link Long }
      */
     public Long getOrderQuantity() {
         return orderQuantity;
@@ -184,11 +160,9 @@ public class OrderItemType {
 
     /**
      * Sets the value of the orderQuantity property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Long }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link Long }
      */
     public void setOrderQuantity(Long value) {
         this.orderQuantity = value;
@@ -196,11 +170,9 @@ public class OrderItemType {
 
     /**
      * Gets the value of the unitPrice property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigDecimal }
-     *     
+     *
+     * @return possible object is
+     * {@link BigDecimal }
      */
     public BigDecimal getUnitPrice() {
         return unitPrice;
@@ -208,11 +180,9 @@ public class OrderItemType {
 
     /**
      * Sets the value of the unitPrice property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigDecimal }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link BigDecimal }
      */
     public void setUnitPrice(BigDecimal value) {
         this.unitPrice = value;
@@ -220,11 +190,9 @@ public class OrderItemType {
 
     /**
      * Gets the value of the currency property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCurrency() {
         return currency;
@@ -232,11 +200,9 @@ public class OrderItemType {
 
     /**
      * Sets the value of the currency property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCurrency(String value) {
         this.currency = value;

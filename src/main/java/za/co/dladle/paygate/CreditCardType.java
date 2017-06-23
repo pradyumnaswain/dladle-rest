@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for CreditCardType.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
@@ -22,7 +22,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
- * 
  */
 @XmlType(name = "CreditCardType")
 @XmlEnum
@@ -49,7 +48,7 @@ public enum CreditCardType {
     }
 
     public static CreditCardType fromValue(String v) {
-        for (CreditCardType c: CreditCardType.values()) {
+        for (CreditCardType c : CreditCardType.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

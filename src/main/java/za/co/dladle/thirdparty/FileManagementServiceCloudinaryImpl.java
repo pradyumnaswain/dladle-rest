@@ -1,4 +1,4 @@
-package za.co.dladle.service;
+package za.co.dladle.thirdparty;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;

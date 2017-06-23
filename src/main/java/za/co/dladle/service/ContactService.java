@@ -6,12 +6,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import za.co.dladle.entity.ContactAddRequest;
 import za.co.dladle.entity.DeleteContactRequest;
-import za.co.dladle.entity.PropertyContactView;
 import za.co.dladle.entity.TenantContactView;
 import za.co.dladle.exception.PropertyAddException;
 import za.co.dladle.mapper.ContactTypeMapper;
 import za.co.dladle.model.Contact;
-import za.co.dladle.model.Property;
 import za.co.dladle.session.UserSession;
 
 import java.util.ArrayList;

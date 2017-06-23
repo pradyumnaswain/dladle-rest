@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.model.PaymentCard;
 import za.co.dladle.session.UserSession;
+import za.co.dladle.util.UserUtility;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;

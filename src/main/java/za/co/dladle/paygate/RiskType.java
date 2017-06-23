@@ -1,24 +1,18 @@
 
 package za.co.dladle.paygate;
 
-import za.co.dladle.paygate.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * <p>Java class for RiskType complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType name="RiskType">
  *   &lt;complexContent>
@@ -38,20 +32,18 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "RiskType", propOrder = {
-    "accountNumber",
-    "sessionId",
-    "ipV4Address",
-    "ipV6Address",
-    "userId",
-    "machineId",
-    "userProfile",
-    "consumerWatch",
-    "browser"
+        "accountNumber",
+        "sessionId",
+        "ipV4Address",
+        "ipV6Address",
+        "userId",
+        "machineId",
+        "userProfile",
+        "consumerWatch",
+        "browser"
 })
 public class RiskType {
 
@@ -90,11 +82,9 @@ public class RiskType {
 
     /**
      * Gets the value of the accountNumber property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getAccountNumber() {
         return accountNumber;
@@ -102,11 +92,9 @@ public class RiskType {
 
     /**
      * Sets the value of the accountNumber property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setAccountNumber(String value) {
         this.accountNumber = value;
@@ -114,11 +102,9 @@ public class RiskType {
 
     /**
      * Gets the value of the sessionId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getSessionId() {
         return sessionId;
@@ -126,11 +112,9 @@ public class RiskType {
 
     /**
      * Sets the value of the sessionId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setSessionId(String value) {
         this.sessionId = value;
@@ -138,11 +122,9 @@ public class RiskType {
 
     /**
      * Gets the value of the ipV4Address property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getIpV4Address() {
         return ipV4Address;
@@ -150,11 +132,9 @@ public class RiskType {
 
     /**
      * Sets the value of the ipV4Address property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setIpV4Address(String value) {
         this.ipV4Address = value;
@@ -162,11 +142,9 @@ public class RiskType {
 
     /**
      * Gets the value of the ipV6Address property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getIpV6Address() {
         return ipV6Address;
@@ -174,11 +152,9 @@ public class RiskType {
 
     /**
      * Sets the value of the ipV6Address property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setIpV6Address(String value) {
         this.ipV6Address = value;
@@ -186,11 +162,9 @@ public class RiskType {
 
     /**
      * Gets the value of the userId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getUserId() {
         return userId;
@@ -198,11 +172,9 @@ public class RiskType {
 
     /**
      * Sets the value of the userId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setUserId(String value) {
         this.userId = value;
@@ -210,11 +182,9 @@ public class RiskType {
 
     /**
      * Gets the value of the machineId property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getMachineId() {
         return machineId;
@@ -222,11 +192,9 @@ public class RiskType {
 
     /**
      * Sets the value of the machineId property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setMachineId(String value) {
         this.machineId = value;
@@ -234,25 +202,23 @@ public class RiskType {
 
     /**
      * Gets the value of the userProfile property.
-     * 
+     * <p>
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the userProfile property.
-     * 
+     * <p>
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getUserProfile().add(newItem);
      * </pre>
-     * 
-     * 
+     * <p>
+     * <p>
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link String }
-     * 
-     * 
      */
     public List<String> getUserProfile() {
         if (userProfile == null) {
@@ -263,11 +229,9 @@ public class RiskType {
 
     /**
      * Gets the value of the consumerWatch property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
+     *
+     * @return possible object is
+     * {@link Boolean }
      */
     public Boolean isConsumerWatch() {
         return consumerWatch;
@@ -275,11 +239,9 @@ public class RiskType {
 
     /**
      * Sets the value of the consumerWatch property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link Boolean }
      */
     public void setConsumerWatch(Boolean value) {
         this.consumerWatch = value;
@@ -287,11 +249,9 @@ public class RiskType {
 
     /**
      * Gets the value of the browser property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.BrowserType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.BrowserType }
      */
     public za.co.dladle.paygate.BrowserType getBrowser() {
         return browser;
@@ -299,11 +259,9 @@ public class RiskType {
 
     /**
      * Sets the value of the browser property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.BrowserType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.BrowserType }
      */
     public void setBrowser(za.co.dladle.paygate.BrowserType value) {
         this.browser = value;

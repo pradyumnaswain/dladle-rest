@@ -1,22 +1,16 @@
 
 package za.co.dladle.paygate;
 
-import za.co.dladle.paygate.*;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
  * <p>Java class for ThreeDSecureType complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType name="ThreeDSecureType">
  *   &lt;complexContent>
@@ -32,16 +26,14 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ThreeDSecureType", propOrder = {
-    "enrolled",
-    "paresstatus",
-    "eci",
-    "xid",
-    "cavv"
+        "enrolled",
+        "paresstatus",
+        "eci",
+        "xid",
+        "cavv"
 })
 public class ThreeDSecureType {
 
@@ -66,11 +58,9 @@ public class ThreeDSecureType {
 
     /**
      * Gets the value of the enrolled property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link YNU }
-     *     
+     *
+     * @return possible object is
+     * {@link YNU }
      */
     public YNU getEnrolled() {
         return enrolled;
@@ -78,11 +68,9 @@ public class ThreeDSecureType {
 
     /**
      * Sets the value of the enrolled property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link YNU }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link YNU }
      */
     public void setEnrolled(YNU value) {
         this.enrolled = value;
@@ -90,11 +78,9 @@ public class ThreeDSecureType {
 
     /**
      * Gets the value of the paresstatus property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.YNUA }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.YNUA }
      */
     public za.co.dladle.paygate.YNUA getParesstatus() {
         return paresstatus;
@@ -102,11 +88,9 @@ public class ThreeDSecureType {
 
     /**
      * Sets the value of the paresstatus property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.YNUA }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.YNUA }
      */
     public void setParesstatus(za.co.dladle.paygate.YNUA value) {
         this.paresstatus = value;
@@ -114,11 +98,9 @@ public class ThreeDSecureType {
 
     /**
      * Gets the value of the eci property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getEci() {
         return eci;
@@ -126,11 +108,9 @@ public class ThreeDSecureType {
 
     /**
      * Sets the value of the eci property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setEci(String value) {
         this.eci = value;
@@ -138,11 +118,9 @@ public class ThreeDSecureType {
 
     /**
      * Gets the value of the xid property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getXid() {
         return xid;
@@ -150,11 +128,9 @@ public class ThreeDSecureType {
 
     /**
      * Sets the value of the xid property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setXid(String value) {
         this.xid = value;
@@ -162,11 +138,9 @@ public class ThreeDSecureType {
 
     /**
      * Gets the value of the cavv property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCavv() {
         return cavv;
@@ -174,11 +148,9 @@ public class ThreeDSecureType {
 
     /**
      * Sets the value of the cavv property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCavv(String value) {
         this.cavv = value;

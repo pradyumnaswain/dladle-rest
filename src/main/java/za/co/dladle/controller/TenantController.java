@@ -1,11 +1,16 @@
 package za.co.dladle.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import za.co.dladle.entity.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import za.co.dladle.entity.ContactAddRequest;
+import za.co.dladle.entity.DeleteContactRequest;
+import za.co.dladle.entity.PropertyRequest;
+import za.co.dladle.entity.TenantContactView;
 import za.co.dladle.service.ContactService;
 import za.co.dladle.service.PropertyAssignmentService;
-import za.co.dladle.service.PropertyService;
 import za.co.dladle.util.ResponseUtil;
 
 import java.io.IOException;

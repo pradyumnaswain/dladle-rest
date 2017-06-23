@@ -1,20 +1,16 @@
 
 package za.co.dladle.paygate;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
  * <p>Java class for RedirectRequestType complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType name="RedirectRequestType">
  *   &lt;complexContent>
@@ -28,14 +24,12 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "RedirectRequestType", propOrder = {
-    "notifyUrl",
-    "returnUrl",
-    "target"
+        "notifyUrl",
+        "returnUrl",
+        "target"
 })
 public class RedirectRequestType {
 
@@ -54,11 +48,9 @@ public class RedirectRequestType {
 
     /**
      * Gets the value of the notifyUrl property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getNotifyUrl() {
         return notifyUrl;
@@ -66,11 +58,9 @@ public class RedirectRequestType {
 
     /**
      * Sets the value of the notifyUrl property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setNotifyUrl(String value) {
         this.notifyUrl = value;
@@ -78,11 +68,9 @@ public class RedirectRequestType {
 
     /**
      * Gets the value of the returnUrl property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getReturnUrl() {
         return returnUrl;
@@ -90,11 +78,9 @@ public class RedirectRequestType {
 
     /**
      * Sets the value of the returnUrl property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setReturnUrl(String value) {
         this.returnUrl = value;
@@ -102,11 +88,9 @@ public class RedirectRequestType {
 
     /**
      * Gets the value of the target property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getTarget() {
         return target;
@@ -114,11 +98,9 @@ public class RedirectRequestType {
 
     /**
      * Sets the value of the target property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setTarget(String value) {
         this.target = value;

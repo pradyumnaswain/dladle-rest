@@ -10,6 +10,7 @@ import za.co.dladle.mapper.NotificationTypeMapper;
 import za.co.dladle.model.Notification;
 import za.co.dladle.model.NotificationType;
 import za.co.dladle.session.UserSession;
+import za.co.dladle.util.UserUtility;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -1,22 +1,16 @@
 
 package za.co.dladle.paygate;
 
-import za.co.dladle.paygate.VaultKeyType;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
  * <p>Java class for VaultDataType complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType name="VaultDataType">
  *   &lt;complexContent>
@@ -29,13 +23,11 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "VaultDataType", propOrder = {
-    "name",
-    "value"
+        "name",
+        "value"
 })
 public class VaultDataType {
 
@@ -49,11 +41,9 @@ public class VaultDataType {
 
     /**
      * Gets the value of the name property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link VaultKeyType }
-     *     
+     *
+     * @return possible object is
+     * {@link VaultKeyType }
      */
     public VaultKeyType getName() {
         return name;
@@ -61,11 +51,9 @@ public class VaultDataType {
 
     /**
      * Sets the value of the name property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link VaultKeyType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link VaultKeyType }
      */
     public void setName(VaultKeyType value) {
         this.name = value;
@@ -73,11 +61,9 @@ public class VaultDataType {
 
     /**
      * Gets the value of the value property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getValue() {
         return value;
@@ -85,11 +71,9 @@ public class VaultDataType {
 
     /**
      * Sets the value of the value property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setValue(String value) {
         this.value = value;

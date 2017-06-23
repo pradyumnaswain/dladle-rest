@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {ConversionFailedException.class, NumberFormatException.class})
-    protected ResponseEntity<Object> handleConflictException(RuntimeException re, WebRequest wr){
+    protected ResponseEntity<Object> handleConflictException(RuntimeException re, WebRequest wr) {
         String bodyOfResponse = "Please provide correct parameters";
         return handleExceptionInternal(re, bodyOfResponse,
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, wr);

@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import za.co.dladle.entity.*;
@@ -15,8 +18,12 @@ import za.co.dladle.mapper.ServiceTypeMapper;
 import za.co.dladle.mapper.UserTypeMapper;
 import za.co.dladle.mapper.YearsOfExperienceTypeMapper;
 import za.co.dladle.model.User;
+import za.co.dladle.model.UserType;
 import za.co.dladle.session.UserSession;
+import za.co.dladle.thirdparty.FileManagementServiceCloudinaryImpl;
+import za.co.dladle.thirdparty.NotificationServiceSendGridImpl;
 import za.co.dladle.util.RandomUtil;
+import za.co.dladle.util.UserUtility;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -38,6 +45,9 @@ public class UserService {
 
     @Autowired
     private UserUtility userUtility;
+
+    @Autowired
+    private RatingService ratingService;
 
     @Autowired
     private NotificationServiceSendGridImpl notificationServiceSendGridImpl;
@@ -74,7 +84,21 @@ public class UserService {
     public User login(UserRequest user) throws UserNotFoundException {
         String hashedPassword = Hashing.sha512().hashString(user.getPassword(), Charset.defaultCharset()).toString();
 
-        return userUtility.findUserByEmailAndPassword(user.getEmailId(), hashedPassword);
+        try {
+            String sql = "SELECT * FROM user_dladle INNER JOIN user_type ON user_dladle.user_type_id = user_type.id WHERE emailid=? AND password=?";
+            return this.jdbcTemplate.queryForObject(sql, new Object[]{user.getEmailId().toLowerCase(), hashedPassword}, (rs, rowNum) ->
+                    new User(rs.getString("emailId"),
+                            null,
+                            rs.getBoolean("verified"),
+                            UserType.valueOf(rs.getString("name").toUpperCase()),
+                            rs.getString("first_name"),
+                            rs.getString("last_name"),
+                            rs.getString("id_number"),
+                            rs.getString("cell_number"),
+                            rs.getString("profile_picture")));
+        } catch (EmptyResultDataAccessException e) {
+            throw new UserNotFoundException("Username or password is wrong. Please check and login again");
+        }
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -100,7 +124,20 @@ public class UserService {
     public void resetPassword(UserRequestForResetPassword user) throws OtpMismatchException {
         String emailId = user.getEmailId();
         String hashedPassword = Hashing.sha512().hashString(user.getNewPassword(), Charset.defaultCharset()).toString();
-        userUtility.updateUserPasswordWithOtp(emailId, hashedPassword, user.getOtp());
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("otp", user.getOtp());
+        map.put("emailId", emailId.toLowerCase());
+        map.put("password", hashedPassword);
+
+        String sql = " UPDATE user_dladle SET password=:password WHERE emailid=:emailId AND otp=:otp";
+        int rows = this.parameterJdbcTemplate.update(sql, map);
+        if (rows == 1) {
+            String sqlUpdate = " UPDATE user_dladle SET otp=NULL WHERE emailid=:emailId AND otp=:otp AND password=:password";
+            this.parameterJdbcTemplate.update(sqlUpdate, map);
+        } else {
+            throw new OtpMismatchException("OTP doesn't match");
+        }
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -111,7 +148,7 @@ public class UserService {
         //String emailId = userSession.getUser().getEmailId();
         Map<String, Object> map = new HashMap<>();
 
-        map.put("emailId", changePassword.getEmailId());
+        map.put("emailId", changePassword.getEmailId().toLowerCase());
 
         String sql = "SELECT password FROM user_dladle WHERE emailid=:emailId";
         String oldPassword = this.parameterJdbcTemplate.queryForObject(sql, map, String.class);
@@ -120,7 +157,11 @@ public class UserService {
 
             if (changePassword.getNewPassword().equals(changePassword.getNewConfirmPassword())) {
                 String hashedPassword = Hashing.sha512().hashString(changePassword.getNewPassword(), Charset.defaultCharset()).toString();
-                userUtility.updateUserPassword(changePassword.getEmailId(), hashedPassword);
+
+                map.put("password", hashedPassword);
+
+                String sql1 = " UPDATE user_dladle SET password=:password WHERE emailid=:emailId";
+                this.parameterJdbcTemplate.update(sql1, map);
             } else {
                 throw new PasswordMismatchException("Password confirmation does not match ");
             }
@@ -139,7 +180,7 @@ public class UserService {
         String hashedCode = Hashing.sha1().hashString(user.getPassword(), Charset.defaultCharset()).toString();
         String verificationUrl = verificationLink + user.getEmailId() + "/" + hashedCode;
 
-        int rows = userUtility.userRegistration(user, hashedCode);
+        int rows = userRegistration(user, hashedCode);
 
         if (rows == 1) {
             //send mail
@@ -152,7 +193,19 @@ public class UserService {
     //------------------------------------------------------------------------------------------------------------------
     public void verify(String emailId, String verificationCode) throws IOException, UserVerificationCodeNotMatchException {
 
-        userUtility.updateUserVerification(emailId, verificationCode);
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
+                .addValue("emailId", emailId.toLowerCase())
+                .addValue("verifyCode", verificationCode);
+        try {
+            String sql = "SELECT id FROM user_dladle WHERE emailid=:emailId AND verification_code=:verifyCode";
+            this.parameterJdbcTemplate.queryForObject(sql, mapSqlParameterSource, (rs, rowNum) -> rs.getLong("id"));
+
+            String sqlUpdate = "UPDATE user_dladle SET verified=TRUE WHERE emailid=:emailId AND verification_code=:verifyCode";
+            this.parameterJdbcTemplate.update(sqlUpdate, mapSqlParameterSource);
+            notificationServiceSendGridImpl.sendWelcomeMail(emailId);
+        } catch (Exception e) {
+            throw new UserVerificationCodeNotMatchException("Either EmailId or Verification Code for User doesn't match");
+        }
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -160,7 +213,13 @@ public class UserService {
     //------------------------------------------------------------------------------------------------------------------
     public void sendOtp(String emailId) throws IOException {
         Integer otp = RandomUtil.generateRandom();
-        userUtility.updateUserOtp(emailId, otp);
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("otp", otp);
+        map.put("emailId", emailId.toLowerCase());
+
+        String sql = " UPDATE user_dladle SET otp=:otp WHERE emailid=:emailId";
+        this.parameterJdbcTemplate.update(sql, map);
         notificationServiceSendGridImpl.sendOtpMail(emailId, otp);
     }
 
@@ -266,6 +325,72 @@ public class UserService {
     }
 
     public User getDetails(String emailId) throws Exception {
-        return userUtility.findUserDetailsByEmail(emailId);
+        List<RatingViewDetails> ratingViewDetails = ratingService.viewRatingDetails(emailId);
+        String sql = "SELECT * FROM user_dladle INNER JOIN user_type ON user_dladle.user_type_id = user_type.id WHERE emailid=?";
+        return this.jdbcTemplate.queryForObject(sql, new Object[]{emailId.toLowerCase()}, (rs, rowNum) ->
+                new User(rs.getString("emailId"),
+                        rs.getBoolean("verified"),
+                        UserType.valueOf(rs.getString("name").toUpperCase()),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("id_number"),
+                        rs.getString("cell_number"),
+                        rs.getString("profile_picture"),
+                        ratingViewDetails));
     }
+
+    @javax.transaction.Transactional
+    int userRegistration(UserRegisterRequest user, String hashedCode) throws UseAlreadyExistsException {
+
+        String hashedPassword = Hashing.sha512().hashString(user.getPassword(), Charset.defaultCharset()).toString();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("emailId", user.getEmailId().toLowerCase());
+
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
+                .addValue("emailId", user.getEmailId())
+                .addValue("password", hashedPassword)
+                .addValue("userType", UserTypeMapper.getUserType(user.getUserType()))
+                .addValue("verified", false)
+                .addValue("verifyCode", hashedCode)
+                .addValue("firstName", user.getFirstName())
+                .addValue("lastName", user.getLastName())
+                .addValue("idNumber", user.getIdentityNumber());
+
+
+        String countSql = "SELECT COUNT(emailid) FROM user_dladle WHERE emailid=:emailId";
+
+        Integer countEmail = this.parameterJdbcTemplate.queryForObject(countSql, map, Integer.class);
+
+        int rowsUpdated = 0;
+
+        if (countEmail == 0) {
+
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+
+            String UserSql = "INSERT INTO user_dladle (emailid, password, user_type_id, verified,verification_code,first_name,last_name,id_number) VALUES (:emailId,:password,:userType,:verified,:verifyCode,:firstName,:lastName,:idNumber)";
+
+            this.parameterJdbcTemplate.update(UserSql, mapSqlParameterSource, keyHolder, new String[]{"id"});
+
+            System.out.println(keyHolder.getKey());
+            map.put("userId", keyHolder.getKey());
+
+            if (user.getUserType().equals(UserType.LANDLORD)) {
+                String LandlordSql = "INSERT INTO landlord(user_id) VALUES (:userId)";
+                rowsUpdated = this.parameterJdbcTemplate.update(LandlordSql, map);
+            }
+            if (user.getUserType().equals(UserType.TENANT)) {
+                String TenantSql = "INSERT INTO tenant (user_id) VALUES (:userId)";
+                rowsUpdated = this.parameterJdbcTemplate.update(TenantSql, map);
+            }
+            if (user.getUserType().equals(UserType.VENDOR)) {
+                String VendorSql = "INSERT INTO vendor (user_id) VALUES (:userId)";
+                rowsUpdated = this.parameterJdbcTemplate.update(VendorSql, map);
+            }
+            return rowsUpdated;
+        } else {
+            throw new UseAlreadyExistsException("User already Exists");
+        }
+    }
+
 }

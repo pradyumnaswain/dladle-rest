@@ -1,7 +1,5 @@
 package za.co.dladle.entity;
 
-import za.co.dladle.model.ContactType;
-
 /**
  * Created by prady on 6/1/2017.
  */

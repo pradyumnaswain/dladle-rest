@@ -1,4 +1,4 @@
-package za.co.dladle.service;
+package za.co.dladle.thirdparty;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -8,6 +8,7 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import za.co.dladle.service.PropertyService;
 
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;

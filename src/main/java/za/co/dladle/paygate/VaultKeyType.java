@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for VaultKeyType.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
@@ -19,7 +19,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
- * 
  */
 @XmlType(name = "VaultKeyType")
 @XmlEnum
@@ -40,7 +39,7 @@ public enum VaultKeyType {
     }
 
     public static VaultKeyType fromValue(String v) {
-        for (VaultKeyType c: VaultKeyType.values()) {
+        for (VaultKeyType c : VaultKeyType.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

@@ -1,22 +1,14 @@
 
 package za.co.dladle.paygate;
 
-import za.co.dladle.paygate.*;
-import za.co.dladle.paygate.RefundRequestType;
-import za.co.dladle.paygate.SettleRequestType;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -33,15 +25,13 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "queryRequest",
-    "settlementRequest",
-    "refundRequest",
-    "voidRequest"
+        "queryRequest",
+        "settlementRequest",
+        "refundRequest",
+        "voidRequest"
 })
 @XmlRootElement(name = "SingleFollowUpRequest")
 public class SingleFollowUpRequest {
@@ -57,11 +47,9 @@ public class SingleFollowUpRequest {
 
     /**
      * Gets the value of the queryRequest property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.QueryRequestType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.QueryRequestType }
      */
     public za.co.dladle.paygate.QueryRequestType getQueryRequest() {
         return queryRequest;
@@ -69,11 +57,9 @@ public class SingleFollowUpRequest {
 
     /**
      * Sets the value of the queryRequest property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.QueryRequestType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.QueryRequestType }
      */
     public void setQueryRequest(za.co.dladle.paygate.QueryRequestType value) {
         this.queryRequest = value;
@@ -81,11 +67,9 @@ public class SingleFollowUpRequest {
 
     /**
      * Gets the value of the settlementRequest property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.SettleRequestType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.SettleRequestType }
      */
     public za.co.dladle.paygate.SettleRequestType getSettlementRequest() {
         return settlementRequest;
@@ -93,11 +77,9 @@ public class SingleFollowUpRequest {
 
     /**
      * Sets the value of the settlementRequest property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.SettleRequestType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.SettleRequestType }
      */
     public void setSettlementRequest(SettleRequestType value) {
         this.settlementRequest = value;
@@ -105,11 +87,9 @@ public class SingleFollowUpRequest {
 
     /**
      * Gets the value of the refundRequest property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.RefundRequestType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.RefundRequestType }
      */
     public za.co.dladle.paygate.RefundRequestType getRefundRequest() {
         return refundRequest;
@@ -117,11 +97,9 @@ public class SingleFollowUpRequest {
 
     /**
      * Sets the value of the refundRequest property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.RefundRequestType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.RefundRequestType }
      */
     public void setRefundRequest(RefundRequestType value) {
         this.refundRequest = value;
@@ -129,11 +107,9 @@ public class SingleFollowUpRequest {
 
     /**
      * Gets the value of the voidRequest property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link VoidRequestType }
-     *     
+     *
+     * @return possible object is
+     * {@link VoidRequestType }
      */
     public VoidRequestType getVoidRequest() {
         return voidRequest;
@@ -141,11 +117,9 @@ public class SingleFollowUpRequest {
 
     /**
      * Sets the value of the voidRequest property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link VoidRequestType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link VoidRequestType }
      */
     public void setVoidRequest(VoidRequestType value) {
         this.voidRequest = value;

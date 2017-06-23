@@ -50,6 +50,7 @@ public class PropertyContactService {
             throw new PropertyAddException("Property contact can only be added by Landlord");
         }
     }
+
     public Boolean deleteContact(DeleteContactRequest deleteContactRequest) throws PropertyAddException {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 

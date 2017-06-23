@@ -9,13 +9,15 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import za.co.dladle.entity.*;
-import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.model.LeaseLandlord;
 import za.co.dladle.model.LeaseTenant;
 import za.co.dladle.model.NotificationType;
 import za.co.dladle.model.User;
 import za.co.dladle.session.UserSession;
+import za.co.dladle.thirdparty.AndroidPushNotificationsService;
+import za.co.dladle.thirdparty.NotificationServiceSendGridImpl;
 import za.co.dladle.util.NotificationConstants;
+import za.co.dladle.util.UserUtility;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

@@ -1,6 +1,5 @@
 package za.co.dladle.model;
 
-import io.swagger.models.auth.In;
 import za.co.dladle.entity.LandlordView;
 import za.co.dladle.entity.PropertyContactView;
 import za.co.dladle.entity.TenantView;

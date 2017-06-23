@@ -1,6 +1,5 @@
 package za.co.dladle.model;
 
-import za.co.dladle.entity.PropertyView;
 import za.co.dladle.entity.TenantLeaseView;
 
 import java.util.Date;

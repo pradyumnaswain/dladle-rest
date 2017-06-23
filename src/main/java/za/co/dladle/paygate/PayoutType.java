@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for PayoutType.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
@@ -20,7 +20,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
- * 
  */
 @XmlType(name = "PayoutType")
 @XmlEnum
@@ -43,7 +42,7 @@ public enum PayoutType {
     }
 
     public static PayoutType fromValue(String v) {
-        for (PayoutType c: PayoutType.values()) {
+        for (PayoutType c : PayoutType.values()) {
             if (c.value.equals(v)) {
                 return c;
             }

@@ -1,28 +1,18 @@
 
 package za.co.dladle.paygate;
 
-import za.co.dladle.paygate.*;
-import za.co.dladle.paygate.CountryType;
-import za.co.dladle.paygate.KeyValueType;
-import za.co.dladle.paygate.OrderType;
-import za.co.dladle.paygate.PersonType;
-
-import java.util.ArrayList;
-import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * <p>Java class for WalletPayoutRequestType complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType name="WalletPayoutRequestType">
  *   &lt;complexContent>
@@ -41,19 +31,17 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "WalletPayoutRequestType", propOrder = {
-    "account",
-    "customer",
-    "accountHolder",
-    "accountNumber",
-    "walletType",
-    "country",
-    "order",
-    "userDefinedFields"
+        "account",
+        "customer",
+        "accountHolder",
+        "accountNumber",
+        "walletType",
+        "country",
+        "order",
+        "userDefinedFields"
 })
 public class WalletPayoutRequestType {
 
@@ -83,11 +71,9 @@ public class WalletPayoutRequestType {
 
     /**
      * Gets the value of the account property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.PayGateAccountType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.PayGateAccountType }
      */
     public za.co.dladle.paygate.PayGateAccountType getAccount() {
         return account;
@@ -95,11 +81,9 @@ public class WalletPayoutRequestType {
 
     /**
      * Sets the value of the account property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.PayGateAccountType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.PayGateAccountType }
      */
     public void setAccount(za.co.dladle.paygate.PayGateAccountType value) {
         this.account = value;
@@ -107,11 +91,9 @@ public class WalletPayoutRequestType {
 
     /**
      * Gets the value of the customer property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.PersonType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.PersonType }
      */
     public za.co.dladle.paygate.PersonType getCustomer() {
         return customer;
@@ -119,11 +101,9 @@ public class WalletPayoutRequestType {
 
     /**
      * Sets the value of the customer property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.PersonType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.PersonType }
      */
     public void setCustomer(PersonType value) {
         this.customer = value;
@@ -131,11 +111,9 @@ public class WalletPayoutRequestType {
 
     /**
      * Gets the value of the accountHolder property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getAccountHolder() {
         return accountHolder;
@@ -143,11 +121,9 @@ public class WalletPayoutRequestType {
 
     /**
      * Sets the value of the accountHolder property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setAccountHolder(String value) {
         this.accountHolder = value;
@@ -155,11 +131,9 @@ public class WalletPayoutRequestType {
 
     /**
      * Gets the value of the accountNumber property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getAccountNumber() {
         return accountNumber;
@@ -167,11 +141,9 @@ public class WalletPayoutRequestType {
 
     /**
      * Sets the value of the accountNumber property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setAccountNumber(String value) {
         this.accountNumber = value;
@@ -179,11 +151,9 @@ public class WalletPayoutRequestType {
 
     /**
      * Gets the value of the walletType property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getWalletType() {
         return walletType;
@@ -191,11 +161,9 @@ public class WalletPayoutRequestType {
 
     /**
      * Sets the value of the walletType property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setWalletType(String value) {
         this.walletType = value;
@@ -203,11 +171,9 @@ public class WalletPayoutRequestType {
 
     /**
      * Gets the value of the country property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.CountryType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.CountryType }
      */
     public za.co.dladle.paygate.CountryType getCountry() {
         return country;
@@ -215,11 +181,9 @@ public class WalletPayoutRequestType {
 
     /**
      * Sets the value of the country property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.CountryType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.CountryType }
      */
     public void setCountry(CountryType value) {
         this.country = value;
@@ -227,11 +191,9 @@ public class WalletPayoutRequestType {
 
     /**
      * Gets the value of the order property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.OrderType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.OrderType }
      */
     public za.co.dladle.paygate.OrderType getOrder() {
         return order;
@@ -239,11 +201,9 @@ public class WalletPayoutRequestType {
 
     /**
      * Sets the value of the order property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.OrderType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.OrderType }
      */
     public void setOrder(OrderType value) {
         this.order = value;
@@ -251,25 +211,23 @@ public class WalletPayoutRequestType {
 
     /**
      * Gets the value of the userDefinedFields property.
-     * 
+     * <p>
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
      * This is why there is not a <CODE>set</CODE> method for the userDefinedFields property.
-     * 
+     * <p>
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
      *    getUserDefinedFields().add(newItem);
      * </pre>
-     * 
-     * 
+     * <p>
+     * <p>
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link za.co.dladle.paygate.KeyValueType }
-     * 
-     * 
      */
     public List<za.co.dladle.paygate.KeyValueType> getUserDefinedFields() {
         if (userDefinedFields == null) {

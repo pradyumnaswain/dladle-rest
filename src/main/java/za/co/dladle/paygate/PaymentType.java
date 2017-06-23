@@ -1,22 +1,16 @@
 
 package za.co.dladle.paygate;
 
-import za.co.dladle.paygate.*;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
  * <p>Java class for PaymentType complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType name="PaymentType">
  *   &lt;complexContent>
@@ -29,13 +23,11 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "PaymentType", propOrder = {
-    "method",
-    "detail"
+        "method",
+        "detail"
 })
 public class PaymentType {
 
@@ -49,11 +41,9 @@ public class PaymentType {
 
     /**
      * Gets the value of the method property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.PaymentMethodType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.PaymentMethodType }
      */
     public za.co.dladle.paygate.PaymentMethodType getMethod() {
         return method;
@@ -61,11 +51,9 @@ public class PaymentType {
 
     /**
      * Sets the value of the method property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.PaymentMethodType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.PaymentMethodType }
      */
     public void setMethod(za.co.dladle.paygate.PaymentMethodType value) {
         this.method = value;
@@ -73,11 +61,9 @@ public class PaymentType {
 
     /**
      * Gets the value of the detail property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getDetail() {
         return detail;
@@ -85,11 +71,9 @@ public class PaymentType {
 
     /**
      * Sets the value of the detail property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setDetail(String value) {
         this.detail = value;

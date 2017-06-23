@@ -1,8 +1,6 @@
 
 package za.co.dladle.paygate;
 
-import za.co.dladle.paygate.*;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -11,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for BillingDetailsType complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType name="BillingDetailsType">
  *   &lt;complexContent>
@@ -26,13 +24,11 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "BillingDetailsType", propOrder = {
-    "customer",
-    "address"
+        "customer",
+        "address"
 })
 public class BillingDetailsType {
 
@@ -43,11 +39,9 @@ public class BillingDetailsType {
 
     /**
      * Gets the value of the customer property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link PersonType }
-     *     
+     *
+     * @return possible object is
+     * {@link PersonType }
      */
     public PersonType getCustomer() {
         return customer;
@@ -55,11 +49,9 @@ public class BillingDetailsType {
 
     /**
      * Sets the value of the customer property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link PersonType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link PersonType }
      */
     public void setCustomer(PersonType value) {
         this.customer = value;
@@ -67,11 +59,9 @@ public class BillingDetailsType {
 
     /**
      * Gets the value of the address property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.AddressType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.AddressType }
      */
     public za.co.dladle.paygate.AddressType getAddress() {
         return address;
@@ -79,11 +69,9 @@ public class BillingDetailsType {
 
     /**
      * Sets the value of the address property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.AddressType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.AddressType }
      */
     public void setAddress(za.co.dladle.paygate.AddressType value) {
         this.address = value;

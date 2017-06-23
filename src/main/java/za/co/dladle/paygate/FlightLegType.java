@@ -1,14 +1,7 @@
 
 package za.co.dladle.paygate;
 
-import za.co.dladle.paygate.*;
-import za.co.dladle.paygate.CurrencyType;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -16,9 +9,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * <p>Java class for FlightLegType complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType name="FlightLegType">
  *   &lt;complexContent>
@@ -72,30 +65,28 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "FlightLegType", propOrder = {
-    "departureAirport",
-    "departureCountry",
-    "departureCity",
-    "departureDateTime",
-    "departureAirportTimeZone",
-    "arrivalAirport",
-    "arrivalCountry",
-    "arrivalCity",
-    "arrivalDateTime",
-    "arrivalAirportTimeZone",
-    "marketingCarrierCode",
-    "marketingCarrierName",
-    "issuingCarrierCode",
-    "issuingCarrierName",
-    "flightNumber",
-    "fareBasisCode",
-    "fareClass",
-    "baseFareAmount",
-    "baseFareCurrency"
+        "departureAirport",
+        "departureCountry",
+        "departureCity",
+        "departureDateTime",
+        "departureAirportTimeZone",
+        "arrivalAirport",
+        "arrivalCountry",
+        "arrivalCity",
+        "arrivalDateTime",
+        "arrivalAirportTimeZone",
+        "marketingCarrierCode",
+        "marketingCarrierName",
+        "issuingCarrierCode",
+        "issuingCarrierName",
+        "flightNumber",
+        "fareBasisCode",
+        "fareClass",
+        "baseFareAmount",
+        "baseFareCurrency"
 })
 public class FlightLegType {
 
@@ -167,11 +158,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the departureAirport property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getDepartureAirport() {
         return departureAirport;
@@ -179,11 +168,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the departureAirport property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setDepartureAirport(String value) {
         this.departureAirport = value;
@@ -191,11 +178,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the departureCountry property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.CountryType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.CountryType }
      */
     public za.co.dladle.paygate.CountryType getDepartureCountry() {
         return departureCountry;
@@ -203,11 +188,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the departureCountry property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.CountryType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.CountryType }
      */
     public void setDepartureCountry(za.co.dladle.paygate.CountryType value) {
         this.departureCountry = value;
@@ -215,11 +198,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the departureCity property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getDepartureCity() {
         return departureCity;
@@ -227,11 +208,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the departureCity property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setDepartureCity(String value) {
         this.departureCity = value;
@@ -239,11 +218,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the departureDateTime property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @return possible object is
+     * {@link XMLGregorianCalendar }
      */
     public XMLGregorianCalendar getDepartureDateTime() {
         return departureDateTime;
@@ -251,11 +228,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the departureDateTime property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link XMLGregorianCalendar }
      */
     public void setDepartureDateTime(XMLGregorianCalendar value) {
         this.departureDateTime = value;
@@ -263,11 +238,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the departureAirportTimeZone property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getDepartureAirportTimeZone() {
         return departureAirportTimeZone;
@@ -275,11 +248,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the departureAirportTimeZone property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setDepartureAirportTimeZone(String value) {
         this.departureAirportTimeZone = value;
@@ -287,11 +258,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the arrivalAirport property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getArrivalAirport() {
         return arrivalAirport;
@@ -299,11 +268,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the arrivalAirport property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setArrivalAirport(String value) {
         this.arrivalAirport = value;
@@ -311,11 +278,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the arrivalCountry property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.CountryType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.CountryType }
      */
     public za.co.dladle.paygate.CountryType getArrivalCountry() {
         return arrivalCountry;
@@ -323,11 +288,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the arrivalCountry property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.CountryType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.CountryType }
      */
     public void setArrivalCountry(za.co.dladle.paygate.CountryType value) {
         this.arrivalCountry = value;
@@ -335,11 +298,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the arrivalCity property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getArrivalCity() {
         return arrivalCity;
@@ -347,11 +308,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the arrivalCity property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setArrivalCity(String value) {
         this.arrivalCity = value;
@@ -359,11 +318,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the arrivalDateTime property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @return possible object is
+     * {@link XMLGregorianCalendar }
      */
     public XMLGregorianCalendar getArrivalDateTime() {
         return arrivalDateTime;
@@ -371,11 +328,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the arrivalDateTime property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link XMLGregorianCalendar }
      */
     public void setArrivalDateTime(XMLGregorianCalendar value) {
         this.arrivalDateTime = value;
@@ -383,11 +338,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the arrivalAirportTimeZone property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getArrivalAirportTimeZone() {
         return arrivalAirportTimeZone;
@@ -395,11 +348,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the arrivalAirportTimeZone property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setArrivalAirportTimeZone(String value) {
         this.arrivalAirportTimeZone = value;
@@ -407,11 +358,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the marketingCarrierCode property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getMarketingCarrierCode() {
         return marketingCarrierCode;
@@ -419,11 +368,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the marketingCarrierCode property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setMarketingCarrierCode(String value) {
         this.marketingCarrierCode = value;
@@ -431,11 +378,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the marketingCarrierName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getMarketingCarrierName() {
         return marketingCarrierName;
@@ -443,11 +388,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the marketingCarrierName property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setMarketingCarrierName(String value) {
         this.marketingCarrierName = value;
@@ -455,11 +398,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the issuingCarrierCode property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getIssuingCarrierCode() {
         return issuingCarrierCode;
@@ -467,11 +408,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the issuingCarrierCode property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setIssuingCarrierCode(String value) {
         this.issuingCarrierCode = value;
@@ -479,11 +418,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the issuingCarrierName property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getIssuingCarrierName() {
         return issuingCarrierName;
@@ -491,11 +428,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the issuingCarrierName property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setIssuingCarrierName(String value) {
         this.issuingCarrierName = value;
@@ -503,11 +438,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the flightNumber property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getFlightNumber() {
         return flightNumber;
@@ -515,11 +448,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the flightNumber property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setFlightNumber(String value) {
         this.flightNumber = value;
@@ -527,11 +458,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the fareBasisCode property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getFareBasisCode() {
         return fareBasisCode;
@@ -539,11 +468,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the fareBasisCode property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setFareBasisCode(String value) {
         this.fareBasisCode = value;
@@ -551,11 +478,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the fareClass property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getFareClass() {
         return fareClass;
@@ -563,11 +488,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the fareClass property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setFareClass(String value) {
         this.fareClass = value;
@@ -575,7 +498,6 @@ public class FlightLegType {
 
     /**
      * Gets the value of the baseFareAmount property.
-     * 
      */
     public int getBaseFareAmount() {
         return baseFareAmount;
@@ -583,7 +505,6 @@ public class FlightLegType {
 
     /**
      * Sets the value of the baseFareAmount property.
-     * 
      */
     public void setBaseFareAmount(int value) {
         this.baseFareAmount = value;
@@ -591,11 +512,9 @@ public class FlightLegType {
 
     /**
      * Gets the value of the baseFareCurrency property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.CurrencyType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.CurrencyType }
      */
     public za.co.dladle.paygate.CurrencyType getBaseFareCurrency() {
         return baseFareCurrency;
@@ -603,11 +522,9 @@ public class FlightLegType {
 
     /**
      * Sets the value of the baseFareCurrency property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.CurrencyType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.CurrencyType }
      */
     public void setBaseFareCurrency(CurrencyType value) {
         this.baseFareCurrency = value;

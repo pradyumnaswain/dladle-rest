@@ -1,20 +1,16 @@
 
 package za.co.dladle.paygate;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
  * <p>Java class for InstructionsResponseType complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType name="InstructionsResponseType">
  *   &lt;complexContent>
@@ -26,12 +22,10 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "InstructionsResponseType", propOrder = {
-    "instruction"
+        "instruction"
 })
 public class InstructionsResponseType {
 
@@ -42,11 +36,9 @@ public class InstructionsResponseType {
 
     /**
      * Gets the value of the instruction property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getInstruction() {
         return instruction;
@@ -54,11 +46,9 @@ public class InstructionsResponseType {
 
     /**
      * Sets the value of the instruction property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setInstruction(String value) {
         this.instruction = value;

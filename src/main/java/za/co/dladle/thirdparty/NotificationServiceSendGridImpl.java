@@ -1,4 +1,4 @@
-package za.co.dladle.service;
+package za.co.dladle.thirdparty;
 
 import com.sendgrid.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +53,7 @@ public class NotificationServiceSendGridImpl implements NotificationService {
         } catch (IOException ex) {
         }
     }
+
     @Override
     public void sendNotificationMail(String emailId, String subject, String body) {
         Email from = new Email(FROM_EMAIL);

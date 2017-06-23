@@ -4,13 +4,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.co.dladle.entity.*;
-import za.co.dladle.exception.OtpMismatchException;
-import za.co.dladle.exception.UseAlreadyExistsException;
-import za.co.dladle.exception.UserNotFoundException;
-import za.co.dladle.exception.UserVerificationCodeNotMatchException;
-import za.co.dladle.exception.PasswordMismatchException;
+import za.co.dladle.exception.*;
 import za.co.dladle.model.User;
-import za.co.dladle.model.UserType;
 import za.co.dladle.service.UserService;
 import za.co.dladle.util.ResponseUtil;
 

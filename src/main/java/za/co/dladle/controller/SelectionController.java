@@ -24,6 +24,7 @@ public class SelectionController {
 
         return ResponseUtil.response("SUCCESS", contactTypes, "Contact Types Fetched");
     }
+
     @RequestMapping(value = "api/select/homeviewtype", method = RequestMethod.GET)
     public Map<String, Object> getHomeViewType() {
         Map<String, String> homeViewTypes = selectionService.getHomeViewTypes();

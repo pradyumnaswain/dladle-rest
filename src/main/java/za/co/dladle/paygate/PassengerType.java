@@ -1,22 +1,16 @@
 
 package za.co.dladle.paygate;
 
-import za.co.dladle.paygate.PersonType;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
  * <p>Java class for PassengerType complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType name="PassengerType">
  *   &lt;complexContent>
@@ -41,16 +35,14 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "PassengerType", propOrder = {
-    "passenger",
-    "travellerType",
-    "loyaltyNumber",
-    "loyaltyType",
-    "loyaltyTier"
+        "passenger",
+        "travellerType",
+        "loyaltyNumber",
+        "loyaltyType",
+        "loyaltyTier"
 })
 public class PassengerType {
 
@@ -72,11 +64,9 @@ public class PassengerType {
 
     /**
      * Gets the value of the passenger property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link PersonType }
-     *     
+     *
+     * @return possible object is
+     * {@link PersonType }
      */
     public PersonType getPassenger() {
         return passenger;
@@ -84,11 +74,9 @@ public class PassengerType {
 
     /**
      * Sets the value of the passenger property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link PersonType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link PersonType }
      */
     public void setPassenger(PersonType value) {
         this.passenger = value;
@@ -96,11 +84,9 @@ public class PassengerType {
 
     /**
      * Gets the value of the travellerType property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getTravellerType() {
         return travellerType;
@@ -108,11 +94,9 @@ public class PassengerType {
 
     /**
      * Sets the value of the travellerType property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setTravellerType(String value) {
         this.travellerType = value;
@@ -120,11 +104,9 @@ public class PassengerType {
 
     /**
      * Gets the value of the loyaltyNumber property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getLoyaltyNumber() {
         return loyaltyNumber;
@@ -132,11 +114,9 @@ public class PassengerType {
 
     /**
      * Sets the value of the loyaltyNumber property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setLoyaltyNumber(String value) {
         this.loyaltyNumber = value;
@@ -144,11 +124,9 @@ public class PassengerType {
 
     /**
      * Gets the value of the loyaltyType property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getLoyaltyType() {
         return loyaltyType;
@@ -156,11 +134,9 @@ public class PassengerType {
 
     /**
      * Sets the value of the loyaltyType property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setLoyaltyType(String value) {
         this.loyaltyType = value;
@@ -168,11 +144,9 @@ public class PassengerType {
 
     /**
      * Gets the value of the loyaltyTier property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *     
+     *
+     * @return possible object is
+     * {@link Integer }
      */
     public Integer getLoyaltyTier() {
         return loyaltyTier;
@@ -180,11 +154,9 @@ public class PassengerType {
 
     /**
      * Sets the value of the loyaltyTier property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link Integer }
      */
     public void setLoyaltyTier(Integer value) {
         this.loyaltyTier = value;

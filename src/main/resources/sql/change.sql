@@ -35,91 +35,150 @@ ALTER TABLE user_dladle
 ALTER TABLE vendor
   DROP COLUMN business_name;
 
-ALTER TABLE rating DROP COLUMN user_id;
-ALTER TABLE rating ADD COLUMN rated_user INT;
-ALTER TABLE rating ADD COLUMN rating_user INT;
-ALTER TABLE rating ADD COLUMN rating_comment VARCHAR(500);
-ALTER TABLE rating ADD FOREIGN KEY (rated_user) REFERENCES user_dladle(id);
-ALTER TABLE rating ADD FOREIGN KEY (rating_user) REFERENCES user_dladle(id);
-ALTER TABLE rating ADD CONSTRAINT rating_rated_user UNIQUE (rating_user,rated_user) ;
+ALTER TABLE rating
+  DROP COLUMN user_id;
+ALTER TABLE rating
+  ADD COLUMN rated_user INT;
+ALTER TABLE rating
+  ADD COLUMN rating_user INT;
+ALTER TABLE rating
+  ADD COLUMN rating_comment VARCHAR(500);
+ALTER TABLE rating
+  ADD FOREIGN KEY (rated_user) REFERENCES user_dladle (id);
+ALTER TABLE rating
+  ADD FOREIGN KEY (rating_user) REFERENCES user_dladle (id);
+ALTER TABLE rating
+  ADD CONSTRAINT rating_rated_user UNIQUE (rating_user, rated_user);
 
 DROP TABLE rating_comments;
 
-ALTER TABLE house DROP COLUMN house_number;
+ALTER TABLE house
+  DROP COLUMN house_number;
 
-ALTER TABLE user_dladle ADD COLUMN device_id VARCHAR(5000);
-ALTER TABLE user_device DROP COLUMN user_id;
-
-
-ALTER TABLE house DROP COLUMN notifications_count;
-ALTER TABLE house ADD COLUMN notifications_count_tenant INT DEFAULT 0;
-ALTER TABLE house ADD COLUMN notifications_count_landlord INT DEFAULT 0;
-ALTER TABLE house ADD COLUMN notifications_count_vendor INT DEFAULT 0;
-ALTER TABLE house ADD COLUMN active_job BOOLEAN DEFAULT FALSE ;
-ALTER TABLE house ADD COLUMN contacts_count INT DEFAULT 0;
-ALTER TABLE house ADD COLUMN is_home BOOLEAN DEFAULT FALSE ;
-ALTER TABLE house ADD COLUMN tenants_count INT DEFAULT 0;
-
-ALTER TABLE property_contact DROP COLUMN property_id;
-ALTER TABLE property_contact ADD COLUMN house_id INT;
-ALTER TABLE property_contact ADD FOREIGN KEY (house_id) REFERENCES house(id);
-
-ALTER TABLE tenant DROP COLUMN landlord_id;
-ALTER TABLE notification ADD COLUMN house_id INT;
-ALTER TABLE notification ADD FOREIGN KEY (house_id) REFERENCES house(id);
+ALTER TABLE user_dladle
+  ADD COLUMN device_id VARCHAR(5000);
+ALTER TABLE user_device
+  DROP COLUMN user_id;
 
 
-ALTER TABLE user_dladle ADD COLUMN profile_picture   VARCHAR(1000);
+ALTER TABLE house
+  DROP COLUMN notifications_count;
+ALTER TABLE house
+  ADD COLUMN notifications_count_tenant INT DEFAULT 0;
+ALTER TABLE house
+  ADD COLUMN notifications_count_landlord INT DEFAULT 0;
+ALTER TABLE house
+  ADD COLUMN notifications_count_vendor INT DEFAULT 0;
+ALTER TABLE house
+  ADD COLUMN active_job BOOLEAN DEFAULT FALSE;
+ALTER TABLE house
+  ADD COLUMN contacts_count INT DEFAULT 0;
+ALTER TABLE house
+  ADD COLUMN is_home BOOLEAN DEFAULT FALSE;
+ALTER TABLE house
+  ADD COLUMN tenants_count INT DEFAULT 0;
 
-ALTER TABLE lease DROP COLUMN tenant_id;
-ALTER TABLE lease DROP COLUMN lease_date;
-ALTER TABLE lease DROP COLUMN renewal_date;
-ALTER TABLE lease ADD COLUMN lease_start_date TIMESTAMP;
-ALTER TABLE lease ADD COLUMN lease_terminate_date TIMESTAMP;
-ALTER TABLE lease ADD COLUMN lease_end_date TIMESTAMP;
-ALTER TABLE lease ADD COLUMN lease_renewal_date TIMESTAMP;
-ALTER TABLE lease DROP COLUMN landlord_id;
-ALTER TABLE lease ADD COLUMN house_id INT;
-ALTER TABLE lease ADD COLUMN lease_status BOOLEAN DEFAULT FALSE ;
-ALTER TABLE lease ADD FOREIGN KEY (house_id) REFERENCES house(id);
-ALTER TABLE lease_tenant ADD UNIQUE (lease_id,tenant_id) ;
+ALTER TABLE property_contact
+  DROP COLUMN property_id;
+ALTER TABLE property_contact
+  ADD COLUMN house_id INT;
+ALTER TABLE property_contact
+  ADD FOREIGN KEY (house_id) REFERENCES house (id);
 
-ALTER TABLE notification ADD COLUMN notification_type_id INT;
-ALTER TABLE notification ADD FOREIGN KEY (notification_type_id) REFERENCES notification_type(id);
+ALTER TABLE tenant
+  DROP COLUMN landlord_id;
+ALTER TABLE notification
+  ADD COLUMN house_id INT;
+ALTER TABLE notification
+  ADD FOREIGN KEY (house_id) REFERENCES house (id);
 
-ALTER TABLE house DROP COLUMN notifications_count_tenant ;
-ALTER TABLE house DROP COLUMN notifications_count_landlord;
-ALTER TABLE house DROP COLUMN notifications_count_vendor ;
+
+ALTER TABLE user_dladle
+  ADD COLUMN profile_picture VARCHAR(1000);
+
+ALTER TABLE lease
+  DROP COLUMN tenant_id;
+ALTER TABLE lease
+  DROP COLUMN lease_date;
+ALTER TABLE lease
+  DROP COLUMN renewal_date;
+ALTER TABLE lease
+  ADD COLUMN lease_start_date TIMESTAMP;
+ALTER TABLE lease
+  ADD COLUMN lease_terminate_date TIMESTAMP;
+ALTER TABLE lease
+  ADD COLUMN lease_end_date TIMESTAMP;
+ALTER TABLE lease
+  ADD COLUMN lease_renewal_date TIMESTAMP;
+ALTER TABLE lease
+  DROP COLUMN landlord_id;
+ALTER TABLE lease
+  ADD COLUMN house_id INT;
+ALTER TABLE lease
+  ADD COLUMN lease_status BOOLEAN DEFAULT FALSE;
+ALTER TABLE lease
+  ADD FOREIGN KEY (house_id) REFERENCES house (id);
+ALTER TABLE lease_tenant
+  ADD UNIQUE (lease_id, tenant_id);
+
+ALTER TABLE notification
+  ADD COLUMN notification_type_id INT;
+ALTER TABLE notification
+  ADD FOREIGN KEY (notification_type_id) REFERENCES notification_type (id);
+
+ALTER TABLE house
+  DROP COLUMN notifications_count_tenant;
+ALTER TABLE house
+  DROP COLUMN notifications_count_landlord;
+ALTER TABLE house
+  DROP COLUMN notifications_count_vendor;
 
 DROP TABLE notification_count;
 
 CREATE TABLE notification_count
 (
-  id SERIAL PRIMARY KEY NOT NULL,
+  id      SERIAL PRIMARY KEY NOT NULL,
   user_id INT,
-  count INT,
-  FOREIGN KEY (user_id) REFERENCES user_dladle(id),
+  count   INT,
+  FOREIGN KEY (user_id) REFERENCES user_dladle (id),
   UNIQUE (user_id)
 );
 
-ALTER TABLE lease ADD COLUMN lease_renewal_notification_date TIMESTAMP;
-ALTER TABLE lease_tenant ADD COLUMN lease_status BOOLEAN DEFAULT FALSE ;
-ALTER TABLE lease_tenant ADD COLUMN leave_date TIMESTAMP ;
+ALTER TABLE lease
+  ADD COLUMN lease_renewal_notification_date TIMESTAMP;
+ALTER TABLE lease_tenant
+  ADD COLUMN lease_status BOOLEAN DEFAULT FALSE;
+ALTER TABLE lease_tenant
+  ADD COLUMN leave_date TIMESTAMP;
 
-ALTER TABLE service ADD COLUMN service_request_time TIMESTAMP ;
-ALTER TABLE service ADD COLUMN service_approved_time TIMESTAMP ;
-ALTER TABLE service ADD COLUMN service_start_time TIMESTAMP ;
-ALTER TABLE service ADD COLUMN service_end_time TIMESTAMP ;
-ALTER TABLE service ADD COLUMN service_status_id BIGINT ;
-ALTER TABLE service ADD COLUMN service_requester_user_id BIGINT ;
-ALTER TABLE service ADD COLUMN service_paid_user_id BIGINT ;
-ALTER TABLE service ADD COLUMN service_expected_fee_range_start FLOAT ;
-ALTER TABLE service ADD COLUMN service_expected_fee_range_end FLOAT;
-ALTER TABLE service ADD COLUMN service_fee FLOAT;
-ALTER TABLE service ADD COLUMN service_fee_paid BOOLEAN DEFAULT FALSE;
-ALTER TABLE service ADD FOREIGN KEY (service_status_id) REFERENCES service_status(id);
-ALTER TABLE service ADD FOREIGN KEY (service_requester_user_id) REFERENCES user_dladle(id);
-ALTER TABLE service ADD FOREIGN KEY (service_paid_user_id) REFERENCES user_dladle(id);
+ALTER TABLE service
+  ADD COLUMN service_request_time TIMESTAMP;
+ALTER TABLE service
+  ADD COLUMN service_approved_time TIMESTAMP;
+ALTER TABLE service
+  ADD COLUMN service_start_time TIMESTAMP;
+ALTER TABLE service
+  ADD COLUMN service_end_time TIMESTAMP;
+ALTER TABLE service
+  ADD COLUMN service_status_id BIGINT;
+ALTER TABLE service
+  ADD COLUMN service_requester_user_id BIGINT;
+ALTER TABLE service
+  ADD COLUMN service_paid_user_id BIGINT;
+ALTER TABLE service
+  ADD COLUMN service_expected_fee_range_start FLOAT;
+ALTER TABLE service
+  ADD COLUMN service_expected_fee_range_end FLOAT;
+ALTER TABLE service
+  ADD COLUMN service_fee FLOAT;
+ALTER TABLE service
+  ADD COLUMN service_fee_paid BOOLEAN DEFAULT FALSE;
+ALTER TABLE service
+  ADD FOREIGN KEY (service_status_id) REFERENCES service_status (id);
+ALTER TABLE service
+  ADD FOREIGN KEY (service_requester_user_id) REFERENCES user_dladle (id);
+ALTER TABLE service
+  ADD FOREIGN KEY (service_paid_user_id) REFERENCES user_dladle (id);
 
 
 

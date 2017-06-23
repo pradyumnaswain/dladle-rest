@@ -1,21 +1,14 @@
 
 package za.co.dladle.paygate;
 
-import za.co.dladle.paygate.*;
-import za.co.dladle.paygate.BankPaymentResponseType;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ * <p>
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ * <p>
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -32,15 +25,13 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cardPaymentResponse",
-    "webPaymentResponse",
-    "tokenPaymentResponse",
-    "bankPaymentResponse"
+        "cardPaymentResponse",
+        "webPaymentResponse",
+        "tokenPaymentResponse",
+        "bankPaymentResponse"
 })
 @XmlRootElement(name = "SinglePaymentResponse")
 public class SinglePaymentResponse {
@@ -56,11 +47,9 @@ public class SinglePaymentResponse {
 
     /**
      * Gets the value of the cardPaymentResponse property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.CardPaymentResponseType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.CardPaymentResponseType }
      */
     public za.co.dladle.paygate.CardPaymentResponseType getCardPaymentResponse() {
         return cardPaymentResponse;
@@ -68,11 +57,9 @@ public class SinglePaymentResponse {
 
     /**
      * Sets the value of the cardPaymentResponse property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.CardPaymentResponseType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.CardPaymentResponseType }
      */
     public void setCardPaymentResponse(za.co.dladle.paygate.CardPaymentResponseType value) {
         this.cardPaymentResponse = value;
@@ -80,11 +67,9 @@ public class SinglePaymentResponse {
 
     /**
      * Gets the value of the webPaymentResponse property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link WebPaymentResponseType }
-     *     
+     *
+     * @return possible object is
+     * {@link WebPaymentResponseType }
      */
     public WebPaymentResponseType getWebPaymentResponse() {
         return webPaymentResponse;
@@ -92,11 +77,9 @@ public class SinglePaymentResponse {
 
     /**
      * Sets the value of the webPaymentResponse property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link WebPaymentResponseType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link WebPaymentResponseType }
      */
     public void setWebPaymentResponse(WebPaymentResponseType value) {
         this.webPaymentResponse = value;
@@ -104,11 +87,9 @@ public class SinglePaymentResponse {
 
     /**
      * Gets the value of the tokenPaymentResponse property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link TokenPaymentResponseType }
-     *     
+     *
+     * @return possible object is
+     * {@link TokenPaymentResponseType }
      */
     public TokenPaymentResponseType getTokenPaymentResponse() {
         return tokenPaymentResponse;
@@ -116,11 +97,9 @@ public class SinglePaymentResponse {
 
     /**
      * Sets the value of the tokenPaymentResponse property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link TokenPaymentResponseType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link TokenPaymentResponseType }
      */
     public void setTokenPaymentResponse(TokenPaymentResponseType value) {
         this.tokenPaymentResponse = value;
@@ -128,11 +107,9 @@ public class SinglePaymentResponse {
 
     /**
      * Gets the value of the bankPaymentResponse property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link za.co.dladle.paygate.BankPaymentResponseType }
-     *     
+     *
+     * @return possible object is
+     * {@link za.co.dladle.paygate.BankPaymentResponseType }
      */
     public za.co.dladle.paygate.BankPaymentResponseType getBankPaymentResponse() {
         return bankPaymentResponse;
@@ -140,11 +117,9 @@ public class SinglePaymentResponse {
 
     /**
      * Sets the value of the bankPaymentResponse property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link za.co.dladle.paygate.BankPaymentResponseType }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link za.co.dladle.paygate.BankPaymentResponseType }
      */
     public void setBankPaymentResponse(BankPaymentResponseType value) {
         this.bankPaymentResponse = value;

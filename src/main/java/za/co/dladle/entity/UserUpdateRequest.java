@@ -45,5 +45,7 @@ public class UserUpdateRequest {
         return cellNumber;
     }
 
-    public void setCellNumber(String cellNumber) { this.cellNumber = cellNumber; }
+    public void setCellNumber(String cellNumber) {
+        this.cellNumber = cellNumber;
+    }
 }

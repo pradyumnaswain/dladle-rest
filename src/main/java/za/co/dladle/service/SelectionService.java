@@ -3,7 +3,8 @@ package za.co.dladle.service;
 import org.springframework.stereotype.Service;
 import za.co.dladle.model.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by prady on 4/1/2017.

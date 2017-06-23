@@ -10,6 +10,8 @@ import za.co.dladle.entity.*;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.model.NotificationType;
 import za.co.dladle.session.UserSession;
+import za.co.dladle.thirdparty.AndroidPushNotificationsService;
+import za.co.dladle.thirdparty.NotificationServiceSendGridImpl;
 import za.co.dladle.util.NotificationConstants;
 
 import javax.transaction.Transactional;

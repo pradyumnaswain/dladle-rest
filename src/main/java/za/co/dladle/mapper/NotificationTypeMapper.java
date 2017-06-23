@@ -1,7 +1,6 @@
 package za.co.dladle.mapper;
 
 import za.co.dladle.model.NotificationType;
-import za.co.dladle.model.UserType;
 
 /**
  * Created by prady on 4/1/2017.
