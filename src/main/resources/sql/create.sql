@@ -183,6 +183,15 @@ CREATE TABLE tenant
   FOREIGN KEY (house_id) REFERENCES house (id)
 );
 /*tenant*/
+CREATE TABLE tenant_property_images
+(
+  id        BIGSERIAL PRIMARY KEY NOT NULL,
+  tenant_id BIGINT,
+  url       VARCHAR(500),
+  valid     BOOLEAN DEFAULT TRUE,
+  FOREIGN KEY (tenant_id) REFERENCES tenant (id)
+);
+/*tenant*/
 CREATE TABLE vendor
 (
   id               BIGSERIAL PRIMARY KEY NOT NULL,
@@ -216,7 +225,10 @@ CREATE TABLE service
 (
   id                               BIGSERIAL PRIMARY KEY NOT NULL,
   service_type_id                  BIGINT,
+  emergency                        BOOLEAN DEFAULT FALSE,
   service_request_time             TIMESTAMP,
+  service_need_time                TIMESTAMP,
+  service_description              VARCHAR(500),
   service_approved_time            TIMESTAMP,
   service_start_time               TIMESTAMP,
   service_end_time                 TIMESTAMP,

@@ -154,6 +154,8 @@ ALTER TABLE lease_tenant
 ALTER TABLE service
   ADD COLUMN service_request_time TIMESTAMP;
 ALTER TABLE service
+  ADD COLUMN service_need_time TIMESTAMP;
+ALTER TABLE service
   ADD COLUMN service_approved_time TIMESTAMP;
 ALTER TABLE service
   ADD COLUMN service_start_time TIMESTAMP;
@@ -174,14 +176,20 @@ ALTER TABLE service
 ALTER TABLE service
   ADD COLUMN service_fee_paid BOOLEAN DEFAULT FALSE;
 ALTER TABLE service
+  ADD COLUMN emergency BOOLEAN DEFAULT FALSE;
+ALTER TABLE service
+  ADD COLUMN service_description VARCHAR(500);
+ALTER TABLE service
   ADD FOREIGN KEY (service_status_id) REFERENCES service_status (id);
 ALTER TABLE service
   ADD FOREIGN KEY (service_requester_user_id) REFERENCES user_dladle (id);
 ALTER TABLE service
   ADD FOREIGN KEY (service_paid_user_id) REFERENCES user_dladle (id);
 
-ALTER TABLE payment_card DROP COLUMN expiry_date;
-ALTER TABLE payment_card ADD COLUMN vaultId VARCHAR(500);
+ALTER TABLE payment_card
+  DROP COLUMN expiry_date;
+ALTER TABLE payment_card
+  ADD COLUMN vaultId VARCHAR(500);
 
 
 

@@ -49,7 +49,7 @@ public class LeaseController {
             if (leaseLandlord != null) {
                 return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, leaseLandlord, DladleConstants.LEASE_LANDLORD);
             } else {
-                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.FAILURE);
+                return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, DladleConstants.FAILURE);
             }
         } catch (Exception e) {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
