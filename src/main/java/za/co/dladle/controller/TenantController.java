@@ -7,12 +7,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.dladle.apiutil.ApiConstants;
 import za.co.dladle.apiutil.DladleConstants;
-import za.co.dladle.entity.ContactAddRequest;
-import za.co.dladle.entity.DeleteContactRequest;
-import za.co.dladle.entity.PropertyRequest;
-import za.co.dladle.entity.TenantContactView;
+import za.co.dladle.entity.*;
 import za.co.dladle.service.ContactService;
 import za.co.dladle.service.PropertyAssignmentService;
+import za.co.dladle.service.PropertyService;
 import za.co.dladle.serviceutil.ResponseUtil;
 
 import java.io.IOException;
@@ -30,6 +28,9 @@ public class TenantController {
 
     @Autowired
     private PropertyAssignmentService propertyAssignmentService;
+
+    @Autowired
+    private PropertyService propertyService;
 
     //------------------------------------------------------------------------------------------------------------------
     //Add Contact
@@ -78,6 +79,19 @@ public class TenantController {
         try {
             propertyAssignmentService.requestLandlord(propertyRequest);
             return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.TENANT_PROPERTY_REQUEST);
+        } catch (Exception e) {
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Invite Tenant to Property
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = ApiConstants.TENANT_PROPERTY_IMAGES_ADD, method = RequestMethod.POST)
+    public Map<String, Object> addImagesOfProperty(@RequestBody PropertyAddImagesRequest propertyAddImagesRequest) throws IOException {
+        try {
+            propertyService.addImages(propertyAddImagesRequest);
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.TENANT_PROPERTY_IMAGES_ADD);
         } catch (Exception e) {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }

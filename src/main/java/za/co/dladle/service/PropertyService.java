@@ -361,4 +361,27 @@ public class PropertyService {
         return imageUrl;
     }
 
+    public void addImages(PropertyAddImagesRequest propertyAddImagesRequest) throws Exception {
+        List<PropertyAddImage> imageList = propertyAddImagesRequest.getImageList();
+        List<Map<String, Object>> list = new ArrayList<>();
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+        if (userSession.getUser().getUserType().eqTENANT()) {
+
+            Long tenantId = userUtility.findTenantIdByEmail(userSession.getUser().getEmailId());
+            for (PropertyAddImage image : imageList) {
+                Map<String, Object> map = new HashMap<>();
+
+                String imageUrl = fileManagementServiceCloudinary.upload(image.getImage());
+
+                map.put("imageUrl", imageUrl);
+                map.put("tenantId", tenantId);
+
+                list.add(map);
+            }
+            String sql = "INSERT INTO tenant_property_images_and_notes (tenant_id, url) VALUES (:tenantId, :imageUrl)";
+            this.parameterJdbcTemplate.batchUpdate(sql, list.toArray(new Map[imageList.size()]));
+        } else {
+            throw new Exception("You are not authorised to upe this functionality");
+        }
+    }
 }

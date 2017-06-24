@@ -183,7 +183,7 @@ CREATE TABLE tenant
   FOREIGN KEY (house_id) REFERENCES house (id)
 );
 /*tenant*/
-CREATE TABLE tenant_property_images
+CREATE TABLE tenant_property_images_and_notes
 (
   id        BIGSERIAL PRIMARY KEY NOT NULL,
   tenant_id BIGINT,

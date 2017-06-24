@@ -47,6 +47,7 @@ public class DladleConstants {
     public static final String TENANT_CONTACT_DELETE = "Contacts deleted Successfully";
     public static final String TENANT_CONTACT_LIST = "Contacts listed Successfully";
     public static final String TENANT_PROPERTY_REQUEST = "Property Requested";
+    public static final String TENANT_PROPERTY_IMAGES_ADD = "Images and notes attached successfully";
     //------------------------------------------------------------------------------------------------------------------
     //Rating
     //------------------------------------------------------------------------------------------------------------------
