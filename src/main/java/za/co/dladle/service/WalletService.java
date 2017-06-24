@@ -33,7 +33,6 @@ public class WalletService {
 
     public void addCard(PaymentCard paymentCard) throws Exception {
 
-
         SingleVaultResponse singleVaultResponse = payGateService.singleVault(paymentCard);
 
         if (singleVaultResponse.getCardVaultResponse() != null) {

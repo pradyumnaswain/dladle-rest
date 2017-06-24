@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import za.co.dladle.paygate.PayHOST;
 import za.co.dladle.paygate.PayHOSTService;
 
+import javax.annotation.PostConstruct;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -21,6 +22,7 @@ public class WebServiceClient {
         return payHOST;
     }
 
+    @PostConstruct
     public void setPayHOST() throws MalformedURLException {
         PayHOSTService payHOSTService = new PayHOSTService(new URL(wsdlUrl));
         payHOST = payHOSTService.getPayHOSTSoap11();
