@@ -1,4 +1,4 @@
-package za.co.dladle.util;
+package za.co.dladle.apiutil;
 
 import java.util.Random;
 

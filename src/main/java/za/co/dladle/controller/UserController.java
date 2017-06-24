@@ -7,7 +7,7 @@ import za.co.dladle.entity.*;
 import za.co.dladle.exception.*;
 import za.co.dladle.model.User;
 import za.co.dladle.service.UserService;
-import za.co.dladle.util.ResponseUtil;
+import za.co.dladle.serviceutil.ResponseUtil;
 
 import java.io.IOException;
 import java.util.List;

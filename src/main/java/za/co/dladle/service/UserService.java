@@ -22,8 +22,8 @@ import za.co.dladle.model.UserType;
 import za.co.dladle.session.UserSession;
 import za.co.dladle.thirdparty.FileManagementServiceCloudinaryImpl;
 import za.co.dladle.thirdparty.NotificationServiceSendGridImpl;
-import za.co.dladle.util.RandomUtil;
-import za.co.dladle.util.UserUtility;
+import za.co.dladle.apiutil.RandomUtil;
+import za.co.dladle.serviceutil.UserUtility;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;

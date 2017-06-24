@@ -11,7 +11,7 @@ import za.co.dladle.entity.PropertyRequest;
 import za.co.dladle.entity.TenantContactView;
 import za.co.dladle.service.ContactService;
 import za.co.dladle.service.PropertyAssignmentService;
-import za.co.dladle.util.ResponseUtil;
+import za.co.dladle.serviceutil.ResponseUtil;
 
 import java.io.IOException;
 import java.util.List;

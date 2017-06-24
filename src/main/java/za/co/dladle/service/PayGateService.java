@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import za.co.dladle.model.PaymentCard;
 import za.co.dladle.model.User;
 import za.co.dladle.paygate.*;
-import za.co.dladle.util.PayGateUtil;
-import za.co.dladle.util.WebServiceClient;
+import za.co.dladle.serviceutil.PayGateUtil;
+import za.co.dladle.serviceutil.WebServiceClient;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;

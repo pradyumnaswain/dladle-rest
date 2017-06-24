@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.dladle.model.PaymentCard;
 import za.co.dladle.service.WalletService;
-import za.co.dladle.util.ApiConstants;
-import za.co.dladle.util.DladleConstants;
-import za.co.dladle.util.ResponseUtil;
+import za.co.dladle.apiutil.ApiConstants;
+import za.co.dladle.apiutil.DladleConstants;
+import za.co.dladle.serviceutil.ResponseUtil;
 
 import java.io.IOException;
 import java.util.Map;

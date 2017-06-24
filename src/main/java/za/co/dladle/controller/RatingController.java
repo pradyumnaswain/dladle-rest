@@ -10,9 +10,9 @@ import za.co.dladle.entity.RatingUpdateRequest;
 import za.co.dladle.entity.RatingView;
 import za.co.dladle.entity.RatingViewDetails;
 import za.co.dladle.service.RatingService;
-import za.co.dladle.util.ApiConstants;
-import za.co.dladle.util.DladleConstants;
-import za.co.dladle.util.ResponseUtil;
+import za.co.dladle.apiutil.ApiConstants;
+import za.co.dladle.apiutil.DladleConstants;
+import za.co.dladle.serviceutil.ResponseUtil;
 
 import java.io.IOException;
 import java.util.List;

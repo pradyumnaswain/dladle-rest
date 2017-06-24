@@ -1,4 +1,4 @@
-package za.co.dladle.util;
+package za.co.dladle.serviceutil;
 
 import java.util.HashMap;
 import java.util.Map;

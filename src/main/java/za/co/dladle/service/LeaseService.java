@@ -16,8 +16,8 @@ import za.co.dladle.model.User;
 import za.co.dladle.session.UserSession;
 import za.co.dladle.thirdparty.AndroidPushNotificationsService;
 import za.co.dladle.thirdparty.NotificationServiceSendGridImpl;
-import za.co.dladle.util.NotificationConstants;
-import za.co.dladle.util.UserUtility;
+import za.co.dladle.apiutil.NotificationConstants;
+import za.co.dladle.serviceutil.UserUtility;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

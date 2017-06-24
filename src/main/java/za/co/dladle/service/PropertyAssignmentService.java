@@ -12,7 +12,7 @@ import za.co.dladle.model.NotificationType;
 import za.co.dladle.session.UserSession;
 import za.co.dladle.thirdparty.AndroidPushNotificationsService;
 import za.co.dladle.thirdparty.NotificationServiceSendGridImpl;
-import za.co.dladle.util.NotificationConstants;
+import za.co.dladle.apiutil.NotificationConstants;
 
 import javax.transaction.Transactional;
 import java.util.HashMap;

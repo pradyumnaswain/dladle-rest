@@ -1,4 +1,4 @@
-package za.co.dladle.util;
+package za.co.dladle.serviceutil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;

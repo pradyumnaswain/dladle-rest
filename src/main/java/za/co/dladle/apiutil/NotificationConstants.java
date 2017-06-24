@@ -1,4 +1,4 @@
-package za.co.dladle.util;
+package za.co.dladle.apiutil;
 
 /**
  * Created by prady on 6/20/2017.
