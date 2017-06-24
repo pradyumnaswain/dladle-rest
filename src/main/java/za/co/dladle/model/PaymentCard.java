@@ -10,11 +10,9 @@ public class PaymentCard {
     private String cvvNumber;
     private String cardType;
 
-    public PaymentCard(String nameOnCard, String cardNumber, String expiryDate, String cvvNumber, String cardType) {
+    public PaymentCard(String nameOnCard, String cardNumber, String cardType) {
         this.nameOnCard = nameOnCard;
         this.cardNumber = cardNumber;
-        this.expiryDate = expiryDate;
-        this.cvvNumber = cvvNumber;
         this.cardType = cardType;
     }
 

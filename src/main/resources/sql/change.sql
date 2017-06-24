@@ -180,6 +180,9 @@ ALTER TABLE service
 ALTER TABLE service
   ADD FOREIGN KEY (service_paid_user_id) REFERENCES user_dladle (id);
 
+ALTER TABLE payment_card DROP COLUMN expiry_date;
+ALTER TABLE payment_card ADD COLUMN vaultId VARCHAR(500);
+
 
 
 
