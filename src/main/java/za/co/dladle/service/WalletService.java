@@ -34,7 +34,6 @@ public class WalletService {
     public void addCard(PaymentCard paymentCard) throws Exception {
 
         SingleVaultResponse singleVaultResponse = payGateService.singleVault(paymentCard);
-
         if (singleVaultResponse.getCardVaultResponse() != null) {
             String vaultId = singleVaultResponse.getCardVaultResponse().getStatus().getVaultId();
 
@@ -57,8 +56,8 @@ public class WalletService {
                 String sql = "INSERT INTO payment_card(user_id, card_update_time, name_on_card, card_number, cvv_number, card_type,vaultid) " +
                         "VALUES (:userId,:time,:nameOnCard,:cardNumber,:cvvNumber,:cardType,:vaultId) ON CONFLICT DO NOTHING ";
                 this.jdbcTemplate.update(sql, map);
-            }
-        } else throw new Exception("Unable to persist card data");
+            } else throw new Exception("Unable to persist card data");
+        }
     }
 
     public void updateCard(PaymentCard paymentCard) throws Exception {
