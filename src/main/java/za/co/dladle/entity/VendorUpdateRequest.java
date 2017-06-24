@@ -7,7 +7,6 @@ import za.co.dladle.model.YearsExperience;
  * Created by prady on 11/20/2016.
  */
 public class VendorUpdateRequest {
-
     private String cellNumber;
 
     private String businessAddress;

@@ -4,7 +4,6 @@ package za.co.dladle.entity;
  * Created by prady on 9/3/2016.
  */
 public class UserRequest {
-
     private String emailId;
 
     private String password;

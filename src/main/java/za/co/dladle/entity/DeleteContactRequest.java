@@ -4,7 +4,7 @@ package za.co.dladle.entity;
  * Created by prady on 6/9/2017.
  */
 public class DeleteContactRequest {
-    long contactId;
+    private long contactId;
 
     public DeleteContactRequest() {
     }

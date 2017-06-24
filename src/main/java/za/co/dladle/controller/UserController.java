@@ -3,6 +3,8 @@ package za.co.dladle.controller;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import za.co.dladle.apiutil.ApiConstants;
+import za.co.dladle.apiutil.DladleConstants;
 import za.co.dladle.entity.*;
 import za.co.dladle.exception.*;
 import za.co.dladle.model.User;
@@ -20,12 +22,12 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     //------------------------------------------------------------------------------------------------------------------
     //Login
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "api/user/login", method = RequestMethod.POST)
+    @RequestMapping(value = ApiConstants.USER_LOGIN, method = RequestMethod.POST)
     public Map<String, Object> login(@RequestBody UserRequest user) {
         User returnedUser;
         try {
@@ -37,77 +39,77 @@ public class UserController {
 //                    userService.saveDeviceDetails(user.getEmailId(), user.getDeviceId());
 //                }
                 userService.setSessionService(returnedUser);
-                return ResponseUtil.response("SUCCESS", returnedUser, "Login Success");
+                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, returnedUser, DladleConstants.USER_LOGIN);
             } else {
-                return ResponseUtil.response("Not Verified", null, "Please verify your Email to continue");
+                return ResponseUtil.response("Not Verified", null, DladleConstants.USER_LOGIN_NOT_VERIFIED);
             }
         } catch (UserNotFoundException e) {
             // TODO: 1/8/2017 Chnage Message to wrong username or password
-            return ResponseUtil.response("FAIL", null, e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
     //------------------------------------------------------------------------------------------------------------------
     //Logout
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "api/user/get/details", method = RequestMethod.GET)
+    @RequestMapping(value = ApiConstants.USER_DETAILS, method = RequestMethod.GET)
     public Map<String, Object> getUserDetails(@RequestParam String emailId) throws UserNotFoundException {
         try {
             User user = userService.getDetails(emailId);
-            return ResponseUtil.response("SUCCESS", user, "User details fetched Successfully");
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, user, DladleConstants.USER_DETAILS);
         } catch (Exception e) {
-            return ResponseUtil.response("FAIL", null, e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
     //------------------------------------------------------------------------------------------------------------------
     //Logout
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "api/user/logout", method = RequestMethod.GET)
+    @RequestMapping(value = ApiConstants.USER_LOGOUT, method = RequestMethod.GET)
     public Map<String, Object> logout() throws UserNotFoundException {
         userService.logout();
-        return ResponseUtil.response("SUCCESS", "{}", "Logged Out Successfully");
+        return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.USER_LOGOUT);
     }
 
     //------------------------------------------------------------------------------------------------------------------
     //Forgot Password
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "api/user/forgot-password", method = RequestMethod.POST)
+    @RequestMapping(value = ApiConstants.USER_FORGOT_PASSWORD, method = RequestMethod.POST)
     public Map<String, Object> forgotPassword(@RequestBody ForgotPasswordRequest passwordRequest) {
         try {
             User user = userService.forgotPassword(passwordRequest.getEmailId());
             userService.sendOtp(user.getEmailId());
-            return ResponseUtil.response("SUCCESS", user.getEmailId(), "User Exists");
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, user.getEmailId(), DladleConstants.USER_FORGOT_PASSWORD);
         } catch (UserNotFoundException | IOException e) {
-            return ResponseUtil.response("FAIL", null, e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
     //------------------------------------------------------------------------------------------------------------------
     //Reset Password
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "api/user/reset-password", method = RequestMethod.POST)
+    @RequestMapping(value = ApiConstants.USER_RESET_PASSWORD, method = RequestMethod.POST)
     public Map<String, Object> resetPassword(@RequestBody UserRequestForResetPassword user) {
         try {
             userService.resetPassword(user);
-            return ResponseUtil.response("SUCCESS", "{}", "Password Updated Successfully");
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.USER_RESET_PASSWORD);
         } catch (OtpMismatchException e) {
             e.printStackTrace();
-            return ResponseUtil.response("FAIL", null, e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
     //------------------------------------------------------------------------------------------------------------------
     //Change Password
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "api/user/change-password", method = RequestMethod.POST)
+    @RequestMapping(value = ApiConstants.USER_CHANGE_PASSWORD, method = RequestMethod.POST)
     public Map<String, Object> changePassword(@RequestBody ChangePasswordRequest changePassword) {
         try {
             userService.changePassword(changePassword);
-            return ResponseUtil.response("SUCCESS", "{}", "Password Changed Successfully");
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.USER_CHANGE_PASSWORD);
         } catch (PasswordMismatchException e) {
             e.printStackTrace();
-            return ResponseUtil.response("FAIL", null, e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
@@ -115,13 +117,13 @@ public class UserController {
     //Register
     //------------------------------------------------------------------------------------------------------------------
     @ApiOperation(value = "Register API", notes = "UserType=[TENANT,VENDOR,LANDLORD]")
-    @RequestMapping(value = "api/user/register", method = RequestMethod.POST)
+    @RequestMapping(value = ApiConstants.USER_REGISTER, method = RequestMethod.POST)
     public Map<String, Object> register(@RequestBody(required = false) UserRegisterRequest registerRequest) {
         try {
             userService.register(registerRequest);
-            return ResponseUtil.response("SUCCESS", "{}", "User Registered Successfully");
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.USER_REGISTER);
         } catch (UseAlreadyExistsException | IOException e) {
-            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
@@ -129,24 +131,24 @@ public class UserController {
     //Upload Profile Pic
     //------------------------------------------------------------------------------------------------------------------
     @ApiOperation(value = "Upload user profile pic", notes = "")
-    @RequestMapping(value = "api/user/profile/upload/image", method = RequestMethod.POST)
+    @RequestMapping(value = ApiConstants.USER_UPLOAD_PIC, method = RequestMethod.POST)
     public Map<String, Object> uploadProfilePicture(@RequestBody String base64Image) {
         try {
             String imagePath = userService.uploadProfilePic(base64Image);
-            return ResponseUtil.response("SUCCESS", imagePath, "Profile picture uploaded Successfully");
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, imagePath, DladleConstants.USER_UPLOAD_PIC);
         } catch (Exception e) {
-            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
     //------------------------------------------------------------------------------------------------------------------
     //Verify User
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "/verify/{emailId}/{hashedCode}", method = RequestMethod.GET)
+    @RequestMapping(value = ApiConstants.USER_VERIFY, method = RequestMethod.GET)
     public String verifyUser(@PathVariable String emailId, @PathVariable String hashedCode) throws IOException {
         try {
             userService.verify(emailId, hashedCode);
-            return "Verified";
+            return DladleConstants.USER_VERIFY;
         } catch (UserVerificationCodeNotMatchException e) {
             return e.getMessage();
         }
@@ -155,17 +157,17 @@ public class UserController {
     //------------------------------------------------------------------------------------------------------------------
     //Update User Profile
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "/api/user/tenant/update", method = RequestMethod.POST)
+    @RequestMapping(value = ApiConstants.USER_TENANT_UPDATE, method = RequestMethod.POST)
     public Map<String, Object> updateTenant(@RequestBody(required = false) UserUpdateRequest userUpdateRequest) throws IOException {
         try {
             int rows = userService.update(userUpdateRequest);
             if (rows == 1) {
-                return ResponseUtil.response("SUCCESS", "{}", "User Updated Successfully");
+                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.USER_UPDATE);
             } else {
-                return ResponseUtil.response("SUCCESS", "{}", "Unable to update User");
+                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.USER_UNABLE_UPDATE);
             }
         } catch (Exception e) {
-            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
@@ -174,17 +176,17 @@ public class UserController {
     //------------------------------------------------------------------------------------------------------------------
 
     @ApiOperation(value = "Update Landlord", notes = "HomeViewType=[HOME_VIEW_TYPE_1,HOME_VIEW_TYPE_2,HOME_VIEW_TYPE_3]")
-    @RequestMapping(value = "/api/user/landlord/update", method = RequestMethod.POST)
+    @RequestMapping(value = ApiConstants.USER_LANDLORD_UPDATE, method = RequestMethod.POST)
     public Map<String, Object> updateLandlord(@RequestBody(required = false) LandlordUpdateRequest landlordUpdateRequest) throws IOException {
         try {
             int rows = userService.update(landlordUpdateRequest);
             if (rows == 1) {
-                return ResponseUtil.response("SUCCESS", "{}", "LandLord Updated Successfully");
+                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.USER_UPDATE);
             } else {
-                return ResponseUtil.response("SUCCESS", "{}", "Unable to update LandLord");
+                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.USER_UNABLE_UPDATE);
             }
         } catch (Exception e) {
-            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
@@ -192,17 +194,17 @@ public class UserController {
     //Update Vendor Profile
     //------------------------------------------------------------------------------------------------------------------
     @ApiOperation(value = "Update Vendor", notes = "ServiceType=[PLUMBER, ELECTRICIAN,PAINTER],experienceType=[ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE,TEN,MORE_THAN_TEN] ")
-    @RequestMapping(value = "/api/user/vendor/update", method = RequestMethod.POST)
+    @RequestMapping(value = ApiConstants.USER_VENDOR_UPDATE, method = RequestMethod.POST)
     public Map<String, Object> updateVendor(@RequestBody(required = false) VendorUpdateRequest vendorUpdateRequest) throws IOException {
         try {
             int rows = userService.update(vendorUpdateRequest);
             if (rows == 1) {
-                return ResponseUtil.response("SUCCESS", "{}", "Vendor updated Successfully");
+                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.USER_UPDATE);
             } else {
-                return ResponseUtil.response("SUCCESS", "{}", "Unable to update Vendor");
+                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.USER_UNABLE_UPDATE);
             }
         } catch (Exception e) {
-            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
@@ -210,13 +212,13 @@ public class UserController {
     //Search for a User
     //------------------------------------------------------------------------------------------------------------------
     @ApiOperation(value = "Search User", notes = "Search")
-    @RequestMapping(value = "/api/user/search", method = RequestMethod.POST)
-    public Map<String, Object> updateVendor(@RequestBody UserSearchRequest userSearchRequest) throws IOException {
+    @RequestMapping(value = ApiConstants.USER_SEARCH, method = RequestMethod.POST)
+    public Map<String, Object> searchUser(@RequestBody UserSearchRequest userSearchRequest) throws IOException {
         try {
             List<UserSearchResponse> userSearchResponseList = userService.search(userSearchRequest);
-            return ResponseUtil.response("SUCCESS", userSearchResponseList, "User Fetched Successfully");
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, userSearchResponseList, DladleConstants.USER_SEARCH);
         } catch (Exception e) {
-            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
@@ -224,13 +226,13 @@ public class UserController {
     //Search for a User
     //------------------------------------------------------------------------------------------------------------------
     @ApiOperation(value = "Add Device Id", notes = "Add Device Id")
-    @RequestMapping(value = "/api/user/add/deviceid", method = RequestMethod.POST)
-    public Map<String, Object> updateVendor(@RequestParam String deviceId, @RequestParam(required = false) String emailId) throws IOException {
+    @RequestMapping(value = ApiConstants.USER_DEVICE_ADD, method = RequestMethod.POST)
+    public Map<String, Object> addDevice(@RequestParam String deviceId, @RequestParam(required = false) String emailId) throws IOException {
         try {
             userService.saveDeviceDetails(emailId, deviceId);
-            return ResponseUtil.response("SUCCESS", "", "Device Details Saved Successfully");
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, "", DladleConstants.USER_DEVICE_ADD);
         } catch (Exception e) {
-            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 }

@@ -4,6 +4,7 @@ package za.co.dladle.apiutil;
  * Created by prady on 6/18/2017.
  */
 public class ApiConstants {
+    public static final String WELCOME = "/welcome";
     //------------------------------------------------------------------------------------------------------------------
     //Lease API
     //------------------------------------------------------------------------------------------------------------------
@@ -39,12 +40,38 @@ public class ApiConstants {
     public static final String PROPERTY_ASSIGN = "/api/property/assign";
     public static final String PROPERTY_DECLINE = "/api/property/decline";
     //------------------------------------------------------------------------------------------------------------------
+    //Tenant API
+    //------------------------------------------------------------------------------------------------------------------
+    public static final String TENANT_CONTACT_ADD = "/api/contact/add";
+    public static final String TENANT_CONTACT_DELETE = "/api/contact/delete";
+    public static final String TENANT_CONTACT_LIST = "/api/contact/list";
+    public static final String TENANT_PROPERTY_REQUEST = "/api/property/request";
+
+    //------------------------------------------------------------------------------------------------------------------
     //Rating API
     //------------------------------------------------------------------------------------------------------------------
     public static final String RATING_VIEW = "/api/rating/view";
     public static final String RATING_VIEW_DETAILS = "/api/rating/view/details";
     public static final String RATING_POST = "/api/rating/post";
     public static final String RATING_UPDATE = "/api/rating/update";
+
+    //------------------------------------------------------------------------------------------------------------------
+    //User API
+    //------------------------------------------------------------------------------------------------------------------
+    public static final String USER_LOGIN = "api/user/login";
+    public static final String USER_DETAILS = "api/user/get/details";
+    public static final String USER_LOGOUT = "api/user/logout";
+    public static final String USER_FORGOT_PASSWORD = "api/user/forgot-password";
+    public static final String USER_RESET_PASSWORD = "api/user/reset-password";
+    public static final String USER_CHANGE_PASSWORD = "api/user/change-password";
+    public static final String USER_REGISTER = "api/user/register";
+    public static final String USER_UPLOAD_PIC = "api/user/profile/upload/image";
+    public static final String USER_VERIFY = "/verify/{emailId}/{hashedCode}";
+    public static final String USER_TENANT_UPDATE = "/api/user/tenant/update";
+    public static final String USER_LANDLORD_UPDATE = "/api/user/landlord/update";
+    public static final String USER_VENDOR_UPDATE = "/api/user/vendor/update";
+    public static final String USER_SEARCH = "/api/user/search";
+    public static final String USER_DEVICE_ADD = "/api/user/add/deviceid";
     //------------------------------------------------------------------------------------------------------------------
     //Wallet API
     //------------------------------------------------------------------------------------------------------------------

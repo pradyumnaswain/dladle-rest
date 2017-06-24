@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import za.co.dladle.apiutil.ApiConstants;
+import za.co.dladle.apiutil.DladleConstants;
 import za.co.dladle.entity.ContactAddRequest;
 import za.co.dladle.entity.DeleteContactRequest;
 import za.co.dladle.entity.PropertyRequest;
@@ -32,53 +34,52 @@ public class TenantController {
     //------------------------------------------------------------------------------------------------------------------
     //Add Contact
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "/api/contact/add", method = RequestMethod.POST)
+    @RequestMapping(value = ApiConstants.TENANT_CONTACT_ADD, method = RequestMethod.POST)
     public Map<String, Object> addContact(@RequestBody(required = false) ContactAddRequest contactAddRequest) throws IOException {
         try {
             Boolean aBoolean = contactService.addContact(contactAddRequest);
-            return ResponseUtil.response("SUCCESS", "{}", "Contacts Added Successfully");
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.TENANT_CONTACT_ADD);
         } catch (Exception e) {
-            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
     //------------------------------------------------------------------------------------------------------------------
     //Delete Contact
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "/api/contact/delete", method = RequestMethod.POST)
+    @RequestMapping(value = ApiConstants.TENANT_CONTACT_DELETE, method = RequestMethod.POST)
     public Map<String, Object> deleteContact(@RequestBody DeleteContactRequest deleteContactRequest) throws IOException {
         try {
             Boolean aBoolean = contactService.deleteContact(deleteContactRequest);
-            return ResponseUtil.response("SUCCESS", "{}", "Contacts deleted Successfully");
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.TENANT_CONTACT_DELETE);
         } catch (Exception e) {
-            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
     //------------------------------------------------------------------------------------------------------------------
     //List Property of a Landlord
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "/api/contact/list", method = RequestMethod.GET)
+    @RequestMapping(value = ApiConstants.TENANT_CONTACT_LIST, method = RequestMethod.GET)
     public Map<String, Object> listContact() throws IOException {
         try {
             List<TenantContactView> contactList = contactService.listContacts();
-            return ResponseUtil.response("SUCCESS", contactList, "Contacts listed Successfully");
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, contactList, DladleConstants.TENANT_CONTACT_LIST);
         } catch (Exception e) {
-            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
 
     //------------------------------------------------------------------------------------------------------------------
     //Invite Tenant to Property
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = "/api/property/request", method = RequestMethod.POST)
+    @RequestMapping(value = ApiConstants.TENANT_PROPERTY_REQUEST, method = RequestMethod.POST)
     public Map<String, Object> inviteTenantToProperty(@RequestBody PropertyRequest propertyRequest) throws IOException {
         try {
             propertyAssignmentService.requestLandlord(propertyRequest);
-            return ResponseUtil.response("SUCCESS", "{}", "Property Requested");
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.TENANT_PROPERTY_REQUEST);
         } catch (Exception e) {
-            return ResponseUtil.response("FAIL", "{}", e.getMessage());
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
-
 }

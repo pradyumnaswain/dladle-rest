@@ -41,12 +41,36 @@ public class DladleConstants {
     public static final String PROPERTY_ASSIGN = "Property Assigned";
     public static final String PROPERTY_DECLINE = "Property Declined";
     //------------------------------------------------------------------------------------------------------------------
+    //Tenant API
+    //------------------------------------------------------------------------------------------------------------------
+    public static final String TENANT_CONTACT_ADD = "Contacts Added Successfully";
+    public static final String TENANT_CONTACT_DELETE = "Contacts deleted Successfully";
+    public static final String TENANT_CONTACT_LIST = "Contacts listed Successfully";
+    public static final String TENANT_PROPERTY_REQUEST = "Property Requested";
+    //------------------------------------------------------------------------------------------------------------------
     //Rating
     //------------------------------------------------------------------------------------------------------------------
     public static final String RATING_VIEW = "Rate retrieved Successfully";
     public static final String RATING_VIEW_DETAILS = "Rate retrieved Successfully";
     public static final String RATING_POST = "Rate posted Successfully";
     public static final String RATING_UPDATE = "Rate updated Successfully";
+    //------------------------------------------------------------------------------------------------------------------
+    //User API
+    //------------------------------------------------------------------------------------------------------------------
+    public static final String USER_LOGIN = "Login Success";
+    public static final String USER_LOGIN_NOT_VERIFIED = "Please verify your Email to continue";
+    public static final String USER_DETAILS = "User details fetched Successfully";
+    public static final String USER_LOGOUT = "Logged Out Successfully";
+    public static final String USER_FORGOT_PASSWORD = "User Exists";
+    public static final String USER_RESET_PASSWORD = "Password Updated Successfully";
+    public static final String USER_CHANGE_PASSWORD = "Password Changed Successfully";
+    public static final String USER_REGISTER = "User Registered Successfully";
+    public static final String USER_UPLOAD_PIC = "Profile picture uploaded Successfully";
+    public static final String USER_VERIFY = "Verified";
+    public static final String USER_UPDATE = "User Updated Successfully";
+    public static final String USER_UNABLE_UPDATE = "Unable to update User";
+    public static final String USER_SEARCH = "User Fetched Successfully";
+    public static final String USER_DEVICE_ADD = "Device Details Saved Successfully";
     //------------------------------------------------------------------------------------------------------------------
     //Wallet API
     //------------------------------------------------------------------------------------------------------------------
