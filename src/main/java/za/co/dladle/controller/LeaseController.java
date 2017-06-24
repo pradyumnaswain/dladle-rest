@@ -77,7 +77,20 @@ public class LeaseController {
     public Map<String, Object> acceptLeaseTerminate(@RequestBody LeaseTerminateRequest leaseTerminateRequest) throws IOException {
         try {
             leaseService.acceptTerminateLease(leaseTerminateRequest);
-            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, true, DladleConstants.LEASE_TERMINATE);
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, true, DladleConstants.LEASE_TERMINATE_ACCEPT);
+        } catch (Exception e) {
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Lease Terminate Request
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = ApiConstants.LEASE_TERMINATE_REJECT, method = RequestMethod.POST)
+    public Map<String, Object> rejectLeaseTerminate(@RequestBody LeaseTerminateRequest leaseTerminateRequest) throws IOException {
+        try {
+            leaseService.rejectTerminateLease(leaseTerminateRequest);
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, true, DladleConstants.LEASE_TERMINATE_REJECT);
         } catch (Exception e) {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
@@ -102,7 +115,7 @@ public class LeaseController {
     @RequestMapping(value = ApiConstants.LEASE_LEAVE_LANDLORD, method = RequestMethod.POST)
     public Map<String, Object> leaveLeaseByLandlord(@RequestBody LeaseRemoveTenant leaseRemoveTenant) throws IOException {
         try {
-            leaseService.leaveLease(leaseRemoveTenant.getEmailId());
+            leaseService.removeTenantFromLease(leaseRemoveTenant.getEmailId());
             return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, true, DladleConstants.LEASE_LEAVE);
         } catch (Exception e) {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());

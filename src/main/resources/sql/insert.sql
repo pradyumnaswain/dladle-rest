@@ -36,4 +36,6 @@ INSERT INTO notification_type (id, name) VALUES (9, 'Tenant Rejects Lease Termin
 INSERT INTO notification_type (id, name) VALUES (10, 'Lease Terminate Request from Tenant to Landlord');
 INSERT INTO notification_type (id, name) VALUES (11, 'Landlord Accepts Lease Termination');
 INSERT INTO notification_type (id, name) VALUES (12, 'Landlord Rejects Lease Termination');
+INSERT INTO notification_type (id, name) VALUES (13, 'Landlord removes Tenat from Lease');
+INSERT INTO notification_type (id, name) VALUES (14, 'Tenant Leaves Lease');
 

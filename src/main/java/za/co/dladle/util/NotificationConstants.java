@@ -14,5 +14,13 @@ public class NotificationConstants {
     public static final String PROPERTY_ACCEPTED_BODY = "Please check Dladle App for more";
     public static final String PROPERTY_REJECTED_TITLE = "Property Request/invite Declined";
     public static final String PROPERTY_REJECTED_BODY = "Please check Dladle App for more";
+    public static final String LEASE_REMOVES_TENANT_TITLE = "You are being removed from the Property";
+    public static final String LEASE_REMOVES_TENANT_BODY = "Please check Dladle App for more";
+    public static final String LEASE_LEAVES_TENANT_TITLE = "Your Tenant left Property";
+    public static final String LEASE_LEAVES_TENANT_BODY = "Please check Dladle App for more";
+    public static final String LEASE_TERMINATE_TENANT_ACCEPT_TITLE = "Your Tenant accepted Lease Termination";
+    public static final String LEASE_TERMINATE_TENANT_ACCEPT_BODY = "Please check Dladle App for more";
+    public static final String LEASE_TERMINATE_TENANT_REJECT_TITLE = "Your Tenant rejected Lease Termination";
+    public static final String LEASE_TERMINATE_TENANT_REJECT_BODY = "Please check Dladle App for more";
 
 }

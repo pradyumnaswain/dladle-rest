@@ -32,6 +32,10 @@ public class NotificationTypeMapper {
                 return 11;
             case LEASE_TERMINATE_LANDLORD_REJECT:
                 return 12;
+            case LEASE_REMOVES_TENANT:
+                return 13;
+            case LEASE_LEAVES_TENANT:
+                return 14;
             default:
                 return null;
         }
