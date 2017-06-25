@@ -180,12 +180,18 @@ public class LeaseService {
             this.jdbcTemplate.update(sql1, map);
 
         } catch (Exception e) {
+            LocalDate leaseStartDate;
+            if (LocalDate.now().getDayOfMonth() >= 15) {
+                leaseStartDate = LocalDate.now().plusMonths(1).withDayOfMonth(1);
+            } else {
+                leaseStartDate = LocalDate.now().plusMonths(0).withDayOfMonth(1);
+            }
             KeyHolder keyHolder = new GeneratedKeyHolder();
             MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource().addValue("houseId", houseId)
                     .addValue("leaseStartDate", LocalDate.now())
-                    .addValue("leaseEndDate", LocalDate.now().plusYears(1))
-                    .addValue("leaseRenewalDate", LocalDate.now().plusYears(1).plusDays(1))
-                    .addValue("leaseRenewalNotificationDate", LocalDate.now().plusMonths(11));
+                    .addValue("leaseEndDate", leaseStartDate)
+                    .addValue("leaseRenewalDate", leaseStartDate.plusYears(1).plusDays(1))
+                    .addValue("leaseRenewalNotificationDate", leaseStartDate.plusMonths(11));
 
             String sql2 = "INSERT INTO lease(lease_start_date, lease_end_date, lease_renewal_date,lease_renewal_notification_date, house_id, lease_status) VALUES (:leaseStartDate,:leaseEndDate,:leaseRenewalDate,:leaseRenewalNotificationDate,:houseId,TRUE ) ON CONFLICT DO NOTHING ";
             this.jdbcTemplate.update(sql2, mapSqlParameterSource, keyHolder, new String[]{"id"});
