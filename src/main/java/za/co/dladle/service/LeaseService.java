@@ -188,7 +188,7 @@ public class LeaseService {
             }
             KeyHolder keyHolder = new GeneratedKeyHolder();
             MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource().addValue("houseId", houseId)
-                    .addValue("leaseStartDate", LocalDate.now())
+                    .addValue("leaseStartDate", leaseStartDate)
                     .addValue("leaseEndDate", leaseStartDate)
                     .addValue("leaseRenewalDate", leaseStartDate.plusYears(1).plusDays(1))
                     .addValue("leaseRenewalNotificationDate", leaseStartDate.plusMonths(11));
@@ -287,7 +287,7 @@ public class LeaseService {
                         String sql1 = "SELECT device_id,emailid FROM user_dladle INNER JOIN tenant ON user_dladle.id = tenant.user_id " +
                                 "INNER JOIN lease_tenant ON lease_tenant.tenant_id = tenant.id " +
                                 "INNER JOIN house ON house.id= tenant.house_id " +
-                                "WHERE house.id=:houseId and lease_status=TRUE";
+                                "WHERE house.id=:houseId AND lease_status=TRUE";
 
                         List<UserDeviceEmailId> deviceEmailIdList = this.jdbcTemplate.query(sql1, map, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
                         for (UserDeviceEmailId deviceEmailId : deviceEmailIdList) {
@@ -345,59 +345,116 @@ public class LeaseService {
         map.put("leaveDate", LocalDateTime.now());
 
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
-        String sqlLease = "UPDATE lease SET lease_status=FALSE,lease_terminate_date=:leaveDate WHERE lease.id=:leaseId AND lease.house_id=:houseId AND lease_status=TRUE ";
 
-        this.jdbcTemplate.update(sqlLease, map);
+        if (userSession.getUser().getUserType().eqTENANT()) {
+            String sqlLease = "UPDATE lease SET lease_status=FALSE,lease_terminate_date=:leaveDate WHERE lease.id=:leaseId AND lease.house_id=:houseId AND lease_status=TRUE ";
 
-        String sqlLeaseTenant = "UPDATE lease_tenant SET lease_status=FALSE,leave_date=:leaveDate WHERE lease_tenant.lease_id=:leaseId AND lease_status=TRUE ";
+            this.jdbcTemplate.update(sqlLease, map);
 
-        this.jdbcTemplate.update(sqlLeaseTenant, map);
+            String sqlLeaseTenant = "UPDATE lease_tenant SET lease_status=FALSE,leave_date=:leaveDate WHERE lease_tenant.lease_id=:leaseId AND lease_status=TRUE ";
 
-        String sqlTenant = "UPDATE tenant SET house_id=NULL WHERE tenant.id IN (SELECT lease_tenant.tenant_id FROM lease_tenant WHERE lease_tenant.lease_id=:leaseId AND lease_status=FALSE )";
+            this.jdbcTemplate.update(sqlLeaseTenant, map);
 
-        this.jdbcTemplate.update(sqlTenant, map);
-        try {
-            String sql1 = "SELECT device_id,emailid FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id " +
-                    "INNER JOIN property ON landlord.id = property.landlord_id " +
-                    "INNER JOIN house ON house.property_id = property.id " +
-                    "WHERE house.id=:houseId";
+            String sqlTenant = "UPDATE tenant SET house_id=NULL WHERE tenant.id IN (SELECT lease_tenant.tenant_id FROM lease_tenant WHERE lease_tenant.lease_id=:leaseId AND lease_status=FALSE )";
 
-            UserDeviceEmailId deviceEmailId = this.jdbcTemplate.queryForObject(sql1, map, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
-            //save notification
-            NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
-                    deviceEmailId.getEmailId(),
-                    NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_TITLE,
-                    NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_BODY,
-                    "tenantEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + leaseTerminateRequest.getHouseId() + "," + "leaseId:" + leaseTerminateRequest.getLeaseId(),
-                    "", String.valueOf(leaseTerminateRequest.getHouseId()), NotificationType.LEASE_TERMINATE_TENANT_ACCEPT);
-            notificationService.saveNotification(notifications);
+            this.jdbcTemplate.update(sqlTenant, map);
+            try {
+                String sql1 = "SELECT device_id,emailid FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id " +
+                        "INNER JOIN property ON landlord.id = property.landlord_id " +
+                        "INNER JOIN house ON house.property_id = property.id " +
+                        "WHERE house.id=:houseId";
 
-            //Send Email
-            emailService.sendNotificationMail(deviceEmailId.getEmailId(), NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_TITLE, NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_BODY);
+                UserDeviceEmailId deviceEmailId = this.jdbcTemplate.queryForObject(sql1, map, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
+                //save notification
+                NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
+                        deviceEmailId.getEmailId(),
+                        NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_TITLE,
+                        NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_BODY,
+                        "tenantEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + leaseTerminateRequest.getHouseId() + "," + "leaseId:" + leaseTerminateRequest.getLeaseId(),
+                        "", String.valueOf(leaseTerminateRequest.getHouseId()), NotificationType.LEASE_TERMINATE_TENANT_ACCEPT);
+                notificationService.saveNotification(notifications);
 
-            if (deviceEmailId.getDeviceId() != null) {
-                JSONObject body = new JSONObject();
-                body.put("to", deviceEmailId.getDeviceId());
-                body.put("priority", "high");
+                //Send Email
+                emailService.sendNotificationMail(deviceEmailId.getEmailId(), NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_TITLE, NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_BODY);
 
-                JSONObject notification = new JSONObject();
-                notification.put("body", NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_BODY);
-                notification.put("title", NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_TITLE);
+                if (deviceEmailId.getDeviceId() != null) {
+                    JSONObject body = new JSONObject();
+                    body.put("to", deviceEmailId.getDeviceId());
+                    body.put("priority", "high");
 
-                JSONObject data = new JSONObject();
-                data.put("tenantEmailId", userSession.getUser().getEmailId());
-                data.put("houseId", leaseTerminateRequest.getHouseId());
-                data.put("leaseId", leaseTerminateRequest.getLeaseId());
+                    JSONObject notification = new JSONObject();
+                    notification.put("body", NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_BODY);
+                    notification.put("title", NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_TITLE);
 
-                body.put("notification", notification);
-                body.put("data", data);
+                    JSONObject data = new JSONObject();
+                    data.put("tenantEmailId", userSession.getUser().getEmailId());
+                    data.put("houseId", leaseTerminateRequest.getHouseId());
+                    data.put("leaseId", leaseTerminateRequest.getLeaseId());
 
-                pushNotificationsService.sendNotification(body);
-            } else {
+                    body.put("notification", notification);
+                    body.put("data", data);
+
+                    pushNotificationsService.sendNotification(body);
+                } else {
+                    System.out.println("Device Id can't be null");
+                }
+            } catch (Exception e) {
                 System.out.println("Device Id can't be null");
             }
-        } catch (Exception e) {
-            System.out.println("Device Id can't be null");
+        } else {
+            String sqlLease = "UPDATE lease SET lease_status=FALSE,lease_terminate_date=:leaveDate WHERE lease.id=:leaseId AND lease.house_id=:houseId AND lease_status=TRUE ";
+
+            this.jdbcTemplate.update(sqlLease, map);
+
+            String sqlLeaseTenant = "UPDATE lease_tenant SET lease_status=FALSE,leave_date=:leaveDate WHERE lease_tenant.lease_id=:leaseId AND lease_status=TRUE ";
+
+            this.jdbcTemplate.update(sqlLeaseTenant, map);
+
+            String sqlTenant = "UPDATE tenant SET house_id=NULL WHERE tenant.id IN (SELECT lease_tenant.tenant_id FROM lease_tenant WHERE lease_tenant.lease_id=:leaseId AND lease_status=FALSE )";
+
+            this.jdbcTemplate.update(sqlTenant, map);
+            try {
+                String sql1 = "SELECT device_id,emailid FROM user_dladle INNER JOIN tenant ON user_dladle.id = tenant.user_id " +
+                        "INNER JOIN house ON tenant.house_id = house.id " +
+                        "WHERE house.id=:houseId";
+
+                UserDeviceEmailId deviceEmailId = this.jdbcTemplate.queryForObject(sql1, map, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
+                //save notification
+                NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
+                        deviceEmailId.getEmailId(),
+                        NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_TITLE,
+                        NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_BODY,
+                        "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + leaseTerminateRequest.getHouseId() + "," + "leaseId:" + leaseTerminateRequest.getLeaseId(),
+                        "", String.valueOf(leaseTerminateRequest.getHouseId()), NotificationType.LEASE_TERMINATE_TENANT_ACCEPT);
+                notificationService.saveNotification(notifications);
+
+                //Send Email
+                emailService.sendNotificationMail(deviceEmailId.getEmailId(), NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_TITLE, NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_BODY);
+
+                if (deviceEmailId.getDeviceId() != null) {
+                    JSONObject body = new JSONObject();
+                    body.put("to", deviceEmailId.getDeviceId());
+                    body.put("priority", "high");
+
+                    JSONObject notification = new JSONObject();
+                    notification.put("body", NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_BODY);
+                    notification.put("title", NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_TITLE);
+
+                    JSONObject data = new JSONObject();
+                    data.put("landlordEmailId", userSession.getUser().getEmailId());
+                    data.put("houseId", leaseTerminateRequest.getHouseId());
+                    data.put("leaseId", leaseTerminateRequest.getLeaseId());
+
+                    body.put("notification", notification);
+                    body.put("data", data);
+
+                    pushNotificationsService.sendNotification(body);
+                } else {
+                    System.out.println("Device Id can't be null");
+                }
+            } catch (Exception e) {
+                System.out.println("Device Id can't be null");
+            }
         }
     }
 
@@ -414,59 +471,75 @@ public class LeaseService {
             map.put("userId", tenantId);
             map.put("leaveDate", LocalDateTime.now());
 
-            String sqlLeaseTenant = "UPDATE lease_tenant SET lease_status=FALSE,leave_date=:leaveDate WHERE lease_tenant.tenant_id=:userId AND lease_status=TRUE ";
+            String sql1 = "SELECT device_id,emailid FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id " +
+                    "INNER JOIN property ON landlord.id = property.landlord_id " +
+                    "INNER JOIN house ON house.property_id = property.id " +
+                    "INNER JOIN tenant ON house.id = tenant.house_id " +
+                    "WHERE tenant.id=:userId";
 
-            this.jdbcTemplate.update(sqlLeaseTenant, map);
+            UserDeviceEmailId userDeviceEmailId = this.jdbcTemplate.queryForObject(sql1, map, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
 
-            String sqlTenant = "UPDATE tenant SET house_id=NULL WHERE tenant.id=:userId";
+            String sql2 = "SELECT tenants_count FROM house INNER JOIN lease ON house.id = lease.house_id " +
+                    "INNER JOIN lease_tenant ON lease.id = lease_tenant.lease_id WHERE tenant_id=:userId AND lease.lease_status=TRUE AND lease_tenant.lease_status=TRUE ";
 
-            this.jdbcTemplate.update(sqlTenant, map);
-            try {
-                String sql1 = "SELECT device_id,emailid FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id " +
-                        "INNER JOIN property ON landlord.id = property.landlord_id " +
-                        "INNER JOIN house ON house.property_id = property.id " +
-                        "INNER JOIN tenant ON house.id = tenant.house_id " +
-                        "WHERE tenant.id=:userId";
+            int tenantCount = this.jdbcTemplate.queryForObject(sql2, map, Integer.class);
 
-                UserDeviceEmailId userDeviceEmailId = this.jdbcTemplate.queryForObject(sql1, map, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
-                //save notification
-                NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
-                        userDeviceEmailId.getEmailId(),
-                        NotificationConstants.LEASE_LEAVES_TENANT_TITLE,
-                        NotificationConstants.LEASE_LEAVES_TENANT_BODY,
-                        "tenantEmailId:" + userSession.getUser().getEmailId(),
-                        "", null, NotificationType.LEASE_LEAVES_TENANT);
-                notificationService.saveNotification(notifications);
+            if (tenantCount == 1) {
+                String sql3 = "SELECT * FROM lease INNER JOIN lease_tenant ON lease.id = lease_tenant.lease_id WHERE tenant_id=:userId AND lease.lease_status=TRUE AND lease_tenant.lease_status=TRUE ";
+
+                LeaseTerminateRequest leaseTerminateRequest = this.jdbcTemplate.queryForObject(sql3, map, (rs, rowNum) -> new LeaseTerminateRequest(rs.getLong("house_id"), rs.getLong("lease_id")));
+
+                terminateLease(leaseTerminateRequest);
+            } else {
+
+                String sqlLeaseTenant = "UPDATE lease_tenant SET lease_status=FALSE,leave_date=:leaveDate WHERE lease_tenant.tenant_id=:userId AND lease_status=TRUE ";
+
+                this.jdbcTemplate.update(sqlLeaseTenant, map);
+
+                String sqlTenant = "UPDATE tenant SET house_id=NULL WHERE tenant.id=:userId";
+
+                this.jdbcTemplate.update(sqlTenant, map);
+                try {
+                    //save notification
+                    NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
+                            userDeviceEmailId.getEmailId(),
+                            NotificationConstants.LEASE_LEAVES_TENANT_TITLE,
+                            NotificationConstants.LEASE_LEAVES_TENANT_BODY,
+                            "tenantEmailId:" + userSession.getUser().getEmailId(),
+                            "", null, NotificationType.LEASE_LEAVES_TENANT);
+                    notificationService.saveNotification(notifications);
 // TODO: 6/24/2017 update Notification Type
-                //Send Email
-                emailService.sendNotificationMail(emailId, NotificationConstants.LEASE_LEAVES_TENANT_TITLE, NotificationConstants.LEASE_LEAVES_TENANT_BODY);
+                    //Send Email
+                    emailService.sendNotificationMail(emailId, NotificationConstants.LEASE_LEAVES_TENANT_TITLE, NotificationConstants.LEASE_LEAVES_TENANT_BODY);
 
-                if (userDeviceEmailId.getDeviceId() != null) {
-                    JSONObject body = new JSONObject();
-                    body.put("to", userDeviceEmailId.getDeviceId());
-                    body.put("priority", "high");
+                    if (userDeviceEmailId.getDeviceId() != null) {
+                        JSONObject body = new JSONObject();
+                        body.put("to", userDeviceEmailId.getDeviceId());
+                        body.put("priority", "high");
 
-                    JSONObject notification = new JSONObject();
-                    notification.put("body", NotificationConstants.LEASE_LEAVES_TENANT_BODY);
-                    notification.put("title", NotificationConstants.LEASE_LEAVES_TENANT_TITLE);
+                        JSONObject notification = new JSONObject();
+                        notification.put("body", NotificationConstants.LEASE_LEAVES_TENANT_BODY);
+                        notification.put("title", NotificationConstants.LEASE_LEAVES_TENANT_TITLE);
 
-                    JSONObject data = new JSONObject();
-                    data.put("tenantEmailId", userSession.getUser().getEmailId());
+                        JSONObject data = new JSONObject();
+                        data.put("tenantEmailId", userSession.getUser().getEmailId());
 
-                    body.put("notification", notification);
-                    body.put("data", data);
+                        body.put("notification", notification);
+                        body.put("data", data);
 
-                    pushNotificationsService.sendNotification(body);
-                } else {
+                        pushNotificationsService.sendNotification(body);
+                    } else {
+                        System.out.println("Device Id can't be null");
+                    }
+                } catch (Exception e) {
                     System.out.println("Device Id can't be null");
                 }
-            } catch (Exception e) {
-                System.out.println("Device Id can't be null");
             }
         } else {
             throw new Exception("You must be a Tenant to access this");
         }
     }
+
 
     public void removeTenantFromLease(String emailId) throws Exception {
         Map<String, Object> map = new HashMap<>();

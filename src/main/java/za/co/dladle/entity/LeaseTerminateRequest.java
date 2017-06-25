@@ -7,6 +7,7 @@ public class LeaseTerminateRequest {
     private long houseId;
     private long leaseId;
 
+
     public long getHouseId() {
         return houseId;
     }
@@ -24,5 +25,10 @@ public class LeaseTerminateRequest {
     }
 
     public LeaseTerminateRequest() {
+    }
+
+    public LeaseTerminateRequest(long houseId, long leaseId) {
+        this.houseId = houseId;
+        this.leaseId = leaseId;
     }
 }
