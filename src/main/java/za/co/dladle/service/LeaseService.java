@@ -280,8 +280,8 @@ public class LeaseService {
                     try {
                         String sql1 = "SELECT device_id,emailid FROM user_dladle INNER JOIN tenant ON user_dladle.id = tenant.user_id " +
                                 "INNER JOIN lease_tenant ON lease_tenant.tenant_id = tenant.id " +
-                                "INNER JOIN lease ON lease.id= lease_tenant.lease_id " +
-                                "WHERE house.id=:houseId";
+                                "INNER JOIN house ON house.id= tenant.house_id " +
+                                "WHERE house.id=:houseId and lease_status=TRUE";
 
                         List<UserDeviceEmailId> deviceEmailIdList = this.jdbcTemplate.query(sql1, map, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
                         for (UserDeviceEmailId deviceEmailId : deviceEmailIdList) {
@@ -484,7 +484,6 @@ public class LeaseService {
             try {
                 String sql1 = "SELECT device_id FROM user_dladle WHERE emailid=:emailId";
 
-                String deviceId = this.jdbcTemplate.queryForObject(sql1, map, String.class);
                 //save notification
                 NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
                         emailId,
@@ -497,6 +496,7 @@ public class LeaseService {
                 //Send Email
                 emailService.sendNotificationMail(emailId, NotificationConstants.LEASE_REMOVES_TENANT_TITLE, NotificationConstants.LEASE_REMOVES_TENANT_BODY);
 
+                String deviceId = this.jdbcTemplate.queryForObject(sql1, map, String.class);
                 if (deviceId != null) {
                     JSONObject body = new JSONObject();
                     body.put("to", deviceId);
