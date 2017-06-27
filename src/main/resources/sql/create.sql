@@ -246,12 +246,20 @@ CREATE TABLE service
   FOREIGN KEY (service_requester_user_id) REFERENCES user_dladle (id),
   FOREIGN KEY (service_paid_user_id) REFERENCES user_dladle (id)
 );
-CREATE TABLE service_images_and_voice_notes
+DROP TABLE service_images_and_voice_notes;
+CREATE TABLE service_documents
 (
-  id         BIGSERIAL PRIMARY KEY NOT NULL,
-  service_id BIGINT,
-  url        VARCHAR(500),
-  FOREIGN KEY (service_id) REFERENCES service (id)
+  id            BIGSERIAL PRIMARY KEY NOT NULL,
+  service_id    BIGINT,
+  url           VARCHAR(500),
+  document_type BIGINT,
+  FOREIGN KEY (service_id) REFERENCES service (id),
+  FOREIGN KEY (document_type) REFERENCES document_type (id)
+);
+CREATE TABLE document_type
+(
+  id   BIGINT PRIMARY KEY NOT NULL,
+  name VARCHAR(20)
 );
 CREATE TABLE vendor_work_timeline
 (

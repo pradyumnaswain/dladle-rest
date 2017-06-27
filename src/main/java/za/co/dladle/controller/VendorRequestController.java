@@ -29,7 +29,6 @@ public class VendorRequestController {
     @RequestMapping(value = ApiConstants.REQUEST_VENDOR, method = RequestMethod.POST)
     public Map<String, Object> requestVendor(@RequestBody VendorServiceRequest vendorServiceRequest) throws IOException {
         try {
-            System.out.println("Hel");
             vendorService.requestVendor(vendorServiceRequest);
             return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.REQUEST_VENDOR);
         } catch (Exception e) {

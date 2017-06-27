@@ -7,10 +7,12 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
+import za.co.dladle.entity.ServiceDocuments;
 import za.co.dladle.entity.VendorOnWork;
 import za.co.dladle.entity.VendorServiceRequest;
 import za.co.dladle.entity.VendorWorkStatus;
 import za.co.dladle.exception.UserNotFoundException;
+import za.co.dladle.mapper.DocumentTypeMapper;
 import za.co.dladle.mapper.ServiceStatusMapper;
 import za.co.dladle.mapper.ServiceTypeMapper;
 import za.co.dladle.model.ServiceStatus;
@@ -79,20 +81,21 @@ public class VendorService {
 
         this.jdbcTemplate.update(sql, mapSqlParameterSource, keyHolder, new String[]{"id"});
 
-        if (vendorServiceRequest.getJobImagesAndVoiceNotes() != null) {
+        if (vendorServiceRequest.getServiceDocuments() != null) {
             List<Map<String, Object>> list = new ArrayList<>();
-            for (String file : vendorServiceRequest.getJobImagesAndVoiceNotes()) {
+            for (ServiceDocuments file : vendorServiceRequest.getServiceDocuments()) {
                 Map<String, Object> map = new HashMap<>();
 
-                String imageUrl = fileManagementServiceCloudinary.upload(file);
+                String imageUrl = fileManagementServiceCloudinary.upload(file.getBase64());
 
                 map.put("serviceId", keyHolder.getKey().longValue());
                 map.put("imageUrl", imageUrl);
+                map.put("documentType", DocumentTypeMapper.getDocumentType(file.getDocumentType()));
 
                 list.add(map);
             }
-            String sql1 = "INSERT INTO service_images_and_voice_notes (service_id, url) VALUES (:serviceId,:imageUrl)";
-            this.jdbcTemplate.batchUpdate(sql1, list.toArray(new Map[vendorServiceRequest.getJobImagesAndVoiceNotes().size()]));
+            String sql1 = "INSERT INTO service_documents (service_id, url,document_type) VALUES (:serviceId,:imageUrl,:documentType)";
+            this.jdbcTemplate.batchUpdate(sql1, list.toArray(new Map[vendorServiceRequest.getServiceDocuments().size()]));
         }
     }
 

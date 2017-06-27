@@ -2,7 +2,6 @@ package za.co.dladle.entity;
 
 import za.co.dladle.model.ServiceType;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -13,7 +12,7 @@ public class VendorServiceRequest {
     private boolean ownPay;
     private String serviceNeedTime;
     private ServiceType serviceType;
-    private List<String> jobImagesAndVoiceNotes;
+    private List<ServiceDocuments> serviceDocuments;
     private String serviceNote;
 
     public VendorServiceRequest() {
@@ -51,12 +50,12 @@ public class VendorServiceRequest {
         this.serviceType = serviceType;
     }
 
-    public List<String> getJobImagesAndVoiceNotes() {
-        return jobImagesAndVoiceNotes;
+    public List<ServiceDocuments> getServiceDocuments() {
+        return serviceDocuments;
     }
 
-    public void setJobImagesAndVoiceNotes(List<String> jobImagesAndVoiceNotes) {
-        this.jobImagesAndVoiceNotes = jobImagesAndVoiceNotes;
+    public void setServiceDocuments(List<ServiceDocuments> serviceDocuments) {
+        this.serviceDocuments = serviceDocuments;
     }
 
     public String getServiceNote() {

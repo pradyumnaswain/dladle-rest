@@ -40,3 +40,6 @@ INSERT INTO notification_type (id, name) VALUES (13, 'Landlord removes Tenat fro
 INSERT INTO notification_type (id, name) VALUES (14, 'Tenant Leaves Lease');
 
 INSERT INTO service_status (id, name) VALUES (1, 'Requested');
+
+INSERT INTO document_type (id, name) VALUES (1, 'Audio');
+INSERT INTO document_type (id, name) VALUES (2, 'Image');
