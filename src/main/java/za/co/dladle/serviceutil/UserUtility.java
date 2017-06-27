@@ -68,4 +68,16 @@ public class UserUtility {
             throw new UserNotFoundException("User doesn't exist");
         }
     }
+    //------------------------------------------------------------------------------------------------------------------
+    //Find Vendor Id By Email Id
+    //------------------------------------------------------------------------------------------------------------------
+    public Long findVendorIdByEmail(String emailId) throws UserNotFoundException {
+
+        try {
+            String sql = "SELECT vendor.id vendor_id FROM user_dladle INNER JOIN vendor ON user_dladle.id = vendor.user_id WHERE emailid=?";
+            return this.jdbcTemplate.queryForObject(sql, new Object[]{emailId.toLowerCase()}, (rs, rowNum) -> rs.getLong("vendor_id"));
+        } catch (EmptyResultDataAccessException e) {
+            throw new UserNotFoundException("User doesn't exist");
+        }
+    }
 }

@@ -392,5 +392,4 @@ public class UserService {
             throw new UseAlreadyExistsException("User already Exists");
         }
     }
-
 }

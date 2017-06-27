@@ -80,5 +80,11 @@ public class ApiConstants {
     public static final String CARD_UPDATE = "/api/wallet/update/card";
     public static final String CARD_DELETE = "/api/wallet/delete/card";
     public static final String CARD_VIEW = "/api/wallet/view/card";
-
+    //------------------------------------------------------------------------------------------------------------------
+    //Vendor API
+    //------------------------------------------------------------------------------------------------------------------
+    public static final String REQUEST_VENDOR = "/api/vendor/post/request";
+    public static final String VENDOR_ON_WORK = "/api/vendor/on/work";
+    public static final String VENDOR_OFF_WORK = "/api/vendor/off/work";
+    public static final String VENDOR_CURRENT_STATUS = "/api/vendor/work/status";
 }

@@ -1,0 +1,148 @@
+package za.co.dladle.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Service;
+import za.co.dladle.entity.VendorOnWork;
+import za.co.dladle.entity.VendorServiceRequest;
+import za.co.dladle.entity.VendorWorkStatus;
+import za.co.dladle.exception.UserNotFoundException;
+import za.co.dladle.mapper.ServiceStatusMapper;
+import za.co.dladle.mapper.ServiceTypeMapper;
+import za.co.dladle.model.ServiceStatus;
+import za.co.dladle.serviceutil.UserUtility;
+import za.co.dladle.session.UserSession;
+import za.co.dladle.thirdparty.FileManagementServiceCloudinaryImpl;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by prady on 6/27/2017.
+ */
+@Service
+public class VendorService {
+
+    @Autowired
+    private NamedParameterJdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    @Autowired
+    private UserUtility userUtility;
+
+    @Autowired
+    private FileManagementServiceCloudinaryImpl fileManagementServiceCloudinary;
+
+
+    public void requestVendor(VendorServiceRequest vendorServiceRequest) throws UserNotFoundException, IOException {
+
+        UserSession session = applicationContext.getBean(UserSession.class);
+
+        Long userId = userUtility.findUserIdByEmail(session.getUser().getEmailId());
+
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
+                .addValue("serviceType", ServiceTypeMapper.getServiceType(vendorServiceRequest.getServiceType()))
+                .addValue("serviceRequestTime", LocalDateTime.now())
+                .addValue("requestUserId", userId);
+
+        if (vendorServiceRequest.isOwnPay()) {
+            mapSqlParameterSource.addValue("paidUserId", userId);
+        } else {
+            String sql = "SELECT landlord.id FROM landlord INNER JOIN property ON landlord.id = property.landlord_id " +
+                    "INNER JOIN house ON property.id = house.property_id " +
+                    "INNER JOIN tenant ON house.id = tenant.house_id " +
+                    "INNER JOIN user_dladle ON tenant.user_id = user_dladle.id " +
+                    "WHERE user_dladle.id=:userId";
+            Long landlordId = this.jdbcTemplate.queryForObject(sql, mapSqlParameterSource, Long.class);
+            mapSqlParameterSource.addValue("paidUserId", landlordId);
+        }
+        mapSqlParameterSource.addValue("serviceStatus", ServiceStatusMapper.getServiceStatus(ServiceStatus.REQUESTED))
+                .addValue("emergency", vendorServiceRequest.isEmergency())
+                .addValue("description", vendorServiceRequest.getServiceNote())
+                .addValue("needTime", vendorServiceRequest.getServiceNeedTime());
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+
+        String sql = "INSERT INTO service(service_type_id, service_request_time, service_requester_user_id, service_paid_user_id , service_status_id, service_need_time, emergency, service_description) " +
+                "VALUES (:serviceType,:serviceRequestTime,:requestUserId,:paidUserId,:serviceStatus,:needTime,:emergency,:description)";
+
+        this.jdbcTemplate.update(sql, mapSqlParameterSource, keyHolder, new String[]{"id"});
+
+        if (vendorServiceRequest.getJobImagesAndVoiceNotes() != null) {
+            List<Map<String, Object>> list = new ArrayList<>();
+            for (String file : vendorServiceRequest.getJobImagesAndVoiceNotes()) {
+                Map<String, Object> map = new HashMap<>();
+
+                String imageUrl = fileManagementServiceCloudinary.upload(file);
+
+                map.put("serviceId", keyHolder.getKey().longValue());
+                map.put("imageUrl", imageUrl);
+
+                list.add(map);
+            }
+            String sql1 = "INSERT INTO service_images_and_voice_notes (service_id, url) VALUES (:serviceId,:imageUrl)";
+            this.jdbcTemplate.batchUpdate(sql1, list.toArray(new Map[vendorServiceRequest.getJobImagesAndVoiceNotes().size()]));
+        }
+    }
+
+    public void onWork(VendorOnWork vendorOnWork) throws UserNotFoundException {
+        UserSession session = applicationContext.getBean(UserSession.class);
+
+        Long userId = userUtility.findVendorIdByEmail(session.getUser().getEmailId());
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("vendorId", userId);
+        map.put("time", LocalDateTime.now());
+        map.put("location", vendorOnWork.getCurrentLocation());
+
+        String sql = "SELECT count(*) FROM vendor_work_timeline WHERE vendor_id=:vendorId AND current_work_status=TRUE ";
+        Integer count = this.jdbcTemplate.queryForObject(sql, map, Integer.class);
+        if (count == 0) {
+            String sql1 = "INSERT INTO vendor_work_timeline(vendor_id, current_work_status, on_work_from, current_location) VALUES " +
+                    "(:vendorId,TRUE ,:time,:location)";
+            this.jdbcTemplate.update(sql1, map);
+        }
+    }
+
+    public void offWork() throws UserNotFoundException {
+        UserSession session = applicationContext.getBean(UserSession.class);
+
+        Long userId = userUtility.findVendorIdByEmail(session.getUser().getEmailId());
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("vendorId", userId);
+        map.put("time", LocalDateTime.now());
+
+        String sql1 = "UPDATE vendor_work_timeline SET current_work_status=FALSE ,on_work_to=:time WHERE vendor_id=:vendorId AND current_work_status=TRUE ";
+        this.jdbcTemplate.update(sql1, map);
+    }
+
+    public VendorWorkStatus currentStatus() throws UserNotFoundException {
+        UserSession session = applicationContext.getBean(UserSession.class);
+
+        Long userId = userUtility.findVendorIdByEmail(session.getUser().getEmailId());
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("vendorId", userId);
+        String sql = "SELECT * FROM vendor_work_timeline WHERE vendor_id=:vendorId AND current_work_status=TRUE ";
+        try {
+            return this.jdbcTemplate.queryForObject(sql, map, (rs, rowNum) -> new VendorWorkStatus(rs.getBoolean("current_work_status"), rs.getString("on_work_from"), rs.getString("on_work_to")));
+        } catch (Exception e) {
+            return new VendorWorkStatus(false, null, null);
+        }
+    }
+}
