@@ -86,7 +86,7 @@ public class UserService {
 
         try {
             String sql = "SELECT * FROM user_dladle INNER JOIN user_type ON user_dladle.user_type_id = user_type.id WHERE emailid=? AND password=?";
-            return this.jdbcTemplate.queryForObject(sql, new Object[]{user.getEmailId().toLowerCase(), hashedPassword}, (rs, rowNum) ->
+            User u = this.jdbcTemplate.queryForObject(sql, new Object[]{user.getEmailId().toLowerCase(), hashedPassword}, (rs, rowNum) ->
                     new User(rs.getString("emailId"),
                             null,
                             rs.getBoolean("verified"),
@@ -96,6 +96,12 @@ public class UserService {
                             rs.getString("id_number"),
                             rs.getString("cell_number"),
                             rs.getString("profile_picture")));
+            if (u.getUserType().eqVENDOR()) {
+                String sql1 = "SELECT account_set FROM vendor INNER JOIN user_dladle ON vendor.user_id = user_dladle.id WHERE emailid=?";
+                Boolean accountSet = this.jdbcTemplate.queryForObject(sql1, new Object[]{user.getEmailId().toLowerCase()}, Boolean.class);
+                u.setAccountSet(accountSet);
+            }
+            return u;
         } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException("Username or password is wrong. Please check and login again");
         }
@@ -104,6 +110,7 @@ public class UserService {
     //------------------------------------------------------------------------------------------------------------------
     //Logout
     //------------------------------------------------------------------------------------------------------------------
+
     public void logout() throws UserNotFoundException {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
@@ -255,7 +262,7 @@ public class UserService {
 
         String userSql = " UPDATE user_dladle SET cell_number=:cellNumber WHERE emailid=:emailId";
         this.parameterJdbcTemplate.update(userSql, map);
-        String vendorSql = " UPDATE vendor SET  service_type_id=:serviceType, business_address=:businessAddress, tools=:tools, transport=:transport, experience_id=:experience WHERE user_id=(SELECT id FROM user_dladle WHERE emailid=:emailId)";
+        String vendorSql = " UPDATE vendor SET  service_type_id=:serviceType, business_address=:businessAddress, tools=:tools, transport=:transport, experience_id=:experience, account_set=TRUE WHERE user_id=(SELECT id FROM user_dladle WHERE emailid=:emailId)";
         return this.parameterJdbcTemplate.update(vendorSql, map);
 
     }

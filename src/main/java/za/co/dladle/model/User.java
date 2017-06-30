@@ -29,6 +29,8 @@ public class User {
 
     private List<RatingViewDetails> ratingViewDetails;
 
+    private boolean accountSet;
+
 
     public User() {
     }
@@ -154,5 +156,13 @@ public class User {
 
     public void setRatingViewDetails(List<RatingViewDetails> ratingViewDetails) {
         this.ratingViewDetails = ratingViewDetails;
+    }
+
+    public boolean isAccountSet() {
+        return accountSet;
+    }
+
+    public void setAccountSet(boolean accountSet) {
+        this.accountSet = accountSet;
     }
 }

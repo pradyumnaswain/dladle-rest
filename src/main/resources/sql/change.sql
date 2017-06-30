@@ -191,6 +191,6 @@ ALTER TABLE payment_card
 ALTER TABLE payment_card
   ADD COLUMN vaultId VARCHAR(500);
 
-
+ALTER TABLE vendor ADD COLUMN account_set BOOLEAN DEFAULT FALSE ;
 
 

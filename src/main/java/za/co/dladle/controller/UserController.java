@@ -35,9 +35,6 @@ public class UserController {
 
             if (returnedUser.isVerified()) {
 
-//                if (user.getDeviceId() != null) {
-//                    userService.saveDeviceDetails(user.getEmailId(), user.getDeviceId());
-//                }
                 userService.setSessionService(returnedUser);
                 return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, returnedUser, DladleConstants.USER_LOGIN);
             } else {

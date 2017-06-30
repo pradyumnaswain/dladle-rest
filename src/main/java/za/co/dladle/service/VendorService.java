@@ -148,4 +148,17 @@ public class VendorService {
             return new VendorWorkStatus(false, null, null);
         }
     }
+
+    public void viewWork(Long serviceId) {
+        UserSession session = applicationContext.getBean(UserSession.class);
+
+        if (session.getUser().getUserType().eqVENDOR()) {
+            Map<String, Object> map = new HashMap<>();
+
+            map.put("serviceId", serviceId);
+            String sql = "SELECT * FROM service WHERE id=:serviceId";
+            this.jdbcTemplate.queryForObject(sql, map, (rs, rowNum) -> new VendorWorkStatus(rs.getBoolean("current_work_status"), rs.getString("on_work_from"), rs.getString("on_work_to")));
+
+        }
+    }
 }

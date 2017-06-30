@@ -83,6 +83,7 @@ public class DladleConstants {
     //Vendor API
     //------------------------------------------------------------------------------------------------------------------
     public static final String REQUEST_VENDOR = "Job Requested Successfully";
+    public static final String VENDOR_VIEW_WORK = "Work request fetched successfully";
     public static final String VENDOR_ON_WORK = "Vendor Status set to At Work";
     public static final String VENDOR_OFF_WORK = "Vendor Status set to off Work";
     public static final String VENDOR_CURRENT_STATUS = "Vendor Current Status received";
