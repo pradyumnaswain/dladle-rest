@@ -352,3 +352,16 @@ CREATE TABLE payment_card
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),
   UNIQUE (user_id)
 );
+CREATE TABLE service_estimations
+(
+  id              BIGSERIAL PRIMARY KEY NOT NULL,
+  service_id      BIGINT,
+  vendor_id       BIGINT,
+  experience      VARCHAR(10),
+  proximity       DOUBLE PRECISION,
+  rating          DOUBLE PRECISION,
+  fee_start_range DOUBLE PRECISION,
+  fee_end_range   DOUBLE PRECISION,
+  FOREIGN KEY (service_id) REFERENCES service (id),
+  FOREIGN KEY (vendor_id) REFERENCES vendor (id)
+);
