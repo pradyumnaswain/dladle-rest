@@ -7,10 +7,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
-import za.co.dladle.entity.ServiceDocuments;
-import za.co.dladle.entity.VendorOnWork;
-import za.co.dladle.entity.VendorServiceRequest;
-import za.co.dladle.entity.VendorWorkStatus;
+import za.co.dladle.entity.*;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.mapper.DocumentTypeMapper;
 import za.co.dladle.mapper.ServiceStatusMapper;
@@ -64,7 +61,7 @@ public class VendorService {
                     "INNER JOIN house ON property.id = house.property_id " +
                     "INNER JOIN tenant ON house.id = tenant.house_id " +
                     "INNER JOIN user_dladle ON tenant.user_id = user_dladle.id " +
-                    "WHERE user_dladle.id=:userId";
+                    "WHERE user_dladle.id=:requestUserId";
             Long landlordId = this.jdbcTemplate.queryForObject(sql, mapSqlParameterSource, Long.class);
             mapSqlParameterSource.addValue("paidUserId", landlordId);
         }
@@ -157,7 +154,8 @@ public class VendorService {
 
             map.put("serviceId", serviceId);
             String sql = "SELECT * FROM service WHERE id=:serviceId";
-            this.jdbcTemplate.queryForObject(sql, map, (rs, rowNum) -> new VendorWorkStatus(rs.getBoolean("current_work_status"), rs.getString("on_work_from"), rs.getString("on_work_to")));
+            this.jdbcTemplate.queryForObject(sql, map, (rs, rowNum) -> new ServiceView()
+            );
 
         }
     }
