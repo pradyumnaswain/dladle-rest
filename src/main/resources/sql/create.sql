@@ -242,6 +242,8 @@ CREATE TABLE service
   service_fee_paid                 BOOLEAN DEFAULT FALSE,
   service_status_id                BIGINT,
   vendor_id                        BIGINT,
+  house_id                         BIGINT,
+  FOREIGN KEY (house_id) REFERENCES house (id),
   FOREIGN KEY (service_type_id) REFERENCES service_type (id),
   FOREIGN KEY (vendor_id) REFERENCES vendor (id),
   FOREIGN KEY (service_status_id) REFERENCES service_status (id),

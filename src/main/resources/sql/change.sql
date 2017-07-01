@@ -180,6 +180,10 @@ ALTER TABLE service
 ALTER TABLE service
   ADD COLUMN service_description VARCHAR(500);
 ALTER TABLE service
+  ADD COLUMN house_id BIGINT;
+ALTER TABLE service
+  ADD FOREIGN KEY (house_id) REFERENCES house (id);
+ALTER TABLE service
   ADD FOREIGN KEY (service_status_id) REFERENCES service_status (id);
 ALTER TABLE service
   ADD FOREIGN KEY (service_requester_user_id) REFERENCES user_dladle (id);

@@ -14,6 +14,7 @@ public class VendorServiceRequest {
     private ServiceType serviceType;
     private List<ServiceDocuments> serviceDocuments;
     private String serviceNote;
+    private long houseId;
 
     public VendorServiceRequest() {
     }
@@ -64,5 +65,13 @@ public class VendorServiceRequest {
 
     public void setServiceNote(String serviceNote) {
         this.serviceNote = serviceNote;
+    }
+
+    public long getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(long houseId) {
+        this.houseId = houseId;
     }
 }
