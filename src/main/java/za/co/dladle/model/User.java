@@ -30,6 +30,7 @@ public class User {
     private List<RatingViewDetails> ratingViewDetails;
 
     private boolean accountSet;
+    private boolean accountVerified;
 
 
     public User() {
@@ -164,5 +165,13 @@ public class User {
 
     public void setAccountSet(boolean accountSet) {
         this.accountSet = accountSet;
+    }
+
+    public void setAccountVerified(boolean accountVerified) {
+        this.accountVerified = accountVerified;
+    }
+
+    public boolean isAccountVerified() {
+        return accountVerified;
     }
 }

@@ -198,9 +198,11 @@ CREATE TABLE vendor
   user_id          BIGINT,
   business_address VARCHAR(50),
   service_type_id  BIGINT,
-  transport        BOOLEAN,
-  tools            BOOLEAN,
+  transport        BOOLEAN DEFAULT FALSE,
+  tools            BOOLEAN DEFAULT FALSE,
   experience_id    BIGINT,
+  account_set      BOOLEAN DEFAULT FALSE,
+  account_verified BOOLEAN DEFAULT FALSE,
   FOREIGN KEY (service_type_id) REFERENCES service_type (id),
   FOREIGN KEY (experience_id) REFERENCES years_exp (id),
   FOREIGN KEY (user_id) REFERENCES user_dladle (id)
@@ -344,6 +346,7 @@ CREATE TABLE payment_card
   card_number      VARCHAR(500),
   cvv_number       VARCHAR(500),
   card_type        VARCHAR(100),
+  vaultId          VARCHAR(500),
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),
   UNIQUE (user_id)
 );

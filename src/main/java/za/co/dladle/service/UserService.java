@@ -97,9 +97,10 @@ public class UserService {
                             rs.getString("cell_number"),
                             rs.getString("profile_picture")));
             if (u.getUserType().eqVENDOR()) {
-                String sql1 = "SELECT account_set FROM vendor INNER JOIN user_dladle ON vendor.user_id = user_dladle.id WHERE emailid=?";
-                Boolean accountSet = this.jdbcTemplate.queryForObject(sql1, new Object[]{user.getEmailId().toLowerCase()}, Boolean.class);
-                u.setAccountSet(accountSet);
+                String sql1 = "SELECT account_set,account_verified FROM vendor INNER JOIN user_dladle ON vendor.user_id = user_dladle.id WHERE emailid=?";
+                VendorAccountStatus vendorAccountStatus = this.jdbcTemplate.queryForObject(sql1, new Object[]{user.getEmailId().toLowerCase()}, (rs1, rowNum1) -> new VendorAccountStatus(rs1.getBoolean("account_set"), rs1.getBoolean("account_verified")));
+                u.setAccountSet(vendorAccountStatus.isAccountSet());
+                u.setAccountVerified(vendorAccountStatus.isAccountVerified());
             }
             return u;
         } catch (EmptyResultDataAccessException e) {
