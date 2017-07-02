@@ -137,6 +137,19 @@ public class PropertyController {
     }
 
     //------------------------------------------------------------------------------------------------------------------
+    //List Contacts of a House
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = ApiConstants.PROPERTY_CONTACT_LIST_TENANT, method = RequestMethod.GET)
+    public Map<String, Object> listContactsOfProperty() throws IOException {
+        try {
+            List<PropertyContactView> propertyContactViews = propertyContactService.listContactsOfProperty();
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, propertyContactViews, DladleConstants.PROPERTY_CONTACT_LIST);
+        } catch (Exception e) {
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
     //Set Home
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = ApiConstants.PROPERTY_SET_HOME, method = RequestMethod.POST)

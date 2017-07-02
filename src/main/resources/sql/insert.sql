@@ -22,7 +22,6 @@ INSERT INTO years_exp (id, name) VALUES (4, '5+ Years');
 INSERT INTO contact_type (id, name) VALUES (1, 'Hospital');
 INSERT INTO contact_type (id, name) VALUES (2, 'Police Station');
 INSERT INTO contact_type (id, name) VALUES (3, 'Fire Station');
-INSERT INTO contact_type (id, name) VALUES (4, 'Landlord');
 
 INSERT INTO notification_type (id, name) VALUES (1, 'Landlord Request Tenant to Property');
 INSERT INTO notification_type (id, name) VALUES (2, 'Tenant Accepts Property Invitation');

@@ -190,7 +190,7 @@ ALTER TABLE service
 ALTER TABLE service
   ADD FOREIGN KEY (service_paid_user_id) REFERENCES user_dladle (id);
 ALTER TABLE service
-    DROP COLUMN service_paid_user_id;
+  DROP COLUMN service_paid_user_id;
 
 ALTER TABLE payment_card
   DROP COLUMN expiry_date;
@@ -203,4 +203,5 @@ ALTER TABLE vendor
   ADD COLUMN account_verified BOOLEAN DEFAULT FALSE;
 ALTER TABLE user_dladle
   ADD COLUMN payment_account_set BOOLEAN DEFAULT FALSE;
-
+DELETE FROM contact_type
+WHERE id = 4;

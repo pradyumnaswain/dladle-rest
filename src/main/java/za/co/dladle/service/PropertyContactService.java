@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import za.co.dladle.entity.DeleteContactRequest;
 import za.co.dladle.entity.PropertyContactView;
 import za.co.dladle.exception.PropertyAddException;
+import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.mapper.ContactTypeMapper;
 import za.co.dladle.model.PropertyContact;
+import za.co.dladle.serviceutil.UserUtility;
 import za.co.dladle.session.UserSession;
 
 import java.util.ArrayList;
@@ -26,6 +28,9 @@ public class PropertyContactService {
 
     @Autowired
     private NamedParameterJdbcTemplate parameterJdbcTemplate;
+
+    @Autowired
+    private UserUtility userUtility;
 
     public Boolean addContact(List<PropertyContact> propertyContactList, Long houseId) throws PropertyAddException {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
@@ -66,24 +71,72 @@ public class PropertyContactService {
         }
     }
 
-    public List<PropertyContactView> listContactsOfProperty(long houseId) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("houseId", houseId);
+    public List<PropertyContactView> listContactsOfProperty(long houseId) throws Exception {
 
-        List<PropertyContactView> propertyContactViews = new ArrayList<>();
-        String sql = "SELECT property_contact.*,property_contact.name property_conact_name, contact_type.name contact_type_name FROM property_contact INNER JOIN contact_type ON property_contact.contact_type_id = contact_type.id WHERE house_id=:houseId";
-        this.parameterJdbcTemplate.query(sql, map, (rs, rowNum) -> {
-            PropertyContactView propertyContact = new PropertyContactView();
-            propertyContact.setPropertyContactId(rs.getLong("id"));
-            propertyContact.setAddress(rs.getString("address"));
-            propertyContact.setName(rs.getString("property_conact_name"));
-            propertyContact.setContactType(rs.getString("contact_type_name"));
-            propertyContact.setContactNumber(rs.getString("contact_number"));
-            propertyContactViews.add(propertyContact);
-            return propertyContact;
-        });
-        return propertyContactViews;
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+
+        if (userSession.getUser().getUserType().eqLANDLORD()) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("houseId", houseId);
+
+            List<PropertyContactView> propertyContactViews = new ArrayList<>();
+            String sql = "SELECT property_contact.*,property_contact.name property_conact_name, contact_type.name contact_type_name FROM property_contact INNER JOIN contact_type ON property_contact.contact_type_id = contact_type.id WHERE house_id=:houseId";
+            this.parameterJdbcTemplate.query(sql, map, (rs, rowNum) -> {
+                PropertyContactView propertyContact = new PropertyContactView();
+                propertyContact.setPropertyContactId(rs.getLong("id"));
+                propertyContact.setAddress(rs.getString("address"));
+                propertyContact.setName(rs.getString("property_conact_name"));
+                propertyContact.setContactType(rs.getString("contact_type_name"));
+                propertyContact.setContactNumber(rs.getString("contact_number"));
+                propertyContactViews.add(propertyContact);
+                return propertyContact;
+            });
+            return propertyContactViews;
+        } else throw new Exception("You are not authorised to use this API");
     }
 
 
+    public List<PropertyContactView> listContactsOfProperty() throws Exception {
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+
+        if (userSession.getUser().getUserType().eqTENANT()) {
+            Map<String, Object> map = new HashMap<>();
+            Long tenantId = userUtility.findTenantIdByEmail(userSession.getUser().getEmailId());
+            map.put("tenantId", tenantId);
+
+            List<PropertyContactView> propertyContactViews = new ArrayList<>();
+            String sql = "SELECT property_contact.*,property_contact.name property_conact_name, contact_type.name contact_type_name FROM property_contact " +
+                    "INNER JOIN contact_type ON property_contact.contact_type_id = contact_type.id " +
+                    "INNER JOIN house ON property_contact.house_id = house.id " +
+                    "INNER JOIN tenant ON house.id = tenant.house_id " +
+                    "WHERE tenant.id=:tenantId";
+            this.parameterJdbcTemplate.query(sql, map, (rs, rowNum) -> {
+                PropertyContactView propertyContact = new PropertyContactView();
+                propertyContact.setPropertyContactId(rs.getLong("id"));
+                propertyContact.setAddress(rs.getString("address"));
+                propertyContact.setName(rs.getString("property_conact_name"));
+                propertyContact.setContactType(rs.getString("contact_type_name"));
+                propertyContact.setContactNumber(rs.getString("contact_number"));
+                propertyContactViews.add(propertyContact);
+                return propertyContact;
+            });
+            String sql1 = "SELECT user_dladle.first_name,user_dladle.last_name,user_dladle.cell_number,property.address " +
+                    "FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id " +
+                    "INNER JOIN property ON landlord.id = property.landlord_id " +
+                    "INNER JOIN house ON property.id= house.property_id " +
+                    "INNER JOIN tenant ON house.id = tenant.house_id " +
+                    "WHERE tenant.id=:tenantId";
+            this.parameterJdbcTemplate.query(sql1, map, (rs1, rowNum1) -> {
+                PropertyContactView propertyContact = new PropertyContactView();
+                propertyContact.setAddress(rs1.getString("address"));
+                propertyContact.setName(rs1.getString("first_name") + " " + rs1.getString("last_name"));
+                propertyContact.setContactType("Vendor");
+                propertyContact.setContactNumber(rs1.getString("cell_number"));
+                propertyContactViews.add(propertyContact);
+                return propertyContact;
+            });
+            return propertyContactViews;
+        } else throw new Exception("You are not authorised to use this API");
+
+    }
 }

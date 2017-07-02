@@ -31,6 +31,7 @@ public class ApiConstants {
     public static final String PROPERTY_TENANT_LIST = "/api/property/tenant/list/{houseId}";
 
     public static final String PROPERTY_CONTACT_LIST = "/api/property/contact/list/{houseId}";
+    public static final String PROPERTY_CONTACT_LIST_TENANT = "/api/property/contact/list";
     public static final String PROPERTY_ADD_CONTACT = "/api/property/add/contact";
     public static final String PROPERTY_DELETE_CONTACT = "/api/property/delete/contact";
 
