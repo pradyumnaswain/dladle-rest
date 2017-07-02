@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.dladle.apiutil.ApiConstants;
 import za.co.dladle.apiutil.DladleConstants;
+import za.co.dladle.entity.VendorEstimate;
 import za.co.dladle.entity.VendorOnWork;
 import za.co.dladle.entity.VendorServiceRequest;
 import za.co.dladle.entity.VendorWorkStatus;
@@ -59,6 +60,19 @@ public class VendorController {
         try {
             vendorService.offWork();
             return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.VENDOR_OFF_WORK);
+        } catch (Exception e) {
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Vendor Estimate
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = ApiConstants.VENDOR_ESTIMATE, method = RequestMethod.POST)
+    public Map<String, Object> estimateWork(@RequestBody VendorEstimate vendorEstimate) throws IOException {
+        try {
+            vendorService.estimateWork(vendorEstimate);
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.VENDOR_ESTIMATE);
         } catch (Exception e) {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }

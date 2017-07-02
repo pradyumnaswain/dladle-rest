@@ -30,7 +30,10 @@ public class User {
     private List<RatingViewDetails> ratingViewDetails;
 
     private boolean accountSet;
+
     private boolean accountVerified;
+
+    private boolean paymentAccountSet;
 
 
     public User() {
@@ -46,7 +49,7 @@ public class User {
         this.verified = verified;
     }
 
-    public User(String emailId, String password, boolean verified, UserType userType, String firstName, String lastName, String idNumber, String mobileNumber, String profilePicture) {
+    public User(String emailId, String password, boolean verified, UserType userType, String firstName, String lastName, String idNumber, String mobileNumber, String profilePicture, boolean paymentAccountSet) {
         this.emailId = emailId;
         this.password = password;
         this.verified = verified;
@@ -56,6 +59,7 @@ public class User {
         this.idNumber = idNumber;
         this.mobileNumber = mobileNumber;
         this.profilePicture = profilePicture;
+        this.paymentAccountSet = paymentAccountSet;
     }
 
     public User(String emailId, boolean verified, UserType userType, String firstName, String lastName, String idNumber, String mobileNumber, String profilePicture, List<RatingViewDetails> ratingViewDetails) {
@@ -173,5 +177,13 @@ public class User {
 
     public boolean isAccountVerified() {
         return accountVerified;
+    }
+
+    public boolean isPaymentAccountSet() {
+        return paymentAccountSet;
+    }
+
+    public void setPaymentAccountSet(boolean paymentAccountSet) {
+        this.paymentAccountSet = paymentAccountSet;
     }
 }

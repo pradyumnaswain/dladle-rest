@@ -110,6 +110,8 @@ public class VendorService {
             String sql1 = "INSERT INTO service_documents (service_id, url,document_type) VALUES (:serviceId,:imageUrl,:documentType)";
             this.jdbcTemplate.batchUpdate(sql1, list.toArray(new Map[vendorServiceRequest.getServiceDocuments().size()]));
         }
+        // TODO: 7/2/2017 Find Nearest Vendors and populate service_estimations and send notifications
+
     }
 
     public void onWork(VendorOnWork vendorOnWork) throws UserNotFoundException {
@@ -174,5 +176,9 @@ public class VendorService {
             );
 
         }
+    }
+
+    public void estimateWork(VendorEstimate vendorEstimate) {
+        // TODO: 7/2/2017 update service estimations
     }
 }

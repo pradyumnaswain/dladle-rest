@@ -87,5 +87,6 @@ public class DladleConstants {
     public static final String VENDOR_ON_WORK = "Vendor Status set to At Work";
     public static final String VENDOR_OFF_WORK = "Vendor Status set to off Work";
     public static final String VENDOR_CURRENT_STATUS = "Vendor Current Status received";
+    public static final String VENDOR_ESTIMATE = "Work estimated successfully";
 
 }

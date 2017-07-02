@@ -199,5 +199,6 @@ ALTER TABLE vendor
   ADD COLUMN account_set BOOLEAN DEFAULT FALSE;
 ALTER TABLE vendor
   ADD COLUMN account_verified BOOLEAN DEFAULT FALSE;
-
+ALTER TABLE user_dladle
+  ADD COLUMN payment_account_set BOOLEAN DEFAULT FALSE;
 

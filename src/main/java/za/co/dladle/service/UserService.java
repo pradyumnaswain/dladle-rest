@@ -95,7 +95,8 @@ public class UserService {
                             rs.getString("last_name"),
                             rs.getString("id_number"),
                             rs.getString("cell_number"),
-                            rs.getString("profile_picture")));
+                            rs.getString("profile_picture"),
+                            rs.getBoolean("payment_account_set")));
             if (u.getUserType().eqVENDOR()) {
                 String sql1 = "SELECT account_set,account_verified FROM vendor INNER JOIN user_dladle ON vendor.user_id = user_dladle.id WHERE emailid=?";
                 VendorAccountStatus vendorAccountStatus = this.jdbcTemplate.queryForObject(sql1, new Object[]{user.getEmailId().toLowerCase()}, (rs1, rowNum1) -> new VendorAccountStatus(rs1.getBoolean("account_set"), rs1.getBoolean("account_verified")));

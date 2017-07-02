@@ -88,4 +88,5 @@ public class ApiConstants {
     public static final String VENDOR_ON_WORK = "/api/vendor/on/work";
     public static final String VENDOR_OFF_WORK = "/api/vendor/off/work";
     public static final String VENDOR_CURRENT_STATUS = "/api/vendor/work/status";
+    public static final String VENDOR_ESTIMATE = "/api/vendor/work/estimate";
 }
