@@ -189,6 +189,8 @@ ALTER TABLE service
   ADD FOREIGN KEY (service_requester_user_id) REFERENCES user_dladle (id);
 ALTER TABLE service
   ADD FOREIGN KEY (service_paid_user_id) REFERENCES user_dladle (id);
+ALTER TABLE service
+    DROP COLUMN service_paid_user_id;
 
 ALTER TABLE payment_card
   DROP COLUMN expiry_date;

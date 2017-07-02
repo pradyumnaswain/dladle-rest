@@ -55,32 +55,6 @@ public class VendorService {
                 .addValue("requestUserId", userId)
                 .addValue("houseId", vendorServiceRequest.getHouseId());
 
-        if (session.getUser().getUserType().eqTENANT()) {
-            if (vendorServiceRequest.isOwnPay()) {
-                mapSqlParameterSource.addValue("paidUserId", userId);
-            } else {
-                String sql = "SELECT landlord.id FROM landlord INNER JOIN property ON landlord.id = property.landlord_id " +
-                        "INNER JOIN house ON property.id = house.property_id " +
-                        "INNER JOIN tenant ON house.id = tenant.house_id " +
-                        "INNER JOIN user_dladle ON tenant.user_id = user_dladle.id " +
-                        "WHERE user_dladle.id=:requestUserId";
-                Long landlordId = this.jdbcTemplate.queryForObject(sql, mapSqlParameterSource, Long.class);
-                mapSqlParameterSource.addValue("paidUserId", landlordId);
-            }
-        } else {
-            if (vendorServiceRequest.isOwnPay()) {
-                mapSqlParameterSource.addValue("paidUserId", userId);
-            } else {
-                String sql = "SELECT tenant.id FROM tenant  " +
-                        "INNER JOIN house ON tenant.house_id = house.id " +
-                        "INNER JOIN property ON house.property_id= property.id " +
-                        "INNER JOIN landlord ON property.landlord_id= landlord.id " +
-                        "INNER JOIN user_dladle ON landlord.user_id = user_dladle.id " +
-                        "WHERE user_dladle.id=:requestUserId";
-                Long landlordId = this.jdbcTemplate.queryForObject(sql, mapSqlParameterSource, Long.class);
-                mapSqlParameterSource.addValue("paidUserId", landlordId);
-            }
-        }
         mapSqlParameterSource.addValue("serviceStatus", ServiceStatusMapper.getServiceStatus(ServiceStatus.REQUESTED))
                 .addValue("emergency", vendorServiceRequest.isEmergency())
                 .addValue("description", vendorServiceRequest.getServiceNote())
@@ -89,8 +63,8 @@ public class VendorService {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
 
-        String sql = "INSERT INTO service(service_type_id, service_request_time, service_requester_user_id, service_paid_user_id , service_status_id, service_need_time, emergency, service_description,house_id) " +
-                "VALUES (:serviceType,:serviceRequestTime,:requestUserId,:paidUserId,:serviceStatus,:needTime,:emergency,:description,:houseId)";
+        String sql = "INSERT INTO service(service_type_id, service_request_time, service_requester_user_id, service_status_id, service_need_time, emergency, service_description,house_id) " +
+                "VALUES (:serviceType,:serviceRequestTime,:requestUserId,:serviceStatus,:needTime,:emergency,:description,:houseId)";
 
         this.jdbcTemplate.update(sql, mapSqlParameterSource, keyHolder, new String[]{"id"});
 

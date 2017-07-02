@@ -235,7 +235,6 @@ CREATE TABLE service
   service_start_time               TIMESTAMP,
   service_end_time                 TIMESTAMP,
   service_requester_user_id        BIGINT,
-  service_paid_user_id             BIGINT,
   service_expected_fee_range_start FLOAT,
   service_expected_fee_range_end   FLOAT,
   service_fee                      FLOAT,
@@ -247,8 +246,7 @@ CREATE TABLE service
   FOREIGN KEY (service_type_id) REFERENCES service_type (id),
   FOREIGN KEY (vendor_id) REFERENCES vendor (id),
   FOREIGN KEY (service_status_id) REFERENCES service_status (id),
-  FOREIGN KEY (service_requester_user_id) REFERENCES user_dladle (id),
-  FOREIGN KEY (service_paid_user_id) REFERENCES user_dladle (id)
+  FOREIGN KEY (service_requester_user_id) REFERENCES user_dladle (id)
 );
 DROP TABLE service_images_and_voice_notes;
 CREATE TABLE service_documents

@@ -9,7 +9,6 @@ import java.util.List;
  */
 public class VendorServiceRequest {
     private boolean isEmergency;
-    private boolean ownPay;
     private String serviceNeedTime;
     private ServiceType serviceType;
     private List<ServiceDocuments> serviceDocuments;
@@ -25,14 +24,6 @@ public class VendorServiceRequest {
 
     public void setEmergency(boolean emergency) {
         isEmergency = emergency;
-    }
-
-    public boolean isOwnPay() {
-        return ownPay;
-    }
-
-    public void setOwnPay(boolean ownPay) {
-        this.ownPay = ownPay;
     }
 
     public String getServiceNeedTime() {
