@@ -9,8 +9,8 @@ import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.mapper.NotificationTypeMapper;
 import za.co.dladle.model.Notification;
 import za.co.dladle.model.NotificationType;
-import za.co.dladle.session.UserSession;
 import za.co.dladle.serviceutil.UserUtility;
+import za.co.dladle.session.UserSession;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

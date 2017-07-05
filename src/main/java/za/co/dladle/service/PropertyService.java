@@ -13,9 +13,9 @@ import za.co.dladle.exception.PropertyAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.mapper.PlaceTypeMapper;
 import za.co.dladle.model.Property;
+import za.co.dladle.serviceutil.UserUtility;
 import za.co.dladle.session.UserSession;
 import za.co.dladle.thirdparty.FileManagementServiceCloudinaryImpl;
-import za.co.dladle.serviceutil.UserUtility;
 
 import javax.transaction.Transactional;
 import java.io.IOException;

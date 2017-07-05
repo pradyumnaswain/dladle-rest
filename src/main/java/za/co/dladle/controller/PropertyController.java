@@ -2,13 +2,13 @@ package za.co.dladle.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import za.co.dladle.apiutil.ApiConstants;
+import za.co.dladle.apiutil.DladleConstants;
 import za.co.dladle.entity.*;
 import za.co.dladle.model.Property;
 import za.co.dladle.service.PropertyAssignmentService;
 import za.co.dladle.service.PropertyContactService;
 import za.co.dladle.service.PropertyService;
-import za.co.dladle.apiutil.ApiConstants;
-import za.co.dladle.apiutil.DladleConstants;
 import za.co.dladle.serviceutil.ResponseUtil;
 
 import java.io.IOException;

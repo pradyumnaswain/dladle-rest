@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import za.co.dladle.apiutil.RandomUtil;
 import za.co.dladle.entity.*;
 import za.co.dladle.exception.*;
 import za.co.dladle.mapper.ServiceTypeMapper;
@@ -19,11 +20,10 @@ import za.co.dladle.mapper.UserTypeMapper;
 import za.co.dladle.mapper.YearsOfExperienceTypeMapper;
 import za.co.dladle.model.User;
 import za.co.dladle.model.UserType;
+import za.co.dladle.serviceutil.UserUtility;
 import za.co.dladle.session.UserSession;
 import za.co.dladle.thirdparty.FileManagementServiceCloudinaryImpl;
 import za.co.dladle.thirdparty.NotificationServiceSendGridImpl;
-import za.co.dladle.apiutil.RandomUtil;
-import za.co.dladle.serviceutil.UserUtility;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -265,6 +265,7 @@ public class UserService {
         String userSql = " UPDATE user_dladle SET cell_number=:cellNumber WHERE emailid=:emailId";
         this.parameterJdbcTemplate.update(userSql, map);
         String vendorSql = " UPDATE vendor SET  service_type_id=:serviceType, business_address=:businessAddress, tools=:tools, transport=:transport, experience_id=:experience, account_set=TRUE WHERE user_id=(SELECT id FROM user_dladle WHERE emailid=:emailId)";
+        // TODO: 7/5/2017 Send Email to AGKB
         return this.parameterJdbcTemplate.update(vendorSql, map);
 
     }

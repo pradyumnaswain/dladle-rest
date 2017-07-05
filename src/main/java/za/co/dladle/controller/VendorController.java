@@ -9,7 +9,6 @@ import za.co.dladle.apiutil.ApiConstants;
 import za.co.dladle.apiutil.DladleConstants;
 import za.co.dladle.entity.VendorEstimate;
 import za.co.dladle.entity.VendorOnWork;
-import za.co.dladle.entity.VendorServiceRequest;
 import za.co.dladle.entity.VendorWorkStatus;
 import za.co.dladle.service.VendorService;
 import za.co.dladle.serviceutil.ResponseUtil;
@@ -77,5 +76,4 @@ public class VendorController {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
     }
-
 }

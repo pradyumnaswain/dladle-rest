@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import za.co.dladle.model.PaymentCard;
 import za.co.dladle.paygate.SingleVaultResponse;
 import za.co.dladle.paygate.StatusNameType;
-import za.co.dladle.session.UserSession;
 import za.co.dladle.serviceutil.UserUtility;
+import za.co.dladle.session.UserSession;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;

@@ -2,13 +2,13 @@ package za.co.dladle.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import za.co.dladle.apiutil.ApiConstants;
+import za.co.dladle.apiutil.DladleConstants;
 import za.co.dladle.entity.LeaseRemoveTenant;
 import za.co.dladle.entity.LeaseTerminateRequest;
 import za.co.dladle.model.LeaseLandlord;
 import za.co.dladle.model.LeaseTenant;
 import za.co.dladle.service.LeaseService;
-import za.co.dladle.apiutil.ApiConstants;
-import za.co.dladle.apiutil.DladleConstants;
 import za.co.dladle.serviceutil.ResponseUtil;
 
 import java.io.IOException;

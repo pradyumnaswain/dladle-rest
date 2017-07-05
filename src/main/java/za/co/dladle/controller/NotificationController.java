@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import za.co.dladle.model.Notification;
-import za.co.dladle.service.PushNotificationService;
 import za.co.dladle.apiutil.ApiConstants;
 import za.co.dladle.apiutil.DladleConstants;
+import za.co.dladle.model.Notification;
+import za.co.dladle.service.PushNotificationService;
 import za.co.dladle.serviceutil.ResponseUtil;
 
 import java.io.IOException;

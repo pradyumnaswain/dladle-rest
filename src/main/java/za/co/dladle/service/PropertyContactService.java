@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import za.co.dladle.entity.DeleteContactRequest;
 import za.co.dladle.entity.PropertyContactView;
 import za.co.dladle.exception.PropertyAddException;
-import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.mapper.ContactTypeMapper;
 import za.co.dladle.model.PropertyContact;
 import za.co.dladle.serviceutil.UserUtility;
