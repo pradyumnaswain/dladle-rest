@@ -11,7 +11,9 @@ import za.co.dladle.entity.*;
 import za.co.dladle.exception.PropertyAddException;
 import za.co.dladle.exception.PropertyAlreadyExistsException;
 import za.co.dladle.exception.UserNotFoundException;
+import za.co.dladle.mapper.DocumentTypeMapper;
 import za.co.dladle.mapper.PlaceTypeMapper;
+import za.co.dladle.model.DocumentType;
 import za.co.dladle.model.Property;
 import za.co.dladle.serviceutil.UserUtility;
 import za.co.dladle.session.UserSession;
@@ -23,6 +25,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by jugal on 05/02/2017.
@@ -361,27 +367,65 @@ public class PropertyService {
         return imageUrl;
     }
 
-    public void addImages(PropertyAddImagesRequest propertyAddImagesRequest) throws Exception {
-        List<PropertyAddImage> imageList = propertyAddImagesRequest.getImageList();
+    public void addDocuments(PropertyAddDocumentsRequest propertyAddDocumentsRequest) throws Exception {
+        List<PropertyAddDocument> documentList = propertyAddDocumentsRequest.getImageList();
+        ExecutorService executorService = Executors.newFixedThreadPool(documentList.size());
+        CompletionService<String> completionService = new ExecutorCompletionService<>(executorService);
+
         List<Map<String, Object>> list = new ArrayList<>();
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
         if (userSession.getUser().getUserType().eqTENANT()) {
 
             Long tenantId = userUtility.findTenantIdByEmail(userSession.getUser().getEmailId());
-            for (PropertyAddImage image : imageList) {
-                Map<String, Object> map = new HashMap<>();
+            for (PropertyAddDocument document : documentList) {
+                completionService.submit(() -> {
 
-                String imageUrl = fileManagementServiceCloudinary.upload(image.getImage());
+                    Map<String, Object> map = new HashMap<>();
 
-                map.put("imageUrl", imageUrl);
-                map.put("tenantId", tenantId);
+                    String documentUrl = fileManagementServiceCloudinary.upload(document.getBase64Document());
 
-                list.add(map);
+                    map.put("imageUrl", documentUrl);
+                    map.put("documentType", DocumentTypeMapper.getDocumentType(document.getDocumentType()));
+                    map.put("tenantId", tenantId);
+
+                    list.add(map);
+                    return null;
+                });
             }
-            String sql = "INSERT INTO tenant_property_images_and_notes (tenant_id, url) VALUES (:tenantId, :imageUrl)";
-            this.parameterJdbcTemplate.batchUpdate(sql, list.toArray(new Map[imageList.size()]));
+            for (PropertyAddDocument document : documentList) {
+                completionService.take().get();
+            }
+            String sql = "INSERT INTO tenant_property_documents (tenant_id, url,document_type) VALUES (:tenantId, :imageUrl,:documentType)";
+            this.parameterJdbcTemplate.batchUpdate(sql, list.toArray(new Map[documentList.size()]));
         } else {
             throw new Exception("You are not authorised to upe this functionality");
+        }
+    }
+
+    public List<PropertyViewDocuments> viewDocuments() throws Exception {
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+        if (userSession.getUser().getUserType().eqTENANT()) {
+            List<PropertyViewDocuments> propertyViewDocuments = new ArrayList<>();
+
+            Long tenantId = userUtility.findTenantIdByEmail(userSession.getUser().getEmailId());
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("tenantId", tenantId);
+
+            String sql = "SELECT * FROM tenant_property_documents WHERE tenant_id=:tenantId AND valid=TRUE ";
+
+            this.parameterJdbcTemplate.query(sql, map, (rs, rowNum) -> {
+
+                PropertyViewDocuments propertyViewDocument = new PropertyViewDocuments();
+                propertyViewDocument.setDocumentType(DocumentTypeMapper.getDocumentType(rs.getInt("document_type")));
+                propertyViewDocument.setDocumentUrl(rs.getString("url"));
+                propertyViewDocuments.add(propertyViewDocument);
+                return propertyViewDocument;
+            });
+
+            return propertyViewDocuments;
+        } else {
+            throw new Exception("You are not authorised for this operation");
         }
     }
 }

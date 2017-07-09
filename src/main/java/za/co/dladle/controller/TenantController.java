@@ -85,13 +85,26 @@ public class TenantController {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    //Invite Tenant to Property
+    //Add Images of a property Property
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = ApiConstants.TENANT_PROPERTY_IMAGES_ADD, method = RequestMethod.POST)
-    public Map<String, Object> addImagesOfProperty(@RequestBody PropertyAddImagesRequest propertyAddImagesRequest) throws IOException {
+    @RequestMapping(value = ApiConstants.TENANT_PROPERTY_DOCUMENTS_ADD, method = RequestMethod.POST)
+    public Map<String, Object> addDocumentsOfProperty(@RequestBody PropertyAddDocumentsRequest propertyAddDocumentsRequest) throws IOException {
         try {
-            propertyService.addImages(propertyAddImagesRequest);
-            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.TENANT_PROPERTY_IMAGES_ADD);
+            propertyService.addDocuments(propertyAddDocumentsRequest);
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.TENANT_PROPERTY_DOCUMENTS_ADD);
+        } catch (Exception e) {
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Add Images of a property Property
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = ApiConstants.TENANT_PROPERTY_DOCUMENTS_VIEW, method = RequestMethod.GET)
+    public Map<String, Object> addDocumentsOfProperty() throws IOException {
+        try {
+            List<PropertyViewDocuments> viewDocuments = propertyService.viewDocuments();
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, viewDocuments, DladleConstants.TENANT_PROPERTY_DOCUMENTS_VIEW);
         } catch (Exception e) {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }

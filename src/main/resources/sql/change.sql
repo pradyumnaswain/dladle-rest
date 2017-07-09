@@ -205,3 +205,15 @@ ALTER TABLE user_dladle
   ADD COLUMN payment_account_set BOOLEAN DEFAULT FALSE;
 DELETE FROM contact_type
 WHERE id = 4;
+DROP TABLE tenant_property_images_and_notes;
+CREATE TABLE tenant_property_documents
+(
+  id            BIGSERIAL PRIMARY KEY NOT NULL,
+  tenant_id     BIGINT,
+  url           VARCHAR(500),
+  document_type BIGINT,
+  valid         BOOLEAN DEFAULT TRUE,
+  FOREIGN KEY (tenant_id) REFERENCES tenant (id),
+  FOREIGN KEY (document_type) REFERENCES document_type (id)
+);
+

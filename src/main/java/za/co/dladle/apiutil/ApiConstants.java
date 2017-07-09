@@ -47,7 +47,8 @@ public class ApiConstants {
     public static final String TENANT_CONTACT_DELETE = "/api/contact/delete";
     public static final String TENANT_CONTACT_LIST = "/api/contact/list";
     public static final String TENANT_PROPERTY_REQUEST = "/api/property/request";
-    public static final String TENANT_PROPERTY_IMAGES_ADD = "/api/property/add/images";
+    public static final String TENANT_PROPERTY_DOCUMENTS_ADD = "/api/property/add/documents";
+    public static final String TENANT_PROPERTY_DOCUMENTS_VIEW = "/api/property/view/documents";
 
     //------------------------------------------------------------------------------------------------------------------
     //Rating API

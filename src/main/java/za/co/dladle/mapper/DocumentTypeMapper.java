@@ -16,4 +16,15 @@ public class DocumentTypeMapper {
                 return null;
         }
     }
+
+    public static DocumentType getDocumentType(Integer documentType) {
+        switch (documentType) {
+            case 1:
+                return DocumentType.AUDIO;
+            case 2:
+                return DocumentType.IMAGE;
+            default:
+                return null;
+        }
+    }
 }

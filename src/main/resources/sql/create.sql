@@ -183,13 +183,15 @@ CREATE TABLE tenant
   FOREIGN KEY (house_id) REFERENCES house (id)
 );
 /*tenant*/
-CREATE TABLE tenant_property_images_and_notes
+CREATE TABLE tenant_property_documents
 (
-  id        BIGSERIAL PRIMARY KEY NOT NULL,
-  tenant_id BIGINT,
-  url       VARCHAR(500),
-  valid     BOOLEAN DEFAULT TRUE,
-  FOREIGN KEY (tenant_id) REFERENCES tenant (id)
+  id            BIGSERIAL PRIMARY KEY NOT NULL,
+  tenant_id     BIGINT,
+  url           VARCHAR(500),
+  document_type BIGINT,
+  valid         BOOLEAN DEFAULT TRUE,
+  FOREIGN KEY (tenant_id) REFERENCES tenant (id),
+  FOREIGN KEY (document_type) REFERENCES document_type (id)
 );
 /*tenant*/
 CREATE TABLE vendor
@@ -248,7 +250,6 @@ CREATE TABLE service
   FOREIGN KEY (service_status_id) REFERENCES service_status (id),
   FOREIGN KEY (service_requester_user_id) REFERENCES user_dladle (id)
 );
-DROP TABLE service_images_and_voice_notes;
 CREATE TABLE service_documents
 (
   id            BIGSERIAL PRIMARY KEY NOT NULL,
