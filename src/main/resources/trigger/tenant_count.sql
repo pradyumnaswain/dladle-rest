@@ -15,6 +15,8 @@ BEGIN
     SET
       tenants_count = house.tenants_count - 1
     WHERE id = old.house_id;
+    UPDATE tenant_property_documents
+    SET valid = FALSE;
     RETURN new;
   END IF;
 END;

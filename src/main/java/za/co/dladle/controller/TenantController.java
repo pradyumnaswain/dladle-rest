@@ -35,42 +35,42 @@ public class TenantController {
     //------------------------------------------------------------------------------------------------------------------
     //Add Contact
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = ApiConstants.TENANT_CONTACT_ADD, method = RequestMethod.POST)
-    public Map<String, Object> addContact(@RequestBody(required = false) ContactAddRequest contactAddRequest) throws IOException {
-        try {
-            Boolean aBoolean = contactService.addContact(contactAddRequest);
-            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.TENANT_CONTACT_ADD);
-        } catch (Exception e) {
-            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
-        }
-    }
+//    @RequestMapping(value = ApiConstants.TENANT_CONTACT_ADD, method = RequestMethod.POST)
+//    public Map<String, Object> addContact(@RequestBody(required = false) ContactAddRequest contactAddRequest) throws IOException {
+//        try {
+//            Boolean aBoolean = contactService.addContact(contactAddRequest);
+//            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.TENANT_CONTACT_ADD);
+//        } catch (Exception e) {
+//            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+//        }
+//    }
 
     //------------------------------------------------------------------------------------------------------------------
     //Delete Contact
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = ApiConstants.TENANT_CONTACT_DELETE, method = RequestMethod.POST)
-    public Map<String, Object> deleteContact(@RequestBody DeleteContactRequest deleteContactRequest) throws IOException {
-        try {
-            Boolean aBoolean = contactService.deleteContact(deleteContactRequest);
-            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.TENANT_CONTACT_DELETE);
-        } catch (Exception e) {
-            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
-        }
-    }
+//    @RequestMapping(value = ApiConstants.TENANT_CONTACT_DELETE, method = RequestMethod.POST)
+//    public Map<String, Object> deleteContact(@RequestBody DeleteContactRequest deleteContactRequest) throws IOException {
+//        try {
+//            Boolean aBoolean = contactService.deleteContact(deleteContactRequest);
+//            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.TENANT_CONTACT_DELETE);
+//        } catch (Exception e) {
+//            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+//        }
+//    }
 
     //------------------------------------------------------------------------------------------------------------------
     //List Property of a Landlord
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = ApiConstants.TENANT_CONTACT_LIST, method = RequestMethod.GET)
-    public Map<String, Object> listContact() throws IOException {
-        try {
-            List<TenantContactView> contactList = contactService.listContacts();
-            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, contactList, DladleConstants.TENANT_CONTACT_LIST);
-        } catch (Exception e) {
-            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
-        }
-    }
-
+//    @RequestMapping(value = ApiConstants.TENANT_CONTACT_LIST, method = RequestMethod.GET)
+//    public Map<String, Object> listContact() throws IOException {
+//        try {
+//            List<TenantContactView> contactList = contactService.listContacts();
+//            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, contactList, DladleConstants.TENANT_CONTACT_LIST);
+//        } catch (Exception e) {
+//            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+//        }
+//    }
+//
     //------------------------------------------------------------------------------------------------------------------
     //Invite Tenant to Property
     //------------------------------------------------------------------------------------------------------------------
