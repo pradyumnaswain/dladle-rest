@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.*;
 
 /**
  * Created by prady on 6/14/2017.
@@ -204,6 +205,9 @@ public class LeaseService {
     }
 
     public void terminateLease(LeaseTerminateRequest leaseTerminateRequest) throws Exception {
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
+        CompletionService<String> completionService = new ExecutorCompletionService<>(executorService);
+
         Map<String, Object> map = new HashMap<>();
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
@@ -228,38 +232,53 @@ public class LeaseService {
                                 "WHERE house.id=:houseId";
 
                         UserDeviceEmailId deviceEmailId = this.jdbcTemplate.queryForObject(sql1, map, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
-                        //save notification
-                        NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
-                                deviceEmailId.getEmailId(),
-                                NotificationConstants.LEASE_TERMINATE_TITLE,
-                                NotificationConstants.LEASE_TERMINATE_BODY,
-                                "tenantEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + leaseTerminateRequest.getHouseId() + "," + "leaseId:" + leaseTerminateRequest.getLeaseId(),
-                                "", String.valueOf(leaseTerminateRequest.getHouseId()), NotificationType.LEASE_TERMINATE_REQUEST_TENANT);
-                        notificationService.saveNotification(notifications);
 
-                        //Send Email
-                        emailService.sendNotificationMail(deviceEmailId.getEmailId(), NotificationConstants.LEASE_TERMINATE_TITLE, NotificationConstants.LEASE_TERMINATE_BODY);
+                        completionService.submit(() -> {
+                            //save notification
+                            NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
+                                    deviceEmailId.getEmailId(),
+                                    NotificationConstants.LEASE_TERMINATE_TITLE,
+                                    NotificationConstants.LEASE_TERMINATE_BODY,
+                                    "tenantEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + leaseTerminateRequest.getHouseId() + "," + "leaseId:" + leaseTerminateRequest.getLeaseId(),
+                                    "", String.valueOf(leaseTerminateRequest.getHouseId()), NotificationType.LEASE_TERMINATE_REQUEST_TENANT);
+                            notificationService.saveNotification(notifications);
 
-                        if (deviceEmailId.getDeviceId() != null) {
-                            JSONObject body = new JSONObject();
-                            body.put("to", deviceEmailId.getDeviceId());
-                            body.put("priority", "high");
+                            return null;
+                        });
+                        completionService.submit(() -> {
+                            //Send Email
+                            emailService.sendNotificationMail(deviceEmailId.getEmailId(), NotificationConstants.LEASE_TERMINATE_TITLE, NotificationConstants.LEASE_TERMINATE_BODY);
 
-                            JSONObject notification = new JSONObject();
-                            notification.put("body", NotificationConstants.LEASE_TERMINATE_BODY);
-                            notification.put("title", NotificationConstants.LEASE_TERMINATE_TITLE);
+                            return null;
+                        });
+                        completionService.submit(() -> {
+                            if (deviceEmailId.getDeviceId() != null) {
+                                JSONObject body = new JSONObject();
+                                body.put("to", deviceEmailId.getDeviceId());
+                                body.put("priority", "high");
 
-                            JSONObject data = new JSONObject();
-                            data.put("tenantEmailId", userSession.getUser().getEmailId());
-                            data.put("houseId", leaseTerminateRequest.getHouseId());
-                            data.put("leaseId", leaseTerminateRequest.getLeaseId());
+                                JSONObject notification = new JSONObject();
+                                notification.put("body", NotificationConstants.LEASE_TERMINATE_BODY);
+                                notification.put("title", NotificationConstants.LEASE_TERMINATE_TITLE);
 
-                            body.put("notification", notification);
-                            body.put("data", data);
+                                JSONObject data = new JSONObject();
+                                data.put("tenantEmailId", userSession.getUser().getEmailId());
+                                data.put("houseId", leaseTerminateRequest.getHouseId());
+                                data.put("leaseId", leaseTerminateRequest.getLeaseId());
 
-                            pushNotificationsService.sendNotification(body);
-                        } else {
-                            System.out.println("Device Id can't be null");
+                                body.put("notification", notification);
+                                body.put("data", data);
+
+                                pushNotificationsService.sendNotification(body);
+                            } else {
+                                System.out.println("Device Id can't be null");
+                            }
+
+                            return null;
+                        });
+                        for (int i = 0; i < 3; i++) {
+                            completionService.take().get();
+                            // Some processing here
                         }
                     } catch (Exception e) {
                         System.out.println("Device Id can't be null");
@@ -291,40 +310,47 @@ public class LeaseService {
 
                         List<UserDeviceEmailId> deviceEmailIdList = this.jdbcTemplate.query(sql1, map, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
                         for (UserDeviceEmailId deviceEmailId : deviceEmailIdList) {
-                            //save notification
-                            NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
-                                    deviceEmailId.getEmailId(),
-                                    NotificationConstants.LEASE_TERMINATE_TITLE,
-                                    NotificationConstants.LEASE_TERMINATE_BODY,
-                                    "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + leaseTerminateRequest.getHouseId() + "," + "leaseId:" + leaseTerminateRequest.getLeaseId(),
-                                    "", String.valueOf(leaseTerminateRequest.getHouseId()), NotificationType.LEASE_TERMINATE_REQUEST_LANDLORD);
-                            notificationService.saveNotification(notifications);
+                            completionService.submit(() -> {
+                                //save notification
+                                NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
+                                        deviceEmailId.getEmailId(),
+                                        NotificationConstants.LEASE_TERMINATE_TITLE,
+                                        NotificationConstants.LEASE_TERMINATE_BODY,
+                                        "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + leaseTerminateRequest.getHouseId() + "," + "leaseId:" + leaseTerminateRequest.getLeaseId(),
+                                        "", String.valueOf(leaseTerminateRequest.getHouseId()), NotificationType.LEASE_TERMINATE_REQUEST_LANDLORD);
+                                notificationService.saveNotification(notifications);
 
-                            //Send Email
-                            emailService.sendNotificationMail(deviceEmailId.getEmailId(), NotificationConstants.LEASE_TERMINATE_TITLE, NotificationConstants.LEASE_TERMINATE_BODY);
+                                //Send Email
+                                emailService.sendNotificationMail(deviceEmailId.getEmailId(), NotificationConstants.LEASE_TERMINATE_TITLE, NotificationConstants.LEASE_TERMINATE_BODY);
 
-                            if (deviceEmailId.getDeviceId() != null) {
-                                JSONObject body = new JSONObject();
-                                body.put("to", deviceEmailId.getDeviceId());
-                                body.put("priority", "high");
+                                if (deviceEmailId.getDeviceId() != null) {
+                                    JSONObject body = new JSONObject();
+                                    body.put("to", deviceEmailId.getDeviceId());
+                                    body.put("priority", "high");
 
-                                JSONObject notification = new JSONObject();
-                                notification.put("body", NotificationConstants.LEASE_TERMINATE_BODY);
-                                notification.put("title", NotificationConstants.LEASE_TERMINATE_TITLE);
+                                    JSONObject notification = new JSONObject();
+                                    notification.put("body", NotificationConstants.LEASE_TERMINATE_BODY);
+                                    notification.put("title", NotificationConstants.LEASE_TERMINATE_TITLE);
 
-                                JSONObject data = new JSONObject();
-                                data.put("landlordEmailId", userSession.getUser().getEmailId());
-                                data.put("houseId", leaseTerminateRequest.getHouseId());
-                                data.put("leaseId", leaseTerminateRequest.getLeaseId());
+                                    JSONObject data = new JSONObject();
+                                    data.put("landlordEmailId", userSession.getUser().getEmailId());
+                                    data.put("houseId", leaseTerminateRequest.getHouseId());
+                                    data.put("leaseId", leaseTerminateRequest.getLeaseId());
 
-                                body.put("notification", notification);
-                                body.put("data", data);
+                                    body.put("notification", notification);
+                                    body.put("data", data);
 
-                                pushNotificationsService.sendNotification(body);
-                            } else {
-                                System.out.println("Device Id can't be null");
-                            }
+                                    pushNotificationsService.sendNotification(body);
+                                } else {
+                                    System.out.println("Device Id can't be null");
+                                }
+                                return null;
+                            });
                         }
+                        for (UserDeviceEmailId ignored : deviceEmailIdList) {
+                            completionService.take().get();
+                        }
+
                     } catch (Exception e) {
                         System.out.println("Device Id can't be null");
                     }

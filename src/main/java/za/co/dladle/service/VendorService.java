@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.*;
 
 /**
  * Created by prady on 6/27/2017.
@@ -54,8 +55,10 @@ public class VendorService {
     private String url;
 
 
-    public void requestVendor(VendorServiceRequest vendorServiceRequest) throws UserNotFoundException, IOException {
+    public void requestVendor(VendorServiceRequest vendorServiceRequest) throws UserNotFoundException, IOException, InterruptedException, ExecutionException {
 
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
+        CompletionService<String> completionService = new ExecutorCompletionService<>(executorService);
         UserSession session = applicationContext.getBean(UserSession.class);
 
         Long userId = userUtility.findUserIdByEmail(session.getUser().getEmailId());
@@ -82,16 +85,23 @@ public class VendorService {
         if (vendorServiceRequest.getServiceDocuments() != null) {
             List<Map<String, Object>> list = new ArrayList<>();
             for (ServiceDocuments file : vendorServiceRequest.getServiceDocuments()) {
-                Map<String, Object> map = new HashMap<>();
+                completionService.submit(() -> {
+                    Map<String, Object> map = new HashMap<>();
 
-                String imageUrl = fileManagementServiceCloudinary.upload(file.getBase64());
+                    String imageUrl = fileManagementServiceCloudinary.upload(file.getBase64());
 
-                map.put("serviceId", keyHolder.getKey().longValue());
-                map.put("imageUrl", imageUrl);
-                map.put("documentType", DocumentTypeMapper.getDocumentType(file.getDocumentType()));
+                    map.put("serviceId", keyHolder.getKey().longValue());
+                    map.put("imageUrl", imageUrl);
+                    map.put("documentType", DocumentTypeMapper.getDocumentType(file.getDocumentType()));
 
-                list.add(map);
+                    list.add(map);
+                    return null;
+                });
             }
+            for (ServiceDocuments file : vendorServiceRequest.getServiceDocuments()) {
+                completionService.take().get();
+            }
+
             String sql1 = "INSERT INTO service_documents (service_id, url,document_type) VALUES (:serviceId,:imageUrl,:documentType)";
             this.jdbcTemplate.batchUpdate(sql1, list.toArray(new Map[vendorServiceRequest.getServiceDocuments().size()]));
         }
@@ -117,7 +127,8 @@ public class VendorService {
         return vendorAtWorkViews;
     }
 
-    public List<VendorAtWorkView> getNearestVendors(List<VendorAtWorkView> vendorAtWorkViews, String propertyLocation) throws InterruptedException, ApiException, IOException {
+    public List<VendorAtWorkView> getNearestVendors(List<VendorAtWorkView> vendorAtWorkViews, String
+            propertyLocation) throws InterruptedException, ApiException, IOException {
         GeoApiContext geoApiContext = new GeoApiContext();
         geoApiContext.setApiKey("AIzaSyBBD8kFX9-dZqyXoNs6KsgiuKlhSGkvU28");
         List<String> locations = new ArrayList<>();
