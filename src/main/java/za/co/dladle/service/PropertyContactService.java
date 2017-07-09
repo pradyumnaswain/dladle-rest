@@ -129,7 +129,7 @@ public class PropertyContactService {
                 PropertyContactView propertyContact = new PropertyContactView();
                 propertyContact.setAddress(rs1.getString("address"));
                 propertyContact.setName(rs1.getString("first_name") + " " + rs1.getString("last_name"));
-                propertyContact.setContactType("Vendor");
+                propertyContact.setContactType("Landlord");
                 propertyContact.setContactNumber(rs1.getString("cell_number"));
                 propertyContactViews.add(propertyContact);
                 return propertyContact;

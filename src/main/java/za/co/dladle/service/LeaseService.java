@@ -534,6 +534,21 @@ public class LeaseService {
                             "tenantEmailId:" + userSession.getUser().getEmailId(),
                             "", null, NotificationType.LEASE_LEAVES_TENANT);
                     notificationService.saveNotification(notifications);
+                    NotificationView notification1 = new NotificationView(
+                            userSession.getUser().getEmailId(), userDeviceEmailId.getEmailId(),
+                            NotificationConstants.RATE_TENANT_TITLE,
+                            NotificationConstants.RATE_TENANT_BODY,
+                            "tenantEmailId:" + userSession.getUser().getEmailId(),
+                            "", null, NotificationType.RATE_TENANT);
+                    notificationService.saveNotification(notification1);
+                    NotificationView notification2 = new NotificationView(
+                            userDeviceEmailId.getEmailId(), userSession.getUser().getEmailId(),
+                            NotificationConstants.RATE_LANDLORD_TITLE,
+                            NotificationConstants.RATE_LANDLORD_BODY,
+                            "landlordEmailId:" + userDeviceEmailId.getEmailId(),
+                            "", null, NotificationType.RATE_LANDLORD);
+                    notificationService.saveNotification(notification2);
+
 // TODO: 6/24/2017 update Notification Type
                     //Send Email
                     emailService.sendNotificationMail(emailId, NotificationConstants.LEASE_LEAVES_TENANT_TITLE, NotificationConstants.LEASE_LEAVES_TENANT_BODY);
@@ -597,6 +612,20 @@ public class LeaseService {
                         "landlordEmailId:" + userSession.getUser().getEmailId(),
                         "", null, NotificationType.LEASE_REMOVES_TENANT);
                 notificationService.saveNotification(notifications);
+                NotificationView notification1 = new NotificationView(
+                        emailId, userSession.getUser().getEmailId(),
+                        NotificationConstants.RATE_TENANT_TITLE,
+                        NotificationConstants.RATE_TENANT_BODY,
+                        "tenantEmailId:" + emailId,
+                        "", null, NotificationType.RATE_TENANT);
+                notificationService.saveNotification(notification1);
+                NotificationView notification2 = new NotificationView(
+                        userSession.getUser().getEmailId(), emailId,
+                        NotificationConstants.RATE_LANDLORD_TITLE,
+                        NotificationConstants.RATE_LANDLORD_BODY,
+                        "landlordEmailId:" + userSession.getUser().getEmailId(),
+                        "", null, NotificationType.RATE_LANDLORD);
+                notificationService.saveNotification(notification2);
 // TODO: 6/24/2017 update Notification Type
                 //Send Email
                 emailService.sendNotificationMail(emailId, NotificationConstants.LEASE_REMOVES_TENANT_TITLE, NotificationConstants.LEASE_REMOVES_TENANT_BODY);
@@ -618,6 +647,24 @@ public class LeaseService {
                     body.put("data", data);
 
                     pushNotificationsService.sendNotification(body);
+
+                    JSONObject body1 = new JSONObject();
+                    body1.put("to", deviceId);
+                    body1.put("priority", "high");
+
+                    JSONObject notification3 = new JSONObject();
+                    notification3.put("body", NotificationConstants.RATE_TENANT_BODY);
+                    notification3.put("title", NotificationConstants.RATE_TENANT_TITLE);
+
+                    JSONObject data1 = new JSONObject();
+                    data1.put("landlordEmailId", userSession.getUser().getEmailId());
+
+                    body1.put("notification", notification);
+                    body1.put("data", data);
+
+                    pushNotificationsService.sendNotification(body1);
+                    // TODO: 7/9/2017 send Notification to Landlord
+
                 } else {
                     System.out.println("Device Id can't be null");
                 }

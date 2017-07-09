@@ -22,5 +22,11 @@ public class NotificationConstants {
     public static final String LEASE_TERMINATE_TENANT_ACCEPT_BODY = "Please check Dladle App for more";
     public static final String LEASE_TERMINATE_TENANT_REJECT_TITLE = "Your Tenant rejected Lease Termination";
     public static final String LEASE_TERMINATE_TENANT_REJECT_BODY = "Please check Dladle App for more";
+    public static final String RATE_TENANT_TITLE = "Rate your Tenant";
+    public static final String RATE_TENANT_BODY = "Lease terminated with Tenant. Please rate the Tenant";
+    public static final String RATE_LANDLORD_TITLE = "Rate your Landlord";
+    public static final String RATE_LANDLORD_BODY = "Lease terminated with Landlord. Please rate the Landlord";
+    public static final String RATE_VENDOR_TITLE = "Rate Vendor";
+    public static final String RATE_VENDOR_BODY = "Vendor don with the Job. Please rate";
 
 }
