@@ -36,6 +36,12 @@ public class NotificationTypeMapper {
                 return 13;
             case LEASE_LEAVES_TENANT:
                 return 14;
+            case RATE_TENANT:
+                return 15;
+            case RATE_LANDLORD:
+                return 16;
+            case RATE_VENDOR:
+                return 17;
             default:
                 return null;
         }

@@ -17,7 +17,10 @@ public enum NotificationType {
     LEASE_TERMINATE_LANDLORD_ACCEPT("Landlord Accepts Lease Termination"),
     LEASE_TERMINATE_LANDLORD_REJECT("Landlord Rejects Lease Termination"),
     LEASE_REMOVES_TENANT("Landlord Removes Tenant from Lease"),
-    LEASE_LEAVES_TENANT("Tenant Leaves Lease");
+    LEASE_LEAVES_TENANT("Tenant Leaves Lease"),
+    RATE_TENANT("Rate your Tenant"),
+    RATE_LANDLORD("Rate your Landlord"),
+    RATE_VENDOR("Rate Vendor");
 
 
     private final String id;
