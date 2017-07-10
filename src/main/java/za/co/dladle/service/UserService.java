@@ -102,6 +102,10 @@ public class UserService {
                 VendorAccountStatus vendorAccountStatus = this.jdbcTemplate.queryForObject(sql1, new Object[]{user.getEmailId().toLowerCase()}, (rs1, rowNum1) -> new VendorAccountStatus(rs1.getBoolean("account_set"), rs1.getBoolean("account_verified")));
                 u.setAccountSet(vendorAccountStatus.isAccountSet());
                 u.setAccountVerified(vendorAccountStatus.isAccountVerified());
+            } else if (u.getUserType().eqTENANT()) {
+                String sql1 = "SELECT valid FROM tenant_property_documents INNER JOIN tenant ON tenant_property_documents.tenant_id = tenant.id INNER JOIN user_dladle ON tenant.user_id = user_dladle.id WHERE emailid=?";
+                Boolean valid = this.jdbcTemplate.queryForObject(sql1, new Object[]{user.getEmailId().toLowerCase()}, Boolean.class);
+                u.setHouseStatus(valid);
             }
             return u;
         } catch (EmptyResultDataAccessException e) {

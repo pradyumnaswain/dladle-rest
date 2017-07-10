@@ -35,6 +35,8 @@ public class User {
 
     private boolean paymentAccountSet;
 
+    private boolean houseStatus;
+
 
     public User() {
     }
@@ -185,5 +187,13 @@ public class User {
 
     public void setPaymentAccountSet(boolean paymentAccountSet) {
         this.paymentAccountSet = paymentAccountSet;
+    }
+
+    public boolean isHouseStatus() {
+        return houseStatus;
+    }
+
+    public void setHouseStatus(boolean houseStatus) {
+        this.houseStatus = houseStatus;
     }
 }
