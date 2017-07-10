@@ -451,7 +451,7 @@ public class LeaseService {
                         NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_TITLE,
                         NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_BODY,
                         "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + leaseTerminateRequest.getHouseId() + "," + "leaseId:" + leaseTerminateRequest.getLeaseId(),
-                        "", String.valueOf(leaseTerminateRequest.getHouseId()), NotificationType.LEASE_TERMINATE_TENANT_ACCEPT);
+                        "", null, NotificationType.LEASE_TERMINATE_TENANT_ACCEPT);
                 notificationService.saveNotification(notifications);
 
                 //Send Email

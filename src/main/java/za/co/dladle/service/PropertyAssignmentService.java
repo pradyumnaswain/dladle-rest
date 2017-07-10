@@ -177,7 +177,7 @@ public class PropertyAssignmentService {
                 NotificationConstants.LANDLORD_INVITE_PROPERTY_TITLE,
                 NotificationConstants.LANDLORD_INVITE_PROPERTY_BODY,
                 "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + propertyInviteRequest.getHouseId(),
-                "", String.valueOf(propertyInviteRequest.getHouseId()), NotificationType.LANDLORD_REQUEST_TENANT);
+                "", null, NotificationType.LANDLORD_REQUEST_TENANT);
         notificationService.saveNotification(notifications);
 
         //Send Email
@@ -304,7 +304,7 @@ public class PropertyAssignmentService {
                     NotificationConstants.PROPERTY_REJECTED_TITLE,
                     NotificationConstants.PROPERTY_REJECTED_BODY,
                     "tenantEmailId:" + userSession.getUser().getEmailId(),
-                    "", propertyDeclineRequest.getHouseId().toString(), NotificationType.LANDLORD_REJECTS_PROPERTY_INVITATION);
+                    "", null, NotificationType.LANDLORD_REJECTS_PROPERTY_INVITATION);
             notificationService.saveNotification(notifications);
             emailService.sendNotificationMail(propertyDeclineRequest.getEmailId(), NotificationConstants.PROPERTY_REJECTED_TITLE, NotificationConstants.PROPERTY_REJECTED_BODY);
 
