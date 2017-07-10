@@ -153,7 +153,6 @@ public class PropertyAssignmentService {
                     System.out.println("Device Id can't be null");
                 }
 
-
             } catch (Exception e) {
                 throw new Exception("Tenant doesn't exist for the given email Id");
             }
@@ -305,7 +304,7 @@ public class PropertyAssignmentService {
                     NotificationConstants.PROPERTY_REJECTED_TITLE,
                     NotificationConstants.PROPERTY_REJECTED_BODY,
                     "tenantEmailId:" + userSession.getUser().getEmailId(),
-                    "", null, NotificationType.LANDLORD_REJECTS_PROPERTY_INVITATION);
+                    "", propertyDeclineRequest.getHouseId().toString(), NotificationType.LANDLORD_REJECTS_PROPERTY_INVITATION);
             notificationService.saveNotification(notifications);
             emailService.sendNotificationMail(propertyDeclineRequest.getEmailId(), NotificationConstants.PROPERTY_REJECTED_TITLE, NotificationConstants.PROPERTY_REJECTED_BODY);
 

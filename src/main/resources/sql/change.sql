@@ -217,3 +217,11 @@ CREATE TABLE tenant_property_documents
   FOREIGN KEY (document_type) REFERENCES document_type (id)
 );
 
+ALTER TABLE notification_count
+  ADD COLUMN house_id BIGINT;
+ALTER TABLE notification_count
+  ADD FOREIGN KEY (house_id) REFERENCES house (id);
+ALTER TABLE notification_count
+  DROP CONSTRAINT notification_count_user_id_key;
+ALTER TABLE notification_count
+  ADD UNIQUE (user_id, house_id);

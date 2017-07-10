@@ -154,8 +154,9 @@ public class PropertyService {
                 try {
                     Long userId = userUtility.findUserIdByEmail(email);
                     map.put("userId", userId);
-                    String sqlCount = "SELECT count FROM notification_count WHERE user_id=:userId";
-
+                    map.put("houseId", property.getHouseId());
+                    String sqlCount = "SELECT count FROM notification_count " +
+                            " WHERE user_id=:userId AND house_id=:houseId";
                     try {
                         Integer count = this.parameterJdbcTemplate.queryForObject(sqlCount, map, Integer.class);
                         property.setNotificationsCount(count);
@@ -233,7 +234,8 @@ public class PropertyService {
                 try {
                     Long userId = userUtility.findUserIdByEmail(email);
                     map.put("userId", userId);
-                    String sqlCount = "SELECT count FROM notification_count WHERE user_id=:userId";
+                    map.put("houseId", property.getHouseId());
+                    String sqlCount = "SELECT count FROM notification_count WHERE user_id=:userId AND house_id=:houseId";
 
                     try {
                         Integer count = this.parameterJdbcTemplate.queryForObject(sqlCount, map, Integer.class);

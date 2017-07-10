@@ -497,13 +497,13 @@ public class LeaseService {
             map.put("userId", tenantId);
             map.put("leaveDate", LocalDateTime.now());
 
-            String sql1 = "SELECT device_id,emailid FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id " +
+            String sql1 = "SELECT device_id,emailid,house_id FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id " +
                     "INNER JOIN property ON landlord.id = property.landlord_id " +
                     "INNER JOIN house ON house.property_id = property.id " +
                     "INNER JOIN tenant ON house.id = tenant.house_id " +
                     "WHERE tenant.id=:userId";
 
-            UserDeviceEmailId userDeviceEmailId = this.jdbcTemplate.queryForObject(sql1, map, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
+            UserDeviceEmailId userDeviceEmailId = this.jdbcTemplate.queryForObject(sql1, map, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid"), rs.getString("house_id")));
 
             String sql2 = "SELECT tenants_count FROM house INNER JOIN lease ON house.id = lease.house_id " +
                     "INNER JOIN lease_tenant ON lease.id = lease_tenant.lease_id WHERE tenant_id=:userId AND lease.lease_status=TRUE AND lease_tenant.lease_status=TRUE ";
@@ -532,7 +532,7 @@ public class LeaseService {
                             NotificationConstants.LEASE_LEAVES_TENANT_TITLE,
                             NotificationConstants.LEASE_LEAVES_TENANT_BODY,
                             "tenantEmailId:" + userSession.getUser().getEmailId(),
-                            "", null, NotificationType.LEASE_LEAVES_TENANT);
+                            "", userDeviceEmailId.getHouseId(), NotificationType.LEASE_LEAVES_TENANT);
                     notificationService.saveNotification(notifications);
                     NotificationView notification1 = new NotificationView(
                             userSession.getUser().getEmailId(), userDeviceEmailId.getEmailId(),

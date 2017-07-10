@@ -3,8 +3,8 @@ CREATE OR REPLACE FUNCTION notification_count_to_update()
   RETURNS TRIGGER AS
 $BODY$
 BEGIN
-  INSERT INTO notification_count (user_id, count) VALUES (new.notification_to, 1)
-  ON CONFLICT (user_id)
+  INSERT INTO notification_count (user_id, count, house_id) VALUES (new.notification_to, 1, new.house_id)
+  ON CONFLICT (user_id, house_id)
     DO UPDATE
       SET
         count = notification_count.count + 1

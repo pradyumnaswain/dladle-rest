@@ -318,11 +318,13 @@ CREATE TABLE notification
 );
 CREATE TABLE notification_count
 (
-  id      BIGSERIAL PRIMARY KEY NOT NULL,
-  user_id BIGINT,
-  count   BIGINT,
+  id       BIGSERIAL PRIMARY KEY NOT NULL,
+  user_id  BIGINT,
+  count    BIGINT,
+  house_id BIGINT,
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),
-  UNIQUE (user_id)
+  FOREIGN KEY (house_id) REFERENCES house (id),
+  UNIQUE (user_id, house_id)
 );
 
 CREATE TABLE lease_tenant
