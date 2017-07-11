@@ -28,6 +28,7 @@ import za.co.dladle.thirdparty.NotificationServiceSendGridImpl;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,8 +105,18 @@ public class UserService {
                 u.setAccountVerified(vendorAccountStatus.isAccountVerified());
             } else if (u.getUserType().eqTENANT()) {
                 String sql1 = "SELECT valid FROM tenant_property_documents INNER JOIN tenant ON tenant_property_documents.tenant_id = tenant.id INNER JOIN user_dladle ON tenant.user_id = user_dladle.id WHERE emailid=?";
-                Boolean valid = this.jdbcTemplate.queryForObject(sql1, new Object[]{user.getEmailId().toLowerCase()}, Boolean.class);
-                u.setHouseStatus(valid);
+                List<Boolean> booleans = new ArrayList<>();
+                this.jdbcTemplate.query(sql1, new Object[]{user.getEmailId().toLowerCase()}, (rs, rowNum) -> {
+                    boolean a = rs.getBoolean("valid");
+                    booleans.add(a);
+                    return a;
+                });
+                if (booleans.contains(Boolean.TRUE)) {
+
+                    u.setHouseStatus(true);
+                } else {
+                    u.setHouseStatus(false);
+                }
             }
             return u;
         } catch (EmptyResultDataAccessException e) {
