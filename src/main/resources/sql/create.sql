@@ -171,6 +171,7 @@ CREATE TABLE rating
   rating_user    BIGINT,
   value          DECIMAL,
   rating_comment VARCHAR(500),
+  rated_date     DATE,
   FOREIGN KEY (rated_user) REFERENCES user_dladle (id),
   FOREIGN KEY (rating_user) REFERENCES user_dladle (id),
   UNIQUE (rating_user, rated_user)

@@ -231,3 +231,5 @@ ALTER TABLE user_dladle
   ADD COLUMN last_logged_in_date TIMESTAMP;
 ALTER TABLE property
   ADD COLUMN property_add_date DATE;
+ALTER TABLE rating
+  ADD COLUMN rated_date DATE;

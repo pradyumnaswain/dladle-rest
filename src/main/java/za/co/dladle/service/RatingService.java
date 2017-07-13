@@ -12,6 +12,7 @@ import za.co.dladle.model.User;
 import za.co.dladle.serviceutil.UserUtility;
 import za.co.dladle.session.UserSession;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -115,8 +116,9 @@ public class RatingService {
             map.put("ratingUser", ratingUser);
             map.put("ratedUser", ratedUser);
             map.put("ratingComment", ratingAddRequest.getComment());
+            map.put("ratedDate", LocalDate.now());
 
-            String sql = "INSERT INTO rating(value,rated_user,rating_user,rating_comment) VALUES (:value,:ratedUser,:ratingUser,:ratingComment)";
+            String sql = "INSERT INTO rating(value,rated_user,rating_user,rating_comment,rated_date) VALUES (:value,:ratedUser,:ratingUser,:ratingComment,:ratedDate)";
 
             int update = jdbcTemplate.update(sql, map);
 
@@ -141,8 +143,9 @@ public class RatingService {
             map.put("ratingUser", ratingUser);
             map.put("ratedUser", ratedUser);
             map.put("ratingComment", ratingUpdateRequest.getComment());
+            map.put("ratedDate", LocalDate.now());
 
-            String sql = "UPDATE rating SET value=:value, rating_comment=:ratingComment WHERE rated_user=:ratedUser AND rating_user= :ratingUser";
+            String sql = "UPDATE rating SET value=:value, rating_comment=:ratingComment,rated_date=:ratedDate WHERE rated_user=:ratedUser AND rating_user= :ratingUser";
 
             int update = jdbcTemplate.update(sql, map);
 
