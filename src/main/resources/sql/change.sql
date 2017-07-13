@@ -229,3 +229,5 @@ ALTER TABLE user_dladle
   ADD COLUMN rgistered_date TIMESTAMP;
 ALTER TABLE user_dladle
   ADD COLUMN last_logged_in_date TIMESTAMP;
+ALTER TABLE property
+  ADD COLUMN property_add_date DATE;

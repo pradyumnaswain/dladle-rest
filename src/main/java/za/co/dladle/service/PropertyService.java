@@ -21,6 +21,7 @@ import za.co.dladle.thirdparty.FileManagementServiceCloudinaryImpl;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,7 +76,8 @@ public class PropertyService {
                     .addValue("complexName", property.getComplexName())
                     .addValue("unitNumber", property.getUnitNo())
                     .addValue("isEstate", property.isInEstate())
-                    .addValue("estateName", property.getEstateName());
+                    .addValue("estateName", property.getEstateName())
+                    .addValue("addDate", LocalDate.now());
 
             String countSql = "SELECT COUNT(address) FROM property WHERE address=:address AND landlord_id=:landlordId";
 
@@ -96,7 +98,7 @@ public class PropertyService {
                 }
                 KeyHolder propertyId = new GeneratedKeyHolder();
 
-                String PropertySql = "INSERT INTO property (landlord_id, address, place_type_id, complex_name, unit_number, image_url, isEstate, estate_name) VALUES (:landlordId, :address, :PlaceType,:complexName,:unitNumber,:imgUrl,:isEstate, :estateName)";
+                String PropertySql = "INSERT INTO property (landlord_id, address, place_type_id, complex_name, unit_number, image_url, isEstate, estate_name,property_add_date) VALUES (:landlordId, :address, :PlaceType,:complexName,:unitNumber,:imgUrl,:isEstate, :estateName,:addDate)";
 
                 this.parameterJdbcTemplate.update(PropertySql, mapSqlParameterSource, propertyId, new String[]{"id"});
 

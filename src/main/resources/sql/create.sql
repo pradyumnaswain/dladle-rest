@@ -113,15 +113,16 @@ CREATE TABLE landlord
 /*property*/
 CREATE TABLE property
 (
-  id            BIGSERIAL PRIMARY KEY NOT NULL,
-  landlord_id   BIGINT,
-  place_type_id BIGINT,
-  address       VARCHAR(100),
-  isEstate      VARCHAR(100),
-  estate_name   VARCHAR(100),
-  complex_name  VARCHAR(45),
-  unit_number   VARCHAR(20),
-  image_url     VARCHAR(100),
+  id                BIGSERIAL PRIMARY KEY NOT NULL,
+  landlord_id       BIGINT,
+  place_type_id     BIGINT,
+  address           VARCHAR(100),
+  isEstate          VARCHAR(100),
+  estate_name       VARCHAR(100),
+  complex_name      VARCHAR(45),
+  unit_number       VARCHAR(20),
+  image_url         VARCHAR(100),
+  property_add_date DATE,
   FOREIGN KEY (place_type_id) REFERENCES place_type (id),
   FOREIGN KEY (landlord_id) REFERENCES landlord (id)
 );
