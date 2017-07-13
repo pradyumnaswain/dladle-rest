@@ -15,6 +15,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import za.co.dladle.apiutil.DateUtil;
 import za.co.dladle.entity.*;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.mapper.DocumentTypeMapper;
@@ -72,7 +73,7 @@ public class VendorService {
         mapSqlParameterSource.addValue("serviceStatus", ServiceStatusMapper.getServiceStatus(ServiceStatus.REQUESTED))
                 .addValue("emergency", vendorServiceRequest.isEmergency())
                 .addValue("description", vendorServiceRequest.getServiceNote())
-                .addValue("needTime", vendorServiceRequest.getServiceNeedTime());
+                .addValue("needTime", DateUtil.stringToLocalDateTime(vendorServiceRequest.getServiceNeedTime()));
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
