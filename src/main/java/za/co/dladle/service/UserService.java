@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import za.co.dladle.apiutil.DateUtil;
 import za.co.dladle.apiutil.RandomUtil;
 import za.co.dladle.entity.*;
 import za.co.dladle.exception.*;
@@ -28,6 +29,7 @@ import za.co.dladle.thirdparty.NotificationServiceSendGridImpl;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -118,6 +120,8 @@ public class UserService {
                     u.setHouseStatus(false);
                 }
             }
+            String sqlLogin = "UPDATE user_dladle SET last_logged_in_date=? WHERE emailid=?";
+            this.jdbcTemplate.update(sqlLogin, LocalDateTime.now(), user.getEmailId().toLowerCase());
             return u;
         } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException("Username or password is wrong. Please check and login again");
@@ -364,8 +368,8 @@ public class UserService {
                         ratingViewDetails));
     }
 
-    @javax.transaction.Transactional
-    int userRegistration(UserRegisterRequest user, String hashedCode) throws UseAlreadyExistsException {
+    @Transactional
+    private int userRegistration(UserRegisterRequest user, String hashedCode) throws UseAlreadyExistsException {
 
         String hashedPassword = Hashing.sha512().hashString(user.getPassword(), Charset.defaultCharset()).toString();
 
@@ -380,7 +384,8 @@ public class UserService {
                 .addValue("verifyCode", hashedCode)
                 .addValue("firstName", user.getFirstName())
                 .addValue("lastName", user.getLastName())
-                .addValue("idNumber", user.getIdentityNumber());
+                .addValue("idNumber", user.getIdentityNumber())
+                .addValue("registeredDate", LocalDateTime.now());
 
 
         String countSql = "SELECT COUNT(emailid) FROM user_dladle WHERE emailid=:emailId";
@@ -393,7 +398,8 @@ public class UserService {
 
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
-            String UserSql = "INSERT INTO user_dladle (emailid, password, user_type_id, verified,verification_code,first_name,last_name,id_number) VALUES (:emailId,:password,:userType,:verified,:verifyCode,:firstName,:lastName,:idNumber)";
+            String UserSql = "INSERT INTO user_dladle (emailid, password, user_type_id, verified,verification_code,first_name,last_name,id_number,rgistered_date) VALUES " +
+                    "(:emailId,:password,:userType,:verified,:verifyCode,:firstName,:lastName,:idNumber,:registeredDate)";
 
             this.parameterJdbcTemplate.update(UserSql, mapSqlParameterSource, keyHolder, new String[]{"id"});
 

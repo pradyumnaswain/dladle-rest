@@ -225,3 +225,7 @@ ALTER TABLE notification_count
   DROP CONSTRAINT notification_count_user_id_key;
 ALTER TABLE notification_count
   ADD UNIQUE (user_id, house_id);
+ALTER TABLE user_dladle
+  ADD COLUMN rgistered_date TIMESTAMP;
+ALTER TABLE user_dladle
+  ADD COLUMN last_logged_in_date TIMESTAMP;

@@ -81,19 +81,21 @@ CREATE TABLE service_status
 /* User*/
 CREATE TABLE user_dladle
 (
-  id                BIGSERIAL PRIMARY KEY  NOT NULL,
-  emailId           VARCHAR(100)           NOT NULL,
-  password          VARCHAR(500)           NOT NULL,
-  user_type_id      BIGINT,
-  verified          BOOLEAN,
-  verification_code VARCHAR(100),
-  otp               BIGINT,
-  first_name        VARCHAR(20),
-  last_name         VARCHAR(20),
-  id_number         VARCHAR(45),
-  cell_number       VARCHAR(10),
-  device_id         VARCHAR(1000),
-  profile_picture   VARCHAR(1000),
+  id                  BIGSERIAL PRIMARY KEY  NOT NULL,
+  emailId             VARCHAR(100)           NOT NULL,
+  password            VARCHAR(500)           NOT NULL,
+  user_type_id        BIGINT,
+  verified            BOOLEAN,
+  verification_code   VARCHAR(100),
+  otp                 BIGINT,
+  first_name          VARCHAR(20),
+  last_name           VARCHAR(20),
+  id_number           VARCHAR(45),
+  cell_number         VARCHAR(10),
+  device_id           VARCHAR(1000),
+  profile_picture     VARCHAR(1000),
+  rgistered_date      TIMESTAMP,
+  last_logged_in_date TIMESTAMP,
   FOREIGN KEY (user_type_id) REFERENCES user_type (id)
 );
 CREATE UNIQUE INDEX user_dladle_email_uindex
