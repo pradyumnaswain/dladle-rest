@@ -194,6 +194,7 @@ CREATE TABLE tenant_property_documents
   url           VARCHAR(500),
   document_type BIGINT,
   valid         BOOLEAN DEFAULT TRUE,
+  add_date      DATE,
   FOREIGN KEY (tenant_id) REFERENCES tenant (id),
   FOREIGN KEY (document_type) REFERENCES document_type (id)
 );

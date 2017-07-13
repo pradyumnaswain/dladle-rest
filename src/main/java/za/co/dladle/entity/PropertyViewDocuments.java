@@ -2,6 +2,7 @@ package za.co.dladle.entity;
 
 import za.co.dladle.model.DocumentType;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -10,6 +11,7 @@ import java.util.List;
 public class PropertyViewDocuments {
     private String documentUrl;
     private DocumentType documentType;
+    private String date;
 
     public PropertyViewDocuments() {
     }
@@ -28,5 +30,13 @@ public class PropertyViewDocuments {
 
     public void setDocumentType(DocumentType documentType) {
         this.documentType = documentType;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

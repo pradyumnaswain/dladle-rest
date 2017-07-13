@@ -391,6 +391,7 @@ public class PropertyService {
                     map.put("imageUrl", documentUrl);
                     map.put("documentType", DocumentTypeMapper.getDocumentType(document.getDocumentType()));
                     map.put("tenantId", tenantId);
+                    map.put("addDate", LocalDate.now());
 
                     list.add(map);
                     return null;
@@ -399,7 +400,7 @@ public class PropertyService {
             for (PropertyAddDocument document : documentList) {
                 completionService.take().get();
             }
-            String sql = "INSERT INTO tenant_property_documents (tenant_id, url,document_type) VALUES (:tenantId, :imageUrl,:documentType)";
+            String sql = "INSERT INTO tenant_property_documents (tenant_id, url,document_type,add_date) VALUES (:tenantId, :imageUrl,:documentType,:addDate)";
             this.parameterJdbcTemplate.batchUpdate(sql, list.toArray(new Map[documentList.size()]));
         } else {
             throw new Exception("You are not authorised to upe this functionality");
@@ -423,6 +424,7 @@ public class PropertyService {
                 PropertyViewDocuments propertyViewDocument = new PropertyViewDocuments();
                 propertyViewDocument.setDocumentType(DocumentTypeMapper.getDocumentType(rs.getInt("document_type")));
                 propertyViewDocument.setDocumentUrl(rs.getString("url"));
+                propertyViewDocument.setDate(rs.getString("add_date"));
                 propertyViewDocuments.add(propertyViewDocument);
                 return propertyViewDocument;
             });

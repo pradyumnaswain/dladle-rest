@@ -233,3 +233,5 @@ ALTER TABLE property
   ADD COLUMN property_add_date DATE;
 ALTER TABLE rating
   ADD COLUMN rated_date DATE;
+ALTER TABLE tenant_property_documents
+  ADD COLUMN add_date DATE;
