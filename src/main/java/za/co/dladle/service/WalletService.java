@@ -137,7 +137,7 @@ public class WalletService {
         try {
             return this.jdbcTemplate.queryForObject(sql, map, (rs, rowNum) -> new PaymentCard(
                     rs.getString("name_on_card"),
-                    rs.getString("card_number").substring(12),
+                    rs.getString("card_number").substring(13),
                     rs.getString("card_type")));
         } catch (Exception e) {
             throw new Exception("No Card available for user");
