@@ -454,6 +454,22 @@ public class LeaseService {
                         "", null, NotificationType.LEASE_TERMINATE_TENANT_ACCEPT);
                 notificationService.saveNotification(notifications);
 
+                NotificationView notification1 = new NotificationView(
+                        userSession.getUser().getEmailId(), deviceEmailId.getEmailId(),
+                        NotificationConstants.RATE_TENANT_TITLE,
+                        NotificationConstants.RATE_TENANT_BODY,
+                        "tenantEmailId:" + userSession.getUser().getEmailId(),
+                        "", null, NotificationType.RATE_TENANT);
+                notificationService.saveNotification(notification1);
+                NotificationView notification2 = new NotificationView(
+                        deviceEmailId.getEmailId(), userSession.getUser().getEmailId(),
+                        NotificationConstants.RATE_LANDLORD_TITLE,
+                        NotificationConstants.RATE_LANDLORD_BODY,
+                        "landlordEmailId:" + deviceEmailId.getEmailId(),
+                        "", null, NotificationType.RATE_LANDLORD);
+                notificationService.saveNotification(notification2);
+
+
                 //Send Email
                 emailService.sendNotificationMail(deviceEmailId.getEmailId(), NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_TITLE, NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_BODY);
 
@@ -475,9 +491,45 @@ public class LeaseService {
                     body.put("data", data);
 
                     pushNotificationsService.sendNotification(body);
-                } else {
-                    System.out.println("Device Id can't be null");
+                    JSONObject body1 = new JSONObject();
+                    body1.put("to", deviceEmailId.getDeviceId());
+                    body1.put("priority", "high");
+
+                    JSONObject notificationx = new JSONObject();
+                    notificationx.put("body", NotificationConstants.RATE_TENANT_BODY);
+                    notificationx.put("title", NotificationConstants.RATE_TENANT_TITLE);
+
+                    JSONObject data1 = new JSONObject();
+                    data1.put("tenantEmailId", userSession.getUser().getEmailId());
+
+                    body1.put("notification", notificationx);
+                    body1.put("data", data1);
+
+                    pushNotificationsService.sendNotification(body);
+
                 }
+                map.put("emailId", deviceEmailId.getEmailId());
+                String sqlLandlord = "SELECT device_id FROM user_dladle WHERE emailid=:emailId";
+                String tenantDeviceId = this.jdbcTemplate.queryForObject(sqlLandlord, map, String.class);
+                if (tenantDeviceId != null) {
+                    JSONObject body = new JSONObject();
+                    body.put("to", tenantDeviceId);
+                    body.put("priority", "high");
+
+                    JSONObject notification = new JSONObject();
+                    notification.put("body", NotificationConstants.RATE_LANDLORD_BODY);
+                    notification.put("title", NotificationConstants.RATE_LANDLORD_TITLE
+                    );
+
+                    JSONObject data = new JSONObject();
+                    data.put("landlordEmailId", deviceEmailId.getEmailId());
+
+                    body.put("notification", notification);
+                    body.put("data", data);
+
+                    pushNotificationsService.sendNotification(body);
+                }
+
             } catch (Exception e) {
                 System.out.println("Device Id can't be null");
             }
@@ -569,8 +621,44 @@ public class LeaseService {
                         body.put("data", data);
 
                         pushNotificationsService.sendNotification(body);
-                    } else {
-                        System.out.println("Device Id can't be null");
+
+                        JSONObject body1 = new JSONObject();
+                        body1.put("to", userDeviceEmailId.getDeviceId());
+                        body1.put("priority", "high");
+
+                        JSONObject notificationx = new JSONObject();
+                        notificationx.put("body", NotificationConstants.RATE_TENANT_BODY);
+                        notificationx.put("title", NotificationConstants.RATE_TENANT_TITLE);
+
+                        JSONObject data1 = new JSONObject();
+                        data1.put("tenantEmailId", userSession.getUser().getEmailId());
+
+                        body1.put("notification", notificationx);
+                        body1.put("data", data1);
+
+                        pushNotificationsService.sendNotification(body);
+                    }
+                    map.put("emailId", userDeviceEmailId.getEmailId());
+                    String sqlLandlord = "SELECT device_id FROM user_dladle WHERE emailid=:emailId";
+                    String tenantDeviceId = this.jdbcTemplate.queryForObject(sqlLandlord, map, String.class);
+                    if (tenantDeviceId != null) {
+                        JSONObject body = new JSONObject();
+                        body.put("to", tenantDeviceId);
+                        body.put("priority", "high");
+
+                        JSONObject notification = new JSONObject();
+                        notification.put("body", NotificationConstants.RATE_LANDLORD_BODY);
+                        notification.put("title", NotificationConstants.RATE_LANDLORD_TITLE
+                        );
+
+                        JSONObject data = new JSONObject();
+                        data.put("landlordEmailId", userDeviceEmailId.getEmailId());
+
+                        body.put("notification", notification);
+                        body.put("data", data);
+
+                        pushNotificationsService.sendNotification(body);
+
                     }
                 } catch (Exception e) {
                     System.out.println("Device Id can't be null");
