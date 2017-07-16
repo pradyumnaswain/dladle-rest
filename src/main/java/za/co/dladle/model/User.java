@@ -37,6 +37,8 @@ public class User {
 
     private boolean houseStatus;
 
+    private Integer notificationsCount;
+
 
     public User() {
     }
@@ -195,5 +197,13 @@ public class User {
 
     public void setHouseStatus(boolean houseStatus) {
         this.houseStatus = houseStatus;
+    }
+
+    public Integer getNotificationsCount() {
+        return notificationsCount;
+    }
+
+    public void setNotificationsCount(Integer notificationsCount) {
+        this.notificationsCount = notificationsCount;
     }
 }

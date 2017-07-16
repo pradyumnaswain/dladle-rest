@@ -100,6 +100,13 @@ public class UserService {
                             rs.getString("cell_number"),
                             rs.getString("profile_picture"),
                             rs.getBoolean("payment_account_set")));
+            try {
+                String sql1 = "SELECT count FROM notification_count INNER JOIN user_dladle ON notification_count.user_id = user_dladle.id WHERE house_id=0";
+                Integer count = this.jdbcTemplate.queryForObject(sql1, new Object[]{user.getEmailId()}, Integer.class);
+                u.setNotificationsCount(count);
+            } catch (Exception e) {
+                u.setNotificationsCount(0);
+            }
             if (u.getUserType().eqVENDOR()) {
                 String sql1 = "SELECT account_set,account_verified FROM vendor INNER JOIN user_dladle ON vendor.user_id = user_dladle.id WHERE emailid=?";
                 VendorAccountStatus vendorAccountStatus = this.jdbcTemplate.queryForObject(sql1, new Object[]{user.getEmailId().toLowerCase()}, (rs1, rowNum1) -> new VendorAccountStatus(rs1.getBoolean("account_set"), rs1.getBoolean("account_verified")));
@@ -114,7 +121,6 @@ public class UserService {
                     return a;
                 });
                 if (booleans.contains(Boolean.TRUE)) {
-
                     u.setHouseStatus(true);
                 } else {
                     u.setHouseStatus(false);

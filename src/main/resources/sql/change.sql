@@ -249,3 +249,7 @@ ALTER TABLE lease_tenant
   ALTER COLUMN joined_date TYPE DATE;
 ALTER TABLE lease_tenant
   ALTER COLUMN leave_date TYPE DATE;
+ALTER TABLE notification
+  DROP CONSTRAINT notification_house_id_fkey;
+ALTER TABLE notification_count
+  DROP CONSTRAINT notification_house_id_fkey

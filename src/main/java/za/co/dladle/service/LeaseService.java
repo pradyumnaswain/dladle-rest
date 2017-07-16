@@ -404,14 +404,14 @@ public class LeaseService {
                         NotificationConstants.RATE_TENANT_TITLE,
                         NotificationConstants.RATE_TENANT_BODY,
                         "tenantEmailId:" + userSession.getUser().getEmailId() + "," + "leaseEndDate:" + endDate,
-                        "", null, NotificationType.RATE_TENANT);
+                        "", "0", NotificationType.RATE_TENANT);
                 notificationService.saveNotification(notification1);
                 NotificationView notification2 = new NotificationView(
                         deviceEmailId.getEmailId(), userSession.getUser().getEmailId(),
                         NotificationConstants.RATE_LANDLORD_TITLE,
                         NotificationConstants.RATE_LANDLORD_BODY,
                         "landlordEmailId:" + deviceEmailId.getEmailId() + "," + "leaseEndDate:" + endDate,
-                        "", null, NotificationType.RATE_LANDLORD);
+                        "", "0", NotificationType.RATE_LANDLORD);
                 notificationService.saveNotification(notification2);
                 //Send Email
                 emailService.sendNotificationMail(deviceEmailId.getEmailId(), NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_TITLE, NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_BODY);
@@ -505,7 +505,7 @@ public class LeaseService {
                         NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_TITLE,
                         NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_BODY,
                         "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + leaseTerminateRequest.getHouseId() + "," + "leaseId:" + leaseTerminateRequest.getLeaseId(),
-                        "", null, NotificationType.LEASE_TERMINATE_TENANT_ACCEPT);
+                        "", "0", NotificationType.LEASE_TERMINATE_TENANT_ACCEPT);
                 notificationService.saveNotification(notifications);
 
                 NotificationView notification1 = new NotificationView(
@@ -513,14 +513,14 @@ public class LeaseService {
                         NotificationConstants.RATE_TENANT_TITLE,
                         NotificationConstants.RATE_TENANT_BODY,
                         "tenantEmailId:" + deviceEmailId.getEmailId() + "," + "leaseEndDate:" + endDate,
-                        "", null, NotificationType.RATE_TENANT);
+                        "", "0", NotificationType.RATE_TENANT);
                 notificationService.saveNotification(notification1);
                 NotificationView notification2 = new NotificationView(
                         userSession.getUser().getEmailId(), deviceEmailId.getEmailId(),
                         NotificationConstants.RATE_LANDLORD_TITLE,
                         NotificationConstants.RATE_LANDLORD_BODY,
                         "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "leaseEndDate:" + endDate,
-                        "", null, NotificationType.RATE_LANDLORD);
+                        "", "0", NotificationType.RATE_LANDLORD);
                 notificationService.saveNotification(notification2);
 
 
@@ -650,14 +650,14 @@ public class LeaseService {
                             NotificationConstants.RATE_TENANT_TITLE,
                             NotificationConstants.RATE_TENANT_BODY,
                             "tenantEmailId:" + userSession.getUser().getEmailId() + "," + "leaseEndDate:" + endDate,
-                            "", null, NotificationType.RATE_TENANT);
+                            "", "0", NotificationType.RATE_TENANT);
                     notificationService.saveNotification(notification1);
                     NotificationView notification2 = new NotificationView(
                             userDeviceEmailId.getEmailId(), userSession.getUser().getEmailId(),
                             NotificationConstants.RATE_LANDLORD_TITLE,
                             NotificationConstants.RATE_LANDLORD_BODY,
                             "landlordEmailId:" + userDeviceEmailId.getEmailId() + "," + "leaseEndDate:" + endDate,
-                            "", null, NotificationType.RATE_LANDLORD);
+                            "", "0", NotificationType.RATE_LANDLORD);
                     notificationService.saveNotification(notification2);
 
 // TODO: 6/24/2017 update Notification Type
@@ -759,21 +759,21 @@ public class LeaseService {
                         NotificationConstants.LEASE_REMOVES_TENANT_TITLE,
                         NotificationConstants.LEASE_REMOVES_TENANT_BODY,
                         "landlordEmailId:" + userSession.getUser().getEmailId(),
-                        "", null, NotificationType.LEASE_REMOVES_TENANT);
+                        "", "0", NotificationType.LEASE_REMOVES_TENANT);
                 notificationService.saveNotification(notifications);
                 NotificationView notification1 = new NotificationView(
                         emailId, userSession.getUser().getEmailId(),
                         NotificationConstants.RATE_TENANT_TITLE,
                         NotificationConstants.RATE_TENANT_BODY,
                         "tenantEmailId:" + emailId,
-                        "", null, NotificationType.RATE_TENANT);
+                        "", "0", NotificationType.RATE_TENANT);
                 notificationService.saveNotification(notification1);
                 NotificationView notification2 = new NotificationView(
                         userSession.getUser().getEmailId(), emailId,
                         NotificationConstants.RATE_LANDLORD_TITLE,
                         NotificationConstants.RATE_LANDLORD_BODY,
                         "landlordEmailId:" + userSession.getUser().getEmailId(),
-                        "", null, NotificationType.RATE_LANDLORD);
+                        "", "0", NotificationType.RATE_LANDLORD);
                 notificationService.saveNotification(notification2);
 // TODO: 6/24/2017 update Notification Type
                 //Send Email
