@@ -101,7 +101,7 @@ public class UserService {
                             rs.getString("profile_picture"),
                             rs.getBoolean("payment_account_set")));
             try {
-                String sql1 = "SELECT count FROM notification_count INNER JOIN user_dladle ON notification_count.user_id = user_dladle.id WHERE house_id=0";
+                String sql1 = "SELECT count FROM notification_count INNER JOIN user_dladle ON notification_count.user_id = user_dladle.id WHERE emailid=? AND house_id=0";
                 Integer count = this.jdbcTemplate.queryForObject(sql1, new Object[]{user.getEmailId()}, Integer.class);
                 u.setNotificationsCount(count);
             } catch (Exception e) {
