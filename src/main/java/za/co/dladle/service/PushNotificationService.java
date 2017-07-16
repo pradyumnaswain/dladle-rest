@@ -13,6 +13,7 @@ import za.co.dladle.serviceutil.UserUtility;
 import za.co.dladle.session.UserSession;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -138,7 +139,7 @@ public class PushNotificationService {
         map.put("body", notification.getBody());
         map.put("data", notification.getData());
         map.put("imageUrl", notification.getImageUrl());
-        map.put("time", LocalDate.now());
+        map.put("time", LocalDateTime.now());
         map.put("read", Boolean.FALSE);
         map.put("actioned", Boolean.FALSE);
         if (notification.getHouseId() == null) {
