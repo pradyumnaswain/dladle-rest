@@ -509,17 +509,17 @@ public class LeaseService {
                 notificationService.saveNotification(notifications);
 
                 NotificationView notification1 = new NotificationView(
-                        userSession.getUser().getEmailId(), deviceEmailId.getEmailId(),
+                        deviceEmailId.getEmailId(), userSession.getUser().getEmailId(),
                         NotificationConstants.RATE_TENANT_TITLE,
                         NotificationConstants.RATE_TENANT_BODY,
-                        "tenantEmailId:" + userSession.getUser().getEmailId() + "," + "leaseEndDate:" + endDate,
+                        "tenantEmailId:" + deviceEmailId.getEmailId() + "," + "leaseEndDate:" + endDate,
                         "", null, NotificationType.RATE_TENANT);
                 notificationService.saveNotification(notification1);
                 NotificationView notification2 = new NotificationView(
-                        deviceEmailId.getEmailId(), userSession.getUser().getEmailId(),
+                        userSession.getUser().getEmailId(), deviceEmailId.getEmailId(),
                         NotificationConstants.RATE_LANDLORD_TITLE,
                         NotificationConstants.RATE_LANDLORD_BODY,
-                        "landlordEmailId:" + deviceEmailId.getEmailId() + "," + "leaseEndDate:" + endDate,
+                        "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "leaseEndDate:" + endDate,
                         "", null, NotificationType.RATE_LANDLORD);
                 notificationService.saveNotification(notification2);
 
@@ -554,7 +554,7 @@ public class LeaseService {
                     notificationx.put("title", NotificationConstants.RATE_TENANT_TITLE);
 
                     JSONObject data1 = new JSONObject();
-                    data1.put("tenantEmailId", userSession.getUser().getEmailId());
+                    data1.put("tenantEmailId", deviceEmailId.getDeviceId());
                     data1.put("leaseEndDate", endDate);
 
                     body1.put("notification", notificationx);
@@ -577,7 +577,7 @@ public class LeaseService {
                     );
 
                     JSONObject data = new JSONObject();
-                    data.put("landlordEmailId", deviceEmailId.getEmailId());
+                    data.put("landlordEmailId", userSession.getUser().getEmailId());
                     data.put("leaseEndDate", endDate);
 
                     body.put("notification", notification);
