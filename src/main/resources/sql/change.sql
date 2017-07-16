@@ -235,3 +235,17 @@ ALTER TABLE rating
   ADD COLUMN rated_date DATE;
 ALTER TABLE tenant_property_documents
   ADD COLUMN add_date DATE;
+ALTER TABLE lease
+  ALTER COLUMN lease_start_date TYPE DATE;
+ALTER TABLE lease
+  ALTER COLUMN lease_end_date TYPE DATE;
+ALTER TABLE lease
+  ALTER COLUMN lease_terminate_date TYPE DATE;
+ALTER TABLE lease
+  ALTER COLUMN lease_renewal_date TYPE DATE;
+ALTER TABLE lease
+  ALTER COLUMN lease_renewal_notification_date TYPE DATE;
+ALTER TABLE lease_tenant
+  ALTER COLUMN joined_date TYPE DATE;
+ALTER TABLE lease_tenant
+  ALTER COLUMN leave_date TYPE DATE;

@@ -220,11 +220,11 @@ CREATE TABLE lease
 (
   id                              BIGSERIAL PRIMARY KEY NOT NULL,
   house_id                        BIGINT,
-  lease_start_date                TIMESTAMP,
-  lease_terminate_date            TIMESTAMP,
-  lease_end_date                  TIMESTAMP,
-  lease_renewal_date              TIMESTAMP,
-  lease_renewal_notification_date TIMESTAMP,
+  lease_start_date                DATE,
+  lease_terminate_date            DATE,
+  lease_end_date                  DATE,
+  lease_renewal_date              DATE,
+  lease_renewal_notification_date DATE,
   remark                          VARCHAR(100),
   lease_status                    BOOLEAN DEFAULT FALSE,
   FOREIGN KEY (house_id) REFERENCES house (id)

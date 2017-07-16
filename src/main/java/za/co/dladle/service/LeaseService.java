@@ -20,11 +20,7 @@ import za.co.dladle.thirdparty.AndroidPushNotificationsService;
 import za.co.dladle.thirdparty.NotificationServiceSendGridImpl;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.*;
 
 /**
@@ -368,7 +364,7 @@ public class LeaseService {
         Map<String, Object> map = new HashMap<>();
         map.put("houseId", leaseTerminateRequest.getHouseId());
         map.put("leaseId", leaseTerminateRequest.getLeaseId());
-        map.put("leaveDate", LocalDateTime.now());
+        map.put("leaveDate", LocalDate.now());
 
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
@@ -391,6 +387,9 @@ public class LeaseService {
                         "WHERE house.id=:houseId";
 
                 UserDeviceEmailId deviceEmailId = this.jdbcTemplate.queryForObject(sql1, map, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
+
+                String sql = "SELECT lease_end_date FROM lease WHERE id=:leaseId";
+                LocalDate endDate = jdbcTemplate.queryForObject(sql, map, LocalDate.class);
                 //save notification
                 NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
                         deviceEmailId.getEmailId(),
@@ -404,18 +403,19 @@ public class LeaseService {
                         userSession.getUser().getEmailId(), deviceEmailId.getEmailId(),
                         NotificationConstants.RATE_TENANT_TITLE,
                         NotificationConstants.RATE_TENANT_BODY,
-                        "tenantEmailId:" + userSession.getUser().getEmailId(),
+                        "tenantEmailId:" + userSession.getUser().getEmailId() + "," + "leaseEndDate:" + endDate,
                         "", null, NotificationType.RATE_TENANT);
                 notificationService.saveNotification(notification1);
                 NotificationView notification2 = new NotificationView(
                         deviceEmailId.getEmailId(), userSession.getUser().getEmailId(),
                         NotificationConstants.RATE_LANDLORD_TITLE,
                         NotificationConstants.RATE_LANDLORD_BODY,
-                        "landlordEmailId:" + deviceEmailId.getEmailId(),
+                        "landlordEmailId:" + deviceEmailId.getEmailId() + "," + "leaseEndDate:" + endDate,
                         "", null, NotificationType.RATE_LANDLORD);
                 notificationService.saveNotification(notification2);
                 //Send Email
                 emailService.sendNotificationMail(deviceEmailId.getEmailId(), NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_TITLE, NotificationConstants.LEASE_TERMINATE_TENANT_ACCEPT_BODY);
+
 
                 if (deviceEmailId.getDeviceId() != null) {
                     JSONObject body = new JSONObject();
@@ -445,6 +445,7 @@ public class LeaseService {
 
                     JSONObject data1 = new JSONObject();
                     data1.put("tenantEmailId", userSession.getUser().getEmailId());
+                    data1.put("leaseEndDate", endDate);
 
                     body1.put("notification", notificationx);
                     body1.put("data", data1);
@@ -467,6 +468,8 @@ public class LeaseService {
 
                     JSONObject data = new JSONObject();
                     data.put("landlordEmailId", deviceEmailId.getEmailId());
+                    data.put("leaseEndDate", endDate);
+
 
                     body.put("notification", notification);
                     body.put("data", data);
@@ -493,6 +496,8 @@ public class LeaseService {
                 String sqlTenant = "UPDATE tenant SET house_id=NULL WHERE tenant.id IN (SELECT lease_tenant.tenant_id FROM lease_tenant WHERE lease_tenant.lease_id=:leaseId AND lease_status=FALSE )";
 
                 this.jdbcTemplate.update(sqlTenant, map);
+                String sql = "SELECT lease_end_date FROM lease WHERE id=:leaseId";
+                LocalDate endDate = jdbcTemplate.queryForObject(sql, map, LocalDate.class);
 
                 //save notification
                 NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
@@ -507,14 +512,14 @@ public class LeaseService {
                         userSession.getUser().getEmailId(), deviceEmailId.getEmailId(),
                         NotificationConstants.RATE_TENANT_TITLE,
                         NotificationConstants.RATE_TENANT_BODY,
-                        "tenantEmailId:" + userSession.getUser().getEmailId(),
+                        "tenantEmailId:" + userSession.getUser().getEmailId() + "," + "leaseEndDate:" + endDate,
                         "", null, NotificationType.RATE_TENANT);
                 notificationService.saveNotification(notification1);
                 NotificationView notification2 = new NotificationView(
                         deviceEmailId.getEmailId(), userSession.getUser().getEmailId(),
                         NotificationConstants.RATE_LANDLORD_TITLE,
                         NotificationConstants.RATE_LANDLORD_BODY,
-                        "landlordEmailId:" + deviceEmailId.getEmailId(),
+                        "landlordEmailId:" + deviceEmailId.getEmailId() + "," + "leaseEndDate:" + endDate,
                         "", null, NotificationType.RATE_LANDLORD);
                 notificationService.saveNotification(notification2);
 
@@ -550,6 +555,7 @@ public class LeaseService {
 
                     JSONObject data1 = new JSONObject();
                     data1.put("tenantEmailId", userSession.getUser().getEmailId());
+                    data1.put("leaseEndDate", endDate);
 
                     body1.put("notification", notificationx);
                     body1.put("data", data1);
@@ -572,6 +578,7 @@ public class LeaseService {
 
                     JSONObject data = new JSONObject();
                     data.put("landlordEmailId", deviceEmailId.getEmailId());
+                    data.put("leaseEndDate", endDate);
 
                     body.put("notification", notification);
                     body.put("data", data);
@@ -596,7 +603,7 @@ public class LeaseService {
             Long tenantId = userUtility.findTenantIdByEmail(userSession.getUser().getEmailId());
 
             map.put("userId", tenantId);
-            map.put("leaveDate", LocalDateTime.now());
+            map.put("leaveDate", LocalDate.now());
 
             String sql1 = "SELECT device_id,emailid,house_id FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id " +
                     "INNER JOIN property ON landlord.id = property.landlord_id " +
@@ -618,6 +625,9 @@ public class LeaseService {
 
                 terminateLease(leaseTerminateRequest);
             } else {
+                String sql3 = "SELECT lease_end_date FROM lease INNER JOIN lease_tenant ON lease.id = lease_tenant.lease_id WHERE tenant_id=:userId AND lease.lease_status=TRUE AND lease_tenant.lease_status=TRUE ";
+
+                LocalDate endDate = this.jdbcTemplate.queryForObject(sql3, map, LocalDate.class);
 
                 String sqlLeaseTenant = "UPDATE lease_tenant SET lease_status=FALSE,leave_date=:leaveDate WHERE lease_tenant.tenant_id=:userId AND lease_status=TRUE ";
 
@@ -639,14 +649,14 @@ public class LeaseService {
                             userSession.getUser().getEmailId(), userDeviceEmailId.getEmailId(),
                             NotificationConstants.RATE_TENANT_TITLE,
                             NotificationConstants.RATE_TENANT_BODY,
-                            "tenantEmailId:" + userSession.getUser().getEmailId(),
+                            "tenantEmailId:" + userSession.getUser().getEmailId() + "," + "leaseEndDate:" + endDate,
                             "", null, NotificationType.RATE_TENANT);
                     notificationService.saveNotification(notification1);
                     NotificationView notification2 = new NotificationView(
                             userDeviceEmailId.getEmailId(), userSession.getUser().getEmailId(),
                             NotificationConstants.RATE_LANDLORD_TITLE,
                             NotificationConstants.RATE_LANDLORD_BODY,
-                            "landlordEmailId:" + userDeviceEmailId.getEmailId(),
+                            "landlordEmailId:" + userDeviceEmailId.getEmailId() + "," + "leaseEndDate:" + endDate,
                             "", null, NotificationType.RATE_LANDLORD);
                     notificationService.saveNotification(notification2);
 
@@ -681,6 +691,7 @@ public class LeaseService {
 
                         JSONObject data1 = new JSONObject();
                         data1.put("tenantEmailId", userSession.getUser().getEmailId());
+                        data1.put("leaseEndDate", endDate);
 
                         body1.put("notification", notificationx);
                         body1.put("data", data1);
@@ -702,6 +713,7 @@ public class LeaseService {
 
                         JSONObject data = new JSONObject();
                         data.put("landlordEmailId", userDeviceEmailId.getEmailId());
+                        data.put("leaseEndDate", endDate);
 
                         body.put("notification", notification);
                         body.put("data", data);
@@ -728,7 +740,7 @@ public class LeaseService {
             Long tenantId = userUtility.findTenantIdByEmail(emailId);
 
             map.put("userId", tenantId);
-            map.put("leaveDate", LocalDateTime.now());
+            map.put("leaveDate", LocalDate.now());
 
             String sqlLeaseTenant = "UPDATE lease_tenant SET lease_status=FALSE,leave_date=:leaveDate WHERE lease_tenant.tenant_id=:userId AND lease_status=TRUE ";
 
