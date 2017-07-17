@@ -318,7 +318,6 @@ CREATE TABLE notification
   house_id                     BIGINT,
   FOREIGN KEY (notification_from) REFERENCES user_dladle (id),
   FOREIGN KEY (notification_to) REFERENCES user_dladle (id),
-  FOREIGN KEY (house_id) REFERENCES house (id),
   FOREIGN KEY (notification_type_id) REFERENCES notification_type (id)
 );
 CREATE TABLE notification_count
@@ -328,7 +327,6 @@ CREATE TABLE notification_count
   count    BIGINT,
   house_id BIGINT,
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),
-  FOREIGN KEY (house_id) REFERENCES house (id),
   UNIQUE (user_id, house_id)
 );
 
