@@ -223,7 +223,7 @@ public class VendorService {
         }
     }
 
-    public void viewWork(Long serviceId) {
+    public ServiceView viewWork(Long serviceId) throws Exception {
         UserSession session = applicationContext.getBean(UserSession.class);
 
         if (session.getUser().getUserType().eqVENDOR()) {
@@ -231,9 +231,28 @@ public class VendorService {
 
             map.put("serviceId", serviceId);
             String sql = "SELECT * FROM service WHERE id=:serviceId";
-            this.jdbcTemplate.queryForObject(sql, map, (rs, rowNum) -> new ServiceView()
-            );
+            String sql1 = "SELECT * FROM dladle.public.service_documents WHERE service_id=:serviceId";
 
+            List<ServiceDocuments> documents = new ArrayList<>();
+            this.jdbcTemplate.query(sql1, map, (rs, rowNum) -> {
+                        ServiceDocuments s = new ServiceDocuments();
+                        s.setBase64(rs.getString("url"));
+                        s.setDocumentType(DocumentTypeMapper.getDocumentType(rs.getInt("document_type")));
+                        documents.add(s);
+                        return s;
+                    }
+            );
+            return this.jdbcTemplate.queryForObject(sql, map, (rs, rowNum) -> {
+                ServiceView serviceView = new ServiceView();
+                serviceView.setEmergency(rs.getBoolean("emergency"));
+                serviceView.setServiceDescription(rs.getString("service_description"));
+                serviceView.setServiceDocuments(documents);
+                serviceView.setServiceNeedTime(rs.getString("service_need_time"));
+                return serviceView;
+            });
+
+        } else {
+            throw new Exception("You are not authorised to use this");
         }
     }
 

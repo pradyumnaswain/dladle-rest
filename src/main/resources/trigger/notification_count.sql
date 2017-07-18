@@ -21,3 +21,22 @@ CREATE TRIGGER tr_notification_count_to_update
 AFTER INSERT ON notification
 FOR EACH ROW
 EXECUTE PROCEDURE notification_count_to_update();
+CREATE OR REPLACE FUNCTION notification_count_to_Negate()
+  RETURNS TRIGGER AS
+$BODY$
+BEGIN
+  UPDATE notification_count
+  SET count = count - 1
+  WHERE user_id = old.notification_to AND house_id = old.house_id;
+  RETURN new;
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE
+COST 100;
+ALTER FUNCTION notification_count_to_Negate()
+OWNER TO sysadmin;
+
+CREATE TRIGGER tr_notification_count_to_Negate
+AFTER UPDATE ON notification
+FOR EACH ROW
+EXECUTE PROCEDURE notification_count_to_Negate();
