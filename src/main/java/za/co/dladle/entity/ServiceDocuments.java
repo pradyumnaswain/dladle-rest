@@ -7,6 +7,7 @@ import za.co.dladle.model.DocumentType;
  */
 public class ServiceDocuments {
     private String base64;
+    private String fileName;
     private DocumentType documentType;
 
     public ServiceDocuments() {
@@ -26,5 +27,13 @@ public class ServiceDocuments {
 
     public void setDocumentType(DocumentType documentType) {
         this.documentType = documentType;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

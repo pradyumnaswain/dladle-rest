@@ -9,6 +9,8 @@ import java.util.List;
  */
 public class User {
 
+    private Long userId;
+
     private String emailId;
 
     private String password;
@@ -53,8 +55,9 @@ public class User {
         this.verified = verified;
     }
 
-    public User(String emailId, String password, boolean verified, UserType userType, String firstName, String lastName, String idNumber, String mobileNumber, String profilePicture, boolean paymentAccountSet) {
+    public User(String emailId, Long userId, String password, boolean verified, UserType userType, String firstName, String lastName, String idNumber, String mobileNumber, String profilePicture, boolean paymentAccountSet) {
         this.emailId = emailId;
+        this.userId = userId;
         this.password = password;
         this.verified = verified;
         this.userType = userType;
@@ -205,5 +208,13 @@ public class User {
 
     public void setNotificationsCount(Integer notificationsCount) {
         this.notificationsCount = notificationsCount;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

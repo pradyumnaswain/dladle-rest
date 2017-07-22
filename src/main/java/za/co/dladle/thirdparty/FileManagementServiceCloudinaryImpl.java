@@ -21,7 +21,7 @@ public class FileManagementServiceCloudinaryImpl implements FileManagementServic
     @Value("${cloudinary.api.secret}")
     private String apiSecret;
 
-    public String upload(String image) throws IOException {
+    public String upload(String image, String fileName) throws IOException {
         Map<String, Object> config = new HashMap<>();
         config.put("cloud_name", cloudName);
         config.put("api_key", apiKey);

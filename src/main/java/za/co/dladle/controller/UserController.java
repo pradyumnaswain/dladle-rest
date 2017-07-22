@@ -129,9 +129,9 @@ public class UserController {
     //------------------------------------------------------------------------------------------------------------------
     @ApiOperation(value = "Upload user profile pic", notes = "")
     @RequestMapping(value = ApiConstants.USER_UPLOAD_PIC, method = RequestMethod.POST)
-    public Map<String, Object> uploadProfilePicture(@RequestBody String base64Image) {
+    public Map<String, Object> uploadProfilePicture(@RequestBody ProfilePictureUploadRequest profilePictureUploadRequest) {
         try {
-            String imagePath = userService.uploadProfilePic(base64Image);
+            String imagePath = userService.uploadProfilePic(profilePictureUploadRequest);
             return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, imagePath, DladleConstants.USER_UPLOAD_PIC);
         } catch (Exception e) {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());

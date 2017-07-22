@@ -88,8 +88,8 @@ public class PropertyService {
                 if (property.getPlaceImage() != null) {
                     if (!property.getPlaceImage().equalsIgnoreCase("")) {
 
-                        String imagePath = fileManagementServiceCloudinary.upload(property.getPlaceImage());
-                        mapSqlParameterSource.addValue("imgUrl", imagePath);
+//                        String imagePath = fileManagementServiceCloudinary.upload(property.getPlaceImage());
+                        mapSqlParameterSource.addValue("imgUrl", null);
                     } else {
                         mapSqlParameterSource.addValue("imgUrl", null);
                     }
@@ -367,7 +367,7 @@ public class PropertyService {
 
     public String uploadPropertyPic(PropertyImageUploadRequest propertyImageUploadRequest) throws UserNotFoundException, IOException {
 
-        String imageUrl = fileManagementServiceCloudinary.upload(propertyImageUploadRequest.getBase64Image());
+        String imageUrl = fileManagementServiceCloudinary.upload(propertyImageUploadRequest.getBase64Image(), propertyImageUploadRequest.getFileName());
         Map<String, Object> map = new HashMap<>();
         map.put("profilePicture", imageUrl);
         map.put("propertyId", propertyImageUploadRequest.getPropertyId());
@@ -392,7 +392,7 @@ public class PropertyService {
 
                     Map<String, Object> map = new HashMap<>();
 
-                    String documentUrl = fileManagementServiceCloudinary.upload(document.getBase64Document());
+                    String documentUrl = fileManagementServiceCloudinary.upload(document.getBase64Document(), document.getFileName());
 
                     map.put("imageUrl", documentUrl);
                     map.put("documentType", DocumentTypeMapper.getDocumentType(document.getDocumentType()));

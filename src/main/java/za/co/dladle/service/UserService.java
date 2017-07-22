@@ -88,9 +88,10 @@ public class UserService {
         String hashedPassword = Hashing.sha512().hashString(user.getPassword(), Charset.defaultCharset()).toString();
 
         try {
-            String sql = "SELECT * FROM user_dladle INNER JOIN user_type ON user_dladle.user_type_id = user_type.id WHERE emailid=? AND password=?";
+            String sql = "SELECT *,user_dladle.id user_id FROM user_dladle INNER JOIN user_type ON user_dladle.user_type_id = user_type.id WHERE emailid=? AND password=?";
             User u = this.jdbcTemplate.queryForObject(sql, new Object[]{user.getEmailId().toLowerCase(), hashedPassword}, (rs, rowNum) ->
                     new User(rs.getString("emailId"),
+                            rs.getLong("user_id"),
                             null,
                             rs.getBoolean("verified"),
                             UserType.valueOf(rs.getString("name").toUpperCase()),
@@ -345,11 +346,11 @@ public class UserService {
         this.parameterJdbcTemplate.update(sql, map);
     }
 
-    public String uploadProfilePic(String base64Image) throws IOException, UserNotFoundException {
+    public String uploadProfilePic(ProfilePictureUploadRequest base64Image) throws IOException, UserNotFoundException {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
         Long userId = userUtility.findUserIdByEmail(userSession.getUser().getEmailId());
 
-        String imageUrl = fileManagementService.upload(base64Image);
+        String imageUrl = fileManagementService.upload(base64Image.getBase64Image(), base64Image.getFileName());
         Map<String, Object> map = new HashMap<>();
         map.put("profilePicture", imageUrl);
         map.put("userId", userId);

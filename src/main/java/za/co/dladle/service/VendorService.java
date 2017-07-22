@@ -89,7 +89,7 @@ public class VendorService {
                 completionService.submit(() -> {
                     Map<String, Object> map = new HashMap<>();
 
-                    String imageUrl = fileManagementServiceCloudinary.upload(file.getBase64());
+                    String imageUrl = fileManagementServiceCloudinary.upload(file.getBase64(), file.getFileName());
 
                     map.put("serviceId", keyHolder.getKey().longValue());
                     map.put("imageUrl", imageUrl);
