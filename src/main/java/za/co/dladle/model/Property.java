@@ -27,6 +27,7 @@ public class Property {
     private List<PropertyContactView> propertyContactList;
     private List<TenantView> tenantList;
     private LandlordView landlord;
+    private boolean leaseStatus;
 
 
     public Property() {
@@ -166,5 +167,13 @@ public class Property {
 
     public void setLandlord(LandlordView landlord) {
         this.landlord = landlord;
+    }
+
+    public boolean isLeaseStatus() {
+        return leaseStatus;
+    }
+
+    public void setLeaseStatus(boolean leaseStatus) {
+        this.leaseStatus = leaseStatus;
     }
 }

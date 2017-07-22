@@ -26,7 +26,7 @@ CREATE OR REPLACE FUNCTION notification_count_to_Negate()
 $BODY$
 BEGIN
   UPDATE notification_count
-  SET count = count - 1
+  SET count = notification_count.count - 1
   WHERE user_id = old.notification_to AND house_id = old.house_id;
   RETURN new;
 END;

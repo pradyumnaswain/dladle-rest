@@ -202,6 +202,12 @@ public class PropertyService {
                 });
                 property.setTenantList(tenantList);
 
+                if (tenantList.isEmpty()) {
+                    property.setLeaseStatus(false);
+                } else {
+                    property.setLeaseStatus(true);
+                }
+
                 propertyList.add(property);
 
                 return property;
