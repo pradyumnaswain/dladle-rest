@@ -88,6 +88,7 @@ public class ApiConstants {
     //------------------------------------------------------------------------------------------------------------------
     public static final String VENDOR_REQUEST = "/api/vendor/post/request";
     public static final String VENDOR_VIEW_WORK = "/api/vendor/view/work/{serviceId}";
+    public static final String VENDOR_FIND = "/api/vendor/result/{serviceId}";
     public static final String VENDOR_ON_WORK = "/api/vendor/on/work";
     public static final String VENDOR_OFF_WORK = "/api/vendor/off/work";
     public static final String VENDOR_CURRENT_STATUS = "/api/vendor/work/status";
