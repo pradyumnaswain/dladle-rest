@@ -51,7 +51,7 @@ public class VendorRequestController {
     //------------------------------------------------------------------------------------------------------------------
     //Find Correct Vendor
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = ApiConstants.VENDOR_VIEW_WORK, method = RequestMethod.GET)
+    @RequestMapping(value = ApiConstants.VENDOR_FIND, method = RequestMethod.GET)
     public Map<String, Object> findCorrectVendor(@PathVariable Long serviceId) throws IOException {
         try {
             VendorResponse vendor = vendorService.findRightVendor(serviceId);
