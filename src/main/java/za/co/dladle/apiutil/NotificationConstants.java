@@ -28,5 +28,7 @@ public class NotificationConstants {
     public static final String RATE_LANDLORD_BODY = "Lease terminated with Landlord. Please rate the Landlord";
     public static final String RATE_VENDOR_TITLE = "Rate Vendor";
     public static final String RATE_VENDOR_BODY = "Vendor don with the Job. Please rate";
+    public static final String SERVICE_REQUEST_TITLE = "Service Request";
+    public static final String SERVICE_REQUEST_BODY = "Please check Dladle App for more";
 
 }

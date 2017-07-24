@@ -1,6 +1,7 @@
 INSERT INTO user_type (id, name) VALUES (1, 'Tenant');
 INSERT INTO user_type (id, name) VALUES (2, 'Landlord');
 INSERT INTO user_type (id, name) VALUES (3, 'Vendor');
+INSERT INTO user_type (id, name) VALUES (4, 'Administrator');
 
 INSERT INTO service_type (id, name) VALUES (1, 'Plumber');
 INSERT INTO service_type (id, name) VALUES (2, 'Electrician');
@@ -40,6 +41,7 @@ INSERT INTO notification_type (id, name) VALUES (14, 'Tenant Leaves Lease');
 INSERT INTO notification_type (id, name) VALUES (15, 'Rate your Tenant');
 INSERT INTO notification_type (id, name) VALUES (16, 'Rate your Landlord');
 INSERT INTO notification_type (id, name) VALUES (17, 'Rate Vendor');
+INSERT INTO notification_type (id, name) VALUES (18, 'Service Request');
 
 INSERT INTO service_status (id, name) VALUES (1, 'Requested');
 

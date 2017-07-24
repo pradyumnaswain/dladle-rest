@@ -20,7 +20,8 @@ public enum NotificationType {
     LEASE_LEAVES_TENANT("Tenant Leaves Lease"),
     RATE_TENANT("Rate your Tenant"),
     RATE_LANDLORD("Rate your Landlord"),
-    RATE_VENDOR("Rate Vendor");
+    RATE_VENDOR("Rate Vendor"),
+    SERVICE_REQUEST("Service Request");
 
 
     private final String id;

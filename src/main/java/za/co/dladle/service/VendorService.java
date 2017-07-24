@@ -6,6 +6,7 @@ import com.google.maps.errors.ApiException;
 import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.DistanceMatrixRow;
 import com.google.maps.model.TravelMode;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -16,15 +17,19 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import za.co.dladle.apiutil.DateUtil;
+import za.co.dladle.apiutil.NotificationConstants;
 import za.co.dladle.entity.*;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.mapper.DocumentTypeMapper;
 import za.co.dladle.mapper.ServiceStatusMapper;
 import za.co.dladle.mapper.ServiceTypeMapper;
+import za.co.dladle.model.NotificationType;
 import za.co.dladle.model.ServiceStatus;
 import za.co.dladle.serviceutil.UserUtility;
 import za.co.dladle.session.UserSession;
+import za.co.dladle.thirdparty.AndroidPushNotificationsService;
 import za.co.dladle.thirdparty.FileManagementServiceCloudinaryImpl;
+import za.co.dladle.thirdparty.NotificationService;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -52,11 +57,17 @@ public class VendorService {
     @Autowired
     private FileManagementServiceCloudinaryImpl fileManagementServiceCloudinary;
 
+    @Autowired
+    private PushNotificationService notificationService;
+
+    @Autowired
+    private AndroidPushNotificationsService pushNotificationsService;
+
     @Value("{vendor.selection.engine}")
     private String url;
 
 
-    public void requestVendor(VendorServiceRequest vendorServiceRequest) throws UserNotFoundException, IOException, InterruptedException, ExecutionException {
+    public void requestVendor(VendorServiceRequest vendorServiceRequest) throws Exception {
 
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         CompletionService<String> completionService = new ExecutorCompletionService<>(executorService);
@@ -106,25 +117,67 @@ public class VendorService {
             String sql1 = "INSERT INTO service_documents (service_id, url,document_type) VALUES (:serviceId,:imageUrl,:documentType)";
             this.jdbcTemplate.batchUpdate(sql1, list.toArray(new Map[vendorServiceRequest.getServiceDocuments().size()]));
         }
-        List<VendorAtWorkView> vendorsAtWork = getVendorsAtWork();
+        List<VendorAtWorkView> vendorsAtWork = getVendorsAtWork(ServiceTypeMapper.getServiceType(vendorServiceRequest.getServiceType()));
 
-        if (vendorsAtWork.isEmpty()) {
+        if (!vendorsAtWork.isEmpty()) {
             for (VendorAtWorkView vendorAtWorkView : vendorsAtWork) {
+                completionService.submit(() -> {
+                    mapSqlParameterSource.addValue("vendorId", vendorAtWorkView.getVendorId());
+                    String sql1 = "SELECT * FROM dladle.public.user_dladle INNER JOIN dladle.public.vendor ON user_dladle.id = vendor.user_id WHERE vendor.id=:vendorId";
+                    UserDeviceEmailId deviceEmailId = this.jdbcTemplate.queryForObject(sql1, mapSqlParameterSource, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
 
+                    NotificationView notifications = new NotificationView(
+                            session.getUser().getEmailId(),
+                            deviceEmailId.getEmailId(),
+                            NotificationConstants.SERVICE_REQUEST_TITLE,
+                            NotificationConstants.SERVICE_REQUEST_BODY,
+                            "serviceId:" + keyHolder.getKey().longValue(),
+                            "", "0", NotificationType.SERVICE_REQUEST);
+                    notificationService.saveNotification(notifications);
+
+                    //Send Push Notification
+                    if (deviceEmailId.getDeviceId() != null) {
+                        JSONObject body = new JSONObject();
+                        body.put("to", deviceEmailId.getDeviceId());
+                        body.put("priority", "high");
+
+                        JSONObject notification = new JSONObject();
+                        notification.put("title", NotificationConstants.SERVICE_REQUEST_TITLE);
+                        notification.put("body", NotificationConstants.SERVICE_REQUEST_BODY);
+
+                        JSONObject data = new JSONObject();
+                        data.put("serviceId", keyHolder.getKey().longValue());
+                        body.put("notification", notification);
+                        body.put("data", data);
+                        pushNotificationsService.sendNotification(body);
+                    } else {
+                        System.out.println("Device Id can't be null");
+                    }
+                    return null;
+                });
+                for (int i = 0; i < vendorsAtWork.size(); i++) {
+                    completionService.take().get();
+                    // Some processing here
+                }
             }
+            populateVendorWorkTimeline(vendorsAtWork, keyHolder.getKey().longValue());
+        } else {
+            throw new Exception("Currently No vendor at Work");
         }
         // TODO: 7/2/2017 Find Nearest Vendors and populate service_estimations and send notifications
     }
 
-    public List<VendorAtWorkView> getVendorsAtWork() {
+    private List<VendorAtWorkView> getVendorsAtWork(Integer serviceType) {
         Map<String, Object> map = new HashMap<>();
+        map.put("serviceType", serviceType);
         List<VendorAtWorkView> vendorAtWorkViews = new ArrayList<>();
         String sql = "SELECT * FROM vendor_work_timeline " +
                 "INNER JOIN vendor ON vendor_work_timeline.vendor_id = vendor.id " +
+                "INNER JOIN service_type ON vendor.service_type_id = service_type.id " +
                 "INNER JOIN years_exp ON vendor.experience_id = years_exp.id " +
                 "INNER JOIN user_dladle ON vendor.user_id = user_dladle.id " +
                 "LEFT JOIN rating ON user_dladle.id = rating.rated_user  " +
-                "WHERE current_work_status=TRUE ";
+                "WHERE current_work_status=TRUE AND service_type_id=:serviceType";
         this.jdbcTemplate.query(sql, map, (rs, rowNum) -> {
             VendorAtWorkView vendorAtWorkView = new VendorAtWorkView(rs.getLong("vendor_id"),
                     rs.getString("current_location"), rs.getString("name"), rs.getDouble("value"));
@@ -163,7 +216,7 @@ public class VendorService {
         return views;
     }
 
-    public void populateVendorWorkTimeline(List<VendorAtWorkView> vendorAtWorkViews, long serviceId) {
+    private void populateVendorWorkTimeline(List<VendorAtWorkView> vendorAtWorkViews, long serviceId) {
         List<Map<String, Object>> list = new ArrayList<>();
         for (VendorAtWorkView vendorAtWorkView : vendorAtWorkViews) {
             Map<String, Object> map = new HashMap<>();

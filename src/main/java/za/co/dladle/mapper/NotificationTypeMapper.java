@@ -42,6 +42,8 @@ public class NotificationTypeMapper {
                 return 16;
             case RATE_VENDOR:
                 return 17;
+            case SERVICE_REQUEST:
+                return 18;
             default:
                 return null;
         }
