@@ -338,7 +338,7 @@ public class VendorService {
 
         Map<String, Object> map = new HashMap<>();
         map.put("serviceId", serviceId);
-        String sql1 = "SELECT emergency FROM dladle.public.service WHERE id=:serviceId";
+        String sql1 = "SELECT emergency FROM service WHERE id=:serviceId";
         Boolean emergency = this.jdbcTemplate.queryForObject(sql1, map, boolean.class);
         vendorRequest.setEmergency(emergency);
         List<Vendor> vendors = new ArrayList<>();
