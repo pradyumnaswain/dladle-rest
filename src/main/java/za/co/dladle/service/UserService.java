@@ -88,7 +88,7 @@ public class UserService {
         String hashedPassword = Hashing.sha512().hashString(user.getPassword(), Charset.defaultCharset()).toString();
 
         try {
-            String sql = "SELECT *,user_dladle.id user_id FROM user_dladle INNER JOIN user_type ON user_dladle.user_type_id = user_type.id WHERE emailid=? AND password=?";
+            String sql = "SELECT *,user_dladle.id user_id FROM user_dladle INNER JOIN user_type ON user_dladle.user_type_id = user_type.id WHERE emailid=? AND password=? AND verified=TRUE ";
             User u = this.jdbcTemplate.queryForObject(sql, new Object[]{user.getEmailId().toLowerCase(), hashedPassword}, (rs, rowNum) ->
                     new User(rs.getString("emailId"),
                             rs.getLong("user_id"),
