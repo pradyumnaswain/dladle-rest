@@ -62,7 +62,6 @@ public class PropertyService {
             String email = userSession.getUser().getEmailId();
 
             Map<String, Object> map = new HashMap<>();
-            map.put("address", property.getAddress());
             map.put("emailId", email);
             String landlordSql = "SELECT landlord.id landord_id FROM user_dladle INNER JOIN landlord ON user_dladle.id = landlord.user_id WHERE emailid=:emailId";
             Integer landlordId = this.parameterJdbcTemplate.queryForObject(landlordSql, map, Integer.class);
@@ -72,6 +71,8 @@ public class PropertyService {
             MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
                     .addValue("landlordId", landlordId)
                     .addValue("address", property.getAddress())
+                    .addValue("addressLatitude", property.getAddressLatitude())
+                    .addValue("addressLongitude", property.getAddressLongitude())
                     .addValue("PlaceType", PlaceTypeMapper.getPlaceType(property.getPlaceType()))
                     .addValue("complexName", property.getComplexName())
                     .addValue("unitNumber", property.getUnitNo())
@@ -98,7 +99,7 @@ public class PropertyService {
                 }
                 KeyHolder propertyId = new GeneratedKeyHolder();
 
-                String PropertySql = "INSERT INTO property (landlord_id, address, place_type_id, complex_name, unit_number, image_url, isEstate, estate_name,property_add_date) VALUES (:landlordId, :address, :PlaceType,:complexName,:unitNumber,:imgUrl,:isEstate, :estateName,:addDate)";
+                String PropertySql = "INSERT INTO property (landlord_id, address,address_latitude,address_longitude, place_type_id, complex_name, unit_number, image_url, isEstate, estate_name,property_add_date) VALUES (:landlordId, :address,:addressLatitude,:addressLongitude, :PlaceType,:complexName,:unitNumber,:imgUrl,:isEstate, :estateName,:addDate)";
 
                 this.parameterJdbcTemplate.update(PropertySql, mapSqlParameterSource, propertyId, new String[]{"id"});
 

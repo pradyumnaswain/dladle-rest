@@ -253,3 +253,13 @@ ALTER TABLE notification
   DROP CONSTRAINT notification_house_id_fkey;
 ALTER TABLE notification_count
   DROP CONSTRAINT notification_house_id_fkey
+ALTER TABLE vendor_work_timeline
+  DROP COLUMN current_location;
+ALTER TABLE vendor_work_timeline
+  ADD COLUMN current_location_latitude VARCHAR(100);
+ALTER TABLE vendor_work_timeline
+  ADD COLUMN current_location_longitude VARCHAR(100);
+ALTER TABLE property
+  ADD COLUMN address_latitude VARCHAR(100);
+ALTER TABLE property
+  ADD COLUMN address_longitude VARCHAR(100);

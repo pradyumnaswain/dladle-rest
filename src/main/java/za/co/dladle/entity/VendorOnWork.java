@@ -4,16 +4,26 @@ package za.co.dladle.entity;
  * Created by prady on 6/27/2017.
  */
 public class VendorOnWork {
-    private String currentLocation;
+    private String currentLocationLatitude;
+
+    private String currentLocationLongitude;
 
     public VendorOnWork() {
     }
 
-    public String getCurrentLocation() {
-        return currentLocation;
+    public String getCurrentLocationLatitude() {
+        return currentLocationLatitude;
     }
 
-    public void setCurrentLocation(String currentLocation) {
-        this.currentLocation = currentLocation;
+    public void setCurrentLocationLatitude(String currentLocationLatitude) {
+        this.currentLocationLatitude = currentLocationLatitude;
+    }
+
+    public String getCurrentLocationLongitude() {
+        return currentLocationLongitude;
+    }
+
+    public void setCurrentLocationLongitude(String currentLocationLongitude) {
+        this.currentLocationLongitude = currentLocationLongitude;
     }
 }

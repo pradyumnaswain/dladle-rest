@@ -242,13 +242,14 @@ public class VendorService {
 
         map.put("vendorId", userId);
         map.put("time", LocalDateTime.now());
-        map.put("location", vendorOnWork.getCurrentLocation());
+        map.put("locationLatitude", vendorOnWork.getCurrentLocationLatitude());
+        map.put("locationLongitude", vendorOnWork.getCurrentLocationLongitude());
 
         String sql = "SELECT count(*) FROM vendor_work_timeline WHERE vendor_id=:vendorId AND current_work_status=TRUE ";
         Integer count = this.jdbcTemplate.queryForObject(sql, map, Integer.class);
         if (count == 0) {
-            String sql1 = "INSERT INTO vendor_work_timeline(vendor_id, current_work_status, on_work_from, current_location) VALUES " +
-                    "(:vendorId,TRUE ,:time,:location)";
+            String sql1 = "INSERT INTO vendor_work_timeline(vendor_id, current_work_status, on_work_from, current_location_latitude,current_location_longitude) VALUES " +
+                    "(:vendorId,TRUE ,:time,:locationLatitude,:locationLongitude)";
             this.jdbcTemplate.update(sql1, map);
         }
     }

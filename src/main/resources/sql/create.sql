@@ -117,6 +117,8 @@ CREATE TABLE property
   landlord_id       BIGINT,
   place_type_id     BIGINT,
   address           VARCHAR(100),
+  address_latitude  VARCHAR(100),
+  address_longitude VARCHAR(100),
   isEstate          VARCHAR(100),
   estate_name       VARCHAR(100),
   complex_name      VARCHAR(45),
@@ -271,12 +273,13 @@ CREATE TABLE document_type
 );
 CREATE TABLE vendor_work_timeline
 (
-  id                  BIGSERIAL PRIMARY KEY NOT NULL,
-  vendor_id           BIGINT,
-  current_work_status BOOLEAN DEFAULT FALSE,
-  on_work_from        TIMESTAMP,
-  on_work_to          TIMESTAMP,
-  current_location    VARCHAR(500),
+  id                         BIGSERIAL PRIMARY KEY NOT NULL,
+  vendor_id                  BIGINT,
+  current_work_status        BOOLEAN DEFAULT FALSE,
+  on_work_from               TIMESTAMP,
+  on_work_to                 TIMESTAMP,
+  current_location_latitude  VARCHAR(100),
+  current_location_longitude VARCHAR(100),
   FOREIGN KEY (vendor_id) REFERENCES vendor (id)
 );
 /*User Device*/

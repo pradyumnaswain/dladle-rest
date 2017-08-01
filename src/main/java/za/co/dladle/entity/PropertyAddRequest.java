@@ -9,6 +9,10 @@ public class PropertyAddRequest {
 
     private String address;
 
+    private String addressLatitude;
+
+    private String addressLongitude;
+
     private boolean isInEstate;
 
     private String estateName;
@@ -30,6 +34,22 @@ public class PropertyAddRequest {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getAddressLatitude() {
+        return addressLatitude;
+    }
+
+    public void setAddressLatitude(String addressLatitude) {
+        this.addressLatitude = addressLatitude;
+    }
+
+    public String getAddressLongitude() {
+        return addressLongitude;
+    }
+
+    public void setAddressLongitude(String addressLongitude) {
+        this.addressLongitude = addressLongitude;
     }
 
     public boolean isInEstate() {
