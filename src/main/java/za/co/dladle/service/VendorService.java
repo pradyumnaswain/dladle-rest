@@ -123,7 +123,7 @@ public class VendorService {
             for (VendorAtWorkView vendorAtWorkView : vendorsAtWork) {
                 completionService.submit(() -> {
                     mapSqlParameterSource.addValue("vendorId", vendorAtWorkView.getVendorId());
-                    String sql1 = "SELECT * FROM dladle.public.user_dladle INNER JOIN dladle.public.vendor ON user_dladle.id = vendor.user_id WHERE vendor.id=:vendorId";
+                    String sql1 = "SELECT * FROM user_dladle INNER JOIN vendor ON user_dladle.id = vendor.user_id WHERE vendor.id=:vendorId";
                     UserDeviceEmailId deviceEmailId = this.jdbcTemplate.queryForObject(sql1, mapSqlParameterSource, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
 
                     NotificationView notifications = new NotificationView(
@@ -180,7 +180,7 @@ public class VendorService {
                 "WHERE current_work_status=TRUE AND service_type_id=:serviceType";
         this.jdbcTemplate.query(sql, map, (rs, rowNum) -> {
             VendorAtWorkView vendorAtWorkView = new VendorAtWorkView(rs.getLong("vendor_id"),
-                    rs.getString("current_location"), rs.getString("name"), rs.getDouble("value"));
+                    rs.getString("current_location_latitude"), rs.getString("current_location_longitude"), rs.getString("name"), rs.getDouble("value"));
             vendorAtWorkViews.add(vendorAtWorkView);
             return vendorAtWorkView;
 
@@ -194,7 +194,7 @@ public class VendorService {
         geoApiContext.setApiKey("AIzaSyBBD8kFX9-dZqyXoNs6KsgiuKlhSGkvU28");
         List<String> locations = new ArrayList<>();
         for (VendorAtWorkView vendorAtWorkView : vendorAtWorkViews) {
-            locations.add(vendorAtWorkView.getCurrentLocation());
+//            locations.add(vendorAtWorkView.getCurrentLocation());
         }
         String[] destinations = locations.toArray(new String[locations.size()]);
 
@@ -292,7 +292,7 @@ public class VendorService {
 
             map.put("serviceId", serviceId);
             String sql = "SELECT * FROM service WHERE id=:serviceId";
-            String sql1 = "SELECT * FROM dladle.public.service_documents WHERE service_id=:serviceId";
+            String sql1 = "SELECT * FROM service_documents WHERE service_id=:serviceId";
 
             List<ServiceDocuments> documents = new ArrayList<>();
             this.jdbcTemplate.query(sql1, map, (rs, rowNum) -> {
@@ -330,7 +330,7 @@ public class VendorService {
         map.put("feeStartRange", vendorEstimate.getFeeStartRange());
         map.put("feeEndRange", vendorEstimate.getFeeEndRange());
 
-        String sql1 = "UPDATE dladle.public.service_estimations SET fee_end_range=:feeEndRange,fee_start_range=:feeStartRange WHERE vendor_id=:vendorId AND service_id=:serviceId ";
+        String sql1 = "UPDATE service_estimations SET fee_end_range=:feeEndRange,fee_start_range=:feeStartRange WHERE vendor_id=:vendorId AND service_id=:serviceId ";
         this.jdbcTemplate.update(sql1, map);
     }
 

@@ -5,7 +5,8 @@ package za.co.dladle.entity;
  */
 public class VendorAtWorkView {
     private long vendorId;
-    private String currentLocation;
+    private String currentLocationLatitude;
+    private String currentLocationLongitude;
     private String experience;
     private Double proximity;
     private Double rating;
@@ -13,9 +14,10 @@ public class VendorAtWorkView {
     public VendorAtWorkView() {
     }
 
-    public VendorAtWorkView(long vendorId, String currentLocation, String experience, Double rating) {
+    public VendorAtWorkView(long vendorId, String currentLocationLatitude, String currentLocationLongitude, String experience, Double rating) {
         this.vendorId = vendorId;
-        this.currentLocation = currentLocation;
+        this.currentLocationLatitude = currentLocationLatitude;
+        this.currentLocationLongitude = currentLocationLongitude;
         this.experience = experience;
         this.rating = rating;
     }
@@ -28,12 +30,20 @@ public class VendorAtWorkView {
         this.vendorId = vendorId;
     }
 
-    public String getCurrentLocation() {
-        return currentLocation;
+    public String getCurrentLocationLatitude() {
+        return currentLocationLatitude;
     }
 
-    public void setCurrentLocation(String currentLocation) {
-        this.currentLocation = currentLocation;
+    public void setCurrentLocationLatitude(String currentLocationLatitude) {
+        this.currentLocationLatitude = currentLocationLatitude;
+    }
+
+    public String getCurrentLocationLongitude() {
+        return currentLocationLongitude;
+    }
+
+    public void setCurrentLocationLongitude(String currentLocationLongitude) {
+        this.currentLocationLongitude = currentLocationLongitude;
     }
 
     public String getExperience() {
