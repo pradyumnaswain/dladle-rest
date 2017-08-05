@@ -67,6 +67,7 @@ public class PropertyService {
             Integer landlordId = this.parameterJdbcTemplate.queryForObject(landlordSql, map, Integer.class);
 
             map.put("landlordId", landlordId);
+            map.put("address", property.getAddress());
 
             MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
                     .addValue("landlordId", landlordId)

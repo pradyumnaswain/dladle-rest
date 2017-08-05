@@ -47,3 +47,12 @@ INSERT INTO service_status (id, name) VALUES (1, 'Requested');
 
 INSERT INTO document_type (id, name) VALUES (1, 'Audio');
 INSERT INTO document_type (id, name) VALUES (2, 'Image');
+
+INSERT INTO transaction_status (id, name) VALUES (1, 'Success');
+INSERT INTO transaction_status (id, name) VALUES (1, 'Fail');
+
+INSERT INTO transaction_type (id, name) VALUES (1, 'Credit');
+INSERT INTO transaction_type (id, name) VALUES (1, 'Debit');
+
+INSERT INTO operation_type (id, name) VALUES (1, 'Key Generation');
+INSERT INTO operation_type (id, name) VALUES (1, 'Service Fee');
