@@ -55,6 +55,7 @@ public class ApiConstants {
     //Rating API
     //------------------------------------------------------------------------------------------------------------------
     public static final String RATING_VIEW = "/api/rating/view";
+    public static final String RATING_VIEW_BY_USER_EMAIL_ID = "/api/rating/view/{userEmailId}";
     public static final String RATING_VIEW_DETAILS = "/api/rating/view/details";
     public static final String RATING_POST = "/api/rating/post";
     public static final String RATING_UPDATE = "/api/rating/update";
