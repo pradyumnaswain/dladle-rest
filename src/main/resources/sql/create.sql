@@ -206,6 +206,12 @@ CREATE TABLE tenant
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),
   FOREIGN KEY (house_id) REFERENCES house (id)
 );
+CREATE TABLE document_type
+(
+  id   BIGINT PRIMARY KEY NOT NULL,
+  name VARCHAR(20)
+);
+
 /*tenant*/
 CREATE TABLE tenant_property_documents
 (
@@ -283,11 +289,6 @@ CREATE TABLE service_documents
   document_type BIGINT,
   FOREIGN KEY (service_id) REFERENCES service (id),
   FOREIGN KEY (document_type) REFERENCES document_type (id)
-);
-CREATE TABLE document_type
-(
-  id   BIGINT PRIMARY KEY NOT NULL,
-  name VARCHAR(20)
 );
 CREATE TABLE vendor_work_timeline
 (
