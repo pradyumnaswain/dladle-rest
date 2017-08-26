@@ -252,7 +252,7 @@ ALTER TABLE lease_tenant
 ALTER TABLE notification
   DROP CONSTRAINT notification_house_id_fkey;
 ALTER TABLE notification_count
-  DROP CONSTRAINT notification_house_id_fkey
+  DROP CONSTRAINT notification_house_id_fkey;
 ALTER TABLE vendor_work_timeline
   DROP COLUMN current_location;
 ALTER TABLE vendor_work_timeline
@@ -263,3 +263,9 @@ ALTER TABLE property
   ADD COLUMN address_latitude VARCHAR(100);
 ALTER TABLE property
   ADD COLUMN address_longitude VARCHAR(100);
+
+UPDATE user_dladle
+SET cell_number = ''
+WHERE cell_number ISNULL;
+ALTER TABLE user_dladle
+  ALTER COLUMN cell_number SET DEFAULT '';

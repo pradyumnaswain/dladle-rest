@@ -109,7 +109,7 @@ CREATE TABLE user_dladle
   first_name          VARCHAR(20),
   last_name           VARCHAR(20),
   id_number           VARCHAR(45),
-  cell_number         VARCHAR(10),
+  cell_number         VARCHAR(10) DEFAULT '',
   device_id           VARCHAR(1000),
   profile_picture     VARCHAR(1000),
   rgistered_date      TIMESTAMP,
