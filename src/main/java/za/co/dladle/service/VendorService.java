@@ -9,6 +9,7 @@ import com.google.maps.model.TravelMode;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -355,6 +356,11 @@ public class VendorService {
             vendors.add(vendor);
             vendorRequest.setVendors(vendors);
         }));
+//        List<ServiceInstance> instances = discoveryClient.getInstances("dladle-vendor-selection-engine");
+//        ServiceInstance serviceInstance = instances.get(0);
+//        String baseUrl = serviceInstance.getUri().toString();
+//        baseUrl = baseUrl + "/api/vendor/engine/selection";
+//        Map<String, Object> map1 = restTemplate.postForObject(baseUrl, vendorRequest, Map.class);
 
         RestTemplate restTemplate = new RestTemplate();
         Map<String, Object> map1 = restTemplate.postForObject(url, vendorRequest, Map.class);
