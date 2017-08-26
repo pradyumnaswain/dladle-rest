@@ -6,8 +6,7 @@ package za.co.dladle.model;
 public enum ContactType {
     HOSPITAL("Hospital"),
     POLICE_STATION("Police Station"),
-    FIRE_STATION("Fire Station"),
-    LANDLORD("Landlord");
+    FIRE_STATION("Fire Station");
 
     private final String id;
 

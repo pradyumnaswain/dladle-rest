@@ -14,8 +14,6 @@ public class ContactTypeMapper {
                 return 2;
             case FIRE_STATION:
                 return 3;
-            case LANDLORD:
-                return 4;
             default:
                 return null;
         }
