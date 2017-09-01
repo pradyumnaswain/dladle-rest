@@ -126,6 +126,15 @@ public class UserService {
                 } else {
                     u.setHouseStatus(false);
                 }
+                Long tenantId = userUtility.findTenantIdByEmail(u.getEmailId());
+                String sqlPropertyJoin = "SELECT joined_date FROM lease_tenant WHERE tenant_id=? AND lease_status=TRUE ";
+
+                try {
+                    String propertyJoinedDate = this.jdbcTemplate.queryForObject(sqlPropertyJoin, new Object[]{tenantId}, String.class);
+                    u.setTenantPropertyJoinedDate(propertyJoinedDate);
+                } catch (Exception e) {
+                    u.setTenantPropertyJoinedDate(null);
+                }
             }
             String sqlLogin = "UPDATE user_dladle SET last_logged_in_date=? WHERE emailid=?";
             this.jdbcTemplate.update(sqlLogin, LocalDateTime.now(), user.getEmailId().toLowerCase());

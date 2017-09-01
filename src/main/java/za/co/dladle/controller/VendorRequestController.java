@@ -1,6 +1,7 @@
 package za.co.dladle.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.bind.annotation.*;
 import za.co.dladle.apiutil.ApiConstants;
 import za.co.dladle.apiutil.DladleConstants;
@@ -26,7 +27,7 @@ public class VendorRequestController {
     //Request Vendor
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = ApiConstants.VENDOR_REQUEST, method = RequestMethod.POST)
-    public Map<String, Object> requestVendor(@RequestBody VendorServiceRequest vendorServiceRequest) throws IOException {
+    public Map<String, Object> requestVendor(@RequestBody(required = false) VendorServiceRequest vendorServiceRequest) throws IOException {
         try {
             vendorService.requestVendor(vendorServiceRequest);
             return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.REQUEST_VENDOR);

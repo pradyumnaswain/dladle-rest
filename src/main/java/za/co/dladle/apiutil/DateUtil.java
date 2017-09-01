@@ -17,8 +17,15 @@ public class DateUtil {
     }
 
     public static LocalDateTime stringToLocalDateTime(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return LocalDateTime.parse(date, formatter);
-
+        if (date != null) {
+            if (!date.equals("")) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                return LocalDateTime.parse(date, formatter);
+            } else {
+                return LocalDateTime.now();
+            }
+        } else {
+            return LocalDateTime.now();
+        }
     }
 }
