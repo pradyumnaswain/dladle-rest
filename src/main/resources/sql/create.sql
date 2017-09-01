@@ -371,11 +371,11 @@ CREATE TABLE payment_card
   user_id          BIGINT,
   card_update_time TIMESTAMP,
   name_on_card     VARCHAR(100),
-  card_number      VARCHAR(500),
+  card_number      VARCHAR(16),
   card_type        VARCHAR(100),
-  vaultId          VARCHAR(500),
+  expiry_date      VARCHAR(5),
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),
-  UNIQUE (user_id)
+  UNIQUE (user_id, card_number)
 );
 CREATE TABLE service_estimations
 (

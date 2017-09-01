@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.dladle.apiutil.ApiConstants;
 import za.co.dladle.apiutil.DladleConstants;
+import za.co.dladle.entity.PaymentCardDeleteRequest;
 import za.co.dladle.model.PaymentCard;
 import za.co.dladle.service.WalletService;
 import za.co.dladle.serviceutil.ResponseUtil;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,9 +55,9 @@ public class WalletController {
     //Delete Card
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = ApiConstants.CARD_DELETE, method = RequestMethod.DELETE)
-    public Map<String, Object> deleteCard() throws IOException {
+    public Map<String, Object> deleteCard(@RequestBody PaymentCardDeleteRequest paymentCardDeleteRequest) throws IOException {
         try {
-            walletService.deleteCard();
+            walletService.deleteCard(paymentCardDeleteRequest.getCardNumber());
             return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.CARD_DELETE);
         } catch (Exception e) {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
@@ -68,7 +70,7 @@ public class WalletController {
     @RequestMapping(value = ApiConstants.CARD_VIEW, method = RequestMethod.GET)
     public Map<String, Object> viewCard() throws IOException {
         try {
-            PaymentCard paymentCard = walletService.viewCard();
+            List<PaymentCard> paymentCard = walletService.viewCard();
             return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, paymentCard, DladleConstants.CARD_VIEW);
         } catch (Exception e) {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());

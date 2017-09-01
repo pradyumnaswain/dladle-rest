@@ -269,4 +269,16 @@ SET cell_number = ''
 WHERE cell_number ISNULL;
 ALTER TABLE user_dladle
   ALTER COLUMN cell_number SET DEFAULT '';
-ALTER TABLE payment_card DROP COLUMN cvv_number;
+DROP TABLE payment_card;
+CREATE TABLE payment_card
+(
+  id               BIGSERIAL PRIMARY KEY,
+  user_id          BIGINT,
+  card_update_time TIMESTAMP,
+  name_on_card     VARCHAR(100),
+  card_number      VARCHAR(16),
+  card_type        VARCHAR(100),
+  expiry_date      VARCHAR(5),
+  FOREIGN KEY (user_id) REFERENCES user_dladle (id),
+  UNIQUE (user_id, card_number)
+);
