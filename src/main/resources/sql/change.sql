@@ -269,3 +269,4 @@ SET cell_number = ''
 WHERE cell_number ISNULL;
 ALTER TABLE user_dladle
   ALTER COLUMN cell_number SET DEFAULT '';
+ALTER TABLE payment_card DROP COLUMN cvv_number;

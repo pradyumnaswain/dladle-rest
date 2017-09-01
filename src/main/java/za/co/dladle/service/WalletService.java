@@ -48,13 +48,12 @@ public class WalletService {
                 map.put("userId", userId);
                 map.put("nameOnCard", paymentCard.getNameOnCard());
                 map.put("cardNumber", "*************" + cardNumber);
-                map.put("cvvNumber", paymentCard.getCvvNumber());
                 map.put("cardType", paymentCard.getCardType());
                 map.put("vaultId", vaultId);
                 map.put("time", LocalDateTime.now());
 
-                String sql = "INSERT INTO payment_card(user_id, card_update_time, name_on_card, card_number, cvv_number, card_type,vaultid) " +
-                        "VALUES (:userId,:time,:nameOnCard,:cardNumber,:cvvNumber,:cardType,:vaultId) ON CONFLICT DO NOTHING ";
+                String sql = "INSERT INTO payment_card(user_id, card_update_time, name_on_card, card_number, card_type,vaultid) " +
+                        "VALUES (:userId,:time,:nameOnCard,:cardNumber,:cardType,:vaultId) ON CONFLICT DO NOTHING ";
                 this.jdbcTemplate.update(sql, map);
             } else throw new Exception("Unable to persist card data");
         }
@@ -77,12 +76,11 @@ public class WalletService {
         map.put("userId", userId);
         map.put("nameOnCard", paymentCard.getNameOnCard());
         map.put("cardNumber", "*************" + cardNumber);
-        map.put("cvvNumber", paymentCard.getCvvNumber());
         map.put("cardType", paymentCard.getCardType());
         map.put("time", LocalDateTime.now());
         map.put("vaultId", vaultId);
 
-        String sql = "UPDATE payment_card SET name_on_card=:nameOnCard,card_number=:cardNumber,cvv_number=:cvvNumber,card_type=:cardType,card_update_time=:time,vaultid=:vaultId WHERE user_id=:userId";
+        String sql = "UPDATE payment_card SET name_on_card=:nameOnCard,card_number=:cardNumber,card_type=:cardType,card_update_time=:time,vaultid=:vaultId WHERE user_id=:userId";
         this.jdbcTemplate.update(sql, map);
     }
 

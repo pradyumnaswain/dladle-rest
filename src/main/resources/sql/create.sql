@@ -372,7 +372,6 @@ CREATE TABLE payment_card
   card_update_time TIMESTAMP,
   name_on_card     VARCHAR(100),
   card_number      VARCHAR(500),
-  cvv_number       VARCHAR(500),
   card_type        VARCHAR(100),
   vaultId          VARCHAR(500),
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),

@@ -7,7 +7,6 @@ public class PaymentCard {
     private String nameOnCard;
     private String cardNumber;
     private String expiryDate;
-    private String cvvNumber;
     private String cardType;
 
     public PaymentCard(String nameOnCard, String cardNumber, String cardType) {
@@ -41,14 +40,6 @@ public class PaymentCard {
 
     public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
-    }
-
-    public String getCvvNumber() {
-        return cvvNumber;
-    }
-
-    public void setCvvNumber(String cvvNumber) {
-        this.cvvNumber = cvvNumber;
     }
 
     public String getCardType() {
