@@ -37,7 +37,8 @@ public class AuthenticationFilter extends GenericFilterBean {
                     isAddDeviceEndPoint(httpServletRequest) ||
                     isVerifyEndPoint(httpServletRequest) ||
                     isUserTypeEndpoint(httpServletRequest) ||
-                    isSwaggerEndpoint(httpServletRequest)) {
+                    isSwaggerEndpoint(httpServletRequest) ||
+                    isAdminEndpoint(httpServletRequest)) {
                 chain.doFilter(httpServletRequest, httpServletResponse);
             } else try {
                 throw new AuthenticationException("User not logged in");
@@ -94,5 +95,10 @@ public class AuthenticationFilter extends GenericFilterBean {
                 || httpRequest.getRequestURI().contains("/configuration/ui")
                 || httpRequest.getRequestURI().contains("/configuration/security")
                 || httpRequest.getRequestURI().matches("/webjars/(.*)");
+    }
+
+    private static boolean isAdminEndpoint(HttpServletRequest httpRequest) {
+        return httpRequest.getRequestURI().contains("/")
+                || httpRequest.getRequestURI().contains("/health");
     }
 }
