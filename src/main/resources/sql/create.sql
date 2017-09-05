@@ -114,6 +114,7 @@ CREATE TABLE user_dladle
   profile_picture     VARCHAR(1000),
   rgistered_date      TIMESTAMP,
   last_logged_in_date TIMESTAMP,
+  payment_account_set BOOLEAN     DEFAULT FALSE,
   FOREIGN KEY (user_type_id) REFERENCES user_type (id)
 );
 CREATE UNIQUE INDEX user_dladle_email_uindex
@@ -396,9 +397,9 @@ CREATE TABLE transaction
   reference_no       VARCHAR(100),
   user_id            BIGINT,
   amount             DECIMAL,
-  transcation_type   BIGINT,
+  transcation_type   BIGINT DEFAULT 2,
   operation_type     BIGINT,
-  transaction_status BIGINT,
+  transaction_status BIGINT DEFAULT 4,
   transaction_time   TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),
   FOREIGN KEY (transcation_type) REFERENCES transaction_type (id),

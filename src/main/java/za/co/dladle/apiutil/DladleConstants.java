@@ -81,6 +81,10 @@ public class DladleConstants {
     public static final String CARD_DELETE = "Payment Card deleted Successfully";
     public static final String CARD_VIEW = "Payment Card retrieved Successfully";
     //------------------------------------------------------------------------------------------------------------------
+    //Payments API
+    //------------------------------------------------------------------------------------------------------------------
+    public static final String PAYMENT_PAY = "Payment Paid Successfully";
+    //------------------------------------------------------------------------------------------------------------------
     //Vendor API
     //------------------------------------------------------------------------------------------------------------------
     public static final String REQUEST_VENDOR = "Job Requested Successfully";

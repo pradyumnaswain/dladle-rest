@@ -282,3 +282,20 @@ CREATE TABLE payment_card
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),
   UNIQUE (user_id, card_number)
 );
+DROP TABLE transaction;
+CREATE TABLE transaction
+(
+  id                 BIGSERIAL PRIMARY KEY,
+  reference_no       VARCHAR(100),
+  user_id            BIGINT,
+  amount             DECIMAL,
+  transcation_type   BIGINT DEFAULT 2,
+  operation_type     BIGINT,
+  transaction_status BIGINT DEFAULT 4,
+  transaction_time   TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES user_dladle (id),
+  FOREIGN KEY (transcation_type) REFERENCES transaction_type (id),
+  FOREIGN KEY (operation_type) REFERENCES operation_type (id),
+  FOREIGN KEY (transaction_status) REFERENCES transaction_status (id)
+);
+

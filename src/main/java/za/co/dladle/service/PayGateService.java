@@ -65,7 +65,7 @@ public class PayGateService {
     //Card request Using Token
     //------------------------------------------------------------------------------------------------------------------
 
-    void paymentRequest(User user, String vaultId, String cvvNumber, String merchantId, Integer amount) throws DatatypeConfigurationException {
+    CardPaymentResponseType paymentRequest(User user, String cardNumber, String expiryDate, String cvvNumber, String merchantId, Integer amount, String notifUrl, String returnUrl) throws DatatypeConfigurationException {
         SinglePaymentRequest singlePaymentRequest = new SinglePaymentRequest();
 
         CardPaymentRequestType cardPaymentRequestType = new CardPaymentRequestType();
@@ -74,17 +74,21 @@ public class PayGateService {
 
         cardPaymentRequestType.setCustomer(getPersonType(user));
 
-        cardPaymentRequestType.setVaultId(vaultId);
+        cardPaymentRequestType.setCardNumber(cardNumber);
+        cardPaymentRequestType.setCardExpiryDate(expiryDate);
+        cardPaymentRequestType.setCVV(cvvNumber);
 
         cardPaymentRequestType.setCVV(cvvNumber);
 
 //        cardPaymentRequestType.setBudgetPeriod();
+        cardPaymentRequestType.setRedirect(getRedirect(notifUrl, returnUrl));
 
         cardPaymentRequestType.setOrder(getOrderType(merchantId, amount));
 
         singlePaymentRequest.setCardPaymentRequest(cardPaymentRequestType);
 
-        webServiceClient.getPayHOST().singlePayment(singlePaymentRequest);
+        SinglePaymentResponse singlePaymentResponse = webServiceClient.getPayHOST().singlePayment(singlePaymentRequest);
+        return singlePaymentResponse.getCardPaymentResponse();
     }
 
     private PersonType getPersonType(User user) {
@@ -118,5 +122,15 @@ public class PayGateService {
         XMLGregorianCalendar xmlGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
         orderType.setTransactionDate(xmlGregorianCalendar);
         return orderType;
+    }
+
+    private RedirectRequestType getRedirect(String notifUrl, String returnUrl) {
+        RedirectRequestType redirectRequestType = new RedirectRequestType();
+
+        redirectRequestType.setNotifyUrl(notifUrl);
+
+        redirectRequestType.setReturnUrl(returnUrl);
+
+        return redirectRequestType;
     }
 }

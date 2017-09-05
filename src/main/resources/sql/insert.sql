@@ -49,10 +49,12 @@ INSERT INTO document_type (id, name) VALUES (1, 'Audio');
 INSERT INTO document_type (id, name) VALUES (2, 'Image');
 
 INSERT INTO transaction_status (id, name) VALUES (1, 'Success');
-INSERT INTO transaction_status (id, name) VALUES (1, 'Fail');
+INSERT INTO transaction_status (id, name) VALUES (2, 'Fail');
+INSERT INTO transaction_status (id, name) VALUES (3, 'Pending');
+INSERT INTO transaction_status (id, name) VALUES (4, 'Unknown');
 
 INSERT INTO transaction_type (id, name) VALUES (1, 'Credit');
-INSERT INTO transaction_type (id, name) VALUES (1, 'Debit');
+INSERT INTO transaction_type (id, name) VALUES (2, 'Debit');
 
 INSERT INTO operation_type (id, name) VALUES (1, 'Key Generation');
-INSERT INTO operation_type (id, name) VALUES (1, 'Service Fee');
+INSERT INTO operation_type (id, name) VALUES (2, 'Service Fee');
