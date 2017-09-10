@@ -54,7 +54,7 @@ public class WalletController {
     //------------------------------------------------------------------------------------------------------------------
     //Delete Card
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = ApiConstants.CARD_DELETE, method = RequestMethod.DELETE)
+    @RequestMapping(value = ApiConstants.CARD_DELETE, method = RequestMethod.POST)
     public Map<String, Object> deleteCard(@RequestBody PaymentCardDeleteRequest paymentCardDeleteRequest) throws IOException {
         try {
             walletService.deleteCard(paymentCardDeleteRequest.getCardNumber());
