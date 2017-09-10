@@ -1,39 +1,40 @@
 package za.co.dladle.controller;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import za.co.dladle.Sandbox;
+import za.co.dladle.entity.UserRequest;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Created by prady on 11/26/2016.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = Sandbox.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class UserControllerTest {
 
+    @Autowired
     private MockMvc mockMvc;
-
-    @Before
-    public void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(
-                new UserController()
-        ).build();
-    }
-
     @Test
-    public void getHello() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
-                .get("/hello")
-                .accept(MediaType.APPLICATION_JSON_VALUE)).andExpect(content().string("hello"));
+    public void login() throws Exception {
+        UserRequest userRequest = new UserRequest();
+        userRequest.setEmailId("pradyumnaswain76@gmail.com");
+        userRequest.setPassword("Pradyumna1@");
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login", userRequest)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].status", is("SUCCESS")));
     }
-
 }
