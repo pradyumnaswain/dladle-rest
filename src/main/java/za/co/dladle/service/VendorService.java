@@ -24,6 +24,7 @@ import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.mapper.DocumentTypeMapper;
 import za.co.dladle.mapper.ServiceStatusMapper;
 import za.co.dladle.mapper.ServiceTypeMapper;
+import za.co.dladle.model.DocumentType;
 import za.co.dladle.model.NotificationType;
 import za.co.dladle.model.ServiceStatus;
 import za.co.dladle.serviceutil.UserUtility;
@@ -98,18 +99,34 @@ public class VendorService {
         if (vendorServiceRequest.getServiceDocuments() != null) {
             List<Map<String, Object>> list = new ArrayList<>();
             for (ServiceDocuments file : vendorServiceRequest.getServiceDocuments()) {
-                completionService.submit(() -> {
-                    Map<String, Object> map = new HashMap<>();
 
-                    String imageUrl = fileManagementServiceCloudinary.upload(file.getBase64(), file.getFileName());
+                if (file.getDocumentType().equals(DocumentType.IMAGE)) {
+                    completionService.submit(() -> {
+                        Map<String, Object> map = new HashMap<>();
 
-                    map.put("serviceId", keyHolder.getKey().longValue());
-                    map.put("imageUrl", imageUrl);
-                    map.put("documentType", DocumentTypeMapper.getDocumentType(file.getDocumentType()));
+                        String imageUrl = fileManagementServiceCloudinary.upload(file.getBase64(), file.getFileName());
 
-                    list.add(map);
-                    return null;
-                });
+                        map.put("serviceId", keyHolder.getKey().longValue());
+                        map.put("imageUrl", imageUrl);
+                        map.put("documentType", DocumentTypeMapper.getDocumentType(file.getDocumentType()));
+
+                        list.add(map);
+                        return null;
+                    });
+                } else {
+                    completionService.submit(() -> {
+                        Map<String, Object> map = new HashMap<>();
+
+                        String imageUrl = fileManagementServiceCloudinary.uploadAudio(file.getBase64(), file.getFileName());
+
+                        map.put("serviceId", keyHolder.getKey().longValue());
+                        map.put("imageUrl", imageUrl);
+                        map.put("documentType", DocumentTypeMapper.getDocumentType(file.getDocumentType()));
+
+                        list.add(map);
+                        return null;
+                    });
+                }
             }
             for (ServiceDocuments file : vendorServiceRequest.getServiceDocuments()) {
                 completionService.take().get();

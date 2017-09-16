@@ -34,4 +34,18 @@ public class FileManagementServiceCloudinaryImpl implements FileManagementServic
         return resultMap.get("secure_url").toString();
 
     }
+
+    public String uploadAudio(String audio, String fileName) throws IOException {
+        Map<String, Object> config = new HashMap<>();
+        config.put("cloud_name", cloudName);
+        config.put("api_key", apiKey);
+        config.put("api_secret", apiSecret);
+
+        Cloudinary cloudinary = new Cloudinary(config);
+
+        Map resultMap = cloudinary.uploader().upload("data:audio/mpeg;base64," + audio, ObjectUtils.emptyMap());
+
+        return resultMap.get("secure_url").toString();
+
+    }
 }
