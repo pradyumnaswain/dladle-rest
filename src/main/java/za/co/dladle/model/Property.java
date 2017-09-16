@@ -28,6 +28,8 @@ public class Property {
     private List<TenantView> tenantList;
     private LandlordView landlord;
     private boolean leaseStatus;
+    private String addressLatitude;
+    private String addressLongitude;
 
 
     public Property() {
@@ -175,5 +177,21 @@ public class Property {
 
     public void setLeaseStatus(boolean leaseStatus) {
         this.leaseStatus = leaseStatus;
+    }
+
+    public String getAddressLatitude() {
+        return addressLatitude;
+    }
+
+    public void setAddressLatitude(String addressLatitude) {
+        this.addressLatitude = addressLatitude;
+    }
+
+    public String getAddressLongitude() {
+        return addressLongitude;
+    }
+
+    public void setAddressLongitude(String addressLongitude) {
+        this.addressLongitude = addressLongitude;
     }
 }

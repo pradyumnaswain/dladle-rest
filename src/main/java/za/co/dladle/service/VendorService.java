@@ -4,8 +4,11 @@ import com.google.maps.DistanceMatrixApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.DistanceMatrix;
+import com.google.maps.model.DistanceMatrixElement;
 import com.google.maps.model.DistanceMatrixRow;
 import com.google.maps.model.TravelMode;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +29,7 @@ import za.co.dladle.mapper.ServiceStatusMapper;
 import za.co.dladle.mapper.ServiceTypeMapper;
 import za.co.dladle.model.DocumentType;
 import za.co.dladle.model.NotificationType;
+import za.co.dladle.model.Property;
 import za.co.dladle.model.ServiceStatus;
 import za.co.dladle.serviceutil.UserUtility;
 import za.co.dladle.session.UserSession;
@@ -68,6 +72,8 @@ public class VendorService {
     @Value("{vendor.selection.engine}")
     private String url;
 
+    @Value("{vendor.selection.max.distance}")
+    private String distance;
 
     public void requestVendor(VendorServiceRequest vendorServiceRequest) throws Exception {
 
@@ -99,7 +105,6 @@ public class VendorService {
         if (vendorServiceRequest.getServiceDocuments() != null) {
             List<Map<String, Object>> list = new ArrayList<>();
             for (ServiceDocuments file : vendorServiceRequest.getServiceDocuments()) {
-
                 if (file.getDocumentType().equals(DocumentType.IMAGE)) {
                     completionService.submit(() -> {
                         Map<String, Object> map = new HashMap<>();
@@ -136,6 +141,13 @@ public class VendorService {
             this.jdbcTemplate.batchUpdate(sql1, list.toArray(new Map[vendorServiceRequest.getServiceDocuments().size()]));
         }
         List<VendorAtWorkView> vendorsAtWork = getVendorsAtWork(ServiceTypeMapper.getServiceType(vendorServiceRequest.getServiceType()));
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("houseId", vendorServiceRequest.getHouseId());
+        String sql2 = "SELECT * FROM property INNER JOIN house ON property.id =house.property_id WHERE house.id=:houseId";
+
+        Property propery = jdbcTemplate.queryForObject(sql2, map, Property.class);
+        vendorsAtWork = getNearestVendors(vendorsAtWork, propery.getAddressLatitude(), propery.getAddressLongitude());
 
         if (!vendorsAtWork.isEmpty()) {
             for (VendorAtWorkView vendorAtWorkView : vendorsAtWork) {
@@ -207,30 +219,36 @@ public class VendorService {
     }
 
     public List<VendorAtWorkView> getNearestVendors(List<VendorAtWorkView> vendorAtWorkViews, String
-            propertyLocation) throws InterruptedException, ApiException, IOException {
+            latitude, String longitude) throws InterruptedException, ApiException, IOException {
         GeoApiContext geoApiContext = new GeoApiContext();
+        String destinitions = "";
         geoApiContext.setApiKey("AIzaSyBBD8kFX9-dZqyXoNs6KsgiuKlhSGkvU28");
-        List<String> locations = new ArrayList<>();
         for (VendorAtWorkView vendorAtWorkView : vendorAtWorkViews) {
-//            locations.add(vendorAtWorkView.getCurrentLocation());
+            destinitions = destinitions + vendorAtWorkView.getCurrentLocationLatitude() + "," + vendorAtWorkView.getCurrentLocationLongitude() + "|";
         }
-        String[] destinations = locations.toArray(new String[locations.size()]);
 
         DistanceMatrix distanceMatrix = DistanceMatrixApi.newRequest(geoApiContext)
-                .origins(propertyLocation)
-                .destinations(destinations)
+                .origins(latitude + "," + longitude)
+                .destinations(destinitions)
                 .mode(TravelMode.DRIVING).
                         await();
+        int i = 0;
+        List<Double> distLst = new ArrayList<Double>();
 
-        DistanceMatrixRow[] rows = distanceMatrix.rows;
-        List<VendorAtWorkView> views = new ArrayList<>();
-        for (VendorAtWorkView vendorAtWorkView : vendorAtWorkViews) {
-            VendorAtWorkView vendorAtWorkView1 = new VendorAtWorkView();
-//            vendorAtWorkView1.s
-            views.add(vendorAtWorkView1);
-
+        for (DistanceMatrixRow row : distanceMatrix.rows) {
+            for (DistanceMatrixElement element : row.elements) {
+                distLst.add(Double.parseDouble(element.distance.humanReadable));
+            }
         }
-
+        List<VendorAtWorkView> views = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(distLst)) {
+            for (double dist : distLst) {
+                if (dist <= Double.parseDouble(distance)) {
+                    views.add(vendorAtWorkViews.get(i));
+                }
+                i++;
+            }
+        }
         return views;
     }
 
