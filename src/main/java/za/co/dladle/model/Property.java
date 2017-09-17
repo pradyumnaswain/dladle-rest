@@ -34,6 +34,8 @@ public class Property {
 
     public Property() {
     }
+    
+    
 
     public long getPropertyId() {
         return propertyId;
