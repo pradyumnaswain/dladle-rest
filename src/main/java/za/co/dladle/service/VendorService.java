@@ -78,7 +78,7 @@ public class VendorService {
     @Value("{vendor.selection.max.distance}")
     private String distance;
 
-    public void requestVendor(VendorServiceRequest vendorServiceRequest) throws Exception {
+    public long requestVendor(VendorServiceRequest vendorServiceRequest) throws Exception {
 
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         CompletionService<String> completionService = new ExecutorCompletionService<>(executorService);
@@ -147,16 +147,16 @@ public class VendorService {
 
         String sql2 = "SELECT * FROM property INNER JOIN house ON property.id =house.property_id WHERE house.id=:houseId";
 
-        Property propery = jdbcTemplate.queryForObject(sql2, mapSqlParameterSource,new RowMapper<Property>() {
+        Property propery = jdbcTemplate.queryForObject(sql2, mapSqlParameterSource, new RowMapper<Property>() {
 
-			@Override
-			public Property mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Property property = new Property();
-				property.setAddressLatitude(rs.getString("address_latitude"));
-				property.setAddressLongitude(rs.getString("address_longitude"));
-				return property;
-			}
-		});
+            @Override
+            public Property mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Property property = new Property();
+                property.setAddressLatitude(rs.getString("address_latitude"));
+                property.setAddressLongitude(rs.getString("address_longitude"));
+                return property;
+            }
+        });
         vendorsAtWork = getNearestVendors(vendorsAtWork, propery.getAddressLatitude(), propery.getAddressLongitude());
 
         if (!vendorsAtWork.isEmpty()) {
@@ -204,6 +204,7 @@ public class VendorService {
         } else {
             throw new Exception("Currently No vendor at Work");
         }
+        return keyHolder.getKey().longValue();
         // TODO: 7/2/2017 Find Nearest Vendors and populate service_estimations and send notifications
     }
 
@@ -229,43 +230,44 @@ public class VendorService {
     }
 
     public List<VendorAtWorkView> getNearestVendors(List<VendorAtWorkView> vendorAtWorkViews, String
-            latitude , String longitude) throws InterruptedException, ApiException, IOException {
+            latitude, String longitude) throws InterruptedException, ApiException, IOException {
         GeoApiContext geoApiContext = new GeoApiContext();
-        String destinitions ="";        
+        String destinitions = "";
         geoApiContext.setApiKey("AIzaSyBBD8kFX9-dZqyXoNs6KsgiuKlhSGkvU28");
         for (VendorAtWorkView vendorAtWorkView : vendorAtWorkViews) {
-             destinitions = destinitions+vendorAtWorkView.getCurrentLocationLatitude()+","+vendorAtWorkView.getCurrentLocationLongitude()+"|";
+            destinitions = destinitions + vendorAtWorkView.getCurrentLocationLatitude() + "," + vendorAtWorkView.getCurrentLocationLongitude() + "|";
         }
-       
+
         DistanceMatrix distanceMatrix = DistanceMatrixApi.newRequest(geoApiContext)
-                .origins(latitude+","+longitude)
+                .origins(latitude + "," + longitude)
                 .destinations(destinitions)
                 .mode(TravelMode.DRIVING).
                         await();
 
-        int i=0;
+        int i = 0;
         List<Double> distLst = new ArrayList<Double>();
-        
-        for(DistanceMatrixRow row : distanceMatrix.rows){
-			for(DistanceMatrixElement element : row.elements){
-				distLst.add(Double.parseDouble(element.distance.humanReadable));
-			}
-		 
-		 }
-        List<VendorAtWorkView> views = new ArrayList<>();
-        if(CollectionUtils.isNotEmpty(distLst)){
-		for (double dist : distLst) {
-			if (dist <=Double.parseDouble(distance)) {
-				views.add(vendorAtWorkViews.get(i));
-			}
-			i++;
 
-		}
+        for (DistanceMatrixRow row : distanceMatrix.rows) {
+            for (DistanceMatrixElement element : row.elements) {
+                distLst.add(Double.parseDouble(element.distance.humanReadable));
+            }
+
+        }
+        List<VendorAtWorkView> views = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(distLst)) {
+            for (double dist : distLst) {
+                if (dist <= Double.parseDouble(distance)) {
+                    views.add(vendorAtWorkViews.get(i));
+                }
+                i++;
+
+            }
         }
 
 
         return views;
     }
+
     private void populateVendorWorkTimeline(List<VendorAtWorkView> vendorAtWorkViews, long serviceId) {
         List<Map<String, Object>> list = new ArrayList<>();
         for (VendorAtWorkView vendorAtWorkView : vendorAtWorkViews) {

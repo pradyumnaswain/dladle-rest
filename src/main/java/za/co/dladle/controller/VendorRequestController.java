@@ -29,8 +29,8 @@ public class VendorRequestController {
     @RequestMapping(value = ApiConstants.VENDOR_REQUEST, method = RequestMethod.POST)
     public Map<String, Object> requestVendor(@RequestBody(required = false) VendorServiceRequest vendorServiceRequest) throws IOException {
         try {
-            vendorService.requestVendor(vendorServiceRequest);
-            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.REQUEST_VENDOR);
+            long serviceId = vendorService.requestVendor(vendorServiceRequest);
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, serviceId, DladleConstants.REQUEST_VENDOR);
         } catch (Exception e) {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }
