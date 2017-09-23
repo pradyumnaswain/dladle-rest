@@ -99,13 +99,14 @@ public class VendorService {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-
         String sql = "INSERT INTO service(service_type_id, service_request_time, service_requester_user_id, service_status_id, service_need_time, emergency, service_description,house_id) " +
                 "VALUES (:serviceType,:serviceRequestTime,:requestUserId,:serviceStatus,:needTime,:emergency,:description,:houseId)";
 
         this.jdbcTemplate.update(sql, mapSqlParameterSource, keyHolder, new String[]{"id"});
 
-        if (vendorServiceRequest.getServiceDocuments() != null) {
+        if (vendorServiceRequest.getServiceDocuments() != null &&
+                !vendorServiceRequest.getServiceDocuments().isEmpty() &&
+                vendorServiceRequest.getServiceDocuments().size() > 0) {
             List<Map<String, Object>> list = new ArrayList<>();
             for (ServiceDocuments file : vendorServiceRequest.getServiceDocuments()) {
                 if (file.getDocumentType().equals(DocumentType.IMAGE)) {
@@ -205,7 +206,6 @@ public class VendorService {
             throw new Exception("Currently No vendor at Work");
         }
         return keyHolder.getKey().longValue();
-        // TODO: 7/2/2017 Find Nearest Vendors and populate service_estimations and send notifications
     }
 
     private List<VendorAtWorkView> getVendorsAtWork(Integer serviceType) {
@@ -263,8 +263,6 @@ public class VendorService {
 
             }
         }
-
-
         return views;
     }
 
