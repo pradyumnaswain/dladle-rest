@@ -42,11 +42,9 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by prady on 6/27/2017.
@@ -62,6 +60,9 @@ public class VendorService {
 
     @Autowired
     private UserUtility userUtility;
+
+    @Autowired
+    private RatingService ratingService;
 
     @Autowired
     private FileManagementServiceCloudinaryImpl fileManagementServiceCloudinary;
@@ -415,9 +416,31 @@ public class VendorService {
         Map<String, Object> map1 = restTemplate.postForObject(url, vendorRequest, Map.class);
         Map<String, Object> m = (Map<String, Object>) map1.get("Data");
         if (m != null) {
-            VendorResponse vendorResponse = new VendorResponse();
-            vendorResponse.setVendorId(Long.valueOf(m.get("vendorId").toString()));
-            vendorResponse.setWeighted(Double.valueOf(m.get("weighted").toString()));
+            VendorResponse vendorResponse;
+
+            map.put("vendorId", Long.valueOf(m.get("vendorId").toString()));
+            String sqlVendor = "SELECT user_dladle.*,service_type.name job_type,years_exp.name years_of_exp FROM user_dladle INNER JOIN vendor ON user_dladle.id = vendor.user_id " +
+                    "INNER JOIN service_type ON vendor.service_type_id = service_type.id " +
+                    "INNER JOIN years_exp ON vendor.experience_id = years_exp.id " +
+                    "WHERE vendor.id=:vendorId";
+
+            vendorResponse = this.jdbcTemplate.queryForObject(sqlVendor, map, (rs, rowNum) ->
+                    new VendorResponse(Long.valueOf(m.get("vendorId").toString()),
+                            rs.getString("emailId"),
+                            rs.getString("first_name") + " " + rs.getString("last_name"),
+                            rs.getString("profile_picture"), rs.getString("job_type"),
+                            rs.getString("years_of_exp")));
+
+            vendorResponse.setVendorRating(ratingService.viewRating(vendorResponse.getVendorEmailId()));
+            Vendor vendor = vendors.stream().filter(x -> Objects.equals(x.getVendorId(), Long.valueOf(m.get("vendorId").toString()))).collect(Collectors.toList()).get(0);
+            vendorResponse.setProposedFeeStartRange(vendor.getFeeStartRange());
+            vendorResponse.setProposedFeeEndRange(vendor.getFeeEndRange());
+
+            String sqlNumberOfJobs = "SELECT count(*) FROM service WHERE vendor_id=:vendorId";
+            Integer numberOfJobs = this.jdbcTemplate.queryForObject(sqlNumberOfJobs, map, Integer.class);
+
+            vendorResponse.setNumberOfJobs(numberOfJobs);
+
             return vendorResponse;
         } else {
             throw new Exception("Unable to access Vendor Selection Engine");
