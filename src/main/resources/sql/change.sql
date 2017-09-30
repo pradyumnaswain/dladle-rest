@@ -298,4 +298,7 @@ CREATE TABLE transaction
   FOREIGN KEY (operation_type) REFERENCES operation_type (id),
   FOREIGN KEY (transaction_status) REFERENCES transaction_status (id)
 );
-
+ALTER TABLE user_dladle
+  ADD COLUMN status BOOLEAN DEFAULT TRUE;
+ALTER TABLE property
+  ADD COLUMN status BOOLEAN DEFAULT TRUE;

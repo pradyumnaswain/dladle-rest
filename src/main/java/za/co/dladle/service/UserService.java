@@ -88,7 +88,7 @@ public class UserService {
         String hashedPassword = Hashing.sha512().hashString(user.getPassword(), Charset.defaultCharset()).toString();
 
         try {
-            String sql = "SELECT *,user_dladle.id user_id FROM user_dladle INNER JOIN user_type ON user_dladle.user_type_id = user_type.id WHERE emailid=? AND password=? AND verified=TRUE ";
+            String sql = "SELECT *,user_dladle.id user_id FROM user_dladle INNER JOIN user_type ON user_dladle.user_type_id = user_type.id WHERE emailid=? AND password=? AND verified=TRUE AND status=TRUE ";
             User u = this.jdbcTemplate.queryForObject(sql, new Object[]{user.getEmailId().toLowerCase(), hashedPassword}, (rs, rowNum) ->
                     new User(rs.getString("emailId"),
                             rs.getLong("user_id"),
@@ -435,8 +435,32 @@ public class UserService {
                 rowsUpdated = this.parameterJdbcTemplate.update(VendorSql, map);
             }
             return rowsUpdated;
+        } else if (countEmail == 1) {
+            String countStatusSql = "SELECT status FROM user_dladle WHERE emailid=:emailId AND status=TRUE ";
+
+            Boolean status = this.parameterJdbcTemplate.queryForObject(countStatusSql, map, Boolean.class);
+
+            if (status) {
+                throw new UseAlreadyExistsException("User already Exists");
+            } else {
+                throw new UseAlreadyExistsException("User already Exists");
+            }
         } else {
             throw new UseAlreadyExistsException("User already Exists");
         }
+    }
+
+    public Boolean deleteUser(UserDeleteRequest deleteRequest) {
+
+        UserSession userSession = applicationContext.getBean(UserSession.class);
+        Map<String, Object> map = new HashMap<>();
+        map.put("password", Hashing.sha512().hashString(deleteRequest.getPassword(), Charset.defaultCharset()).toString());
+        map.put("emailId", userSession.getUser().getEmailId());
+
+        String sql = "UPDATE user_dladle SET status=FALSE WHERE emailid=:emailId AND password=:password";
+
+        int deleted = this.parameterJdbcTemplate.update(sql, map);
+
+        return deleted != 0;
     }
 }

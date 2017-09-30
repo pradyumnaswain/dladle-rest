@@ -47,13 +47,30 @@ public class UserController {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    //Logout
+    //User Details
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = ApiConstants.USER_DETAILS, method = RequestMethod.GET)
     public Map<String, Object> getUserDetails(@RequestParam String emailId) throws UserNotFoundException {
         try {
             User user = userService.getDetails(emailId);
             return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, user, DladleConstants.USER_DETAILS);
+        } catch (Exception e) {
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Delete User
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = ApiConstants.USER_DELETE, method = RequestMethod.POST)
+    public Map<String, Object> deleteUser(@RequestBody UserDeleteRequest deleteRequest) throws UserNotFoundException {
+        try {
+            Boolean deleted = userService.deleteUser(deleteRequest);
+            if (deleted) {
+                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, true, DladleConstants.USER_DELETED_SUCCESSFULLY);
+            } else {
+                return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, deleted, DladleConstants.USER_DELETED_UNSUCCESS);
+            }
         } catch (Exception e) {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }

@@ -115,6 +115,7 @@ CREATE TABLE user_dladle
   rgistered_date      TIMESTAMP,
   last_logged_in_date TIMESTAMP,
   payment_account_set BOOLEAN     DEFAULT FALSE,
+  status              BOOLEAN     DEFAULT TRUE,
   FOREIGN KEY (user_type_id) REFERENCES user_type (id)
 );
 CREATE UNIQUE INDEX user_dladle_email_uindex
@@ -144,6 +145,7 @@ CREATE TABLE property
   unit_number       VARCHAR(20),
   image_url         VARCHAR(100),
   property_add_date DATE,
+  status            BOOLEAN DEFAULT TRUE,
   FOREIGN KEY (place_type_id) REFERENCES place_type (id),
   FOREIGN KEY (landlord_id) REFERENCES landlord (id)
 );

@@ -66,6 +66,7 @@ public class ApiConstants {
     public static final String USER_LOGIN = "api/user/login";
     public static final String USER_DETAILS = "api/user/get/details";
     public static final String USER_LOGOUT = "api/user/logout";
+    public static final String USER_DELETE = "api/user/delete";
     public static final String USER_FORGOT_PASSWORD = "api/user/forgot-password";
     public static final String USER_RESET_PASSWORD = "api/user/reset-password";
     public static final String USER_CHANGE_PASSWORD = "api/user/change-password";

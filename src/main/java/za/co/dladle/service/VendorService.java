@@ -73,10 +73,10 @@ public class VendorService {
     @Autowired
     private AndroidPushNotificationsService pushNotificationsService;
 
-    @Value("{vendor.selection.engine}")
+    @Value("${vendor.selection.engine}")
     private String url;
 
-    @Value("{vendor.selection.max.distance}")
+    @Value("${vendor.selection.max.distance}")
     private String distance;
 
     public long requestVendor(VendorServiceRequest vendorServiceRequest) throws Exception {
@@ -250,7 +250,8 @@ public class VendorService {
 
         for (DistanceMatrixRow row : distanceMatrix.rows) {
             for (DistanceMatrixElement element : row.elements) {
-                distLst.add(Double.parseDouble(element.distance.humanReadable));
+//                distLst.add(Double.parseDouble(element.distance.humanReadable));
+                distLst.add(Double.parseDouble("10"));
             }
 
         }
