@@ -145,7 +145,7 @@ public class VendorService {
             String sql1 = "INSERT INTO service_documents (service_id, url,document_type) VALUES (:serviceId,:imageUrl,:documentType)";
             this.jdbcTemplate.batchUpdate(sql1, list.toArray(new Map[vendorServiceRequest.getServiceDocuments().size()]));
         }
-        List<VendorAtWorkView> vendorsAtWork = getVendorsAtWork(ServiceTypeMapper.getServiceType(vendorServiceRequest.getServiceType()));
+        List<VendorAtWorkView> vendorsAtWork = getVendorsAtWork(ServiceTypeMapper.getServiceType(vendorServiceRequest.getServiceType()), session.getUser().getEmailId());
 
         String sql2 = "SELECT * FROM property INNER JOIN house ON property.id =house.property_id WHERE house.id=:houseId";
 
@@ -209,23 +209,26 @@ public class VendorService {
         return keyHolder.getKey().longValue();
     }
 
-    private List<VendorAtWorkView> getVendorsAtWork(Integer serviceType) {
+    private List<VendorAtWorkView> getVendorsAtWork(Integer serviceType, String emailId) {
         Map<String, Object> map = new HashMap<>();
         map.put("serviceType", serviceType);
         List<VendorAtWorkView> vendorAtWorkViews = new ArrayList<>();
         String sql = "SELECT * FROM vendor_work_timeline " +
                 "INNER JOIN vendor ON vendor_work_timeline.vendor_id = vendor.id " +
-                "INNER JOIN service_type ON vendor.service_type_id = service_type.id " +
                 "INNER JOIN years_exp ON vendor.experience_id = years_exp.id " +
                 "INNER JOIN user_dladle ON vendor.user_id = user_dladle.id " +
-                "LEFT JOIN rating ON user_dladle.id = rating.rated_user  " +
                 "WHERE current_work_status=TRUE AND service_type_id=:serviceType";
         this.jdbcTemplate.query(sql, map, (rs, rowNum) -> {
             VendorAtWorkView vendorAtWorkView = new VendorAtWorkView(rs.getLong("vendor_id"),
-                    rs.getString("current_location_latitude"), rs.getString("current_location_longitude"), rs.getString("name"), rs.getDouble("value"));
+                    rs.getString("current_location_latitude"), rs.getString("current_location_longitude"), rs.getString("name"));
+            try {
+                vendorAtWorkView.setRating(ratingService.viewRating(emailId));
+            } catch (Exception e) {
+                vendorAtWorkView.setRating(0D);
+                e.printStackTrace();
+            }
             vendorAtWorkViews.add(vendorAtWorkView);
             return vendorAtWorkView;
-
         });
         return vendorAtWorkViews;
     }
@@ -398,12 +401,14 @@ public class VendorService {
         String sql = "SELECT * FROM service_estimations WHERE service_id=:serviceId";
         this.jdbcTemplate.query(sql, map, (rs -> {
             Vendor vendor = new Vendor();
-            vendor.setExperience(rs.getString("experience"));
+//            vendor.setExperience(rs.getString("experience"));
+            vendor.setExperience("1");
             vendor.setFeeEndRange(rs.getDouble("fee_end_range"));
             vendor.setFeeStartRange(rs.getDouble("fee_start_range"));
             vendor.setProximity(rs.getDouble("proximity"));
             vendor.setRating(rs.getDouble("rating"));
             vendor.setVendorId(rs.getLong("vendor_id"));
+            vendor.setmRequestTime(1000L);
             vendors.add(vendor);
             vendorRequest.setVendors(vendors);
         }));

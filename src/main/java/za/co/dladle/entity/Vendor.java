@@ -10,7 +10,11 @@ public class Vendor {
     private Double rating;
     private Double feeStartRange;
     private Double feeEndRange;
+    private Long mRequestTime;
 
+    // These values to be computed after initialization.
+    private Double mWeightedRating;
+    private Double mAverageWeight;
     public Vendor() {
     }
 
@@ -60,5 +64,29 @@ public class Vendor {
 
     public void setFeeEndRange(Double feeEndRange) {
         this.feeEndRange = feeEndRange;
+    }
+
+    public Long getmRequestTime() {
+        return mRequestTime;
+    }
+
+    public void setmRequestTime(Long mRequestTime) {
+        this.mRequestTime = mRequestTime;
+    }
+
+    public Double getmWeightedRating() {
+        return mWeightedRating;
+    }
+
+    public void setmWeightedRating(Double mWeightedRating) {
+        this.mWeightedRating = mWeightedRating;
+    }
+
+    public Double getmAverageWeight() {
+        return mAverageWeight;
+    }
+
+    public void setmAverageWeight(Double mAverageWeight) {
+        this.mAverageWeight = mAverageWeight;
     }
 }

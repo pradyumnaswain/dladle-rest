@@ -14,12 +14,11 @@ public class VendorAtWorkView {
     public VendorAtWorkView() {
     }
 
-    public VendorAtWorkView(long vendorId, String currentLocationLatitude, String currentLocationLongitude, String experience, Double rating) {
+    public VendorAtWorkView(long vendorId, String currentLocationLatitude, String currentLocationLongitude, String experience) {
         this.vendorId = vendorId;
         this.currentLocationLatitude = currentLocationLatitude;
         this.currentLocationLongitude = currentLocationLongitude;
         this.experience = experience;
-        this.rating = rating;
     }
 
     public long getVendorId() {
