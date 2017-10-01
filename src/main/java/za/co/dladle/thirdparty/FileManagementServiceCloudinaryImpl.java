@@ -43,7 +43,7 @@ public class FileManagementServiceCloudinaryImpl implements FileManagementServic
 
         Cloudinary cloudinary = new Cloudinary(config);
 
-        Map resultMap = cloudinary.uploader().upload("data:audio/mpeg;base64," + audio, ObjectUtils.emptyMap());
+        Map resultMap = cloudinary.uploader().upload("data:audio/mpeg;base64," + audio, ObjectUtils.asMap("resource_type", "video"));
 
         return resultMap.get("secure_url").toString();
 

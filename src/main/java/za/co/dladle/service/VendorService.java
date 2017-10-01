@@ -41,7 +41,9 @@ import za.co.dladle.thirdparty.NotificationService;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
@@ -111,35 +113,26 @@ public class VendorService {
             List<Map<String, Object>> list = new ArrayList<>();
             for (ServiceDocuments file : vendorServiceRequest.getServiceDocuments()) {
                 if (file.getDocumentType().equals(DocumentType.IMAGE)) {
-                    completionService.submit(() -> {
-                        Map<String, Object> map = new HashMap<>();
+                    Map<String, Object> map = new HashMap<>();
 
-                        String imageUrl = fileManagementServiceCloudinary.upload(file.getBase64(), file.getFileName());
+                    String imageUrl = fileManagementServiceCloudinary.upload(file.getBase64(), file.getFileName());
 
-                        map.put("serviceId", keyHolder.getKey().longValue());
-                        map.put("imageUrl", imageUrl);
-                        map.put("documentType", DocumentTypeMapper.getDocumentType(file.getDocumentType()));
+                    map.put("serviceId", keyHolder.getKey().longValue());
+                    map.put("imageUrl", imageUrl);
+                    map.put("documentType", DocumentTypeMapper.getDocumentType(file.getDocumentType()));
 
-                        list.add(map);
-                        return null;
-                    });
+                    list.add(map);
                 } else {
-                    completionService.submit(() -> {
-                        Map<String, Object> map = new HashMap<>();
+                    Map<String, Object> map = new HashMap<>();
 
-                        String imageUrl = fileManagementServiceCloudinary.uploadAudio(file.getBase64(), file.getFileName());
+                    String imageUrl = fileManagementServiceCloudinary.uploadAudio(file.getBase64(), file.getFileName());
 
-                        map.put("serviceId", keyHolder.getKey().longValue());
-                        map.put("imageUrl", imageUrl);
-                        map.put("documentType", DocumentTypeMapper.getDocumentType(file.getDocumentType()));
+                    map.put("serviceId", keyHolder.getKey().longValue());
+                    map.put("imageUrl", imageUrl);
+                    map.put("documentType", DocumentTypeMapper.getDocumentType(file.getDocumentType()));
 
-                        list.add(map);
-                        return null;
-                    });
+                    list.add(map);
                 }
-            }
-            for (ServiceDocuments file : vendorServiceRequest.getServiceDocuments()) {
-                completionService.take().get();
             }
 
             String sql1 = "INSERT INTO service_documents (service_id, url,document_type) VALUES (:serviceId,:imageUrl,:documentType)";
@@ -149,15 +142,11 @@ public class VendorService {
 
         String sql2 = "SELECT * FROM property INNER JOIN house ON property.id =house.property_id WHERE house.id=:houseId";
 
-        Property propery = jdbcTemplate.queryForObject(sql2, mapSqlParameterSource, new RowMapper<Property>() {
-
-            @Override
-            public Property mapRow(ResultSet rs, int rowNum) throws SQLException {
-                Property property = new Property();
-                property.setAddressLatitude(rs.getString("address_latitude"));
-                property.setAddressLongitude(rs.getString("address_longitude"));
-                return property;
-            }
+        Property propery = jdbcTemplate.queryForObject(sql2, mapSqlParameterSource, (rs, rowNum) -> {
+            Property property = new Property();
+            property.setAddressLatitude(rs.getString("address_latitude"));
+            property.setAddressLongitude(rs.getString("address_longitude"));
+            return property;
         });
         vendorsAtWork = getNearestVendors(vendorsAtWork, propery.getAddressLatitude(), propery.getAddressLongitude());
 
@@ -253,8 +242,11 @@ public class VendorService {
 
         for (DistanceMatrixRow row : distanceMatrix.rows) {
             for (DistanceMatrixElement element : row.elements) {
-//                distLst.add(Double.parseDouble(element.distance.humanReadable));
-                distLst.add(Double.parseDouble("10"));
+                if (element.distance != null) {
+                    distLst.add(Double.parseDouble(element.distance.humanReadable));
+                } else {
+                    distLst.add(0D);
+                }
             }
 
         }
@@ -265,7 +257,6 @@ public class VendorService {
                     views.add(vendorAtWorkViews.get(i));
                 }
                 i++;
-
             }
         }
         return views;
@@ -281,10 +272,11 @@ public class VendorService {
             map.put("experience", vendorAtWorkView.getExperience());
             map.put("proximity", vendorAtWorkView.getProximity());
             map.put("rating", vendorAtWorkView.getRating());
+            map.put("notificationSentTime", LocalDateTime.now());
 
             list.add(map);
         }
-        String sql1 = "INSERT INTO service_estimations (service_id, vendor_id, experience, proximity, rating) VALUES (:serviceId,:vendorId,:experience,:proximity,:rating)";
+        String sql1 = "INSERT INTO service_estimations (service_id, vendor_id, experience, proximity, rating,notification_sent_time) VALUES (:serviceId,:vendorId,:experience,:proximity,:rating,:notificationSentTime)";
         this.jdbcTemplate.batchUpdate(sql1, list.toArray(new Map[vendorAtWorkViews.size()]));
     }
 
@@ -384,8 +376,9 @@ public class VendorService {
         map.put("serviceId", vendorEstimate.getServiceId());
         map.put("feeStartRange", vendorEstimate.getFeeStartRange());
         map.put("feeEndRange", vendorEstimate.getFeeEndRange());
+        map.put("estimationResponseTime", LocalDateTime.now());
 
-        String sql1 = "UPDATE service_estimations SET fee_end_range=:feeEndRange,fee_start_range=:feeStartRange WHERE vendor_id=:vendorId AND service_id=:serviceId ";
+        String sql1 = "UPDATE service_estimations SET fee_end_range=:feeEndRange,fee_start_range=:feeStartRange,estimation_response_time=:estimationResponseTime WHERE vendor_id=:vendorId AND service_id=:serviceId ";
         this.jdbcTemplate.update(sql1, map);
     }
 
@@ -401,14 +394,16 @@ public class VendorService {
         String sql = "SELECT * FROM service_estimations WHERE service_id=:serviceId";
         this.jdbcTemplate.query(sql, map, (rs -> {
             Vendor vendor = new Vendor();
-//            vendor.setExperience(rs.getString("experience"));
-            vendor.setExperience("1");
+            vendor.setExperience(rs.getString("experience"));
             vendor.setFeeEndRange(rs.getDouble("fee_end_range"));
             vendor.setFeeStartRange(rs.getDouble("fee_start_range"));
             vendor.setProximity(rs.getDouble("proximity"));
             vendor.setRating(rs.getDouble("rating"));
             vendor.setVendorId(rs.getLong("vendor_id"));
-            vendor.setmRequestTime(1000L);
+            LocalDateTime notificationSentTime = rs.getTimestamp("notification_sent_time").toLocalDateTime();
+            LocalDateTime estimationResponseTime = rs.getTimestamp("estimation_response_time").toLocalDateTime();
+            long timeDifference = estimationResponseTime.until(notificationSentTime, ChronoUnit.MILLIS);
+            vendor.setmRequestTime(timeDifference);
             vendors.add(vendor);
             vendorRequest.setVendors(vendors);
         }));
