@@ -5,10 +5,12 @@ package za.co.dladle.model;
  */
 public enum YearsExperience {
 
-    LESS_THAN_ONE("<1 Year"),
-    ONE_TWO_THREE("1-2 Years"),
-    THREE_TO_FIVE("3-5 Years"),
-    MORE_THAN_FIVE(">5 Years");
+    LESS_THAN_ONE("0.5"),
+    ONE_YEAR("1"),
+    BETWEEN_ONE_AND_TWO("1.5"),
+    TWO_YEAR("2"),
+    BETWEEN_TWO_AND_YEAR("2"),
+    THREE_YEARS("3");
 
     private final String id;
 

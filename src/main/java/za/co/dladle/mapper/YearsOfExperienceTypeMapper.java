@@ -6,16 +6,20 @@ import za.co.dladle.model.YearsExperience;
  * Created by prady on 4/1/2017.
  */
 public class YearsOfExperienceTypeMapper {
-    public static Integer getYearsExperience(YearsExperience yearsExperience) {
+    public static Double getYearsExperience(YearsExperience yearsExperience) {
         switch (yearsExperience) {
             case LESS_THAN_ONE:
-                return 1;
-            case ONE_TWO_THREE:
-                return 2;
-            case THREE_TO_FIVE:
-                return 3;
-            case MORE_THAN_FIVE:
-                return 4;
+                return 0.5;
+            case ONE_YEAR:
+                return 1D;
+            case BETWEEN_ONE_AND_TWO:
+                return 1.5;
+            case TWO_YEAR:
+                return 2D;
+            case BETWEEN_TWO_AND_YEAR:
+                return 2.5;
+            case THREE_YEARS:
+                return 3D;
             default:
                 return null;
         }

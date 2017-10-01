@@ -15,10 +15,10 @@ INSERT INTO home_view_type (id, name) VALUES (1, 'Home View Type 1');
 INSERT INTO home_view_type (id, name) VALUES (2, 'Home View Type 2');
 INSERT INTO home_view_type (id, name) VALUES (3, 'Home View Type 3');
 
-INSERT INTO years_exp (id, name) VALUES (1, '< 1 Year');
-INSERT INTO years_exp (id, name) VALUES (2, '1-3 Years');
-INSERT INTO years_exp (id, name) VALUES (3, '3-5 Years');
-INSERT INTO years_exp (id, name) VALUES (4, '5+ Years');
+INSERT INTO years_exp (id, name) VALUES (1, '0.5');
+INSERT INTO years_exp (id, name) VALUES (2, '1');
+INSERT INTO years_exp (id, name) VALUES (3, '1.5');
+INSERT INTO years_exp (id, name) VALUES (4, '2');
 
 INSERT INTO contact_type (id, name) VALUES (1, 'Hospital');
 INSERT INTO contact_type (id, name) VALUES (2, 'Police Station');
