@@ -1,4 +1,4 @@
-package za.co.dladle.thirdparty;
+package za.co.dladle.thirdparty.push;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;

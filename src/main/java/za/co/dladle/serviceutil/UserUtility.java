@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.model.User;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by prady on 11/13/2016.
  */
@@ -68,6 +71,7 @@ public class UserUtility {
             throw new UserNotFoundException("User doesn't exist");
         }
     }
+
     //------------------------------------------------------------------------------------------------------------------
     //Find Vendor Id By Email Id
     //------------------------------------------------------------------------------------------------------------------
@@ -79,5 +83,10 @@ public class UserUtility {
         } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException("User doesn't exist");
         }
+    }
+
+    public String getNameByEmailId(String emailId) {
+        String getUserSql = "SELECT first_name FROM user_dladle WHERE emailid=:emailId";
+        return this.jdbcTemplate.queryForObject(getUserSql, new Object[]{emailId.toLowerCase()}, String.class);
     }
 }

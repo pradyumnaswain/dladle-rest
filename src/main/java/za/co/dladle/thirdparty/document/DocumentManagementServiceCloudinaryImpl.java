@@ -1,4 +1,4 @@
-package za.co.dladle.thirdparty;
+package za.co.dladle.thirdparty.document;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by prady on 6/10/2017.
  */
 @Service
-public class FileManagementServiceCloudinaryImpl implements FileManagementService {
+public class DocumentManagementServiceCloudinaryImpl implements DocumentManagementService {
     @Value("${cloudinary.cloud.name}")
     private String cloudName;
     @Value("${cloudinary.api.key}")
@@ -46,6 +46,5 @@ public class FileManagementServiceCloudinaryImpl implements FileManagementServic
         Map resultMap = cloudinary.uploader().upload("data:audio/mpeg;base64," + audio, ObjectUtils.asMap("resource_type", "video"));
 
         return resultMap.get("secure_url").toString();
-
     }
 }

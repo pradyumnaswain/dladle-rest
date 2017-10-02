@@ -1,4 +1,4 @@
-package za.co.dladle.thirdparty;
+package za.co.dladle.thirdparty.email;
 
 import com.sendgrid.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.Map;
  * Created by prady on 7/26/2016.
  */
 @Service
-public class NotificationServiceSendGridImpl implements NotificationService {
+public class EmailServiceSendGridImpl implements EmailService {
     @Autowired
     private NamedParameterJdbcTemplate parameterJdbcTemplate;
 

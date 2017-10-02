@@ -1,7 +1,5 @@
-package za.co.dladle.thirdparty;
+package za.co.dladle.thirdparty.document;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -14,14 +12,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by prady on 6/10/2017.
  */
 @Service
-public class FileManagementServiceImpl implements FileManagementService {
+public class DocumentManagementServiceImpl implements DocumentManagementService {
     @Value("${document.store.address}")
     private String path;
 
@@ -35,5 +31,10 @@ public class FileManagementServiceImpl implements FileManagementService {
         Files.write(destinationFile, decodedImg);
 
         return fileName;
+    }
+
+    @Override
+    public String uploadAudio(String audio, String fileName) throws IOException {
+        return null;
     }
 }

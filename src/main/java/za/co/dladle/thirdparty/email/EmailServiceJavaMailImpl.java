@@ -1,4 +1,4 @@
-package za.co.dladle.thirdparty;
+package za.co.dladle.thirdparty.email;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -7,11 +7,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 /**
  * Created by prady on 3/24/2017.
  */
-public class NotificationServiceJavaMailImpl implements NotificationService {
+public class EmailServiceJavaMailImpl implements EmailService {
     private JavaMailSender javaMailSender;
 
     @Autowired
-    public NotificationServiceJavaMailImpl(JavaMailSender javaMailSender) {
+    public EmailServiceJavaMailImpl(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 

@@ -12,9 +12,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.context.ApplicationContext;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -34,14 +32,10 @@ import za.co.dladle.model.Property;
 import za.co.dladle.model.ServiceStatus;
 import za.co.dladle.serviceutil.UserUtility;
 import za.co.dladle.session.UserSession;
-import za.co.dladle.thirdparty.AndroidPushNotificationsService;
-import za.co.dladle.thirdparty.FileManagementServiceCloudinaryImpl;
-import za.co.dladle.thirdparty.NotificationService;
+import za.co.dladle.thirdparty.push.AndroidPushNotificationsService;
+import za.co.dladle.thirdparty.document.DocumentManagementServiceCloudinaryImpl;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -67,7 +61,7 @@ public class VendorService {
     private RatingService ratingService;
 
     @Autowired
-    private FileManagementServiceCloudinaryImpl fileManagementServiceCloudinary;
+    private DocumentManagementServiceCloudinaryImpl fileManagementServiceCloudinary;
 
     @Autowired
     private PushNotificationService notificationService;

@@ -16,8 +16,8 @@ import za.co.dladle.model.NotificationType;
 import za.co.dladle.model.User;
 import za.co.dladle.serviceutil.UserUtility;
 import za.co.dladle.session.UserSession;
-import za.co.dladle.thirdparty.AndroidPushNotificationsService;
-import za.co.dladle.thirdparty.NotificationServiceSendGridImpl;
+import za.co.dladle.thirdparty.push.AndroidPushNotificationsService;
+import za.co.dladle.thirdparty.email.EmailServiceSendGridImpl;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -45,7 +45,7 @@ public class LeaseService {
     private PushNotificationService notificationService;
 
     @Autowired
-    private NotificationServiceSendGridImpl emailService;
+    private EmailServiceSendGridImpl emailService;
 
 
     public LeaseLandlord viewLease(long houseId) throws Exception {

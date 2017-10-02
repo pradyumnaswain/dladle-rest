@@ -12,7 +12,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import za.co.dladle.apiutil.DateUtil;
 import za.co.dladle.apiutil.RandomUtil;
 import za.co.dladle.entity.*;
 import za.co.dladle.exception.*;
@@ -23,8 +22,8 @@ import za.co.dladle.model.User;
 import za.co.dladle.model.UserType;
 import za.co.dladle.serviceutil.UserUtility;
 import za.co.dladle.session.UserSession;
-import za.co.dladle.thirdparty.FileManagementServiceCloudinaryImpl;
-import za.co.dladle.thirdparty.NotificationServiceSendGridImpl;
+import za.co.dladle.thirdparty.document.DocumentManagementServiceCloudinaryImpl;
+import za.co.dladle.thirdparty.email.EmailServiceSendGridImpl;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -53,10 +52,10 @@ public class UserService {
     private RatingService ratingService;
 
     @Autowired
-    private NotificationServiceSendGridImpl notificationServiceSendGridImpl;
+    private EmailServiceSendGridImpl notificationServiceSendGridImpl;
 
     @Autowired
-    private FileManagementServiceCloudinaryImpl fileManagementService;
+    private DocumentManagementServiceCloudinaryImpl fileManagementService;
 
     @Autowired
     private NamedParameterJdbcTemplate parameterJdbcTemplate;

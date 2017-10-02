@@ -5,8 +5,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
-import za.co.dladle.entity.VendorResponse;
-import za.co.dladle.service.VendorService;
 
 import javax.servlet.http.HttpSessionListener;
 
@@ -19,13 +17,12 @@ public class Sandbox {
     @Autowired
     private UserSessionMonitor sessionMonitor;
 
-//    private static VendorService vendorService;
+//    private static EmailServiceZohoMailImpl notificationServiceZohoMail;
 
     public static void main(String[] args) throws Exception {
         ConfigurableApplicationContext applicationContext = SpringApplication.run(Sandbox.class);
-//        vendorService = applicationContext.getBean(VendorService.class);
-//        VendorResponse rightVendor = vendorService.findRightVendor(20L);
-//        System.out.println(rightVendor);
+//        notificationServiceZohoMail = applicationContext.getBean(EmailServiceZohoMailImpl.class);
+//        notificationServiceZohoMail.sendWelcomeMail("pradyumnaswain76@gmail.com");
     }
 
     @Bean

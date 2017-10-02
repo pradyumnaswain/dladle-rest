@@ -1,4 +1,4 @@
-package za.co.dladle.thirdparty;
+package za.co.dladle.thirdparty.push;
 
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;

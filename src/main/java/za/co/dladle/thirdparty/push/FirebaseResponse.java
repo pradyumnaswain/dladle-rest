@@ -1,4 +1,4 @@
-package za.co.dladle.thirdparty;
+package za.co.dladle.thirdparty.push;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

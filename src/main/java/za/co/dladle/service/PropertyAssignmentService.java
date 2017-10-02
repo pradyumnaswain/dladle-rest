@@ -11,8 +11,8 @@ import za.co.dladle.entity.*;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.model.NotificationType;
 import za.co.dladle.session.UserSession;
-import za.co.dladle.thirdparty.AndroidPushNotificationsService;
-import za.co.dladle.thirdparty.NotificationServiceSendGridImpl;
+import za.co.dladle.thirdparty.push.AndroidPushNotificationsService;
+import za.co.dladle.thirdparty.email.EmailServiceSendGridImpl;
 
 import javax.transaction.Transactional;
 import java.util.HashMap;
@@ -39,7 +39,7 @@ public class PropertyAssignmentService {
     private PushNotificationService notificationService;
 
     @Autowired
-    private NotificationServiceSendGridImpl emailService;
+    private EmailServiceSendGridImpl emailService;
 
     @Transactional
     public void assignPropertyToTenant(PropertyAssignmentRequest propertyAssignmentRequest) throws Exception {
