@@ -77,8 +77,8 @@ public class VendorService {
 
     public long requestVendor(VendorServiceRequest vendorServiceRequest) throws Exception {
 
-        ExecutorService executorService = Executors.newFixedThreadPool(3);
-        CompletionService<String> completionService = new ExecutorCompletionService<>(executorService);
+//        ExecutorService executorService = Executors.newFixedThreadPool(3);
+//        CompletionService<String> completionService = new ExecutorCompletionService<>(executorService);
         UserSession session = applicationContext.getBean(UserSession.class);
 
         Long userId = userUtility.findUserIdByEmail(session.getUser().getEmailId());
@@ -146,7 +146,7 @@ public class VendorService {
 
         if (!vendorsAtWork.isEmpty()) {
             for (VendorAtWorkView vendorAtWorkView : vendorsAtWork) {
-                completionService.submit(() -> {
+//                completionService.submit(() -> {
                     mapSqlParameterSource.addValue("vendorId", vendorAtWorkView.getVendorId());
                     String sql1 = "SELECT * FROM user_dladle INNER JOIN vendor ON user_dladle.id = vendor.user_id WHERE vendor.id=:vendorId";
                     UserDeviceEmailId deviceEmailId = this.jdbcTemplate.queryForObject(sql1, mapSqlParameterSource, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
@@ -178,12 +178,13 @@ public class VendorService {
                     } else {
                         System.out.println("Device Id can't be null");
                     }
-                    return null;
-                });
-                for (int i = 0; i < vendorsAtWork.size(); i++) {
-                    completionService.take().get();
-                    // Some processing here
-                }
+//                    return null;
+//                });
+//                for (int i = 0; i < vendorsAtWork.size(); i++) {
+//                    completionService.take().get();
+//                    // Some processing here
+//                }
+
             }
             populateVendorWorkTimeline(vendorsAtWork, keyHolder.getKey().longValue());
         } else {
