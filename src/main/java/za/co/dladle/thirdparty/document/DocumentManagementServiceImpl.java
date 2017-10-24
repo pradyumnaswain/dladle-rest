@@ -6,6 +6,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import za.co.dladle.session.UserSession;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -25,16 +27,35 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
     private ApplicationContext applicationContext;
 
     public String upload(String image, String fileName) throws IOException {
-        UserSession userSession = applicationContext.getBean(UserSession.class);
-        byte[] decodedImg = Base64.getDecoder().decode(image.getBytes(StandardCharsets.UTF_8));
-        Path destinationFile = Paths.get(path, userSession.getUser().getUserId().toString(), fileName);
-        Files.write(destinationFile, decodedImg);
+//        UserSession userSession = applicationContext.getBean(UserSession.class);
 
-        return fileName;
+        byte[] decodedImg = Base64.getDecoder().decode(image.getBytes(StandardCharsets.UTF_8));
+
+//        Path destinationFolder = Paths.get(path, userSession.getUser().getUserId().toString());
+        Path destinationFolder = Paths.get(path, "1223");
+        createFolderIfNotExist(destinationFolder);
+
+        File destinationFile = new File(Paths.get(destinationFolder.toString(), fileName).toString());
+        FileOutputStream fileOutputStream = new FileOutputStream(destinationFile);
+        fileOutputStream.write(decodedImg);
+
+        System.out.println(destinationFile.toString());
+
+        return destinationFile.toString();
     }
 
     @Override
     public String uploadAudio(String audio, String fileName) throws IOException {
         return null;
+    }
+
+    private void createFolderIfNotExist(Path folder) {
+        if (!Files.exists(folder)) {
+            try {
+                Files.createDirectory(folder);
+            } catch (IOException e) {
+                System.err.println(e);
+            }
+        }
     }
 }

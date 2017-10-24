@@ -441,4 +441,17 @@ public class VendorService {
             throw new Exception("Unable to access Vendor Selection Engine");
         }
     }
+
+    public void estimateFinalPrice(EstimateFinalPrice estimateFinalPrice) throws UserNotFoundException {
+        UserSession userSession = applicationContext.getBean(UserSession.class);
+        Long vendorId = userUtility.findVendorIdByEmail(userSession.getUser().getEmailId());
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("vendorId", vendorId);
+        map.put("serviceId", estimateFinalPrice.getServiceId());
+        map.put("finalPrice", estimateFinalPrice.getFinalPrice());
+
+        String sql = "UPDATE service SET service_fee=:finalPrice WHERE id=:serviceId AND vendor_id=:vendorId";
+        this.jdbcTemplate.update(sql, map);
+    }
 }
