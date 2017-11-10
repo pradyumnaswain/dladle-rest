@@ -108,10 +108,11 @@ public class UserService {
                 u.setNotificationsCount(0);
             }
             if (u.getUserType().eqVENDOR()) {
-                String sql1 = "SELECT account_set,account_verified FROM vendor INNER JOIN user_dladle ON vendor.user_id = user_dladle.id WHERE emailid=?";
-                VendorAccountStatus vendorAccountStatus = this.jdbcTemplate.queryForObject(sql1, new Object[]{user.getEmailId().toLowerCase()}, (rs1, rowNum1) -> new VendorAccountStatus(rs1.getBoolean("account_set"), rs1.getBoolean("account_verified")));
+                String sql1 = "SELECT account_set,account_verified,service_type_id FROM vendor INNER JOIN user_dladle ON vendor.user_id = user_dladle.id WHERE emailid=?";
+                VendorAccountStatus vendorAccountStatus = this.jdbcTemplate.queryForObject(sql1, new Object[]{user.getEmailId().toLowerCase()}, (rs1, rowNum1) -> new VendorAccountStatus(rs1.getBoolean("account_set"), rs1.getBoolean("account_verified"), rs1.getInt("service_type_id")));
                 u.setAccountSet(vendorAccountStatus.isAccountSet());
                 u.setAccountVerified(vendorAccountStatus.isAccountVerified());
+                u.setServiceType(ServiceTypeMapper.getServiceType(vendorAccountStatus.getServiceType()));
             } else if (u.getUserType().eqTENANT()) {
                 String sql1 = "SELECT valid FROM tenant_property_documents INNER JOIN tenant ON tenant_property_documents.tenant_id = tenant.id INNER JOIN user_dladle ON tenant.user_id = user_dladle.id WHERE emailid=?";
                 List<Boolean> booleans = new ArrayList<>();

@@ -6,13 +6,15 @@ package za.co.dladle.entity;
 public class VendorAccountStatus {
     private boolean accountSet;
     private boolean accountVerified;
+    private Integer serviceType;
 
     public VendorAccountStatus() {
     }
 
-    public VendorAccountStatus(boolean accountSet, boolean accountVerified) {
+    public VendorAccountStatus(boolean accountSet, boolean accountVerified, Integer serviceType) {
         this.accountSet = accountSet;
         this.accountVerified = accountVerified;
+        this.serviceType = serviceType;
     }
 
     public boolean isAccountSet() {
@@ -29,5 +31,13 @@ public class VendorAccountStatus {
 
     public void setAccountVerified(boolean accountVerified) {
         this.accountVerified = accountVerified;
+    }
+
+    public Integer getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(Integer serviceType) {
+        this.serviceType = serviceType;
     }
 }

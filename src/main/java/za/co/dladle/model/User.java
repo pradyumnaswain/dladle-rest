@@ -42,6 +42,7 @@ public class User {
     private Integer notificationsCount;
 
     private String tenantPropertyJoinedDate;
+    private String serviceType;
 
 
     public User() {
@@ -226,5 +227,13 @@ public class User {
 
     public void setTenantPropertyJoinedDate(String tenantPropertyJoinedDate) {
         this.tenantPropertyJoinedDate = tenantPropertyJoinedDate;
+    }
+
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
+
+    public String getServiceType() {
+        return serviceType;
     }
 }

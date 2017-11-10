@@ -18,4 +18,17 @@ public class ServiceTypeMapper {
                 return null;
         }
     }
+
+    public static String getServiceType(Integer serviceType) {
+        switch (serviceType) {
+            case 2:
+                return "Electrician";
+            case 1:
+                return "Plumber";
+            case 3:
+                return "Painter";
+            default:
+                return null;
+        }
+    }
 }
