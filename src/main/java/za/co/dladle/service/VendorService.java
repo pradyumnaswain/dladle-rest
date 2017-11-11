@@ -147,37 +147,37 @@ public class VendorService {
         if (!vendorsAtWork.isEmpty()) {
             for (VendorAtWorkView vendorAtWorkView : vendorsAtWork) {
 //                completionService.submit(() -> {
-                    mapSqlParameterSource.addValue("vendorId", vendorAtWorkView.getVendorId());
-                    String sql1 = "SELECT * FROM user_dladle INNER JOIN vendor ON user_dladle.id = vendor.user_id WHERE vendor.id=:vendorId";
-                    UserDeviceEmailId deviceEmailId = this.jdbcTemplate.queryForObject(sql1, mapSqlParameterSource, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
+                mapSqlParameterSource.addValue("vendorId", vendorAtWorkView.getVendorId());
+                String sql1 = "SELECT * FROM user_dladle INNER JOIN vendor ON user_dladle.id = vendor.user_id WHERE vendor.id=:vendorId";
+                UserDeviceEmailId deviceEmailId = this.jdbcTemplate.queryForObject(sql1, mapSqlParameterSource, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
 
-                    NotificationView notifications = new NotificationView(
-                            session.getUser().getEmailId(),
-                            deviceEmailId.getEmailId(),
-                            NotificationConstants.SERVICE_REQUEST_TITLE,
-                            NotificationConstants.SERVICE_REQUEST_BODY,
-                            "serviceId:" + keyHolder.getKey().longValue(),
-                            "", "0", NotificationType.SERVICE_REQUEST);
-                    notificationService.saveNotification(notifications);
+                NotificationView notifications = new NotificationView(
+                        session.getUser().getEmailId(),
+                        deviceEmailId.getEmailId(),
+                        NotificationConstants.SERVICE_REQUEST_TITLE,
+                        NotificationConstants.SERVICE_REQUEST_BODY,
+                        "serviceId:" + keyHolder.getKey().longValue(),
+                        "", "0", NotificationType.SERVICE_REQUEST);
+                notificationService.saveNotification(notifications);
 
-                    //Send Push Notification
-                    if (deviceEmailId.getDeviceId() != null) {
-                        JSONObject body = new JSONObject();
-                        body.put("to", deviceEmailId.getDeviceId());
-                        body.put("priority", "high");
+                //Send Push Notification
+                if (deviceEmailId.getDeviceId() != null) {
+                    JSONObject body = new JSONObject();
+                    body.put("to", deviceEmailId.getDeviceId());
+                    body.put("priority", "high");
 
-                        JSONObject notification = new JSONObject();
-                        notification.put("title", NotificationConstants.SERVICE_REQUEST_TITLE);
-                        notification.put("body", NotificationConstants.SERVICE_REQUEST_BODY);
+                    JSONObject notification = new JSONObject();
+                    notification.put("title", NotificationConstants.SERVICE_REQUEST_TITLE);
+                    notification.put("body", NotificationConstants.SERVICE_REQUEST_BODY);
 
-                        JSONObject data = new JSONObject();
-                        data.put("serviceId", keyHolder.getKey().longValue());
-                        body.put("notification", notification);
-                        body.put("data", data);
-                        pushNotificationsService.sendNotification(body);
-                    } else {
-                        System.out.println("Device Id can't be null");
-                    }
+                    JSONObject data = new JSONObject();
+                    data.put("serviceId", keyHolder.getKey().longValue());
+                    body.put("notification", notification);
+                    body.put("data", data);
+                    pushNotificationsService.sendNotification(body);
+                } else {
+                    System.out.println("Device Id can't be null");
+                }
 //                    return null;
 //                });
 //                for (int i = 0; i < vendorsAtWork.size(); i++) {
@@ -386,7 +386,7 @@ public class VendorService {
         Boolean emergency = this.jdbcTemplate.queryForObject(sql1, map, boolean.class);
         vendorRequest.setEmergency(emergency);
         List<Vendor> vendors = new ArrayList<>();
-        String sql = "SELECT * FROM service_estimations WHERE service_id=:serviceId";
+        String sql = "SELECT * FROM service_estimations WHERE service_id=:serviceId AND fee_start_range IS NOT NULL AND fee_end_range IS NOT NULL ";
         this.jdbcTemplate.query(sql, map, (rs -> {
             Vendor vendor = new Vendor();
             vendor.setExperience(rs.getString("experience"));
@@ -396,8 +396,13 @@ public class VendorService {
             vendor.setRating(rs.getDouble("rating"));
             vendor.setVendorId(rs.getLong("vendor_id"));
             LocalDateTime notificationSentTime = rs.getTimestamp("notification_sent_time").toLocalDateTime();
-            LocalDateTime estimationResponseTime = rs.getTimestamp("estimation_response_time").toLocalDateTime();
-            long timeDifference = estimationResponseTime.until(notificationSentTime, ChronoUnit.MILLIS);
+
+            LocalDateTime estimationResponseTime = rs.getTimestamp("estimation_response_time") != null ? rs.getTimestamp("estimation_response_time").toLocalDateTime() : null;
+
+            Long timeDifference = null;
+            if (estimationResponseTime != null) {
+                timeDifference = estimationResponseTime.until(notificationSentTime, ChronoUnit.MILLIS);
+            }
             vendor.setmRequestTime(timeDifference);
             vendors.add(vendor);
             vendorRequest.setVendors(vendors);
