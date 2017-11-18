@@ -316,3 +316,9 @@ CREATE TABLE service_over_price_reason
   id                       BIGINT PRIMARY KEY,
   over_price_reason_reason VARCHAR(100)
 );
+
+
+ALTER TABLE service
+  ADD COLUMN vendror_rejection_reason_id BIGINT;
+ALTER TABLE service
+  ADD FOREIGN KEY (vendror_rejection_reason_id) REFERENCES vendor_rejection_reason (id);

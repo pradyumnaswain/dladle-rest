@@ -5,6 +5,8 @@ package za.co.dladle.entity;
  */
 public class AcceptRequest {
     private Long serviceId;
+    private String vendorEmailId;
+
 
     public AcceptRequest() {
     }
@@ -15,5 +17,13 @@ public class AcceptRequest {
 
     public void setServiceId(Long serviceId) {
         this.serviceId = serviceId;
+    }
+
+    public String getVendorEmailId() {
+        return vendorEmailId;
+    }
+
+    public void setVendorEmailId(String vendorEmailId) {
+        this.vendorEmailId = vendorEmailId;
     }
 }

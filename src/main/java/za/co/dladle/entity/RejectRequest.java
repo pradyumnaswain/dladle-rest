@@ -8,9 +8,19 @@ import za.co.dladle.model.RejectionReason;
 public class RejectRequest {
     private Long serviceId;
 
+    private String vendorEmailId;
+
     private RejectionReason rejectionReason;
 
     public RejectRequest() {
+    }
+
+    public String getVendorEmailId() {
+        return vendorEmailId;
+    }
+
+    public void setVendorEmailId(String vendorEmailId) {
+        this.vendorEmailId = vendorEmailId;
     }
 
     public Long getServiceId() {

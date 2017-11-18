@@ -9,6 +9,7 @@ import com.google.maps.model.DistanceMatrixRow;
 import com.google.maps.model.TravelMode;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,12 +25,10 @@ import za.co.dladle.apiutil.NotificationConstants;
 import za.co.dladle.entity.*;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.mapper.DocumentTypeMapper;
+import za.co.dladle.mapper.RejectionReasonMapper;
 import za.co.dladle.mapper.ServiceStatusMapper;
 import za.co.dladle.mapper.ServiceTypeMapper;
-import za.co.dladle.model.DocumentType;
-import za.co.dladle.model.NotificationType;
-import za.co.dladle.model.Property;
-import za.co.dladle.model.ServiceStatus;
+import za.co.dladle.model.*;
 import za.co.dladle.serviceutil.UserUtility;
 import za.co.dladle.session.UserSession;
 import za.co.dladle.thirdparty.push.AndroidPushNotificationsService;
@@ -461,12 +460,91 @@ public class VendorService {
         this.jdbcTemplate.update(sql, map);
     }
 
-    public void acceptVendor(AcceptRequest acceptRequest) {
+    public void acceptVendor(AcceptRequest acceptRequest) throws UserNotFoundException, JSONException {
+        UserSession userSession = applicationContext.getBean(UserSession.class);
 
+        NotificationView notifications = new NotificationView(
+                userSession.getUser().getEmailId(),
+                acceptRequest.getVendorEmailId(),
+                NotificationConstants.SERVICE_REQUEST_ACCEPT_TITLE,
+                NotificationConstants.SERVICE_REQUEST_ACCEPT_BODY,
+                "",
+                "", "", NotificationType.SERVICE_REQUEST_ACCEPT);
+        notificationService.saveNotification(notifications);
+//        emailService.sendNotificationMail(propertyAssignmentRequest.getEmailId(), NotificationConstants.PROPERTY_ACCEPTED_TITLE, NotificationConstants.PROPERTY_ACCEPTED_BODY);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("vendorId", userUtility.findVendorIdByEmail(acceptRequest.getVendorEmailId()));
+        map.put("serviceId", acceptRequest.getServiceId());
+        String sql = "UPDATE service SET vendor_id=:vendorId WHERE id=:serviceId";
+        this.jdbcTemplate.update(sql, map);
+        map.put("emailId", acceptRequest.getVendorEmailId());
+        String sqlDevice = "SELECT device_id FROM user_dladle WHERE emailid=:emailId";
+        String deviceId = this.jdbcTemplate.queryForObject(sqlDevice, map, String.class);
+
+        //Send Push Notification
+        if (deviceId != null) {
+            JSONObject body = new JSONObject();
+            body.put("to", deviceId);
+            body.put("priority", "high");
+
+            JSONObject notification = new JSONObject();
+            notification.put("title", NotificationConstants.SERVICE_REQUEST_ACCEPT_TITLE);
+            notification.put("body", NotificationConstants.SERVICE_REQUEST_ACCEPT_BODY);
+
+            JSONObject data = new JSONObject();
+            body.put("notification", notification);
+            body.put("serviceId", acceptRequest.getServiceId());
+            body.put("data", data);
+            pushNotificationsService.sendNotification(body);
+        } else {
+            System.out.println("Device Id can't be null");
+        }
     }
 
-    public void rejectVendor(RejectRequest rejectRequest) {
+    public void rejectVendor(RejectRequest rejectRequest) throws UserNotFoundException, JSONException {
+        UserSession userSession = applicationContext.getBean(UserSession.class);
 
+        NotificationView notifications = new NotificationView(
+                userSession.getUser().getEmailId(),
+                rejectRequest.getVendorEmailId(),
+                NotificationConstants.SERVICE_REQUEST_REJECT_TITLE,
+                NotificationConstants.SERVICE_REQUEST_REJECT_BODY,
+                "",
+                "", "", NotificationType.SERVICE_REQUEST_REJECTED);
+        notificationService.saveNotification(notifications);
+//        emailService.sendNotificationMail(propertyAssignmentRequest.getEmailId(), NotificationConstants.PROPERTY_ACCEPTED_TITLE, NotificationConstants.PROPERTY_ACCEPTED_BODY);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("vendorId", userUtility.findVendorIdByEmail(rejectRequest.getVendorEmailId()));
+        map.put("serviceId", rejectRequest.getServiceId());
+        map.put("rejectionId", RejectionReasonMapper.getRejectionReasonType(rejectRequest.getRejectionReason()));
+        String sql = "UPDATE service SET vendor_id=:vendorId AND vendror_rejection_reason_id=:rejectionId WHERE id=:serviceId";
+        this.jdbcTemplate.update(sql, map);
+
+        map.put("emailId", rejectRequest.getVendorEmailId());
+        String sqlDevice = "SELECT device_id FROM user_dladle WHERE emailid=:emailId";
+        String deviceId = this.jdbcTemplate.queryForObject(sqlDevice, map, String.class);
+
+        //Send Push Notification
+        if (deviceId != null) {
+            JSONObject body = new JSONObject();
+            body.put("to", deviceId);
+            body.put("priority", "high");
+
+            JSONObject notification = new JSONObject();
+            notification.put("title", NotificationConstants.SERVICE_REQUEST_REJECT_TITLE);
+            notification.put("body", NotificationConstants.SERVICE_REQUEST_REJECT_BODY);
+
+            JSONObject data = new JSONObject();
+            body.put("notification", notification);
+            body.put("serviceId", rejectRequest.getServiceId());
+            body.put("rejectionReason", RejectionReason.valueOf(rejectRequest.getRejectionReason().name()));
+            body.put("data", data);
+            pushNotificationsService.sendNotification(body);
+        } else {
+            System.out.println("Device Id can't be null");
+        }
     }
 
     public void acceptVendorFinalPrice(AcceptRequest acceptRequest) {
