@@ -59,4 +59,11 @@ public class SelectionController {
 
         return ResponseUtil.response("SUCCESS", yearsOfExperienceTypeValues, "Years Of Experience Types Fetched");
     }
+
+    @RequestMapping(value = "api/select/rejectionreason", method = RequestMethod.GET)
+    public Map<String, Object> getRejectionReason() {
+        Map<String, String> rejectionReasonValues = selectionService.getRejectionReasonValues();
+
+        return ResponseUtil.response("SUCCESS", rejectionReasonValues, "Rejection Reason Types Fetched");
+    }
 }

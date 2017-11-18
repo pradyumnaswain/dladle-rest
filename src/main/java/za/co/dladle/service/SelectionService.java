@@ -56,6 +56,15 @@ public class SelectionService {
         return map;
     }
 
+    public Map<String, String> getRejectionReasonValues() {
+        Map<String, String> map = new HashMap<>();
+
+        for (RejectionReason rejectionReason : RejectionReason.values()) {
+            map.put(rejectionReason.getId(), rejectionReason.name());
+        }
+        return map;
+    }
+
     public Map<String, String> getContactTypes() {
         Map<String, String> map = new HashMap<>();
 

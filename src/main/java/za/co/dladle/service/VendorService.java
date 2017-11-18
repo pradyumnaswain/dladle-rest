@@ -460,4 +460,20 @@ public class VendorService {
         String sql = "UPDATE service SET service_fee=:finalPrice WHERE id=:serviceId AND vendor_id=:vendorId";
         this.jdbcTemplate.update(sql, map);
     }
+
+    public void acceptVendor(AcceptRequest acceptRequest) {
+
+    }
+
+    public void rejectVendor(RejectRequest rejectRequest) {
+
+    }
+
+    public void acceptVendorFinalPrice(AcceptRequest acceptRequest) {
+
+    }
+
+    public void rejectVendorFinalPrice(AcceptRequest acceptRequest) {
+
+    }
 }

@@ -409,3 +409,15 @@ CREATE TABLE transaction
   FOREIGN KEY (operation_type) REFERENCES operation_type (id),
   FOREIGN KEY (transaction_status) REFERENCES transaction_status (id)
 );
+CREATE TABLE vendor_rejection_reason
+(
+  id               BIGINT PRIMARY KEY,
+  rejection_reason VARCHAR(100)
+);
+DROP TABLE service_over_price_reason;
+CREATE TABLE service_over_price_reason
+(
+  id                       BIGINT PRIMARY KEY,
+  over_price_reason VARCHAR(100)
+);
+

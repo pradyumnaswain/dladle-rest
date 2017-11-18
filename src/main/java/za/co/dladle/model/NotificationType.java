@@ -21,7 +21,11 @@ public enum NotificationType {
     RATE_TENANT("Rate your Tenant"),
     RATE_LANDLORD("Rate your Landlord"),
     RATE_VENDOR("Rate Vendor"),
-    SERVICE_REQUEST("Service Request");
+    SERVICE_REQUEST("Service Request"),
+    SERVICE_REQUEST_ACCEPT("Service Request Accepted"),
+    SERVICE_REQUEST_REJECTED("Service Request Rejected"),
+    SERVICE_ESTIMATE_ACCEPTED("Service Estimate Accepted"),
+    SERVICE_ESTIMATE_REJECTED("Service Estimate Rejected");
 
 
     private final String id;
@@ -33,13 +37,4 @@ public enum NotificationType {
     public String getId() {
         return this.id;
     }
-
-    public Boolean eqLANDLORD_REQUEST_TENANT() {
-        return getId().equals(NotificationType.LANDLORD_REQUEST_TENANT.getId());
-    }
-
-    public Boolean eqTENANT_REQUEST_LANDLORD() {
-        return getId().equals(NotificationType.TENANT_REQUEST_LANDLORD.getId());
-    }
-
 }

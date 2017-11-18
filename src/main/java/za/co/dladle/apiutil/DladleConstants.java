@@ -97,5 +97,9 @@ public class DladleConstants {
     public static final String VENDOR_OFF_WORK = "Vendor Status set to off Work";
     public static final String VENDOR_CURRENT_STATUS = "Vendor Current Status received";
     public static final String VENDOR_ESTIMATE = "Work estimated successfully";
+    public static final String VENDOR_ACCEPT = "User accepted successfully";
+    public static final String VENDOR_REJECT = "User rejected your price estimation";
+    public static final String VENDOR_FEE_ACCEPT = "User accepted your final price estimation";
+    public static final String VENDOR_FEE_REJECT = "User rejected your final price estimation";
 
 }

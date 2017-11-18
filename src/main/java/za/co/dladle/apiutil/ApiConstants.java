@@ -101,4 +101,8 @@ public class ApiConstants {
     public static final String VENDOR_CURRENT_STATUS = "/api/vendor/work/status";
     public static final String VENDOR_ESTIMATE = "/api/vendor/work/estimate";
     public static final String VENDOR_FINAL_ESTIMATE = "/api/vendor/work/estimate/finalprice";
+    public static final String VENDOR_ACCEPT = "/api/vendor/accept";
+    public static final String VENDOR_REJECT = "/api/vendor/reject";
+    public static final String VENDOR_FEE_ACCEPT = "/api/vendor/fee/accept";
+    public static final String VENDOR_FEE_REJECT = "/api/vendor/fee/reject";
 }

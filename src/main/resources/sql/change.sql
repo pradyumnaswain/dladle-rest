@@ -304,3 +304,15 @@ ALTER TABLE property
   ADD COLUMN status BOOLEAN DEFAULT TRUE;
 ALTER TABLE user_dladle
   ADD COLUMN account_locked BOOLEAN DEFAULT FALSE;
+
+
+CREATE TABLE vendor_rejection_reason
+(
+  id               BIGINT PRIMARY KEY,
+  rejection_reason VARCHAR(100)
+);
+CREATE TABLE service_over_price_reason
+(
+  id                       BIGINT PRIMARY KEY,
+  over_price_reason_reason VARCHAR(100)
+);
