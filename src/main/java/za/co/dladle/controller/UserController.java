@@ -60,6 +60,19 @@ public class UserController {
     }
 
     //------------------------------------------------------------------------------------------------------------------
+    //Validate User Details
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = ApiConstants.USER_VALIDATE, method = RequestMethod.GET)
+    public Map<String, Object> validateUser(@RequestParam String password) throws UserNotFoundException {
+        try {
+            boolean b = userService.validateUser(password);
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, b, DladleConstants.USER_VALIDATED);
+        } catch (Exception e) {
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
     //Delete User
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = ApiConstants.USER_DELETE, method = RequestMethod.POST)

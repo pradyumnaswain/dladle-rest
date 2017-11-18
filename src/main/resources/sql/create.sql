@@ -116,6 +116,7 @@ CREATE TABLE user_dladle
   last_logged_in_date TIMESTAMP,
   payment_account_set BOOLEAN     DEFAULT FALSE,
   status              BOOLEAN     DEFAULT TRUE,
+  account_locked      BOOLEAN     DEFAULT FALSE,
   FOREIGN KEY (user_type_id) REFERENCES user_type (id)
 );
 CREATE UNIQUE INDEX user_dladle_email_uindex
@@ -376,7 +377,7 @@ CREATE TABLE payment_card
   name_on_card     VARCHAR(100),
   card_number      VARCHAR(16),
   card_type        VARCHAR(100),
-  expiry_date      VARCHAR(5),
+  expiry_date      VARCHAR(6),
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),
   UNIQUE (user_id, card_number)
 );

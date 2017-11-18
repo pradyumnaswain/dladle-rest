@@ -9,7 +9,6 @@ import za.co.dladle.apiutil.ApiConstants;
 import za.co.dladle.apiutil.DladleConstants;
 import za.co.dladle.entity.PaymentRequest;
 import za.co.dladle.entity.PaymentResponse;
-import za.co.dladle.model.PaymentCard;
 import za.co.dladle.service.PaymentService;
 import za.co.dladle.serviceutil.ResponseUtil;
 

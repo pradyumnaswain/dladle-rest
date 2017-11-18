@@ -463,4 +463,17 @@ public class UserService {
 
         return deleted != 0;
     }
+
+    public boolean validateUser(String password) {
+        UserSession userSession = applicationContext.getBean(UserSession.class);
+        Map<String, Object> map = new HashMap<>();
+        map.put("password", Hashing.sha512().hashString(password, Charset.defaultCharset()).toString());
+        map.put("emailId", userSession.getUser().getEmailId());
+
+        String sql = "SELECT count(*) FROM user_dladle WHERE emailid=:emailId AND password=:password";
+
+        int count = this.parameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+
+        return count == 1;
+    }
 }

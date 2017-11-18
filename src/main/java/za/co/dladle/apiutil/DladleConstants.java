@@ -62,6 +62,7 @@ public class DladleConstants {
     public static final String USER_LOGIN = "Login Success";
     public static final String USER_LOGIN_NOT_VERIFIED = "Please verify your Email to continue";
     public static final String USER_DETAILS = "User details fetched Successfully";
+    public static final String USER_VALIDATED = "User validated Successfully";
     public static final String USER_DELETED_SUCCESSFULLY = "User deleted Successfully";
     public static final String USER_DELETED_UNSUCCESS = "Wrong Password. Unable to delete user";
     public static final String USER_LOGOUT = "Logged Out Successfully";
