@@ -519,7 +519,7 @@ public class VendorService {
         map.put("vendorId", userUtility.findVendorIdByEmail(rejectRequest.getVendorEmailId()));
         map.put("serviceId", rejectRequest.getServiceId());
         map.put("rejectionId", RejectionReasonMapper.getRejectionReasonType(rejectRequest.getRejectionReason()));
-        String sql = "UPDATE service SET vendor_id=:vendorId AND vendror_rejection_reason_id=:rejectionId WHERE id=:serviceId";
+        String sql = "UPDATE service SET vendor_id=:vendorId, vendror_rejection_reason_id=:rejectionId WHERE id=:serviceId";
         this.jdbcTemplate.update(sql, map);
 
         map.put("emailId", rejectRequest.getVendorEmailId());
