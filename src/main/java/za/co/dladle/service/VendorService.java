@@ -469,7 +469,7 @@ public class VendorService {
                 NotificationConstants.SERVICE_REQUEST_ACCEPT_TITLE,
                 NotificationConstants.SERVICE_REQUEST_ACCEPT_BODY,
                 "",
-                "", "", NotificationType.SERVICE_REQUEST_ACCEPT);
+                "", "0", NotificationType.SERVICE_REQUEST_ACCEPT);
         notificationService.saveNotification(notifications);
 //        emailService.sendNotificationMail(propertyAssignmentRequest.getEmailId(), NotificationConstants.PROPERTY_ACCEPTED_TITLE, NotificationConstants.PROPERTY_ACCEPTED_BODY);
 
@@ -511,7 +511,7 @@ public class VendorService {
                 NotificationConstants.SERVICE_REQUEST_REJECT_TITLE,
                 NotificationConstants.SERVICE_REQUEST_REJECT_BODY,
                 "",
-                "", "", NotificationType.SERVICE_REQUEST_REJECTED);
+                "", "0", NotificationType.SERVICE_REQUEST_REJECTED);
         notificationService.saveNotification(notifications);
 //        emailService.sendNotificationMail(propertyAssignmentRequest.getEmailId(), NotificationConstants.PROPERTY_ACCEPTED_TITLE, NotificationConstants.PROPERTY_ACCEPTED_BODY);
 
