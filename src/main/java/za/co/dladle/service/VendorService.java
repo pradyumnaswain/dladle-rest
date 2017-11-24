@@ -462,20 +462,26 @@ public class VendorService {
 
     public void acceptVendor(AcceptRequest acceptRequest) throws UserNotFoundException, JSONException {
         UserSession userSession = applicationContext.getBean(UserSession.class);
+        Map<String, Object> map = new HashMap<>();
+        map.put("vendorId", userUtility.findVendorIdByEmail(acceptRequest.getVendorEmailId()));
+        map.put("serviceId", acceptRequest.getServiceId());
+
+        String sqlServiceEstimation = "SELECT * FROM service_estimations WHERE service_id=:serviceId AND vendor_id=:vendorId";
+
+        VendorPriceDetails vendorPriceDetails = this.jdbcTemplate.queryForObject(sqlServiceEstimation, map, (rs, rowNum) -> new VendorPriceDetails(
+                rs.getString("fee_start_range"), rs.getString("fee_end_range")
+        ));
 
         NotificationView notifications = new NotificationView(
                 userSession.getUser().getEmailId(),
                 acceptRequest.getVendorEmailId(),
                 NotificationConstants.SERVICE_REQUEST_ACCEPT_TITLE,
                 NotificationConstants.SERVICE_REQUEST_ACCEPT_BODY,
-                "",
+                "serviceId:" + acceptRequest.getServiceId() + "," + "vendorEmailId:" + acceptRequest.getVendorEmailId() + "," + "feeStartRange:" + vendorPriceDetails.getFeeEndRange() + "," + "feeEndRange:" + vendorPriceDetails.getFeeEndRange(),
                 "", "0", NotificationType.SERVICE_REQUEST_ACCEPT);
         notificationService.saveNotification(notifications);
 //        emailService.sendNotificationMail(propertyAssignmentRequest.getEmailId(), NotificationConstants.PROPERTY_ACCEPTED_TITLE, NotificationConstants.PROPERTY_ACCEPTED_BODY);
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("vendorId", userUtility.findVendorIdByEmail(acceptRequest.getVendorEmailId()));
-        map.put("serviceId", acceptRequest.getServiceId());
         String sql = "UPDATE service SET vendor_id=:vendorId WHERE id=:serviceId";
         this.jdbcTemplate.update(sql, map);
         map.put("emailId", acceptRequest.getVendorEmailId());
