@@ -61,8 +61,9 @@ INSERT INTO notification_type (id, name) VALUES (17, 'Rate Vendor');
 INSERT INTO notification_type (id, name) VALUES (18, 'Service Request');
 INSERT INTO notification_type (id, name) VALUES (19, 'Service Request Accepted');
 INSERT INTO notification_type (id, name) VALUES (20, 'Service Request Rejected');
-INSERT INTO notification_type (id, name) VALUES (21, 'Service Estimate Accepted');
+INSERT INTO notification_type (id, name) VALUES (21, 'Service Final Price Estimated');
 INSERT INTO notification_type (id, name) VALUES (22, 'Service Estimate Rejected');
+INSERT INTO notification_type (id, name) VALUES (23, 'Service Estimate Rejected');
 
 INSERT INTO service_status (id, name) VALUES (1, 'Requested');
 
@@ -86,5 +87,5 @@ INSERT INTO vendor_rejection_reason (id, rejection_reason) VALUES (3, 'Vendor se
 INSERT INTO vendor_rejection_reason (id, rejection_reason) VALUES (4, 'Vendor rating looks very bad');
 INSERT INTO vendor_rejection_reason (id, rejection_reason) VALUES (5, 'Other');
 
-INSERT INTO service_over_price_reason (id, over_price_reason) VALUES (1,'')
+INSERT INTO service_over_price_reason (id, over_price_reason) VALUES (1, '')
 

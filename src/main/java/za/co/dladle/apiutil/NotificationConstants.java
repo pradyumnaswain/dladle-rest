@@ -30,6 +30,8 @@ public class NotificationConstants {
     public static final String RATE_VENDOR_BODY = "Vendor don with the Job. Please rate";
     public static final String SERVICE_REQUEST_TITLE = "Service Request";
     public static final String SERVICE_REQUEST_BODY = "Please check Dladle App for more";
+    public static final String SERVICE_FINAL_ESTIMATION_TITLE = "Service Final Price Estimated";
+    public static final String SERVICE_FINAL_ESTIMATION_BODY = "Please check Dladle App for more";
     public static final String SERVICE_REQUEST_ACCEPT_TITLE = "Service Request Accepted";
     public static final String SERVICE_REQUEST_ACCEPT_BODY = "Please check Dladle App for more";
     public static final String SERVICE_REQUEST_REJECT_TITLE = "Service Request Rejected";

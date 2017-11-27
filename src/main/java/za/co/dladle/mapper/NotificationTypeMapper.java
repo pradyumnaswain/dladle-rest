@@ -48,10 +48,12 @@ public class NotificationTypeMapper {
                 return 19;
             case SERVICE_REQUEST_REJECTED:
                 return 20;
-            case SERVICE_ESTIMATE_ACCEPTED:
+            case SERVICE_FINAL_PRICE_ESTIMATED:
                 return 21;
-            case SERVICE_ESTIMATE_REJECTED:
+            case SERVICE_ESTIMATE_ACCEPTED:
                 return 22;
+            case SERVICE_ESTIMATE_REJECTED:
+                return 23;
             default:
                 return null;
         }

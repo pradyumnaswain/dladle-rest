@@ -52,6 +52,13 @@ public class User {
         this.emailId = emailId;
     }
 
+    public User(Long userId, String firstName, String lastName, String profilePicture) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.profilePicture = profilePicture;
+    }
+
     public User(String emailId, String password, boolean verified) {
         this.emailId = emailId;
         this.password = password;

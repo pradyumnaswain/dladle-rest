@@ -447,7 +447,7 @@ public class VendorService {
         }
     }
 
-    public void estimateFinalPrice(EstimateFinalPrice estimateFinalPrice) throws UserNotFoundException {
+    public void estimateFinalPrice(EstimateFinalPrice estimateFinalPrice) throws UserNotFoundException, JSONException {
         UserSession userSession = applicationContext.getBean(UserSession.class);
         Long vendorId = userUtility.findVendorIdByEmail(userSession.getUser().getEmailId());
 
@@ -456,8 +456,50 @@ public class VendorService {
         map.put("serviceId", estimateFinalPrice.getServiceId());
         map.put("finalPrice", estimateFinalPrice.getFinalPrice());
 
+        String sqlFindUserId = "SELECT service_requester_user_id FROM service WHERE id=:serviceId";
+
+        Long userId = this.jdbcTemplate.queryForObject(sqlFindUserId, map, Long.class);
+
+        User user = userUtility.findUserById(userId);
+
         String sql = "UPDATE service SET service_fee=:finalPrice WHERE id=:serviceId AND vendor_id=:vendorId";
         this.jdbcTemplate.update(sql, map);
+
+        NotificationView notifications = new NotificationView(
+                userSession.getUser().getEmailId(),
+                user.getEmailId(),
+                NotificationConstants.SERVICE_FINAL_ESTIMATION_TITLE,
+                NotificationConstants.SERVICE_FINAL_ESTIMATION_BODY,
+                "serviceId:" + estimateFinalPrice.getServiceId() + "," + "vendorEmailId:" + userSession.getUser().getEmailId() + "," + "vendorFirstName:" + userSession.getUser().getFirstName() + "," + "vendorLastName:" + userSession.getUser().getLastName() + "," + "vendorProfilePicture:" + userSession.getUser().getProfilePicture() + "," + "finalFee:" + estimateFinalPrice.getFinalPrice(),
+                "", "0", NotificationType.SERVICE_FINAL_PRICE_ESTIMATED);
+        notificationService.saveNotification(notifications);
+//        emailService.sendNotificationMail(propertyAssignmentRequest.getEmailId(), NotificationConstants.PROPERTY_ACCEPTED_TITLE, NotificationConstants.PROPERTY_ACCEPTED_BODY);
+
+        String sql11 = "UPDATE service SET vendor_id=:vendorId WHERE id=:serviceId";
+        this.jdbcTemplate.update(sql11, map);
+        map.put("emailId", user.getEmailId());
+        String sqlDevice = "SELECT device_id FROM user_dladle WHERE emailid=:emailId";
+        String deviceId = this.jdbcTemplate.queryForObject(sqlDevice, map, String.class);
+
+        //Send Push Notification
+        if (deviceId != null) {
+            JSONObject body = new JSONObject();
+            body.put("to", deviceId);
+            body.put("priority", "high");
+
+            JSONObject notification = new JSONObject();
+            notification.put("title", NotificationConstants.SERVICE_FINAL_ESTIMATION_TITLE);
+            notification.put("body", NotificationConstants.SERVICE_FINAL_ESTIMATION_BODY);
+
+            JSONObject data = new JSONObject();
+            body.put("notification", notification);
+            body.put("data", data);
+            pushNotificationsService.sendNotification(body);
+        } else {
+            System.out.println("Device Id can't be null");
+        }
+
+
     }
 
     public void acceptVendor(AcceptRequest acceptRequest) throws UserNotFoundException, JSONException {

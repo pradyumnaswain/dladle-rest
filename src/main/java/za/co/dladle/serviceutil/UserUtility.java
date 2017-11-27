@@ -34,6 +34,21 @@ public class UserUtility {
     }
 
     //------------------------------------------------------------------------------------------------------------------
+    //Find User By Email Id
+    //------------------------------------------------------------------------------------------------------------------
+    public User findUserById(Long userId) throws UserNotFoundException {
+
+        try {
+            String sql = "SELECT * FROM user_dladle WHERE id=?";
+            return this.jdbcTemplate.queryForObject(sql, new Object[]{userId}, (rs, rowNum) ->
+                    new User(rs.getLong("emailId"), rs.getString("first_name"), rs.getString("last_name"), rs
+                            .getString("profile_picture")));
+        } catch (EmptyResultDataAccessException e) {
+            throw new UserNotFoundException("User doesn't exist");
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
     //Find User Id By Email Id
     //------------------------------------------------------------------------------------------------------------------
     public Long findUserIdByEmail(String emailId) throws UserNotFoundException {

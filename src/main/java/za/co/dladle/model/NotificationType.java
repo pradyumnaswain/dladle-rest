@@ -25,7 +25,8 @@ public enum NotificationType {
     SERVICE_REQUEST_ACCEPT("Service Request Accepted"),
     SERVICE_REQUEST_REJECTED("Service Request Rejected"),
     SERVICE_ESTIMATE_ACCEPTED("Service Estimate Accepted"),
-    SERVICE_ESTIMATE_REJECTED("Service Estimate Rejected");
+    SERVICE_ESTIMATE_REJECTED("Service Estimate Rejected"),
+    SERVICE_FINAL_PRICE_ESTIMATED("Service Final Price Estimated");
 
 
     private final String id;
