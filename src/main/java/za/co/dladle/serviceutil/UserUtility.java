@@ -41,7 +41,7 @@ public class UserUtility {
         try {
             String sql = "SELECT * FROM user_dladle WHERE id=?";
             return this.jdbcTemplate.queryForObject(sql, new Object[]{userId}, (rs, rowNum) ->
-                    new User(rs.getLong("emailId"), rs.getString("first_name"), rs.getString("last_name"), rs
+                    new User(rs.getString("emailId"), rs.getString("first_name"), rs.getString("last_name"), rs
                             .getString("profile_picture")));
         } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException("User doesn't exist");

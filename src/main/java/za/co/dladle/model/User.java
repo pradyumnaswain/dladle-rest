@@ -52,8 +52,8 @@ public class User {
         this.emailId = emailId;
     }
 
-    public User(Long userId, String firstName, String lastName, String profilePicture) {
-        this.userId = userId;
+    public User(String emailId, String firstName, String lastName, String profilePicture) {
+        this.emailId = emailId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.profilePicture = profilePicture;
