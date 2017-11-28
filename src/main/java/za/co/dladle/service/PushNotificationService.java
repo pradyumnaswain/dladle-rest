@@ -48,7 +48,7 @@ public class PushNotificationService {
                 "INNER JOIN notification_type ON notification.notification_type_id = notification_type.id " +
                 "INNER JOIN user_dladle u ON notification_from=u.id " +
                 "INNER JOIN user_dladle p ON notification_to=p.id " +
-                "WHERE notification_to=:userId AND house_id =0 ";
+                "WHERE notification_to=:userId AND house_id =0 ORDER BY notification.id DESC";
         this.jdbcTemplate.query(sql, map, (rs1, rowNum1) -> {
             Notification notification = new Notification();
             notification.setId(rs1.getLong("id"));
