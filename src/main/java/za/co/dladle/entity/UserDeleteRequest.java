@@ -6,6 +6,9 @@ package za.co.dladle.entity;
 public class UserDeleteRequest {
     private String password;
 
+    public UserDeleteRequest() {
+    }
+
     public UserDeleteRequest(String password) {
         this.password = password;
     }

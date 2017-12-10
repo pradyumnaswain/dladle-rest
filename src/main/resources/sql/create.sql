@@ -114,6 +114,7 @@ CREATE TABLE user_dladle
   profile_picture     VARCHAR(1000),
   rgistered_date      TIMESTAMP,
   last_logged_in_date TIMESTAMP,
+  deleted_date TIMESTAMP,
   payment_account_set BOOLEAN     DEFAULT FALSE,
   status              BOOLEAN     DEFAULT TRUE,
   account_locked      BOOLEAN     DEFAULT FALSE,

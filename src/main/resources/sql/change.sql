@@ -322,3 +322,4 @@ ALTER TABLE service
   ADD COLUMN vendror_rejection_reason_id BIGINT;
 ALTER TABLE service
   ADD FOREIGN KEY (vendror_rejection_reason_id) REFERENCES vendor_rejection_reason (id);
+ALTER TABLE user_dladle ADD COLUMN deleted_date TIMESTAMP;

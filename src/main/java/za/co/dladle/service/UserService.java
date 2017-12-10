@@ -385,7 +385,7 @@ public class UserService {
     }
 
     @Transactional
-    private int userRegistration(UserRegisterRequest user, String hashedCode) throws UseAlreadyExistsException {
+    int userRegistration(UserRegisterRequest user, String hashedCode) throws UseAlreadyExistsException {
 
         String hashedPassword = Hashing.sha512().hashString(user.getPassword(), Charset.defaultCharset()).toString();
 
@@ -456,11 +456,13 @@ public class UserService {
         Map<String, Object> map = new HashMap<>();
         map.put("password", Hashing.sha512().hashString(deleteRequest.getPassword(), Charset.defaultCharset()).toString());
         map.put("emailId", userSession.getUser().getEmailId());
+        map.put("deletedEmailId", "deleted-" + userSession.getUser().getEmailId() + "-" + LocalDateTime.now().toString());
+        map.put("deletedDate", LocalDateTime.now());
 
-        String sql = "UPDATE user_dladle SET status=FALSE WHERE emailid=:emailId AND password=:password";
+        String sql = "UPDATE user_dladle SET status=FALSE , emailid=:deletedEmailId, deleted_date=:deletedDate WHERE emailid=:emailId AND password=:password";
 
         int deleted = this.parameterJdbcTemplate.update(sql, map);
-
+        session.invalidate();
         return deleted != 0;
     }
 
