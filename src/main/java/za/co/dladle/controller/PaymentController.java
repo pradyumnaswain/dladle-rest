@@ -27,7 +27,7 @@ public class PaymentController {
     //Add Card
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = ApiConstants.PAYMENT_PAY, method = RequestMethod.POST)
-    public Map<String, Object> addCard(@RequestBody PaymentRequest paymentRequest) throws IOException {
+    public Map<String, Object> pay(@RequestBody PaymentRequest paymentRequest) {
         try {
             PaymentResponse paymentResponse = paymentService.pay(paymentRequest);
             return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, paymentResponse, DladleConstants.PAYMENT_PAY);

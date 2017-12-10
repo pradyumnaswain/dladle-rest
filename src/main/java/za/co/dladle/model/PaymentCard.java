@@ -4,12 +4,14 @@ package za.co.dladle.model;
  * Created by prady on 6/22/2017.
  */
 public class PaymentCard {
+    private Long cardId;
     private String nameOnCard;
     private String cardNumber;
     private String expiryDate;
     private String cardType;
 
-    public PaymentCard(String nameOnCard, String cardNumber, String expiryDate, String cardType) {
+    public PaymentCard(Long cardId, String nameOnCard, String cardNumber, String expiryDate, String cardType) {
+        this.cardId = cardId;
         this.nameOnCard = nameOnCard;
         this.cardNumber = cardNumber;
         this.expiryDate = expiryDate;
@@ -17,6 +19,14 @@ public class PaymentCard {
     }
 
     public PaymentCard() {
+    }
+
+    public Long getCardId() {
+        return cardId;
+    }
+
+    public void setCardId(Long cardId) {
+        this.cardId = cardId;
     }
 
     public String getNameOnCard() {

@@ -8,7 +8,7 @@ import za.co.dladle.model.TransactionType;
  */
 public class PaymentRequest {
     private OperationType operationType;
-    private String cardNumber;
+    private Long cardId;
     private String cvvNumber;
     private Integer amount;
 
@@ -23,12 +23,12 @@ public class PaymentRequest {
         this.operationType = operationType;
     }
 
-    public String getCardNumber() {
-        return cardNumber;
+    public Long getCardId() {
+        return cardId;
     }
 
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
+    public void setCardId(Long cardId) {
+        this.cardId = cardId;
     }
 
     public String getCvvNumber() {

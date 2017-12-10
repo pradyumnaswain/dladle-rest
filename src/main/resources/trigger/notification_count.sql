@@ -21,6 +21,7 @@ CREATE TRIGGER tr_notification_count_to_update
 AFTER INSERT ON notification
 FOR EACH ROW
 EXECUTE PROCEDURE notification_count_to_update();
+
 CREATE OR REPLACE FUNCTION notification_count_to_Negate()
   RETURNS TRIGGER AS
 $BODY$

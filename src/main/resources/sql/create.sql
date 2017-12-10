@@ -114,7 +114,7 @@ CREATE TABLE user_dladle
   profile_picture     VARCHAR(1000),
   rgistered_date      TIMESTAMP,
   last_logged_in_date TIMESTAMP,
-  deleted_date TIMESTAMP,
+  deleted_date        TIMESTAMP,
   payment_account_set BOOLEAN     DEFAULT FALSE,
   status              BOOLEAN     DEFAULT TRUE,
   account_locked      BOOLEAN     DEFAULT FALSE,
@@ -379,7 +379,9 @@ CREATE TABLE payment_card
   card_number      VARCHAR(16),
   card_type        VARCHAR(100),
   expiry_date      VARCHAR(6),
+  card_id          BIGINT,
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),
+  FOREIGN KEY (card_id) REFERENCES payment_card (id),
   UNIQUE (user_id, card_number)
 );
 CREATE TABLE service_estimations
@@ -418,7 +420,7 @@ CREATE TABLE vendor_rejection_reason
 DROP TABLE service_over_price_reason;
 CREATE TABLE service_over_price_reason
 (
-  id                       BIGINT PRIMARY KEY,
+  id                BIGINT PRIMARY KEY,
   over_price_reason VARCHAR(100)
 );
 

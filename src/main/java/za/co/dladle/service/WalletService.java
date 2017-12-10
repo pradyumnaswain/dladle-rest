@@ -134,6 +134,7 @@ public class WalletService {
 
         try {
             return this.jdbcTemplate.query(sql, map, (rs, rowNum) -> new PaymentCard(
+                    rs.getLong("id"),
                     rs.getString("name_on_card"),
                     rs.getString("card_number"),
                     rs.getString("expiry_date"),
