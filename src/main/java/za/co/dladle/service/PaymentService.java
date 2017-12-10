@@ -75,6 +75,18 @@ public class PaymentService {
 
         paymentResponse.setStatusDetails(cardPaymentResponseType.getStatus().getStatusDetail());
 
+        String sqlUpdate = "UPDATE transaction SET transaction_status=:status WHERE id=:transactionId";
+        if (statusName.equals(StatusNameType.COMPLETED)) {
+            map.addValue("transactionId", keyHolder.getKey().longValue()).addValue("status", 1);
+            this.jdbcTemplate.update(sqlUpdate, map);
+        } else if (statusName.equals(StatusNameType.PENDING)) {
+            map.addValue("transactionId", keyHolder.getKey().longValue()).addValue("status", 3);
+            this.jdbcTemplate.update(sqlUpdate, map);
+        } else if (statusName.equals(StatusNameType.ERROR)) {
+            map.addValue("transactionId", keyHolder.getKey().longValue()).addValue("status", 2);
+            this.jdbcTemplate.update(sqlUpdate, map);
+        }
+
         if (statusName.equals(StatusNameType.THREE_D_SECURE_REDIRECT_REQUIRED)) {
             RedirectResponseType redirect = cardPaymentResponseType.getRedirect();
             paymentResponse.setRedirectUrl(redirect.getRedirectUrl());
