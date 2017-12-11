@@ -66,4 +66,11 @@ public class SelectionController {
 
         return ResponseUtil.response("SUCCESS", rejectionReasonValues, "Rejection Reason Types Fetched");
     }
+
+    @RequestMapping(value = "api/select/operationtype", method = RequestMethod.GET)
+    public Map<String, Object> getOperationType() {
+        Map<String, String> operationTypeValues = selectionService.getOperationTypeValues();
+
+        return ResponseUtil.response("SUCCESS", operationTypeValues, "Operation Types Fetched");
+    }
 }

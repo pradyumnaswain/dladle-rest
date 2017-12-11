@@ -9,7 +9,7 @@ public enum OperationType {
 
     private final String id;
 
-    private OperationType(String id) {
+    OperationType(String id) {
         this.id = id;
     }
 

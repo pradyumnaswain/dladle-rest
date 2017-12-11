@@ -65,6 +65,15 @@ public class SelectionService {
         return map;
     }
 
+    public Map<String, String> getOperationTypeValues() {
+        Map<String, String> map = new HashMap<>();
+
+        for (OperationType operationType : OperationType.values()) {
+            map.put(operationType.getId(), operationType.name());
+        }
+        return map;
+    }
+
     public Map<String, String> getContactTypes() {
         Map<String, String> map = new HashMap<>();
 
