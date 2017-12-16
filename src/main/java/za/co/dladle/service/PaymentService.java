@@ -67,7 +67,7 @@ public class PaymentService {
         this.jdbcTemplate.update(sqlInsert, map, keyHolder, new String[]{"id"});
 
         CardPaymentResponseType cardPaymentResponseType = payGateService.paymentRequest(userSession.getUser(), paymentCard.getCardNumber(),
-                paymentCard.getExpiryDate(), paymentRequest.getCvvNumber(), String.valueOf(keyHolder.getKey().longValue()), paymentRequest.getAmount(), null, null);
+                paymentCard.getExpiryDate(), paymentRequest.getCvvNumber(), String.valueOf(keyHolder.getKey().longValue()), paymentRequest.getAmount(), "http://www.dladle.com", "http://www.dladle.com");
 
         StatusNameType statusName = cardPaymentResponseType.getStatus().getStatusName();
 

@@ -78,8 +78,6 @@ public class PayGateService {
         cardPaymentRequestType.setCardExpiryDate(expiryDate);
         cardPaymentRequestType.setCVV(cvvNumber);
 
-        cardPaymentRequestType.setCVV(cvvNumber);
-
 //        cardPaymentRequestType.setBudgetPeriod();
         cardPaymentRequestType.setRedirect(getRedirect(notifUrl, returnUrl));
 
@@ -88,6 +86,7 @@ public class PayGateService {
         singlePaymentRequest.setCardPaymentRequest(cardPaymentRequestType);
 
         SinglePaymentResponse singlePaymentResponse = webServiceClient.getPayHOST().singlePayment(singlePaymentRequest);
+
         return singlePaymentResponse.getCardPaymentResponse();
     }
 
