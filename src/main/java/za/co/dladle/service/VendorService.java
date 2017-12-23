@@ -237,7 +237,7 @@ public class VendorService {
         for (DistanceMatrixRow row : distanceMatrix.rows) {
             for (DistanceMatrixElement element : row.elements) {
                 if (element.distance != null) {
-                    distLst.add(Double.parseDouble(element.distance.humanReadable));
+                    distLst.add(Double.parseDouble(String.valueOf(element.distance.inMeters)));
                 } else {
                     distLst.add(0D);
                 }
