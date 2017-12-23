@@ -248,6 +248,8 @@ public class VendorService {
         if (CollectionUtils.isNotEmpty(distLst)) {
             for (double dist : distLst) {
                 if (dist <= Double.parseDouble(distance)) {
+                    VendorAtWorkView vendorAtWorkView = vendorAtWorkViews.get(i);
+                    vendorAtWorkView.setProximity(dist);
                     views.add(vendorAtWorkViews.get(i));
                 }
                 i++;
