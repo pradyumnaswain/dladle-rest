@@ -310,7 +310,7 @@ public class PropertyService {
             map1.put("landlordId", landlordId);
             map1.put("deletedDate", LocalDateTime.now());
             String sql = "SELECT count(id) FROM property WHERE id=:propertyId AND landlord_id=:landlordId";
-            String sqlUpdate = "UPDATE property SET status=FALSE AND address=id ||'-deleted-'|| address AND deleted_date=:deletedDate" +
+            String sqlUpdate = "UPDATE property SET status=FALSE, address=id ||'-deleted-'|| address, deleted_date=:deletedDate" +
                     " WHERE id=:propertyId";
 
             Integer object = this.parameterJdbcTemplate.queryForObject(sql, map1, Integer.class);
