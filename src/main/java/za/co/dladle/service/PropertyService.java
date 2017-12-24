@@ -137,7 +137,7 @@ public class PropertyService {
                     " INNER JOIN place_type ON property.place_type_id= place_type.id" +
                     " INNER JOIN house ON property.id= house.property_id " +
                     " INNER JOIN user_dladle ON landlord.user_id = user_dladle.id " +
-                    " WHERE emailid=:emailId";
+                    " WHERE emailid=:emailId AND property.status=TRUE ";
             this.parameterJdbcTemplate.query(landlordSql, map, (rs, rowNum) -> {
                 Property property = new Property();
                 property.setAddress(rs.getString("address"));
@@ -226,7 +226,7 @@ public class PropertyService {
                     " INNER JOIN house ON property.id= house.property_id " +
                     " INNER JOIN tenant ON house.id = tenant.house_id " +
                     " INNER JOIN user_dladle ON tenant.user_id = user_dladle.id " +
-                    " WHERE emailid=:emailId";
+                    " WHERE emailid=:emailId AND property.status=TRUE ";
             this.parameterJdbcTemplate.query(landlordSql, map, (rs, rowNum) -> {
                 Property property = new Property();
                 property.setAddress(rs.getString("address"));
@@ -307,23 +307,16 @@ public class PropertyService {
             map1.put("propertyId", propertyDeleteRequest.getPropertyId());
             map1.put("houseId", propertyDeleteRequest.getHouseId());
             map1.put("landlordId", landlordId);
-            String sql = "SELECT property.id property_id FROM property INNER JOIN house ON property.id = house.property_id WHERE property.landlord_id=:landlordId AND property_id=:propertyId AND house.id=:houseId";
-            String sqlUpdate = "UPDATE tenant SET house_id=NULL WHERE house_id=:houseId";
-            String sqlDeleteTenantContact = "DELETE FROM tenant_contact WHERE house_id=:houseId";
-            String sqlDeleteContact = "DELETE FROM property_contact WHERE house_id=:houseId";
-            String sqlDeleteHouse = "DELETE FROM house WHERE id=:houseId";
-            String sqlDeleteProperty = "DELETE FROM property WHERE id=:propertyId";
-            try {
-                this.parameterJdbcTemplate.queryForObject(sql, map1, Integer.class);
+            String sql = "SELECT count(id) FROM property WHERE id=:propertyId AND landlord_id=:landlordId";
+            String sqlUpdate = "UPDATE property SET status=FALSE WHERE id=:propertyId";
+
+            Integer object = this.parameterJdbcTemplate.queryForObject(sql, map1, Integer.class);
+            if (object == 0) {
+                throw new Exception("You are not the owner of this property");
+            } else {
                 this.parameterJdbcTemplate.update(sqlUpdate, map1);
-                this.parameterJdbcTemplate.update(sqlDeleteTenantContact, map1);
-                this.parameterJdbcTemplate.update(sqlDeleteContact, map1);
-                this.parameterJdbcTemplate.update(sqlDeleteHouse, map1);
-                this.parameterJdbcTemplate.update(sqlDeleteProperty, map1);
-            } catch (Exception e) {
-                throw new Exception("Property doesn't belongs to Landlord");
+                return true;
             }
-            return true;
         } else {
             throw new Exception("Property can only be deleted by Landlord");
         }
