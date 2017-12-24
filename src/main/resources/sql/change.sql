@@ -329,3 +329,6 @@ ALTER TABLE transaction
   ADD COLUMN card_id BIGINT;
 ALTER TABLE transaction
   ADD FOREIGN KEY (card_id) REFERENCES payment_card (id);
+
+ALTER TABLE property
+  ADD COLUMN deleted_date TIMESTAMP;

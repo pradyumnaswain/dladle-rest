@@ -147,6 +147,7 @@ CREATE TABLE property
   unit_number       VARCHAR(100),
   image_url         VARCHAR(100),
   property_add_date DATE,
+  deleted_date      TIMESTAMP,
   status            BOOLEAN DEFAULT TRUE,
   FOREIGN KEY (place_type_id) REFERENCES place_type (id),
   FOREIGN KEY (landlord_id) REFERENCES landlord (id)

@@ -21,6 +21,7 @@ import za.co.dladle.thirdparty.document.DocumentManagementServiceCloudinaryImpl;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -307,8 +308,10 @@ public class PropertyService {
             map1.put("propertyId", propertyDeleteRequest.getPropertyId());
             map1.put("houseId", propertyDeleteRequest.getHouseId());
             map1.put("landlordId", landlordId);
+            map1.put("deletedDate", LocalDateTime.now());
             String sql = "SELECT count(id) FROM property WHERE id=:propertyId AND landlord_id=:landlordId";
-            String sqlUpdate = "UPDATE property SET status=FALSE WHERE id=:propertyId";
+            String sqlUpdate = "UPDATE property SET status=FALSE AND address=id ||'-deleted-'|| address AND deleted_date=:deletedDate" +
+                    " WHERE id=:propertyId";
 
             Integer object = this.parameterJdbcTemplate.queryForObject(sql, map1, Integer.class);
             if (object == 0) {
