@@ -5,27 +5,26 @@ package za.co.dladle.model;
  */
 public enum YearsExperience {
 
-    LESS_THAN_ONE("0.5"),
-    ONE_YEAR("1"),
-    BETWEEN_ONE_AND_TWO("1.5"),
-    TWO_YEAR("2"),
-    BETWEEN_TWO_AND_THREE("2.5"),
-    THREE_YEARS("3"),
-    BETWEEN_THREE_AND_FOUR("3.5"),
-    FOUR_YEARS("4"),
-    BETWEEN_FOUR_AND_FIVE("4.5"),
-    FIVE_YEARS("5"),
-    BETWEEN_FIVE_AND_SIX("5.5"),
-    SIX_YEARS("6"),
-    BETWEEN_SIX_AND_SEVEN("6.5"),
-    SEVEN_YEARS("7"),
-    BETWEEN_SEVEN_AND_EIGHT("7.5"),
-    EIGHT_YEARS("8"),
-    BETWEEN_EIGHT_AND_NINE("8.5"),
-    NINE_YEARS("9"),
-    BETWEEN_NINE_AND_TEN("9.5"),
+    ONE_YEAR("01"),
+    TWO_YEAR("02"),
+    THREE_YEARS("03"),
+    FOUR_YEARS("04"),
+    FIVE_YEARS("05"),
+    SIX_YEARS("06"),
+    SEVEN_YEARS("07"),
+    EIGHT_YEARS("08"),
+    NINE_YEARS("09"),
     TEN_YEARS("10"),
-    MORE_THEN_TEN_YEARS("11");
+    ELEVEN_YEARS("11"),
+    TWELVE_YEARS("12"),
+    THIRTEEN_YEARS("13"),
+    FOURTEEN_YEARS("14"),
+    FIVETEEN_YEARS("15"),
+    SIXTEEN_YEARS("16"),
+    SEVENTEEN_YEARS("17"),
+    EIGHTTEEN_YEARS("18"),
+    NINETEEN_YEARS("19"),
+    TWENTY_YEARS("20");
 
     private final String id;
 
