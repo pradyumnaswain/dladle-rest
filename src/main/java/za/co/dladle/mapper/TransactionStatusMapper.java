@@ -20,4 +20,19 @@ public class TransactionStatusMapper {
                 return null;
         }
     }
+
+    public static String getTransactionStatus(int id) {
+        switch (id) {
+            case 1:
+                return "SUCCESS";
+            case 2:
+                return "FAIL";
+            case 3:
+                return "PENDING";
+            case 4:
+                return "UNKNOWN";
+            default:
+                return null;
+        }
+    }
 }

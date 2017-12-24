@@ -16,4 +16,15 @@ public class OperationTypeMapper {
                 return null;
         }
     }
+
+    public static String getOperationType(int id) {
+        switch (id) {
+            case 1:
+                return "KEY GENERATION";
+            case 2:
+                return "SERVICE FEE";
+            default:
+                return null;
+        }
+    }
 }

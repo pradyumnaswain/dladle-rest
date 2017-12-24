@@ -16,4 +16,15 @@ public class TransactionTypeMapper {
                 return null;
         }
     }
+
+    public static String getTransactionType(int id) {
+        switch (id) {
+            case 1:
+                return "CREDIT";
+            case 2:
+                return "DEBIT";
+            default:
+                return null;
+        }
+    }
 }
