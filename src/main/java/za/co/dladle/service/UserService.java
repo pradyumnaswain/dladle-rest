@@ -24,6 +24,7 @@ import za.co.dladle.serviceutil.UserUtility;
 import za.co.dladle.session.UserSession;
 import za.co.dladle.thirdparty.document.DocumentManagementServiceCloudinaryImpl;
 import za.co.dladle.thirdparty.email.EmailServiceSendGridImpl;
+import za.co.dladle.thirdparty.email.EmailServiceZohoMailImpl;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -52,7 +53,7 @@ public class UserService {
     private RatingService ratingService;
 
     @Autowired
-    private EmailServiceSendGridImpl notificationServiceSendGridImpl;
+    private EmailServiceZohoMailImpl notificationServiceSendGridImpl;
 
     @Autowired
     private DocumentManagementServiceCloudinaryImpl fileManagementService;
@@ -235,7 +236,7 @@ public class UserService {
     //------------------------------------------------------------------------------------------------------------------
     //Verify User
     //------------------------------------------------------------------------------------------------------------------
-    public void verify(String emailId, String verificationCode) throws IOException, UserVerificationCodeNotMatchException {
+    public void verify(String emailId, String verificationCode) throws UserVerificationCodeNotMatchException {
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
                 .addValue("emailId", emailId.toLowerCase())

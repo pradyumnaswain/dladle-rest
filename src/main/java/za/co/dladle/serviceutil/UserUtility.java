@@ -101,7 +101,7 @@ public class UserUtility {
     }
 
     public String getNameByEmailId(String emailId) {
-        String getUserSql = "SELECT first_name FROM user_dladle WHERE emailid=:emailId";
+        String getUserSql = "SELECT first_name FROM user_dladle WHERE emailid=?";
         return this.jdbcTemplate.queryForObject(getUserSql, new Object[]{emailId.toLowerCase()}, String.class);
     }
 }
