@@ -10,7 +10,7 @@ public class PaymentRequest {
     private OperationType operationType;
     private Long cardId;
     private String cvvNumber;
-    private Integer amount;
+    private Double amount;
 
     public PaymentRequest() {
     }
@@ -39,11 +39,11 @@ public class PaymentRequest {
         this.cvvNumber = cvvNumber;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 }

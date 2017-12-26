@@ -67,7 +67,8 @@ public class PaymentService {
         this.jdbcTemplate.update(sqlInsert, map, keyHolder, new String[]{"id"});
 
         CardPaymentResponseType cardPaymentResponseType = payGateService.paymentRequest(userSession.getUser(), paymentCard.getCardNumber(),
-                paymentCard.getExpiryDate(), paymentRequest.getCvvNumber(), String.valueOf(keyHolder.getKey().longValue()), paymentRequest.getAmount(), "http://www.dladle.com", "http://www.dladle.com");
+                paymentCard.getExpiryDate(), paymentRequest.getCvvNumber(), String.valueOf(keyHolder.getKey().longValue()), convertRandToCent(paymentRequest.getAmount()),
+                "http://www.dladle.com", "http://www.dladle.com");
 
         StatusNameType statusName = cardPaymentResponseType.getStatus().getStatusName();
 
@@ -100,5 +101,10 @@ public class PaymentService {
             paymentResponse.setUrlParams(urlParams);
         }
         return paymentResponse;
+    }
+
+    private Integer convertRandToCent(Double rand) {
+        String randValue = String.valueOf(rand * 100);
+        return Integer.valueOf(randValue);
     }
 }
