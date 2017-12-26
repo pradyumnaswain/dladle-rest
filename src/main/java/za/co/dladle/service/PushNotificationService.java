@@ -155,12 +155,10 @@ public class PushNotificationService {
         this.jdbcTemplate.update(sql, map);
     }
 
-    void actionNotifications(Long tenantId, Long landlordId, NotificationType notificationTypeId) {
+    public void actionNotifications(Long notificationId) {
         Map<String, Object> map = new HashMap<>();
-        map.put("to", tenantId);
-        map.put("from", landlordId);
-        map.put("notificationTypeId", NotificationTypeMapper.getNotificationType(notificationTypeId));
-        String sql = "UPDATE notification SET notification_actioned_status=TRUE WHERE notification_from=:from AND notification_to=:to AND notification_type_id=:notificationTypeId";
+        map.put("notificationId", notificationId);
+        String sql = "UPDATE notification SET notification_actioned_status=TRUE WHERE id=:notificationId ";
         this.jdbcTemplate.update(sql, map);
     }
 }

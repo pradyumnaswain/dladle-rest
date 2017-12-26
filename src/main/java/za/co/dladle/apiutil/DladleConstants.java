@@ -21,6 +21,7 @@ public class DladleConstants {
     //Notification
     //------------------------------------------------------------------------------------------------------------------
     public static final String NOTIFICATION_READ = "Notification read";
+    public static final String NOTIFICATION_ACTIONED = "Notification actioned";
     public static final String NOTIFICATION_LISTED = "Notifications listed Successfully";
     //------------------------------------------------------------------------------------------------------------------
     //Property

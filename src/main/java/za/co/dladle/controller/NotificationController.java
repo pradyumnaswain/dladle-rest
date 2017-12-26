@@ -35,6 +35,19 @@ public class NotificationController {
     }
 
     //------------------------------------------------------------------------------------------------------------------
+    //Read Notification
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = ApiConstants.NOTIFICATION_ACTIONED, method = RequestMethod.POST)
+    public Map<String, Object> actionNotification(@RequestParam long notificationId) throws IOException {
+        try {
+            pushNotificationService.actionNotifications(notificationId);
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.NOTIFICATION_ACTIONED);
+        } catch (Exception e) {
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
     //List Notifications
     //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = ApiConstants.NOTIFICATION_LIST, method = RequestMethod.GET)

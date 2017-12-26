@@ -66,8 +66,6 @@ public class PropertyAssignmentService {
                 //Create/Update Lease
                 leaseService.createOrUpdateLease(propertyAssignmentRequest.getHouseId(), tenantId);
 
-                notificationService.actionNotifications(landlordId, tenantId, NotificationType.TENANT_ACCEPTS_PROPERTY_INVITATION);
-
                 String sqlDevice = "SELECT device_id FROM user_dladle WHERE emailid=:landlordEmailId";
                 String deviceId = this.parameterJdbcTemplate.queryForObject(sqlDevice, map, String.class);
 
@@ -120,8 +118,6 @@ public class PropertyAssignmentService {
 
                 //Create/Update Lease
                 leaseService.createOrUpdateLease(propertyAssignmentRequest.getHouseId(), tenantId);
-
-                notificationService.actionNotifications(tenantId, landlordId, NotificationType.LANDLORD_ACCEPTS_PROPERTY_INVITATION);
 
                 String sqlDevice = "SELECT device_id FROM user_dladle WHERE emailid=:tenantEmailId";
                 String deviceId = this.parameterJdbcTemplate.queryForObject(sqlDevice, map, String.class);
