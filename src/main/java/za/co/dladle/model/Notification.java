@@ -17,6 +17,7 @@ public class Notification {
     private boolean read;
     private boolean actioned;
     private long houseId;
+    private String propertyAddress;
     private String notificationType;
     private Long notificationTypeId;
     private Double rating;
@@ -110,6 +111,14 @@ public class Notification {
 
     public void setHouseId(long houseId) {
         this.houseId = houseId;
+    }
+
+    public String getPropertyAddress() {
+        return propertyAddress;
+    }
+
+    public void setPropertyAddress(String propertyAddress) {
+        this.propertyAddress = propertyAddress;
     }
 
     public String getName() {

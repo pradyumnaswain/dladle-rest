@@ -11,6 +11,7 @@ public class ServiceView {
     private boolean emergency;
     private String serviceNeedTime;
     private String serviceDescription;
+    private String propertyAddress;
     private List<ServiceDocuments> serviceDocuments;
     private User user;
 
@@ -39,6 +40,14 @@ public class ServiceView {
 
     public void setServiceDescription(String serviceDescription) {
         this.serviceDescription = serviceDescription;
+    }
+
+    public String getPropertyAddress() {
+        return propertyAddress;
+    }
+
+    public void setPropertyAddress(String propertyAddress) {
+        this.propertyAddress = propertyAddress;
     }
 
     public List<ServiceDocuments> getServiceDocuments() {

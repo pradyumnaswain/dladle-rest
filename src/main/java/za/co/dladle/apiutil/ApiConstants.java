@@ -20,7 +20,7 @@ public class ApiConstants {
     //Notification API
     //------------------------------------------------------------------------------------------------------------------
     public static final String NOTIFICATION_READ = "/api/notification/read";
-    public static final String NOTIFICATION_ACTIONED = "/api/notification/actioned";
+    public static final String NOTIFICATION_ACTIONED = "/api/notification/actioned/{notificationId}";
     public static final String NOTIFICATION_LIST = "/api/notification/list";
     public static final String NOTIFICATION_LIST_HOUSE_ID = "/api/notification/list/{houseId}";
     //------------------------------------------------------------------------------------------------------------------

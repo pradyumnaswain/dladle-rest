@@ -37,8 +37,8 @@ public class NotificationController {
     //------------------------------------------------------------------------------------------------------------------
     //Read Notification
     //------------------------------------------------------------------------------------------------------------------
-    @RequestMapping(value = ApiConstants.NOTIFICATION_ACTIONED, method = RequestMethod.POST)
-    public Map<String, Object> actionNotification(@RequestParam long notificationId) throws IOException {
+    @RequestMapping(value = ApiConstants.NOTIFICATION_ACTIONED, method = RequestMethod.GET)
+    public Map<String, Object> actionNotification(@PathVariable long notificationId) throws IOException {
         try {
             pushNotificationService.actionNotifications(notificationId);
             return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, null, DladleConstants.NOTIFICATION_ACTIONED);

@@ -334,7 +334,9 @@ public class VendorService {
             Map<String, Object> map = new HashMap<>();
 
             map.put("serviceId", serviceId);
-            String sql = "SELECT * FROM service WHERE id=:serviceId";
+            String sql = "SELECT * FROM service INNER JOIN house h2 ON service.house_id = h2.id " +
+                    "INNER JOIN property p ON h2.property_id = p.id  " +
+                    " WHERE service.id=:serviceId";
             String sql1 = "SELECT * FROM service_documents WHERE service_id=:serviceId";
 
             List<ServiceDocuments> documents = new ArrayList<>();
@@ -352,9 +354,9 @@ public class VendorService {
                 serviceView.setServiceDescription(rs.getString("service_description"));
                 serviceView.setServiceDocuments(documents);
                 serviceView.setServiceNeedTime(rs.getString("service_need_time"));
+                serviceView.setPropertyAddress(rs.getString("address"));
                 return serviceView;
             });
-
         } else {
             throw new Exception("You are not authorised to use this");
         }
