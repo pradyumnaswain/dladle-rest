@@ -14,6 +14,7 @@ public class ServiceView {
     private String propertyAddress;
     private List<ServiceDocuments> serviceDocuments;
     private User user;
+    private ServiceEstimateView serviceEstimateView;
 
     public ServiceView() {
     }
@@ -64,5 +65,13 @@ public class ServiceView {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public ServiceEstimateView getServiceEstimateView() {
+        return serviceEstimateView;
+    }
+
+    public void setServiceEstimateView(ServiceEstimateView serviceEstimateView) {
+        this.serviceEstimateView = serviceEstimateView;
     }
 }

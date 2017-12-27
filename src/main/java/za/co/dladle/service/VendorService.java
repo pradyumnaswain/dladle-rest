@@ -333,11 +333,16 @@ public class VendorService {
         if (session.getUser().getUserType().eqVENDOR()) {
             Map<String, Object> map = new HashMap<>();
 
+            Long vendorId = userUtility.findVendorIdByEmail(session.getUser().getEmailId());
             map.put("serviceId", serviceId);
+            map.put("vendorId", vendorId);
             String sql = "SELECT * FROM service INNER JOIN house h2 ON service.house_id = h2.id " +
                     "INNER JOIN property p ON h2.property_id = p.id  " +
                     " WHERE service.id=:serviceId";
             String sql1 = "SELECT * FROM service_documents WHERE service_id=:serviceId";
+
+            String sqlEstimate = "SELECT * FROM dladle.public.service_estimations WHERE service_id=:serviceId AND vendor_id=:vendorId";
+            ServiceEstimateView serviceEstimateView = this.jdbcTemplate.queryForObject(sqlEstimate, map, (rs, rowNum) -> new ServiceEstimateView(rs.getString("fee_start_range"), rs.getString("fee_end_range")));
 
             List<ServiceDocuments> documents = new ArrayList<>();
             this.jdbcTemplate.query(sql1, map, (rs, rowNum) -> {
@@ -355,6 +360,7 @@ public class VendorService {
                 serviceView.setServiceDocuments(documents);
                 serviceView.setServiceNeedTime(rs.getString("service_need_time"));
                 serviceView.setPropertyAddress(rs.getString("address"));
+                serviceView.setServiceEstimateView(serviceEstimateView);
                 return serviceView;
             });
         } else {
