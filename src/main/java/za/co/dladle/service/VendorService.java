@@ -341,7 +341,7 @@ public class VendorService {
                     " WHERE service.id=:serviceId";
             String sql1 = "SELECT * FROM service_documents WHERE service_id=:serviceId";
 
-            String sqlEstimate = "SELECT * FROM dladle.public.service_estimations WHERE service_id=:serviceId AND vendor_id=:vendorId";
+            String sqlEstimate = "SELECT * FROM service_estimations WHERE service_id=:serviceId AND vendor_id=:vendorId";
             ServiceEstimateView serviceEstimateView = this.jdbcTemplate.queryForObject(sqlEstimate, map, (rs, rowNum) -> new ServiceEstimateView(rs.getString("fee_start_range"), rs.getString("fee_end_range")));
 
             List<ServiceDocuments> documents = new ArrayList<>();
