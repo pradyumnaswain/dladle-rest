@@ -168,12 +168,15 @@ public class PropertyAssignmentService {
         map.put("emailId", propertyInviteRequest.getEmailId());
         String sql = "SELECT device_id FROM user_dladle WHERE emailid=:emailId";
 
+        String sqlProperty = "SELECT address FROM property INNER JOIN house h2 ON property.id = h2.property_id WHERE h2.id=:houseId";
+        String address = this.parameterJdbcTemplate.queryForObject(sqlProperty, map, String.class);
+
         //save notification
         NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
                 propertyInviteRequest.getEmailId(),
                 NotificationConstants.LANDLORD_INVITE_PROPERTY_TITLE,
                 NotificationConstants.LANDLORD_INVITE_PROPERTY_BODY,
-                "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + propertyInviteRequest.getHouseId(),
+                "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + propertyInviteRequest.getHouseId() + "," + "propertyAddress:" + address,
                 "", "0", NotificationType.LANDLORD_REQUEST_TENANT);
         notificationService.saveNotification(notifications);
 

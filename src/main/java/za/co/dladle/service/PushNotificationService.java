@@ -91,6 +91,8 @@ public class PushNotificationService {
                 "INNER JOIN notification_type ON notification.notification_type_id = notification_type.id " +
                 "INNER JOIN user_dladle u ON notification_from=u.id " +
                 "INNER JOIN user_dladle p ON notification_to=p.id " +
+                "INNER JOIN house ON house_id=house.id " +
+                "INNER JOIN property p2 ON house.property_id = p2.id " +
                 "WHERE notification_to=:userId AND house_id=:houseId";
         this.jdbcTemplate.query(sql, map, (rs1, rowNum1) -> {
             Notification notification = new Notification();
@@ -114,6 +116,7 @@ public class PushNotificationService {
             notification.setRead(rs1.getBoolean("notification_read_status"));
             notification.setActioned(rs1.getBoolean("notification_actioned_status"));
             notification.setHouseId(rs1.getLong("house_id"));
+            notification.setPropertyAddress(rs1.getString("address"));
             notification.setNotificationType(rs1.getString("name"));
             notification.setNotificationTypeId(rs1.getLong("not_type_id"));
             notificationList.add(notification);
