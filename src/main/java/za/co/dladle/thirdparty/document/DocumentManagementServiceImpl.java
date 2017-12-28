@@ -27,12 +27,11 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
     private ApplicationContext applicationContext;
 
     public String upload(String image, String fileName) throws IOException {
-//        UserSession userSession = applicationContext.getBean(UserSession.class);
+        UserSession userSession = applicationContext.getBean(UserSession.class);
 
         byte[] decodedImg = Base64.getDecoder().decode(image.getBytes(StandardCharsets.UTF_8));
 
-//        Path destinationFolder = Paths.get(path, userSession.getUser().getUserId().toString());
-        Path destinationFolder = Paths.get(path, "1223");
+        Path destinationFolder = Paths.get(path, userSession.getUser().getUserId().toString());
         createFolderIfNotExist(destinationFolder);
 
         File destinationFile = new File(Paths.get(destinationFolder.toString(), fileName).toString());
@@ -40,13 +39,29 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
         fileOutputStream.write(decodedImg);
 
         System.out.println(destinationFile.toString());
+        fileOutputStream.close();
 
-        return destinationFile.toString();
+        return fileName;
     }
 
     @Override
     public String uploadAudio(String audio, String fileName) throws IOException {
-        return null;
+        UserSession userSession = applicationContext.getBean(UserSession.class);
+
+        byte[] decodedImg = Base64.getDecoder().decode(audio.getBytes(StandardCharsets.UTF_8));
+
+        Path destinationFolder = Paths.get(path, userSession.getUser().getUserId().toString());
+        createFolderIfNotExist(destinationFolder);
+
+        File destinationFile = new File(Paths.get(destinationFolder.toString(), fileName).toString());
+        FileOutputStream fileOutputStream = new FileOutputStream(destinationFile);
+        fileOutputStream.write(decodedImg);
+
+        System.out.println(destinationFile.toString());
+        fileOutputStream.close();
+
+        return fileName;
+
     }
 
     private void createFolderIfNotExist(Path folder) {

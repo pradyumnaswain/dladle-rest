@@ -23,6 +23,7 @@ import za.co.dladle.model.UserType;
 import za.co.dladle.serviceutil.UserUtility;
 import za.co.dladle.session.UserSession;
 import za.co.dladle.thirdparty.document.DocumentManagementServiceCloudinaryImpl;
+import za.co.dladle.thirdparty.document.DocumentManagementServiceImpl;
 import za.co.dladle.thirdparty.email.EmailServiceSendGridImpl;
 import za.co.dladle.thirdparty.email.EmailServiceZohoMailImpl;
 
@@ -56,7 +57,7 @@ public class UserService {
     private EmailServiceZohoMailImpl notificationServiceSendGridImpl;
 
     @Autowired
-    private DocumentManagementServiceCloudinaryImpl fileManagementService;
+    private DocumentManagementServiceImpl fileManagementService;
 
     @Autowired
     private NamedParameterJdbcTemplate parameterJdbcTemplate;
@@ -67,6 +68,8 @@ public class UserService {
     @Value("${verification.link}")
     private String verificationLink;
 
+    @Value("${document.store.url}")
+    private String documentUrl;
 
     //------------------------------------------------------------------------------------------------------------------
     //Set Session
@@ -99,7 +102,7 @@ public class UserService {
                             rs.getString("last_name"),
                             rs.getString("id_number"),
                             rs.getString("cell_number"),
-                            rs.getString("profile_picture"),
+                            documentUrl + rs.getLong("user_id") + "/" + rs.getString("profile_picture"),
                             rs.getBoolean("payment_account_set")));
             try {
                 String sql1 = "SELECT count FROM notification_count INNER JOIN user_dladle ON notification_count.user_id = user_dladle.id WHERE emailid=? AND house_id=0";

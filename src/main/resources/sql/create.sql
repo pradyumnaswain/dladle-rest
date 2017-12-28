@@ -102,18 +102,18 @@ CREATE TABLE user_dladle
   id                  BIGSERIAL PRIMARY KEY,
   emailId             VARCHAR(100) NOT NULL,
   password            VARCHAR(500) NOT NULL,
+  first_name          VARCHAR(20),
+  last_name           VARCHAR(20),
+  profile_picture     VARCHAR(1000),
+  id_number           VARCHAR(45),
+  cell_number         VARCHAR(10) DEFAULT '',
   user_type_id        BIGINT,
+  rgistered_date      TIMESTAMP,
+  last_logged_in_date TIMESTAMP,
   verified            BOOLEAN,
   verification_code   VARCHAR(100),
   otp                 BIGINT,
-  first_name          VARCHAR(20),
-  last_name           VARCHAR(20),
-  id_number           VARCHAR(45),
-  cell_number         VARCHAR(10) DEFAULT '',
   device_id           VARCHAR(1000),
-  profile_picture     VARCHAR(1000),
-  rgistered_date      TIMESTAMP,
-  last_logged_in_date TIMESTAMP,
   deleted_date        TIMESTAMP,
   payment_account_set BOOLEAN     DEFAULT FALSE,
   status              BOOLEAN     DEFAULT TRUE,
@@ -411,7 +411,7 @@ CREATE TABLE transaction
   transaction_time   TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES user_dladle (id),
   FOREIGN KEY (card_id) REFERENCES payment_card (id),
-  FOREIGN KEY (transcation_type) REFERENCES transaction_type (id),
+  FOREIGN KEY (transaction_type) REFERENCES transaction_type (id),
   FOREIGN KEY (operation_type) REFERENCES operation_type (id),
   FOREIGN KEY (transaction_status) REFERENCES transaction_status (id)
 );
@@ -420,7 +420,6 @@ CREATE TABLE vendor_rejection_reason
   id               BIGINT PRIMARY KEY,
   rejection_reason VARCHAR(100)
 );
-DROP TABLE service_over_price_reason;
 CREATE TABLE service_over_price_reason
 (
   id                BIGINT PRIMARY KEY,
