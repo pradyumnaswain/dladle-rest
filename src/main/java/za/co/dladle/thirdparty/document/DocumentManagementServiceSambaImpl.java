@@ -13,7 +13,6 @@ import java.util.Base64;
  */
 @Component
 public class DocumentManagementServiceSambaImpl implements DocumentManagementService {
-    @Override
     public String upload(String image, String fileName) throws IOException {
         String user = "dladlesamba:samba@27730";
         NtlmPasswordAuthentication ntlmPasswordAuthentication = new NtlmPasswordAuthentication(user);
@@ -26,7 +25,6 @@ public class DocumentManagementServiceSambaImpl implements DocumentManagementSer
         return path;
     }
 
-    @Override
     public String uploadAudio(String audio, String fileName) throws IOException {
         String user = "dladlesamba:samba@27730";
         NtlmPasswordAuthentication ntlmPasswordAuthentication = new NtlmPasswordAuthentication(user);
@@ -36,5 +34,15 @@ public class DocumentManagementServiceSambaImpl implements DocumentManagementSer
         SmbFileOutputStream smbFileOutputStream = new SmbFileOutputStream(smbFile);
         smbFileOutputStream.write(data);
         return path;
+    }
+
+    @Override
+    public String uploadPhoto(String folderName,String path, String image, String fileName) throws IOException {
+        return null;
+    }
+
+    @Override
+    public String uploadAudio(String folderName,String path, String audio, String fileName) throws IOException {
+        return null;
     }
 }

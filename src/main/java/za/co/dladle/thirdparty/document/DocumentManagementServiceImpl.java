@@ -23,15 +23,12 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
     @Value("${document.store.address}")
     private String path;
 
-    @Autowired
-    private ApplicationContext applicationContext;
-
-    public String upload(String image, String fileName) throws IOException {
-        UserSession userSession = applicationContext.getBean(UserSession.class);
+    @Override
+    public String uploadPhoto(String folderName, String folderPath, String image, String fileName) throws IOException {
 
         byte[] decodedImg = Base64.getDecoder().decode(image.getBytes(StandardCharsets.UTF_8));
 
-        Path destinationFolder = Paths.get(path, userSession.getUser().getUserId().toString());
+        Path destinationFolder = Paths.get(path + "/" + folderPath, folderName);
         createFolderIfNotExist(destinationFolder);
 
         File destinationFile = new File(Paths.get(destinationFolder.toString(), fileName).toString());
@@ -45,12 +42,10 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
     }
 
     @Override
-    public String uploadAudio(String audio, String fileName) throws IOException {
-        UserSession userSession = applicationContext.getBean(UserSession.class);
-
+    public String uploadAudio(String folderName, String folderPath, String audio, String fileName) throws IOException {
         byte[] decodedImg = Base64.getDecoder().decode(audio.getBytes(StandardCharsets.UTF_8));
 
-        Path destinationFolder = Paths.get(path, userSession.getUser().getUserId().toString());
+        Path destinationFolder = Paths.get(path + folderPath, folderName);
         createFolderIfNotExist(destinationFolder);
 
         File destinationFile = new File(Paths.get(destinationFolder.toString(), fileName).toString());

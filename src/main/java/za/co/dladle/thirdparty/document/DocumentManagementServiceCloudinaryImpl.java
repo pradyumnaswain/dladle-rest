@@ -47,4 +47,14 @@ public class DocumentManagementServiceCloudinaryImpl implements DocumentManageme
 
         return resultMap.get("secure_url").toString();
     }
+
+    @Override
+    public String uploadPhoto(String folderName,String path, String image, String fileName) throws IOException {
+        return null;
+    }
+
+    @Override
+    public String uploadAudio(String folderName,String path, String audio, String fileName) throws IOException {
+        return null;
+    }
 }

@@ -102,7 +102,7 @@ public class UserService {
                             rs.getString("last_name"),
                             rs.getString("id_number"),
                             rs.getString("cell_number"),
-                            documentUrl + rs.getLong("user_id") + "/" + rs.getString("profile_picture"),
+                            documentUrl + "profile/" + rs.getLong("user_id") + "/" + rs.getString("profile_picture"),
                             rs.getBoolean("payment_account_set")));
             try {
                 String sql1 = "SELECT count FROM notification_count INNER JOIN user_dladle ON notification_count.user_id = user_dladle.id WHERE emailid=? AND house_id=0";
@@ -363,7 +363,7 @@ public class UserService {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
         Long userId = userUtility.findUserIdByEmail(userSession.getUser().getEmailId());
 
-        String imageUrl = fileManagementService.upload(base64Image.getBase64Image(), base64Image.getFileName());
+        String imageUrl = fileManagementService.uploadPhoto(userSession.getUser().getUserId().toString(), "profile", base64Image.getBase64Image(), base64Image.getFileName());
         Map<String, Object> map = new HashMap<>();
         map.put("profilePicture", imageUrl);
         map.put("userId", userId);

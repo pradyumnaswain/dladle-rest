@@ -31,6 +31,7 @@ import za.co.dladle.mapper.ServiceTypeMapper;
 import za.co.dladle.model.*;
 import za.co.dladle.serviceutil.UserUtility;
 import za.co.dladle.session.UserSession;
+import za.co.dladle.thirdparty.document.DocumentManagementServiceImpl;
 import za.co.dladle.thirdparty.push.AndroidPushNotificationsService;
 import za.co.dladle.thirdparty.document.DocumentManagementServiceCloudinaryImpl;
 
@@ -60,7 +61,7 @@ public class VendorService {
     private RatingService ratingService;
 
     @Autowired
-    private DocumentManagementServiceCloudinaryImpl fileManagementServiceCloudinary;
+    private DocumentManagementServiceImpl fileManagementServiceCloudinary;
 
     @Autowired
     private PushNotificationService notificationService;
@@ -73,6 +74,10 @@ public class VendorService {
 
     @Value("${vendor.selection.max.distance}")
     private String distance;
+
+    @Value("${document.store.url}")
+    private String documentUrl;
+
 
     public long requestVendor(VendorServiceRequest vendorServiceRequest) throws Exception {
 
@@ -108,7 +113,7 @@ public class VendorService {
                 if (file.getDocumentType().equals(DocumentType.IMAGE)) {
                     Map<String, Object> map = new HashMap<>();
 
-                    String imageUrl = fileManagementServiceCloudinary.upload(file.getBase64(), file.getFileName());
+                    String imageUrl = fileManagementServiceCloudinary.uploadPhoto(String.valueOf(keyHolder.getKey().longValue()), "service", file.getBase64(), file.getFileName());
 
                     map.put("serviceId", keyHolder.getKey().longValue());
                     map.put("imageUrl", imageUrl);
@@ -118,7 +123,7 @@ public class VendorService {
                 } else {
                     Map<String, Object> map = new HashMap<>();
 
-                    String imageUrl = fileManagementServiceCloudinary.uploadAudio(file.getBase64(), file.getFileName());
+                    String imageUrl = fileManagementServiceCloudinary.uploadAudio(String.valueOf(keyHolder.getKey().longValue()), "service", file.getBase64(), file.getFileName());
 
                     map.put("serviceId", keyHolder.getKey().longValue());
                     map.put("imageUrl", imageUrl);
@@ -347,7 +352,7 @@ public class VendorService {
             List<ServiceDocuments> documents = new ArrayList<>();
             this.jdbcTemplate.query(sql1, map, (rs, rowNum) -> {
                         ServiceDocuments s = new ServiceDocuments();
-                        s.setBase64(rs.getString("url"));
+                        s.setBase64(documentUrl + "service/" + serviceId + "/" + rs.getString("url"));
                         s.setDocumentType(DocumentTypeMapper.getDocumentType(rs.getInt("document_type")));
                         documents.add(s);
                         return s;
