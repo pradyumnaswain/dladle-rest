@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import za.co.dladle.apiutil.ApiConstants;
 import za.co.dladle.apiutil.DladleConstants;
+import za.co.dladle.entity.NotificationCount;
 import za.co.dladle.model.Notification;
 import za.co.dladle.service.PushNotificationService;
 import za.co.dladle.serviceutil.ResponseUtil;
@@ -68,6 +69,32 @@ public class NotificationController {
         try {
             List<Notification> notificationList = pushNotificationService.listNotifications(houseId);
             return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, notificationList, DladleConstants.NOTIFICATION_LISTED);
+        } catch (Exception e) {
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Notification Count
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = ApiConstants.NOTIFICATION_COUNT, method = RequestMethod.GET)
+    public Map<String, Object> countNotification() {
+        try {
+            NotificationCount countNotification = pushNotificationService.countNotification();
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, countNotification, DladleConstants.NOTIFICATION_COUNT);
+        } catch (Exception e) {
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Notification Count
+    //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = ApiConstants.NOTIFICATION_COUNT_HOUSE_ID, method = RequestMethod.GET)
+    public Map<String, Object> countNotification(@PathVariable long houseId) {
+        try {
+            NotificationCount countNotification = pushNotificationService.countNotification(houseId);
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, countNotification, DladleConstants.NOTIFICATION_COUNT);
         } catch (Exception e) {
             return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
         }

@@ -23,6 +23,8 @@ public class ApiConstants {
     public static final String NOTIFICATION_ACTIONED = "/api/notification/actioned/{notificationId}";
     public static final String NOTIFICATION_LIST = "/api/notification/list";
     public static final String NOTIFICATION_LIST_HOUSE_ID = "/api/notification/list/{houseId}";
+    public static final String NOTIFICATION_COUNT = "/api/notification/count";
+    public static final String NOTIFICATION_COUNT_HOUSE_ID = "/api/notification/count/{houseId}";
     //------------------------------------------------------------------------------------------------------------------
     //Property API
     //------------------------------------------------------------------------------------------------------------------

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
+import za.co.dladle.entity.NotificationCount;
 import za.co.dladle.entity.NotificationView;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.mapper.NotificationTypeMapper;
@@ -163,5 +164,22 @@ public class PushNotificationService {
         map.put("notificationId", notificationId);
         String sql = "UPDATE notification SET notification_actioned_status=TRUE WHERE id=:notificationId ";
         this.jdbcTemplate.update(sql, map);
+    }
+
+    public NotificationCount countNotification(long houseId) {
+        UserSession userSession = applicationContext.getBean(UserSession.class);
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userSession.getUser().getUserId());
+        map.put("houseId", houseId);
+        String sql = "SELECT count(id) count FROM notification WHERE notification_to=:userId AND house_id=:houseId AND notification_read_status=FALSE";
+        return this.jdbcTemplate.queryForObject(sql, map, (rs, rowNum) -> new NotificationCount(rs.getInt("count")));
+    }
+
+    public NotificationCount countNotification() {
+        UserSession userSession = applicationContext.getBean(UserSession.class);
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userSession.getUser().getUserId());
+        String sql = "SELECT count(id) count FROM notification WHERE notification_to=:userId AND house_id=0 AND notification_read_status=FALSE ";
+        return this.jdbcTemplate.queryForObject(sql, map, (rs, rowNum) -> new NotificationCount(rs.getInt("count")));
     }
 }
