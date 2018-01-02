@@ -51,6 +51,19 @@ public class VendorRequestController {
     //------------------------------------------------------------------------------------------------------------------
     //Find Correct Vendor
     //------------------------------------------------------------------------------------------------------------------
+    @RequestMapping(value = ApiConstants.SERVICE_STATUS, method = RequestMethod.GET)
+    public Map<String, Object> findServiceStatus(@PathVariable Long serviceId) throws IOException {
+        try {
+            ServiceCurrentStatus serviceStatus = vendorService.findServiceStatus(serviceId);
+            return ResponseUtil.response(DladleConstants.SUCCESS_RESPONSE, serviceStatus, DladleConstants.SERVICE_STATUS);
+        } catch (Exception e) {
+            return ResponseUtil.response(DladleConstants.FAILURE_RESPONSE, null, e.getMessage());
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    //Find Correct Vendor
+    //------------------------------------------------------------------------------------------------------------------
     @RequestMapping(value = ApiConstants.VENDOR_FIND, method = RequestMethod.GET)
     public Map<String, Object> findCorrectVendor(@PathVariable Long serviceId) throws IOException {
         try {

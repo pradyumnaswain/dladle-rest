@@ -628,4 +628,31 @@ public class VendorService {
     public void rejectVendorFinalPrice(AcceptRequest acceptRequest) {
 
     }
+
+    public ServiceCurrentStatus findServiceStatus(Long serviceId) {
+        String sql = "SELECT * FROM service_estimations WHERE service_id=:serviceId";
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("serviceId", serviceId);
+
+        List<ServiceEstimateView> estimateViews = this.jdbcTemplate.query(sql, map, (rs, rowNum) -> new ServiceEstimateView(rs.getString("fee_start_range"), rs.getString("fee_end_range")));
+
+
+        List<ServiceEstimateView> estimatedViews = estimateViews.stream().filter(serviceEstimateView -> serviceEstimateView.getFeeEndRange() != null).collect(Collectors.toList());
+
+        String status;
+
+        if (estimateViews.size() == 0) {
+            status = "No Near by Vendors available";
+        } else if (estimatedViews.size() == estimateViews.size()) {
+            status = "All Near by Vendors Completed Quoting";
+        } else if (estimatedViews.size() == 0) {
+            status = "Please Wait. All Near by Vendors Notified about your Service Request";
+        } else {
+            status = "Please Wait. All Notified Vendors Started Quoting";
+        }
+
+        return new ServiceCurrentStatus(estimateViews.size(), estimatedViews.size(), status);
+    }
 }
