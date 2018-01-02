@@ -365,6 +365,17 @@ public class VendorService {
                 serviceView.setServiceDocuments(documents);
                 serviceView.setServiceNeedTime(rs.getString("service_need_time"));
                 serviceView.setPropertyAddress(rs.getString("address"));
+                try {
+                    User user = userUtility.findUserById(rs.getLong("service_requester_user_id"));
+
+                    Double rating = ratingService.viewRating(user.getEmailId());
+
+                    UserView userView = new UserView(user.getFirstName() + " " + user.getLastName(), rating, user.getProfilePicture());
+
+                    serviceView.setUser(userView);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 serviceView.setServiceEstimateView(serviceEstimateView);
                 return serviceView;
             });

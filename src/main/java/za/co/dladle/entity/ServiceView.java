@@ -13,7 +13,7 @@ public class ServiceView {
     private String serviceDescription;
     private String propertyAddress;
     private List<ServiceDocuments> serviceDocuments;
-    private User user;
+    private UserView user;
     private ServiceEstimateView serviceEstimateView;
 
     public ServiceView() {
@@ -59,11 +59,11 @@ public class ServiceView {
         this.serviceDocuments = serviceDocuments;
     }
 
-    public User getUser() {
+    public UserView getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserView user) {
         this.user = user;
     }
 
