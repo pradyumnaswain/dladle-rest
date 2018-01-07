@@ -104,7 +104,7 @@ public class PaymentService {
     }
 
     private Integer convertRandToCent(Double rand) {
-        String randValue = String.valueOf(rand * 100);
-        return Integer.valueOf(randValue);
+        Double v = rand * 100;
+        return v.intValue();
     }
 }
