@@ -4,11 +4,13 @@ public class ServiceCurrentStatus {
     private int numberOfVendorsNotified;
     private int numberOfVendorsQuoted;
     private String currentStatus;
+    private int statusType;
 
-    public ServiceCurrentStatus(int numberOfVendorsNotified, int numberOfVendorsQuoted, String currentStatus) {
+    public ServiceCurrentStatus(int numberOfVendorsNotified, int numberOfVendorsQuoted, String currentStatus, int statusType) {
         this.numberOfVendorsNotified = numberOfVendorsNotified;
         this.numberOfVendorsQuoted = numberOfVendorsQuoted;
         this.currentStatus = currentStatus;
+        this.statusType = statusType;
     }
 
     public ServiceCurrentStatus() {
@@ -36,5 +38,13 @@ public class ServiceCurrentStatus {
 
     public void setCurrentStatus(String currentStatus) {
         this.currentStatus = currentStatus;
+    }
+
+    public int getStatusType() {
+        return statusType;
+    }
+
+    public void setStatusType(int statusType) {
+        this.statusType = statusType;
     }
 }

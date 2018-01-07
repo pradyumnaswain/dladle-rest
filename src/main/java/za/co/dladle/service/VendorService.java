@@ -642,17 +642,22 @@ public class VendorService {
         List<ServiceEstimateView> estimatedViews = estimateViews.stream().filter(serviceEstimateView -> serviceEstimateView.getFeeEndRange() != null).collect(Collectors.toList());
 
         String status;
+        int statusType;
 
         if (estimateViews.size() == 0) {
             status = "No Near by Vendors available";
+            statusType = 1;
         } else if (estimatedViews.size() == estimateViews.size()) {
             status = "All Near by Vendors Completed Quoting";
+            statusType = 2;
         } else if (estimatedViews.size() == 0) {
             status = "Please Wait. All Near by Vendors Notified about your Service Request";
+            statusType = 3;
         } else {
             status = "Please Wait. All Notified Vendors Started Quoting";
+            statusType = 4;
         }
 
-        return new ServiceCurrentStatus(estimateViews.size(), estimatedViews.size(), status);
+        return new ServiceCurrentStatus(estimateViews.size(), estimatedViews.size(), status, statusType);
     }
 }
