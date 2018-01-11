@@ -166,6 +166,7 @@ public class PropertyAssignmentService {
 
         Map<String, Object> map = new HashMap<>();
         map.put("emailId", propertyInviteRequest.getEmailId());
+        map.put("houseId", propertyInviteRequest.getHouseId());
         String sql = "SELECT device_id FROM user_dladle WHERE emailid=:emailId";
 
         String sqlProperty = "SELECT address FROM property INNER JOIN house h2 ON property.id = h2.property_id WHERE h2.id=:houseId";
