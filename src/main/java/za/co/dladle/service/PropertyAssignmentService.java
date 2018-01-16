@@ -77,7 +77,7 @@ public class PropertyAssignmentService {
                         "",
                         "", propertyAssignmentRequest.getHouseId().toString(), NotificationType.TENANT_ACCEPTS_PROPERTY_INVITATION);
                 notificationService.saveNotification(notifications);
-                emailService.sendNotificationMail(propertyAssignmentRequest.getEmailId(), NotificationConstants.PROPERTY_ACCEPTED_TITLE, NotificationConstants.PROPERTY_ACCEPTED_BODY);
+//                emailService.sendNotificationMail(propertyAssignmentRequest.getEmailId(), NotificationConstants.PROPERTY_ACCEPTED_TITLE, NotificationConstants.PROPERTY_ACCEPTED_BODY);
 
                 //Send Push Notification
                 if (deviceId != null) {
@@ -130,7 +130,7 @@ public class PropertyAssignmentService {
                         "",
                         "", propertyAssignmentRequest.getHouseId().toString(), NotificationType.LANDLORD_ACCEPTS_PROPERTY_INVITATION);
                 notificationService.saveNotification(notifications);
-                emailService.sendNotificationMail(propertyAssignmentRequest.getEmailId(), NotificationConstants.PROPERTY_ACCEPTED_TITLE, NotificationConstants.PROPERTY_ACCEPTED_BODY);
+//                emailService.sendNotificationMail(propertyAssignmentRequest.getEmailId(), NotificationConstants.PROPERTY_ACCEPTED_TITLE, NotificationConstants.PROPERTY_ACCEPTED_BODY);
 
                 //Send Push Notification
                 if (deviceId != null) {
@@ -182,7 +182,7 @@ public class PropertyAssignmentService {
         notificationService.saveNotification(notifications);
 
         //Send Email
-        emailService.sendNotificationMail(propertyInviteRequest.getEmailId(), NotificationConstants.LANDLORD_INVITE_PROPERTY_TITLE, NotificationConstants.LANDLORD_INVITE_PROPERTY_BODY);
+//        emailService.sendNotificationMail(propertyInviteRequest.getEmailId(), NotificationConstants.LANDLORD_INVITE_PROPERTY_TITLE, NotificationConstants.LANDLORD_INVITE_PROPERTY_BODY);
         try {
 
             String deviceId = this.parameterJdbcTemplate.queryForObject(sql, map, String.class);
@@ -232,7 +232,7 @@ public class PropertyAssignmentService {
         notificationService.saveNotification(notifications);
 
         //Send Email
-        emailService.sendNotificationMail(propertyRequest.getEmailId(), NotificationConstants.TENANT_REQUEST_PROPERTY_TITLE, NotificationConstants.TENANT_REQUEST_PROPERTY_BODY);
+//        emailService.sendNotificationMail(propertyRequest.getEmailId(), NotificationConstants.TENANT_REQUEST_PROPERTY_TITLE, NotificationConstants.TENANT_REQUEST_PROPERTY_BODY);
 
         //Send Push Notification
         if (deviceId != null) {
@@ -271,7 +271,7 @@ public class PropertyAssignmentService {
                     "tenantEmailId:" + userSession.getUser().getEmailId(),
                     "", propertyDeclineRequest.getHouseId().toString(), NotificationType.TENANT_REJECTS_PROPERTY_INVITATION);
             notificationService.saveNotification(notifications);
-            emailService.sendNotificationMail(propertyDeclineRequest.getEmailId(), NotificationConstants.PROPERTY_REJECTED_TITLE, NotificationConstants.PROPERTY_REJECTED_BODY);
+//            emailService.sendNotificationMail(propertyDeclineRequest.getEmailId(), NotificationConstants.PROPERTY_REJECTED_TITLE, NotificationConstants.PROPERTY_REJECTED_BODY);
 
             //Send Push Notification
             if (deviceId != null) {
@@ -307,7 +307,7 @@ public class PropertyAssignmentService {
                     "tenantEmailId:" + userSession.getUser().getEmailId(),
                     "", "0", NotificationType.LANDLORD_REJECTS_PROPERTY_INVITATION);
             notificationService.saveNotification(notifications);
-            emailService.sendNotificationMail(propertyDeclineRequest.getEmailId(), NotificationConstants.PROPERTY_REJECTED_TITLE, NotificationConstants.PROPERTY_REJECTED_BODY);
+//            emailService.sendNotificationMail(propertyDeclineRequest.getEmailId(), NotificationConstants.PROPERTY_REJECTED_TITLE, NotificationConstants.PROPERTY_REJECTED_BODY);
 
             //Send Push Notification
             if (deviceId != null) {
