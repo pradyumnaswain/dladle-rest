@@ -26,7 +26,7 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
     @Override
     public String uploadPhoto(String folderName, String folderPath, String image, String fileName) throws IOException {
 
-        byte[] decodedImg = Base64.getDecoder().decode(image.getBytes(StandardCharsets.UTF_8));
+        byte[] decodedImg = javax.xml.bind.DatatypeConverter.parseBase64Binary(image);
 
         Path destinationFolder = Paths.get(path + "/" + folderPath, folderName);
         createFolderIfNotExist(destinationFolder);
@@ -43,7 +43,7 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
 
     @Override
     public String uploadAudio(String folderName, String folderPath, String audio, String fileName) throws IOException {
-        byte[] decodedImg = Base64.getDecoder().decode(audio.getBytes(StandardCharsets.UTF_8));
+        byte[] decodedImg = javax.xml.bind.DatatypeConverter.parseBase64Binary(audio);
 
         Path destinationFolder = Paths.get(path + folderPath, folderName);
         createFolderIfNotExist(destinationFolder);
