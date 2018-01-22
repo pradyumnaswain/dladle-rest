@@ -146,42 +146,43 @@ public class VendorService {
             property.setAddressLongitude(rs.getString("address_longitude"));
             return property;
         });
-        vendorsAtWork = getNearestVendors(vendorsAtWork, propery.getAddressLatitude(), propery.getAddressLongitude());
-
         if (!vendorsAtWork.isEmpty()) {
-            for (VendorAtWorkView vendorAtWorkView : vendorsAtWork) {
+
+            vendorsAtWork = getNearestVendors(vendorsAtWork, propery.getAddressLatitude(), propery.getAddressLongitude());
+            if (!vendorsAtWork.isEmpty()) {
+                for (VendorAtWorkView vendorAtWorkView : vendorsAtWork) {
 //                completionService.submit(() -> {
-                mapSqlParameterSource.addValue("vendorId", vendorAtWorkView.getVendorId());
-                String sql1 = "SELECT * FROM user_dladle INNER JOIN vendor ON user_dladle.id = vendor.user_id WHERE vendor.id=:vendorId";
-                UserDeviceEmailId deviceEmailId = this.jdbcTemplate.queryForObject(sql1, mapSqlParameterSource, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
+                    mapSqlParameterSource.addValue("vendorId", vendorAtWorkView.getVendorId());
+                    String sql1 = "SELECT * FROM user_dladle INNER JOIN vendor ON user_dladle.id = vendor.user_id WHERE vendor.id=:vendorId";
+                    UserDeviceEmailId deviceEmailId = this.jdbcTemplate.queryForObject(sql1, mapSqlParameterSource, (rs, rowNum) -> new UserDeviceEmailId(rs.getString("device_id"), rs.getString("emailid")));
 
-                NotificationView notifications = new NotificationView(
-                        session.getUser().getEmailId(),
-                        deviceEmailId.getEmailId(),
-                        NotificationConstants.SERVICE_REQUEST_TITLE,
-                        NotificationConstants.SERVICE_REQUEST_BODY,
-                        "serviceId:" + keyHolder.getKey().longValue(),
-                        "", "0", NotificationType.SERVICE_REQUEST);
-                notificationService.saveNotification(notifications);
+                    NotificationView notifications = new NotificationView(
+                            session.getUser().getEmailId(),
+                            deviceEmailId.getEmailId(),
+                            NotificationConstants.SERVICE_REQUEST_TITLE,
+                            NotificationConstants.SERVICE_REQUEST_BODY,
+                            "serviceId:" + keyHolder.getKey().longValue(),
+                            "", "0", NotificationType.SERVICE_REQUEST);
+                    notificationService.saveNotification(notifications);
 
-                //Send Push Notification
-                if (deviceEmailId.getDeviceId() != null) {
-                    JSONObject body = new JSONObject();
-                    body.put("to", deviceEmailId.getDeviceId());
-                    body.put("priority", "high");
+                    //Send Push Notification
+                    if (deviceEmailId.getDeviceId() != null) {
+                        JSONObject body = new JSONObject();
+                        body.put("to", deviceEmailId.getDeviceId());
+                        body.put("priority", "high");
 
-                    JSONObject notification = new JSONObject();
-                    notification.put("title", NotificationConstants.SERVICE_REQUEST_TITLE);
-                    notification.put("body", NotificationConstants.SERVICE_REQUEST_BODY);
+                        JSONObject notification = new JSONObject();
+                        notification.put("title", NotificationConstants.SERVICE_REQUEST_TITLE);
+                        notification.put("body", NotificationConstants.SERVICE_REQUEST_BODY);
 
-                    JSONObject data = new JSONObject();
-                    data.put("serviceId", keyHolder.getKey().longValue());
-                    body.put("notification", notification);
-                    body.put("data", data);
-                    pushNotificationsService.sendNotification(body);
-                } else {
-                    System.out.println("Device Id can't be null");
-                }
+                        JSONObject data = new JSONObject();
+                        data.put("serviceId", keyHolder.getKey().longValue());
+                        body.put("notification", notification);
+                        body.put("data", data);
+                        pushNotificationsService.sendNotification(body);
+                    } else {
+                        System.out.println("Device Id can't be null");
+                    }
 //                    return null;
 //                });
 //                for (int i = 0; i < vendorsAtWork.size(); i++) {
@@ -189,11 +190,15 @@ public class VendorService {
 //                    // Some processing here
 //                }
 
+                }
+                populateVendorWorkTimeline(vendorsAtWork, keyHolder.getKey().longValue());
             }
-            populateVendorWorkTimeline(vendorsAtWork, keyHolder.getKey().longValue());
+
         } else {
             throw new Exception("Currently No vendor at Work");
+
         }
+
         return keyHolder.getKey().longValue();
     }
 
