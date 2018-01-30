@@ -88,7 +88,7 @@ public class PushNotificationService {
         List<Notification> notificationList = new ArrayList<>();
         map.put("userId", userId);
         map.put("houseId", houseId);
-        String sql = "SELECT notification.*,u.*,u.emailid fromId, p.emailid toId,notification_type.id not_type_id, notification_type.name FROM notification " +
+        String sql = "SELECT notification.*,u.*,u.emailid fromId, p.emailid toId,notification_type.id not_type_id, notification_type.name,p2.address FROM notification " +
                 "INNER JOIN notification_type ON notification.notification_type_id = notification_type.id " +
                 "INNER JOIN user_dladle u ON notification_from=u.id " +
                 "INNER JOIN user_dladle p ON notification_to=p.id " +
