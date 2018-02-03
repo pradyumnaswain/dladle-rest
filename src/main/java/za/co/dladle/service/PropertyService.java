@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
+import za.co.dladle.apiutil.ImageUtil;
 import za.co.dladle.entity.*;
 import za.co.dladle.exception.PropertyAddException;
 import za.co.dladle.exception.PropertyAlreadyExistsException;
@@ -54,6 +55,9 @@ public class PropertyService {
 
     @Value("${document.store.url}")
     private String documentUrl;
+
+    @Autowired
+    private ImageUtil imageUtil;
 
     //------------------------------------------------------------------------------------------------------------------
     //Insert Property
@@ -193,7 +197,7 @@ public class PropertyService {
 
                 List<TenantView> tenantList = new ArrayList<>();
                 map.put("houseId", property.getHouseId());
-                String sql1 = "SELECT * FROM user_dladle INNER JOIN tenant ON tenant.user_id = user_dladle.id WHERE house_id=:houseId";
+                String sql1 = "SELECT *,user_dladle.id user_id FROM user_dladle INNER JOIN tenant ON tenant.user_id = user_dladle.id WHERE house_id=:houseId";
                 this.parameterJdbcTemplate.query(sql1, map, (rs1, rowNum1) -> {
                     TenantView tenantView = new TenantView(
                             rs1.getString("emailid"),
@@ -201,7 +205,7 @@ public class PropertyService {
                             rs1.getString("last_name"),
                             rs1.getString("id_number"),
                             rs1.getString("cell_number"),
-                            rs1.getString("profile_picture")
+                            imageUtil.getFullImagePath(rs.getLong("user_id"), rs.getString("profile_picture"))
                     );
 
                     tenantList.add(tenantView);
@@ -278,7 +282,7 @@ public class PropertyService {
                 property.setPropertyContactList(contacts);
 
                 map.put("propertyId", property.getPropertyId());
-                String sql1 = "SELECT * FROM user_dladle INNER JOIN landlord ON landlord.user_id = user_dladle.id " +
+                String sql1 = "SELECT *,user_dladle.id user_id FROM user_dladle INNER JOIN landlord ON landlord.user_id = user_dladle.id " +
                         "INNER JOIN property ON landlord.id = property.landlord_id " +
                         "WHERE property.id=:propertyId";
                 LandlordView landlordView = this.parameterJdbcTemplate.queryForObject(sql1, map, (rs1, rowNum1) -> new LandlordView(
@@ -287,7 +291,7 @@ public class PropertyService {
                         rs1.getString("last_name"),
                         rs1.getString("id_number"),
                         rs1.getString("cell_number"),
-                        rs1.getString("profile_picture")
+                        imageUtil.getFullImagePath(rs.getLong("user_id"), rs.getString("profile_picture"))
                 ));
                 property.setLandlord(landlordView);
 
@@ -343,7 +347,7 @@ public class PropertyService {
                     rs.getString("last_name"),
                     rs.getString("id_number"),
                     rs.getString("cell_number"),
-                    rs.getString("profile_picture")
+                    imageUtil.getFullImagePath(rs.getLong("user_id"), rs.getString("profile_picture"))
             );
 
             tenantViews.add(tenantView);

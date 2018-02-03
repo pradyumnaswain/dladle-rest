@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import za.co.dladle.apiutil.ImageUtil;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.model.User;
 
@@ -18,6 +19,9 @@ public class UserUtility {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private ImageUtil imageUtil;
 
     //------------------------------------------------------------------------------------------------------------------
     //Find User By Email Id
@@ -41,8 +45,9 @@ public class UserUtility {
         try {
             String sql = "SELECT * FROM user_dladle WHERE id=?";
             return this.jdbcTemplate.queryForObject(sql, new Object[]{userId}, (rs, rowNum) ->
-                    new User(rs.getString("emailId"), rs.getString("first_name"), rs.getString("last_name"), rs
-                            .getString("profile_picture")));
+                    new User(rs.getString("emailId"), rs.getString("first_name"), rs.getString("last_name"),
+                            imageUtil.getFullImagePath(rs.getLong("id"), rs.getString("profile_picture"))
+                    ));
         } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException("User doesn't exist");
         }

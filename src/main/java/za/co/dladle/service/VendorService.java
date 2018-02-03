@@ -7,7 +7,6 @@ import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.DistanceMatrixElement;
 import com.google.maps.model.DistanceMatrixRow;
 import com.google.maps.model.TravelMode;
-
 import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +20,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import za.co.dladle.apiutil.DateUtil;
+import za.co.dladle.apiutil.ImageUtil;
 import za.co.dladle.apiutil.NotificationConstants;
 import za.co.dladle.entity.*;
 import za.co.dladle.exception.UserNotFoundException;
@@ -33,13 +33,11 @@ import za.co.dladle.serviceutil.UserUtility;
 import za.co.dladle.session.UserSession;
 import za.co.dladle.thirdparty.document.DocumentManagementServiceImpl;
 import za.co.dladle.thirdparty.push.AndroidPushNotificationsService;
-import za.co.dladle.thirdparty.document.DocumentManagementServiceCloudinaryImpl;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 /**
@@ -77,6 +75,9 @@ public class VendorService {
 
     @Value("${document.store.url}")
     private String documentUrl;
+
+    @Autowired
+    private ImageUtil imageUtil;
 
 
     public long requestVendor(VendorServiceRequest vendorServiceRequest) throws Exception {
@@ -450,7 +451,7 @@ public class VendorService {
             VendorResponse vendorResponse;
 
             map.put("vendorId", Long.valueOf(m.get("vendorId").toString()));
-            String sqlVendor = "SELECT user_dladle.*,service_type.name job_type,years_exp.name years_of_exp FROM user_dladle INNER JOIN vendor ON user_dladle.id = vendor.user_id " +
+            String sqlVendor = "SELECT user_dladle.*,user_dladle.id user_id,service_type.name job_type,years_exp.name years_of_exp FROM user_dladle INNER JOIN vendor ON user_dladle.id = vendor.user_id " +
                     "INNER JOIN service_type ON vendor.service_type_id = service_type.id " +
                     "INNER JOIN years_exp ON vendor.experience_id = years_exp.id " +
                     "WHERE vendor.id=:vendorId";
@@ -459,7 +460,7 @@ public class VendorService {
                     new VendorResponse(Long.valueOf(m.get("vendorId").toString()),
                             rs.getString("emailId"),
                             rs.getString("first_name") + " " + rs.getString("last_name"),
-                            rs.getString("profile_picture"), rs.getString("job_type"),
+                            imageUtil.getFullImagePath(rs.getLong("user_id"), rs.getString("profile_picture")), rs.getString("job_type"),
                             rs.getString("years_of_exp")));
 
             vendorResponse.setVendorRating(ratingService.viewRating(vendorResponse.getVendorEmailId()));

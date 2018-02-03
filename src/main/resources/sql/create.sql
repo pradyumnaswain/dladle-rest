@@ -395,6 +395,8 @@ CREATE TABLE service_estimations
   rating          DOUBLE PRECISION,
   fee_start_range DOUBLE PRECISION,
   fee_end_range   DOUBLE PRECISION,
+  notification_sent_time TIMESTAMP,
+  estimation_response_time TIMESTAMP,
   FOREIGN KEY (service_id) REFERENCES service (id),
   FOREIGN KEY (vendor_id) REFERENCES vendor (id)
 );

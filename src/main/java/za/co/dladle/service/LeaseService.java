@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
+import za.co.dladle.apiutil.ImageUtil;
 import za.co.dladle.apiutil.NotificationConstants;
 import za.co.dladle.entity.*;
 import za.co.dladle.model.LeaseLandlord;
@@ -48,6 +49,9 @@ public class LeaseService {
     @Autowired
     private EmailServiceZohoMailImpl emailService;
 
+    @Autowired
+    private ImageUtil imageUtil;
+
 
     public LeaseLandlord viewLease(long houseId) throws Exception {
         Map<String, Object> map = new HashMap<>();
@@ -82,7 +86,7 @@ public class LeaseService {
                 map.put("leaseId", rs.getLong("id"));
 
                 List<TenantLeaseView> tenantLeaseViews = new ArrayList<>();
-                String sql1 = "SELECT * FROM lease_tenant " +
+                String sql1 = "SELECT *,user_dladle.id user_id FROM lease_tenant " +
                         " INNER JOIN tenant ON tenant.id=lease_tenant.tenant_id " +
                         " INNER JOIN user_dladle ON user_dladle.id=tenant.user_id " +
                         "WHERE lease_id=:leaseId ";
@@ -91,7 +95,7 @@ public class LeaseService {
                             rs1.getString("first_name"),
                             rs1.getString("last_name"),
                             rs1.getString("cell_number"),
-                            rs1.getString("profile_picture"),
+                            imageUtil.getFullImagePath(rs.getLong("user_id"), rs.getString("profile_picture")),
                             rs1.getString("id_number"),
                             rs1.getDate("joined_date"));
                     tenantLeaseViews.add(user);
@@ -121,7 +125,7 @@ public class LeaseService {
             Long tenantId = userUtility.findTenantIdByEmail(userSession.getUser().getEmailId());
             map.put("tenantId", tenantId);
 
-            String sql = "SELECT *,lease.id lease_id FROM lease INNER JOIN lease_tenant ON lease.id = lease_tenant.lease_id " +
+            String sql = "SELECT *,lease.id lease_id,user_dladle.id user_id FROM lease INNER JOIN lease_tenant ON lease.id = lease_tenant.lease_id " +
                     "INNER JOIN house ON lease.house_id = house.id " +
                     "INNER JOIN property ON house.property_id = property.id " +
                     "INNER JOIN landlord ON property.landlord_id = landlord.id " +
@@ -133,7 +137,7 @@ public class LeaseService {
                         rs.getString("first_name"),
                         rs.getString("last_name"),
                         rs.getString("cell_number"),
-                        rs.getString("profile_picture"),
+                        imageUtil.getFullImagePath(rs.getLong("user_id"), rs.getString("profile_picture")),
                         rs.getString("id_number"));
                 leaseTenant1.setLandlord(user);
                 PropertyView property = new PropertyView();

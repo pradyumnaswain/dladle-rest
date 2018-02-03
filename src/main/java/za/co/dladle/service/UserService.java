@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import za.co.dladle.apiutil.ImageUtil;
 import za.co.dladle.apiutil.RandomUtil;
 import za.co.dladle.entity.*;
 import za.co.dladle.exception.*;
@@ -68,8 +69,8 @@ public class UserService {
     @Value("${verification.link}")
     private String verificationLink;
 
-    @Value("${document.store.url}")
-    private String documentUrl;
+    @Autowired
+    private ImageUtil imageUtil;
 
     //------------------------------------------------------------------------------------------------------------------
     //Set Session
@@ -102,7 +103,7 @@ public class UserService {
                             rs.getString("last_name"),
                             rs.getString("id_number"),
                             rs.getString("cell_number"),
-                            documentUrl + "profile/" + rs.getLong("user_id") + "/" + rs.getString("profile_picture"),
+                            imageUtil.getFullImagePath(rs.getLong("user_id"), rs.getString("profile_picture")),
                             rs.getBoolean("payment_account_set")));
             try {
                 String sql1 = "SELECT count FROM notification_count INNER JOIN user_dladle ON notification_count.user_id = user_dladle.id WHERE emailid=? AND house_id=0";
@@ -381,7 +382,7 @@ public class UserService {
 
     public User getDetails(String emailId) throws Exception {
         List<RatingViewDetails> ratingViewDetails = ratingService.viewRatingDetails(emailId);
-        String sql = "SELECT * FROM user_dladle INNER JOIN user_type ON user_dladle.user_type_id = user_type.id WHERE emailid=?";
+        String sql = "SELECT *,user_dladle.id user_id FROM user_dladle INNER JOIN user_type ON user_dladle.user_type_id = user_type.id WHERE emailid=?";
         return this.jdbcTemplate.queryForObject(sql, new Object[]{emailId.toLowerCase()}, (rs, rowNum) ->
                 new User(rs.getString("emailId"),
                         rs.getBoolean("verified"),
@@ -390,7 +391,7 @@ public class UserService {
                         rs.getString("last_name"),
                         rs.getString("id_number"),
                         rs.getString("cell_number"),
-                        rs.getString("profile_picture"),
+                        imageUtil.getFullImagePath(rs.getLong("user_id"), rs.getString("profile_picture")),
                         ratingViewDetails));
     }
 

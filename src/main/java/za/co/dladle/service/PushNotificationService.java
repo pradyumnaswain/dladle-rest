@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
+import za.co.dladle.apiutil.ImageUtil;
 import za.co.dladle.entity.NotificationCount;
 import za.co.dladle.entity.NotificationView;
 import za.co.dladle.exception.UserNotFoundException;
@@ -38,6 +39,9 @@ public class PushNotificationService {
     @Autowired
     private RatingService ratingService;
 
+    @Autowired
+    private ImageUtil imageUtil;
+
     public List<Notification> listNotifications() throws UserNotFoundException {
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
 
@@ -45,7 +49,7 @@ public class PushNotificationService {
         Map<String, Object> map = new HashMap<>();
         List<Notification> notificationList = new ArrayList<>();
         map.put("userId", userId);
-        String sql = "SELECT notification.*,u.*,u.emailid fromId, p.emailid toId,notification_type.id not_type_id, notification_type.name FROM notification " +
+        String sql = "SELECT notification.*,u.*,u.emailid fromId,u.id user_id, p.emailid toId,notification_type.id not_type_id, notification_type.name FROM notification " +
                 "INNER JOIN notification_type ON notification.notification_type_id = notification_type.id " +
                 "INNER JOIN user_dladle u ON notification_from=u.id " +
                 "INNER JOIN user_dladle p ON notification_to=p.id " +
@@ -55,7 +59,7 @@ public class PushNotificationService {
             notification.setId(rs1.getLong("id"));
             notification.setFrom(rs1.getString("fromId"));
             notification.setName(rs1.getString("first_name") + " " + rs1.getString("last_name"));
-            notification.setProfilePicture(rs1.getString("profile_picture"));
+            notification.setProfilePicture(imageUtil.getFullImagePath(rs1.getLong("user_id"), rs1.getString("profile_picture")));
             try {
                 Double rating = ratingService.viewRating(notification.getFrom());
                 notification.setRating(rating);
@@ -88,7 +92,7 @@ public class PushNotificationService {
         List<Notification> notificationList = new ArrayList<>();
         map.put("userId", userId);
         map.put("houseId", houseId);
-        String sql = "SELECT notification.*,u.*,u.emailid fromId, p.emailid toId,notification_type.id not_type_id, notification_type.name,p2.address FROM notification " +
+        String sql = "SELECT notification.*,u.*,u.emailid fromId,u.id user_id, p.emailid toId,notification_type.id not_type_id, notification_type.name,p2.address FROM notification " +
                 "INNER JOIN notification_type ON notification.notification_type_id = notification_type.id " +
                 "INNER JOIN user_dladle u ON notification_from=u.id " +
                 "INNER JOIN user_dladle p ON notification_to=p.id " +
@@ -100,7 +104,7 @@ public class PushNotificationService {
             notification.setId(rs1.getLong("id"));
             notification.setFrom(rs1.getString("fromId"));
             notification.setName(rs1.getString("first_name") + " " + rs1.getString("last_name"));
-            notification.setProfilePicture(rs1.getString("profile_picture"));
+            notification.setProfilePicture(imageUtil.getFullImagePath(rs1.getLong("user_id"), rs1.getString("profile_picture")));
             try {
                 Double rating = ratingService.viewRating(notification.getFrom());
                 notification.setRating(rating);
