@@ -52,6 +52,11 @@ public class User {
         this.emailId = emailId;
     }
 
+    public User(String emailId, UserType userType) {
+        this.emailId = emailId;
+        this.userType = userType;
+    }
+
     public User(String emailId, String firstName, String lastName, String profilePicture) {
         this.emailId = emailId;
         this.firstName = firstName;

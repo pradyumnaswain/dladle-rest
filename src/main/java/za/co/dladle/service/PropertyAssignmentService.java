@@ -10,6 +10,8 @@ import za.co.dladle.apiutil.NotificationConstants;
 import za.co.dladle.entity.*;
 import za.co.dladle.exception.UserNotFoundException;
 import za.co.dladle.model.NotificationType;
+import za.co.dladle.model.User;
+import za.co.dladle.serviceutil.UserUtility;
 import za.co.dladle.session.UserSession;
 import za.co.dladle.thirdparty.email.EmailServiceZohoMailImpl;
 import za.co.dladle.thirdparty.push.AndroidPushNotificationsService;
@@ -40,7 +42,7 @@ public class PropertyAssignmentService {
     private PushNotificationService notificationService;
 
     @Autowired
-    private EmailServiceZohoMailImpl emailService;
+    private UserUtility userUtility;
 
     @Transactional
     public void assignPropertyToTenant(PropertyAssignmentRequest propertyAssignmentRequest) throws Exception {
@@ -163,94 +165,104 @@ public class PropertyAssignmentService {
     public void inviteTenant(PropertyInviteRequest propertyInviteRequest) throws Exception {
 
         UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+        User user = userUtility.findUserByEmail(propertyInviteRequest.getEmailId());
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("emailId", propertyInviteRequest.getEmailId());
-        map.put("houseId", propertyInviteRequest.getHouseId());
-        String sql = "SELECT device_id FROM user_dladle WHERE emailid=:emailId";
+        if (user.getUserType().eqTENANT()) {
 
-        String sqlProperty = "SELECT address FROM property INNER JOIN house h2 ON property.id = h2.property_id WHERE h2.id=:houseId";
-        String address = this.parameterJdbcTemplate.queryForObject(sqlProperty, map, String.class);
+            Map<String, Object> map = new HashMap<>();
+            map.put("emailId", propertyInviteRequest.getEmailId());
+            map.put("houseId", propertyInviteRequest.getHouseId());
+            String sql = "SELECT device_id FROM user_dladle WHERE emailid=:emailId";
 
-        //save notification
-        NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
-                propertyInviteRequest.getEmailId(),
-                NotificationConstants.LANDLORD_INVITE_PROPERTY_TITLE,
-                NotificationConstants.LANDLORD_INVITE_PROPERTY_BODY,
-                "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + propertyInviteRequest.getHouseId() + "," + "propertyAddress:" + address,
-                "", "0", NotificationType.LANDLORD_REQUEST_TENANT);
-        notificationService.saveNotification(notifications);
+            String sqlProperty = "SELECT address FROM property INNER JOIN house h2 ON property.id = h2.property_id WHERE h2.id=:houseId";
+            String address = this.parameterJdbcTemplate.queryForObject(sqlProperty, map, String.class);
 
-        //Send Email
+            //save notification
+            NotificationView notifications = new NotificationView(userSession.getUser().getEmailId(),
+                    propertyInviteRequest.getEmailId(),
+                    NotificationConstants.LANDLORD_INVITE_PROPERTY_TITLE,
+                    NotificationConstants.LANDLORD_INVITE_PROPERTY_BODY,
+                    "landlordEmailId:" + userSession.getUser().getEmailId() + "," + "houseId:" + propertyInviteRequest.getHouseId() + "," + "propertyAddress:" + address,
+                    "", "0", NotificationType.LANDLORD_REQUEST_TENANT);
+            notificationService.saveNotification(notifications);
+
+            //Send Email
 //        emailService.sendNotificationMail(propertyInviteRequest.getEmailId(), NotificationConstants.LANDLORD_INVITE_PROPERTY_TITLE, NotificationConstants.LANDLORD_INVITE_PROPERTY_BODY);
-        try {
+            try {
 
+                String deviceId = this.parameterJdbcTemplate.queryForObject(sql, map, String.class);
+                if (deviceId != null) {
+                    JSONObject body = new JSONObject();
+                    body.put("to", deviceId);
+                    body.put("priority", "high");
+
+                    JSONObject notification = new JSONObject();
+                    notification.put("body", NotificationConstants.LANDLORD_INVITE_PROPERTY_BODY);
+                    notification.put("title", NotificationConstants.LANDLORD_INVITE_PROPERTY_TITLE);
+
+                    JSONObject data = new JSONObject();
+                    data.put("landlordEmailId", userSession.getUser().getEmailId());
+                    data.put("houseId", propertyInviteRequest.getHouseId());
+
+                    body.put("notification", notification);
+                    body.put("data", data);
+
+                    pushNotificationsService.sendNotification(body);
+                } else {
+                    System.out.println("Device Id can't be null");
+                }
+            } catch (Exception e) {
+                System.out.println("Device Id can't be null");
+            }
+        } else {
+            throw new Exception("You can only invite a tenant to your property");
+        }
+    }
+
+    public void requestLandlord(PropertyRequest propertyRequest) throws Exception {
+        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
+
+        User user = userUtility.findUserByEmail(propertyRequest.getEmailId());
+
+        if (user.getUserType().eqLANDLORD()) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("emailId", propertyRequest.getEmailId());
+            String sql = "SELECT device_id FROM user_dladle WHERE emailid=:emailId";
             String deviceId = this.parameterJdbcTemplate.queryForObject(sql, map, String.class);
+
+            //save notification
+            NotificationView notifications = new NotificationView(
+                    userSession.getUser().getEmailId(),
+                    propertyRequest.getEmailId(),
+                    NotificationConstants.TENANT_REQUEST_PROPERTY_TITLE,
+                    NotificationConstants.TENANT_REQUEST_PROPERTY_BODY,
+                    "tenantEmailId:" + userSession.getUser().getEmailId(),
+                    "", "0", NotificationType.TENANT_REQUEST_LANDLORD);
+            notificationService.saveNotification(notifications);
+
+            //Send Email
+//        emailService.sendNotificationMail(propertyRequest.getEmailId(), NotificationConstants.TENANT_REQUEST_PROPERTY_TITLE, NotificationConstants.TENANT_REQUEST_PROPERTY_BODY);
+
+            //Send Push Notification
             if (deviceId != null) {
                 JSONObject body = new JSONObject();
                 body.put("to", deviceId);
                 body.put("priority", "high");
 
                 JSONObject notification = new JSONObject();
-                notification.put("body", NotificationConstants.LANDLORD_INVITE_PROPERTY_BODY);
-                notification.put("title", NotificationConstants.LANDLORD_INVITE_PROPERTY_TITLE);
+                notification.put("body", NotificationConstants.TENANT_REQUEST_PROPERTY_BODY);
+                notification.put("title", NotificationConstants.TENANT_REQUEST_PROPERTY_TITLE);
 
                 JSONObject data = new JSONObject();
                 data.put("landlordEmailId", userSession.getUser().getEmailId());
-                data.put("houseId", propertyInviteRequest.getHouseId());
-
                 body.put("notification", notification);
                 body.put("data", data);
-
                 pushNotificationsService.sendNotification(body);
             } else {
                 System.out.println("Device Id can't be null");
             }
-        } catch (Exception e) {
-            System.out.println("Device Id can't be null");
-        }
-        //Send Push Notification
-
-    }
-
-    public void requestLandlord(PropertyRequest propertyRequest) throws UserNotFoundException, JSONException {
-        UserSession userSession = applicationContext.getBean("userSession", UserSession.class);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("emailId", propertyRequest.getEmailId());
-        String sql = "SELECT device_id FROM user_dladle WHERE emailid=:emailId";
-        String deviceId = this.parameterJdbcTemplate.queryForObject(sql, map, String.class);
-
-        //save notification
-        NotificationView notifications = new NotificationView(
-                userSession.getUser().getEmailId(),
-                propertyRequest.getEmailId(),
-                NotificationConstants.TENANT_REQUEST_PROPERTY_TITLE,
-                NotificationConstants.TENANT_REQUEST_PROPERTY_BODY,
-                "tenantEmailId:" + userSession.getUser().getEmailId(),
-                "", "0", NotificationType.TENANT_REQUEST_LANDLORD);
-        notificationService.saveNotification(notifications);
-
-        //Send Email
-//        emailService.sendNotificationMail(propertyRequest.getEmailId(), NotificationConstants.TENANT_REQUEST_PROPERTY_TITLE, NotificationConstants.TENANT_REQUEST_PROPERTY_BODY);
-
-        //Send Push Notification
-        if (deviceId != null) {
-            JSONObject body = new JSONObject();
-            body.put("to", deviceId);
-            body.put("priority", "high");
-
-            JSONObject notification = new JSONObject();
-            notification.put("body", NotificationConstants.TENANT_REQUEST_PROPERTY_BODY);
-            notification.put("title", NotificationConstants.TENANT_REQUEST_PROPERTY_TITLE);
-
-            JSONObject data = new JSONObject();
-            data.put("landlordEmailId", userSession.getUser().getEmailId());
-            body.put("notification", notification);
-            body.put("data", data);
-            pushNotificationsService.sendNotification(body);
         } else {
-            System.out.println("Device Id can't be null");
+            throw new Exception("You can only request for property to a Landlord");
         }
     }
 

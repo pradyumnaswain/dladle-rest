@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import za.co.dladle.apiutil.ImageUtil;
 import za.co.dladle.exception.UserNotFoundException;
+import za.co.dladle.mapper.UserTypeMapper;
 import za.co.dladle.model.User;
 
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public class UserUtility {
         try {
             String sql = "SELECT * FROM user_dladle WHERE emailid=?";
             return this.jdbcTemplate.queryForObject(sql, new Object[]{emailId.toLowerCase()}, (rs, rowNum) ->
-                    new User(rs.getString("emailId")));
+                    new User(rs.getString("emailId"), UserTypeMapper.getUserType(rs.getInt("user_type_id"))));
         } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException("User doesn't exist");
         }

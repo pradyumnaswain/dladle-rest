@@ -18,4 +18,17 @@ public class UserTypeMapper {
                 return null;
         }
     }
+
+    public static UserType getUserType(int userTypeId) {
+        switch (userTypeId) {
+            case 1:
+                return UserType.TENANT;
+            case 3:
+                return UserType.VENDOR;
+            case 2:
+                return UserType.LANDLORD;
+            default:
+                return null;
+        }
+    }
 }
