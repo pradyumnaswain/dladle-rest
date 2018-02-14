@@ -205,7 +205,7 @@ public class PropertyService {
                             rs1.getString("last_name"),
                             rs1.getString("id_number"),
                             rs1.getString("cell_number"),
-                            imageUtil.getFullImagePath(rs.getLong("user_id"), rs.getString("profile_picture"))
+                            imageUtil.getFullImagePath(rs1.getLong("user_id"), rs1.getString("profile_picture"))
                     );
 
                     tenantList.add(tenantView);
@@ -291,7 +291,7 @@ public class PropertyService {
                         rs1.getString("last_name"),
                         rs1.getString("id_number"),
                         rs1.getString("cell_number"),
-                        imageUtil.getFullImagePath(rs.getLong("user_id"), rs.getString("profile_picture"))
+                        imageUtil.getFullImagePath(rs1.getLong("user_id"), rs1.getString("profile_picture"))
                 ));
                 property.setLandlord(landlordView);
 
