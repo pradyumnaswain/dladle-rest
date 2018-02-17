@@ -108,7 +108,7 @@ CREATE TABLE user_dladle
   id_number           VARCHAR(45),
   cell_number         VARCHAR(10) DEFAULT '',
   user_type_id        BIGINT,
-  rgistered_date      TIMESTAMP,
+  registered_date      TIMESTAMP,
   last_logged_in_date TIMESTAMP,
   verified            BOOLEAN,
   verification_code   VARCHAR(100),

@@ -425,7 +425,7 @@ public class UserService {
 
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
-            String UserSql = "INSERT INTO user_dladle (emailid, password, user_type_id, verified,verification_code,first_name,last_name,id_number,rgistered_date) VALUES " +
+            String UserSql = "INSERT INTO user_dladle (emailid, password, user_type_id, verified,verification_code,first_name,last_name,id_number,registered_date) VALUES " +
                     "(:emailId,:password,:userType,:verified,:verifyCode,:firstName,:lastName,:idNumber,:registeredDate)";
 
             this.parameterJdbcTemplate.update(UserSql, mapSqlParameterSource, keyHolder, new String[]{"id"});
