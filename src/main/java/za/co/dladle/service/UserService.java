@@ -246,7 +246,7 @@ public class UserService {
                 .addValue("emailId", emailId.toLowerCase())
                 .addValue("verifyCode", verificationCode);
         try {
-            String sql = "SELECT id FROM user_dladle WHERE emailid=:emailId AND verified=TRUE ";
+            String sql = "SELECT id FROM user_dladle WHERE emailid=:emailId AND verified=FALSE ";
             this.parameterJdbcTemplate.queryForObject(sql, mapSqlParameterSource, (rs, rowNum) -> rs.getLong("id"));
         } catch (Exception e) {
             throw new UserVerificationCodeNotMatchException("You are already verified");
